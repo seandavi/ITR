@@ -279,114 +279,96 @@ x * y
 ```
 
 
--   [Typical operations include multiplication (“\*”), addition,
-    subtraction, division, exponentiation (“ \^”), but many operations
-    in R operate on vectors and are then called “vectorized”.]{}
-
-## Summary of Simple Data Types
-
-   Data type           Stores
-  ----------- ------------------------
-     real      floating point numbers
-    integer           integers
-    complex       complex numbers
-    factor        categorical data
-   character          strings
-    logical        TRUE or FALSE
-      NA              missing
-     NULL              empty
-   function        function type
-
+Typical operations include multiplication ("\*"), addition,
+subtraction, division, exponentiation ("\^"), but many operations
+in R operate on vectors and are then called "vectorized".
 
 ### Logical Vectors
 
 Logical vectors are vectors composed on only the values `TRUE` and
 `FALSE`. Note the all-upper-case and no quotation marks.
 
-    a = c(TRUE,FALSE,TRUE)
-    # we can also create a logical vector from a numeric vector
-    # 0 = false, everything else is 1
-    b = c(1,0,217)
-    d = as.logical(b)
-    d
-    ## [1]  TRUE FALSE  TRUE
-    # test if a and d are the same at every element
-    all.equal(a,d)
-    ## [1] TRUE
-    # We can also convert from logical to numeric
-    as.numeric(a)
-    ## [1] 1 0 1
+```{r}
+a = c(TRUE,FALSE,TRUE)
+
+# we can also create a logical vector from a numeric vector
+# 0 = false, everything else is 1
+b = c(1,0,217)
+d = as.logical(b)
+d
+# test if a and d are the same at every element
+all.equal(a,d)
+
+# We can also convert from logical to numeric
+as.numeric(a)
+```
 
 ### Logical Operators
 
 Some operators like `<, >, ==, >=, <=, !=` can be used to create logical
 vectors.
 
-    # create a numeric vector
-    x = 1:10
-    # testing whether x > 5 creates a logical vector
-    x > 5
-    ##  [1] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
-    x <= 5
-    ##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
-    x != 5
-    ##  [1]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
-    x == 5
-    ##  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-    # we can also assign the results to a variable
-    y = (x == 5)
-    y
-    ##  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+```{r}
+# create a numeric vector
+x = 1:10
+# testing whether x > 5 creates a logical vector
+x > 5
+x <= 5
+x != 5
+x == 5
+```
 
-Indexing Vectors
-----------------
+We can also assign the results to a variable:
+
+```{r}
+y = (x == 5)
+y
+```
+
 
 ### Indexing Vectors
 
--   [In programming, an index is used to refer to a specific element or
-    set of elements in an vector (or other data structure).]{}
+In R, an index is used to refer to a specific element or
+set of elements in an vector (or other data structure). [R uses `[` and `]` to perform indexing,
+although other approaches to getting subsets of larger data
+structures are common in R.
 
--   [R uses `[` and `]` to perform indexing.]{}
+```{r}
+x = seq(0,1,0.1)
+# create a new vector from the 4th element of x
+x[4]
+```
 
-        x = seq(0,1,0.1)
-        # create a new vector from the 4th element of x
-        x[4]
-        ## [1] 0.3
+We can even use other vectors to perform the "indexing".
 
--   [Indexing can use other vectors for the indexing]{}
+```{r}
+x[c(3,5,6)]
+y = 3:6
+x[y]
+```
 
-        x[c(3,5,6)]
-        ## [1] 0.2 0.4 0.5
-        y = 3:6
-        x[y]
-        ## [1] 0.2 0.3 0.4 0.5
-
-### Indexing Vectors and Logical Vectors
 
 Combining the concept of indexing with the concept of logical vectors
 results in a very power combination.
 
-    # use help('rnorm') to figure out what is happening next
-    myvec = rnorm(10)
-    # create logical vector that is TRUE where myvec is >0.25
-    gt1 = (myvec > 0.25)
-    sum(gt1)
-    ## [1] 2
-    # and use our logical vector to create a vector of myvec values that are >0.25
-    myvec[gt1]
-    ## [1] 0.8500783 1.2182233
-    # or <=0.25 using the logical "not" operator, "!"
-    myvec[!gt1]
-    ## [1] -0.52361528 -1.96734990  0.09722437 -0.09474050 -0.92634247  0.10862202
-    ## [7] -0.01423129 -1.10639317
-    # shorter, one line approach
-    myvec[myvec > 0.25]
-    ## [1] 0.8500783 1.2182233
 
-String Handling in R
---------------------
+```{r}
+# use help('rnorm') to figure out what is happening next
+myvec = rnorm(10)
 
-### Concatenating Strings
+# create logical vector that is TRUE where myvec is >0.25
+gt1 = (myvec > 0.25)
+sum(gt1)
+# and use our logical vector to create a vector of myvec values that are >0.25
+myvec[gt1]
+# or <=0.25 using the logical "not" operator, "!"
+myvec[!gt1]
+# shorter, one line approach
+myvec[myvec > 0.25]
+```
+
+
+### Character Vectors 
 
 R uses the `paste` function to concatenate strings.
 

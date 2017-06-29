@@ -3,13 +3,8 @@ title: "Authoring A Book with R Markdown"
 author: "Yihui Xie"
 date: "`r Sys.Date()`"
 site: "bookdown::bookdown_site"
-output:
-  bookdown::gitbook
 output_dir: "docs"
 documentclass: book
 book_filename: _main
 new_session: yes
-#bibliography: ["book.bib", "packages.bib"]
-biblio-style: apalike
-link-citations: yes
 ---
