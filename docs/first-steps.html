@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="r-mechanics.html">
+<link rel="prev" href="r-mechanics.html">
+<link rel="next" href="introduction-to-r-data-structures.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,59 +238,56 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Background</h1>
-<h4 class="author"><em>Sean Davis</em></h4>
-<h4 class="date"><em>6/29/2017</em></h4>
+<div id="first-steps" class="section level1">
+<h1><span class="header-section-number">3</span> First steps</h1>
+<div id="interacting-with-r" class="section level2">
+<h2><span class="header-section-number">3.1</span> Interacting with R</h2>
+<p>The only meaningful way of interacting with R is by typing into the R console. At the most basic level, anything that we type at the command line will fall into one of two categories:</p>
+<ol style="list-style-type: decimal">
+<li><p>Assignments</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="dv">1</span>
+y &lt;-<span class="st"> </span><span class="dv">2</span></code></pre></div></li>
+<li><p>Expressions</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>pi <span class="op">+</span><span class="st"> </span><span class="kw">sin</span>(<span class="dv">42</span>)</code></pre></div>
+<pre><code>## [1] 3.225071</code></pre></li>
+</ol>
+<p>The assignment type is obvious because either the The “&lt;-” or “=” are used. Note that when we type expressions, R will return a result. In this case, the result of R evaluating <code>1 + pi + sin(42)</code> is <code>3.2250711</code>.</p>
+<p>The standard R prompt is a “&gt;” sign. When present, R is waiting for the next expression or assignment. If a line is not a complete R command, R will continue the next line with a “+”. For example, typing the fillowing with a “Return” after the second “+” will result in R giving back a “+” on the next line, a prompt to keep typing.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>pi <span class="op">+</span>
+<span class="kw">sin</span>(<span class="fl">3.7</span>)</code></pre></div>
+<pre><code>## [1] 3.611757</code></pre>
 </div>
-<div id="why-r" class="section level1">
-<h1><span class="header-section-number">1</span> Why R?</h1>
-<div id="what-is-r" class="section level2">
-<h2><span class="header-section-number">1.1</span> What is R?</h2>
-<p>R is a number of things, simultaneously. Depending on who is being asked, R is:</p>
+<div id="rules-for-names-in-r" class="section level2">
+<h2><span class="header-section-number">3.2</span> Rules for Names in R</h2>
+<p>R allows users to assign names to objects such as variables, functions, and even dimensions of data. However, these names must follow a few rules.</p>
 <ul>
-<li>A software package</li>
-<li>A programming language</li>
-<li>A toolkit for developing statistical and analytical tools</li>
-<li>An extensive library of statistical and mathematical software and algorithms</li>
-<li>A scripting language</li>
-<li>much, much more</li>
+<li>Names may contain any combination of letters, numbers, underscore, and “.”</li>
+<li>Names may not start with numbers, underscore.</li>
+<li>R names are case-sensitive.</li>
 </ul>
+<p>Examples of valid R names include:</p>
+<pre><code>    pi
+    x
+    camelCaps
+    my_stuff
+    MY_Stuff
+    this.is.the.name.of.the.man
+    ABC123
+    abc1234asdf
+    .hi</code></pre>
 </div>
-<div id="why-use-r" class="section level2">
-<h2><span class="header-section-number">1.2</span> Why use R?</h2>
-<ul>
-<li>R is cross-platform and runs on Windows, Mac, and Linux (as well as more obscure systems).</li>
-<li>R provides a vast number of useful statistical tools, many of which have been painstakingly tested.</li>
-<li>R produces publication-quality graphics in a variety of formats.</li>
-<li>R plays well with FORTRAN, C, and scripts in many languages.</li>
-<li>R scales, making it useful for small and large projects. It is NOT Excel.</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-<p>I can develop code for analysis on my Mac laptop. I can then install the <em>same</em> code on our 20k core cluster and run it in parallel on 100 samples, monitor the process, and then update a database (for example) with R when complete.</p>
-</div>
-<div id="why-not-use-r" class="section level2">
-<h2><span class="header-section-number">1.3</span> Why not use R?</h2>
-<ul>
-<li>R cannot do everything.</li>
-<li>R is not always the “best” tool for the job.</li>
-<li>R will <em>not</em> hold your hand. Often, it will <em>slap</em> your hand instead.</li>
-<li>The documentation can be opaque (but there is documentation).</li>
-<li>R can drive you crazy (on a good day) or age you prematurely (on a bad one).</li>
-<li>Finding the right package to do the job you want to do can be challenging; worse, some contributed packages are unreliable.]{}</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-</div>
-<div id="r-license-and-the-open-source-ideal" class="section level2">
-<h2><span class="header-section-number">1.4</span> R License and the Open Source Ideal</h2>
-<p>R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:</p>
-<ul>
-<li>Download the source code</li>
-<li>Modify the source code to your heart’s content</li>
-<li>Distribute the modified source code and even charge money for it, but you must distribute the modified source code under the original GNU license]{}</li>
-</ul>
-<p>This license means that R will always be available, will always be open source, and can grow organically without constraint.</p>
-
+<div id="resources-for-getting-help" class="section level2">
+<h2><span class="header-section-number">3.3</span> Resources for Getting Help</h2>
+<p>There is extensive built-in help and documentation within R.</p>
+<p>If the name of the function or object on which help is sought is known, the following approaches with the name of the function or object will be helpful. For a concrete example, examine the help for the <code>print</code> method.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">help</span>(print)
+<span class="kw">help</span>(<span class="st">&#39;print&#39;</span>)
+?print</code></pre></div>
+<p>If the name of the function or object on which help is sought is <em>not</em> known, the following from within R will be helpful.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">help.search</span>(<span class="st">&#39;microarray&#39;</span>)
+<span class="kw">RSiteSearch</span>(<span class="st">&#39;microarray&#39;</span>)</code></pre></div>
+<p>There are also tons of online resources that Google will include in searches if online searching feels more appropriate.</p>
+<p>I strongly recommend using <code>help(newfunction)</code> for all functions that are new or unfamiliar to you.</p>
 </div>
 </div>
             </section>
@@ -298,8 +295,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-
-<a href="r-mechanics.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="r-mechanics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="introduction-to-r-data-structures.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -331,7 +328,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -339,17 +336,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

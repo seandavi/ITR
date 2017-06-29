@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="rectangular-data.html">
-<link rel="next" href="control-structures-looping-and-applying.html">
+<link rel="prev" href="plotting-and-graphics.html">
+<link rel="next" href="functions.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,151 +238,100 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="plotting-and-graphics" class="section level1">
-<h1><span class="header-section-number">6</span> Plotting and Graphics</h1>
-<div id="basics-of-plotting" class="section level2">
-<h2><span class="header-section-number">6.1</span> Basics of Plotting</h2>
-<div id="basic-plot-functions" class="section level3">
-<h3><span class="header-section-number">6.1.1</span> Basic Plot Functions</h3>
+<div id="control-structures-looping-and-applying" class="section level1">
+<h1><span class="header-section-number">7</span> Control Structures, Looping, and Applying</h1>
+<div id="control-structures-and-looping" class="section level2">
+<h2><span class="header-section-number">7.1</span> Control Structures and Looping</h2>
+<div id="control-structures-in-r" class="section level3">
+<h3><span class="header-section-number">7.1.1</span> Control Structures in R</h3>
 <ul>
-<li><p><span>The command <code>plot(x,y)</code> will plot vector x as the independent variable and vector y as the dependent variable.</span></p></li>
-<li><p><span>Within the command line, you can specify the title of the graph, the name of the x-axis, and the name of the y-axis.</span></p>
-<ul>
-<li><p><span>main=’title’</span></p></li>
-<li><p><span>xlab=’name of x axis’</span></p></li>
-<li><p><span>ylab=’name of y axis’</span></p></li>
-</ul></li>
-<li><p><span>The command <code>lines(x,y)</code> adds a line segment to the plot.</span></p></li>
-<li><p><span>The command <code>points(x,y)</code> adds points to the plot.</span></p></li>
-<li><p><span>A legend can be created using <code>legend</code>.</span></p></li>
-</ul>
-<p><span>demo</span></p>
-<pre><code>demo(graphics)</code></pre>
-</div>
-<div id="simple-plotting-example" class="section level3">
-<h3><span class="header-section-number">6.1.2</span> Simple Plotting Example</h3>
-<p>Try this yourself:</p>
-<pre><code>x = 1:100
-y = rnorm(100,3,1) # 100 random normal deviates with mean=3, sd=1
-plot(x,y)</code></pre>
-<div class="figure">
-<img src="figure/plots-1" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code>plot(x,y,main=&#39;My First Plot&#39;)</code></pre>
-<div class="figure">
-<img src="figure/plots-2" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code># change point type
-plot(x,y,pch=3)</code></pre>
-<div class="figure">
-<img src="figure/plots-3" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code># change color
-plot(x,y,pch=4,col=2)
-# draw lines between points
-lines(x,y,col=3)</code></pre>
-<div class="figure">
-<img src="figure/plots-4" alt="image" />
-<p class="caption">image</p>
-</div>
-</div>
-<div id="more-plotting" class="section level3">
-<h3><span class="header-section-number">6.1.3</span> More Plotting</h3>
-<pre><code>z=sort(y)
-# plot a sorted variable vs x
-plot(x,z,main=&#39;Random Normal Numbers&#39;,
-xlab=&#39;Index&#39;,ylab=&#39;Random Number&#39;)</code></pre>
-<div class="figure">
-<img src="figure/plots2-1" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code># another example
-plot(-4:4,-4:4) 
-# and add a point at (0,2) to the plot
-points(0,2,pch=6,col=12)</code></pre>
-<div class="figure">
-<img src="figure/plots2-2" alt="image" />
-<p class="caption">image</p>
-</div>
-</div>
-<div id="more-plotting-1" class="section level3">
-<h3><span class="header-section-number">6.1.4</span> More Plotting</h3>
-<pre><code># check margin and outer margin settings
-par(c(&quot;mar&quot;, &quot;oma&quot;)) 
-plot(x,y)
-par(oma=c(1,1,1,1))  # set outer margin
-plot(x,y)
-par(mar=c(2.5,2.1,2.1,1)) # set margin
-plot(x,y)</code></pre>
-<div class="figure">
-<img src="figure/plots3-1" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code># A basic histogram
-hist(z, main=&quot;Histogram&quot;,
-    sub=&quot;Random normal&quot;)</code></pre>
-<div class="figure">
-<img src="figure/plots3-2" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code># A &quot;density&quot; plot
-plot(density(z), main=&quot;Density plot&quot;,
-    sub=&quot;Random normal&quot;)</code></pre>
-<div class="figure">
-<img src="figure/plots3-3" alt="image" />
-<p class="caption">image</p>
-</div>
-<pre><code># A smaller &quot;bandwidth&quot; to capture more detail
-plot(density(z, adjust=0.5),
-  sub=&quot;smaller bandwidth&quot;)</code></pre>
-<div class="figure">
-<img src="figure/plots3-4" alt="image" />
-<p class="caption">image</p>
-</div>
-</div>
-<div id="graphics-devices-and-saving-plots" class="section level3">
-<h3><span class="header-section-number">6.1.5</span> Graphics Devices and Saving Plots</h3>
-<ul>
-<li><p><span>to make a plot directly to a file use: <code>png()</code>, <code>postscript()</code>, etc.</span></p></li>
-<li><p><span>R can have multiple graphics “devices” open.</span></p>
-<ul>
-<li><p><span>To see a list of active devices: <code>dev.list()</code></span></p></li>
-<li><p><span>To close the most recent device: <code>dev.off()</code></span></p></li>
-<li><p><span>To close device 5: <code>dev.off(5)</code></span></p></li>
-<li><p><span>To use device 5: <code>dev.set(5)</code></span></p></li>
-</ul></li>
+<li><p><span>R has multiple types of control structures that allows for sequential evaluation of statements.</span></p></li>
+<li><p><span>For loops</span></p>
+<pre><code>for (x in set) {operations}</code></pre></li>
+<li><p><span>while loops</span></p>
+<pre><code>while (x in condition){operations}</code></pre></li>
+<li><p><span>If statements (conditional)</span></p>
+<pre><code>if (condition) {
+some operations 
+ } else { other operations }</code></pre></li>
 </ul>
 </div>
-<div id="more-plotting-2" class="section level3">
-<h3><span class="header-section-number">6.1.6</span> More Plotting</h3>
-<ul>
-<li><p><span>Save a png image to a file</span></p>
-<pre><code>png(file=&quot;myplot.png&quot;,width=480,height=480)
-plot(density(z,adjust=2.0),sub=&quot;larger bandwidth&quot;)
-dev.off()</code></pre></li>
-<li><p><span>On your own, save a pdf to a file. NOTE: The dimensions in <code>pdf()</code> are in <em>inches</em></span></p></li>
-<li><p><span>Multiple plots on the same page:</span></p>
-<pre><code>par(mfrow=c(2,1))
-plot(density(z,adjust=2.0),sub=&quot;larger bandwidth&quot;)
-hist(z)</code></pre>
-<div class="figure">
-<img src="figure/mfrow-1" alt="image" />
-<p class="caption">image</p>
+<div id="control-structure-and-looping-examples" class="section level3">
+<h3><span class="header-section-number">7.1.2</span> Control Structure and Looping Examples</h3>
+<pre><code>x&lt;-1:9
+length(x)
+# a simple conditional then two expressions
+if (length(x)&lt;=10) {
+   x&lt;-c(x,10:20);print(x)}
+# more complex 
+if (length(x)&lt;5) {
+    print(x)
+} else {
+    print(x[5:20])
+}           
+# print the values of x, one at a time
+for (i in x) print(i) 
+for(i in x) i   # note R will not echo in a loop</code></pre>
 </div>
-<pre><code># use dev.off() to turn off the two-row plotting</code></pre></li>
+<div id="control-structure-and-looping-examples-1" class="section level3">
+<h3><span class="header-section-number">7.1.3</span> Control Structure and Looping Examples</h3>
+<pre><code># loop over a character vector
+y&lt;-c(&#39;a&#39;,&#39;b&#39;,&#39;hi there&#39;)            
+for (i in y) print(i)
+
+# and a while loop
+j&lt;-1                
+while(j&lt;10) { # do this while j&lt;10      
+  print(j)
+  j&lt;-j+2} # at each iteration, increase j by 2</code></pre>
+</div>
+</div>
+<div id="applying" class="section level2">
+<h2><span class="header-section-number">7.2</span> Applying</h2>
+<div id="why-does-r-have-apply-functions" class="section level3">
+<h3><span class="header-section-number">7.2.1</span> Why Does R Have Apply Functions</h3>
+<ul>
+<li><p><span>Often we want to apply the same function to all the rows or columns of a matrix, or all the elements of a list.</span></p></li>
+<li><p><span>We could do this in a loop, but loops take a lot of time in an interpreted language like R.</span></p></li>
+<li><p><span>R has more efficient built-in operators, the apply functions.</span></p></li>
+</ul>
+<p><span>example</span> If mat is a matrix and fun is a function (such as mean, var, lm …) that takes a vector as its argument, then you can:</p>
+<pre><code>apply(mat,1,fun) # over rows--second argument is 1      
+apply(mat,2,fun) # over columns--second argument is 2</code></pre>
+<p>In either case, the output is a vector.</p>
+</div>
+<div id="apply-function-exercise" class="section level3">
+<h3><span class="header-section-number">7.2.2</span> Apply Function Exercise</h3>
+<ol style="list-style-type: decimal">
+<li><p><span>Using the matrix and rnorm functions, create a matrix with 20 rows and 10 columns (200 values total) of random normal deviates.</span></p></li>
+<li><p><span>Compute the mean for each row of the matrix.</span></p></li>
+<li><p><span>Compute the median for each column.</span></p></li>
+</ol>
+</div>
+<div id="related-apply-functions" class="section level3">
+<h3><span class="header-section-number">7.2.3</span> Related Apply Functions</h3>
+<ul>
+<li><p><span><code>lapply(list, function)</code> applies the function to every element of list</span></p></li>
+<li><p><span><code>sapply(list or vector, function)</code> applies the function to every element of list or vector, and returns a vector, when possible (easier to process)</span></p></li>
+<li><p><span><code>tapply(x, factor, fun)</code> uses the factor to split vector x into groups, and then applies fun to each group</span></p></li>
 </ul>
 </div>
-<div id="r-graphics-galleries-and-resources" class="section level3">
-<h3><span class="header-section-number">6.1.7</span> R Graphics Galleries and Resources</h3>
-<p>Visit these sites for some ideas.</p>
-<ul>
-<li><p><span><a href="http://www.sr.bham.ac.uk/~ajrs/R/r-gallery.html" class="uri">http://www.sr.bham.ac.uk/~ajrs/R/r-gallery.html</a></span></p></li>
-<li><p><span><a href="http://gallery.r-enthusiasts.com/" class="uri">http://gallery.r-enthusiasts.com/</a></span></p></li>
-<li><p><span><a href="http://cran.r-project.org/web/views/Graphics.html" class="uri">http://cran.r-project.org/web/views/Graphics.html</a></span></p></li>
-</ul>
+<div id="related-apply-function-examples" class="section level3">
+<h3><span class="header-section-number">7.2.4</span> Related Apply Function Examples</h3>
+<pre><code># create a list
+my.list &lt;- list(a=1:3,b=5:10,c=11:20)
+my.list
+# Get the mean for each member of the list
+# return a vector
+sapply( my.list, mean)
+# Get the full summary for each member of
+# the list, returned as a list
+lapply( my.list, summary)
+# Find the mean for each group defined by a factor
+my.vector &lt;- 1:10
+my.factor &lt;- factor(
+  c(1,1,1,2,2,2,3,3,3,3))
+tapply(my.vector, my.factor, mean)</code></pre>
 </div>
 </div>
 </div>
@@ -391,8 +340,8 @@ hist(z)</code></pre>
           </div>
         </div>
       </div>
-<a href="rectangular-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="control-structures-looping-and-applying.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="plotting-and-graphics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="functions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -424,7 +373,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -432,17 +381,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

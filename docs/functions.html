@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="exercise-2-all-phenotypic-data.html">
-<link rel="next" href="multivariate-analysis.html">
+<link rel="prev" href="control-structures-looping-and-applying.html">
+<link rel="next" href="rstudio-a-quick-tour.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,108 +238,45 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exploration-and-simple-univariate-measures" class="section level1">
-<h1><span class="header-section-number">13</span> Exploration and simple univariate measures</h1>
-<!--
+<div id="functions" class="section level1">
+<h1><span class="header-section-number">8</span> Functions</h1>
+<div id="function-overview" class="section level3">
+<h3><span class="header-section-number">8.0.1</span> Function Overview</h3>
+<ul>
+<li><p><span>Functions are objects and are assigned to names, just like data.</span></p>
+<pre><code>myFunction = function(argument1,argument2) {
+  expression1
+  expression2
+}</code></pre></li>
+<li><p><span>We write functions for anything we need to do again and again.</span></p></li>
+<li><p><span>You may test your commands interactively at first, and then use the <code>history()</code> feature and an editor to create the function.</span></p></li>
+<li><p><span>It is wise to include a comment at the start of each function to say what it does and to document functions of more than a few lines.</span></p></li>
+</ul>
+</div>
+<div id="example-functions" class="section level3">
+<h3><span class="header-section-number">8.0.2</span> Example Functions</h3>
+<pre><code>add1 = function(x) {
+    # this function adds one to the first argument and returns it
+    x + 1
+}
+add1(17)
+## [1] 18
+add1(c(17,18,19,20))
+## [1] 18 19 20 21</code></pre>
+<p>You can use the <code>edit()</code> function to make changes to a function. The following command will open a window, allow you to make changes, and assign the result to a new function, <code>add2</code>.</p>
+<pre><code>add2 = edit(add1)</code></pre>
+</div>
+<div id="further-reading" class="section level3">
+<h3><span class="header-section-number">8.0.3</span> Further Reading</h3>
+<p>The amount of learning material for R is simply astonishing!</p>
+<ul>
+<li><p><span><a href="http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual">Thomas Girke’s R and Bioconductor Manual</a></span></p></li>
+<li><p><span><a href="http://cran.r-project.org/other-docs.html">A HUGE collection of contributed R documentation and tutorials</a></span></p></li>
+<li><p><span><a href="http://www.bioconductor.org/help/course-materials/">Bioconductor course materials</a></span></p></li>
+<li><p><span><a href="http://watson.nci.nih.gov/~sdavis/">Sean Davis’ website</a></span></p></li>
+<li><p><span><a href="http://cran.r-project.org/manuals.html">The Official R Manuals</a></span></p></li>
+</ul>
 
--->
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()    <span class="co"># look for BRFSS-subset.csv</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))
-brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div>
-<div id="clean-data" class="section level2">
-<h2><span class="header-section-number">13.1</span> Clean data</h2>
-<p><em>R</em> read <code>Year</code> as an integer value, but it’s really a <code>factor</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss<span class="op">$</span>Year &lt;-<span class="st"> </span><span class="kw">factor</span>(brfss<span class="op">$</span>Year)</code></pre></div>
-</div>
-<div id="weight-in-1990-vs.2010-females" class="section level2">
-<h2><span class="header-section-number">13.2</span> Weight in 1990 vs. 2010 Females</h2>
-<p>Create a subset of the data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfssFemale &lt;-<span class="st"> </span>brfss[brfss<span class="op">$</span>Sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>,]
-<span class="kw">summary</span>(brfssFemale)</code></pre></div>
-<pre><code>##       Age            Weight           Sex            Height     
-##  Min.   :18.00   Min.   : 36.29   Female:12039   Min.   :105.0  
-##  1st Qu.:37.00   1st Qu.: 57.61   Male  :    0   1st Qu.:157.5  
-##  Median :52.00   Median : 65.77                  Median :163.0  
-##  Mean   :51.92   Mean   : 69.05                  Mean   :163.3  
-##  3rd Qu.:67.00   3rd Qu.: 77.11                  3rd Qu.:168.0  
-##  Max.   :99.00   Max.   :272.16                  Max.   :200.7  
-##  NA&#39;s   :103     NA&#39;s   :560                     NA&#39;s   :140    
-##    Year     
-##  1990:5718  
-##  2010:6321  
-##             
-##             
-##             
-##             
-## </code></pre>
-<p>Visualize</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfssFemale)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>Statistical test</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfssFemale)</code></pre></div>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  Weight by Year
-## t = -27.133, df = 11079, p-value &lt; 2.2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -8.723607 -7.548102
-## sample estimates:
-## mean in group 1990 mean in group 2010 
-##           64.81838           72.95424</code></pre>
-</div>
-<div id="weight-and-height-in-2010-males" class="section level2">
-<h2><span class="header-section-number">13.3</span> Weight and height in 2010 Males</h2>
-<p>Create a subset of the data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss2010Male &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss,  Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span> <span class="op">&amp;</span><span class="st"> </span>Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>)
-<span class="kw">summary</span>(brfss2010Male)</code></pre></div>
-<pre><code>##       Age            Weight           Sex           Height      Year     
-##  Min.   :18.00   Min.   : 36.29   Female:   0   Min.   :135   1990:   0  
-##  1st Qu.:45.00   1st Qu.: 77.11   Male  :3679   1st Qu.:173   2010:3679  
-##  Median :57.00   Median : 86.18                 Median :178              
-##  Mean   :56.25   Mean   : 88.85                 Mean   :178              
-##  3rd Qu.:68.00   3rd Qu.: 99.79                 3rd Qu.:183              
-##  Max.   :99.00   Max.   :278.96                 Max.   :218              
-##  NA&#39;s   :30      NA&#39;s   :49                     NA&#39;s   :31</code></pre>
-<p>Visualize the relationship</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss2010Male<span class="op">$</span>Weight)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss2010Male<span class="op">$</span>Height)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
-<p>Fit a linear model (regression)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
-fit</code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = Weight ~ Height, data = brfss2010Male)
-## 
-## Coefficients:
-## (Intercept)       Height  
-##    -86.8747       0.9873</code></pre>
-<p>Summarize as ANOVA table</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(fit)</code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: Weight
-##             Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## Height       1  197664  197664   693.8 &lt; 2.2e-16 ***
-## Residuals 3617 1030484     285                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Plot points, superpose fitted regression line; where am I?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
-<span class="kw">abline</span>(fit, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)
-<span class="kw">points</span>(<span class="dv">180</span>, <span class="dv">88</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">cex=</span><span class="dv">4</span>, <span class="dt">pch=</span><span class="dv">20</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<p>Class and available ‘methods’</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit)                 <span class="co"># &#39;noun&#39;</span>
-<span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(fit))  <span class="co"># &#39;verb&#39;</span></code></pre></div>
-<p>Diagnostics</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(fit)
-?plot.lm</code></pre></div>
 </div>
 </div>
             </section>
@@ -347,8 +284,8 @@ fit</code></pre></div>
           </div>
         </div>
       </div>
-<a href="exercise-2-all-phenotypic-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="multivariate-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="control-structures-looping-and-applying.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rstudio-a-quick-tour.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -380,7 +317,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -388,17 +325,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

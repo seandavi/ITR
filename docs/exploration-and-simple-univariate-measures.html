@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="plotting-and-graphics.html">
-<link rel="next" href="functions.html">
+<link rel="prev" href="exercise-2-all-phenotypic-data.html">
+<link rel="next" href="multivariate-analysis.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,101 +238,108 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="control-structures-looping-and-applying" class="section level1">
-<h1><span class="header-section-number">7</span> Control Structures, Looping, and Applying</h1>
-<div id="control-structures-and-looping" class="section level2">
-<h2><span class="header-section-number">7.1</span> Control Structures and Looping</h2>
-<div id="control-structures-in-r" class="section level3">
-<h3><span class="header-section-number">7.1.1</span> Control Structures in R</h3>
-<ul>
-<li><p><span>R has multiple types of control structures that allows for sequential evaluation of statements.</span></p></li>
-<li><p><span>For loops</span></p>
-<pre><code>for (x in set) {operations}</code></pre></li>
-<li><p><span>while loops</span></p>
-<pre><code>while (x in condition){operations}</code></pre></li>
-<li><p><span>If statements (conditional)</span></p>
-<pre><code>if (condition) {
-some operations 
- } else { other operations }</code></pre></li>
-</ul>
-</div>
-<div id="control-structure-and-looping-examples" class="section level3">
-<h3><span class="header-section-number">7.1.2</span> Control Structure and Looping Examples</h3>
-<pre><code>x&lt;-1:9
-length(x)
-# a simple conditional then two expressions
-if (length(x)&lt;=10) {
-   x&lt;-c(x,10:20);print(x)}
-# more complex 
-if (length(x)&lt;5) {
-    print(x)
-} else {
-    print(x[5:20])
-}           
-# print the values of x, one at a time
-for (i in x) print(i) 
-for(i in x) i   # note R will not echo in a loop</code></pre>
-</div>
-<div id="control-structure-and-looping-examples-1" class="section level3">
-<h3><span class="header-section-number">7.1.3</span> Control Structure and Looping Examples</h3>
-<pre><code># loop over a character vector
-y&lt;-c(&#39;a&#39;,&#39;b&#39;,&#39;hi there&#39;)            
-for (i in y) print(i)
+<div id="exploration-and-simple-univariate-measures" class="section level1">
+<h1><span class="header-section-number">13</span> Exploration and simple univariate measures</h1>
+<!--
 
-# and a while loop
-j&lt;-1                
-while(j&lt;10) { # do this while j&lt;10      
-  print(j)
-  j&lt;-j+2} # at each iteration, increase j by 2</code></pre>
+-->
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()    <span class="co"># look for BRFSS-subset.csv</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))
+brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div>
+<div id="clean-data" class="section level2">
+<h2><span class="header-section-number">13.1</span> Clean data</h2>
+<p><em>R</em> read <code>Year</code> as an integer value, but it’s really a <code>factor</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss<span class="op">$</span>Year &lt;-<span class="st"> </span><span class="kw">factor</span>(brfss<span class="op">$</span>Year)</code></pre></div>
 </div>
+<div id="weight-in-1990-vs.2010-females" class="section level2">
+<h2><span class="header-section-number">13.2</span> Weight in 1990 vs. 2010 Females</h2>
+<p>Create a subset of the data</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfssFemale &lt;-<span class="st"> </span>brfss[brfss<span class="op">$</span>Sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>,]
+<span class="kw">summary</span>(brfssFemale)</code></pre></div>
+<pre><code>##       Age            Weight           Sex            Height     
+##  Min.   :18.00   Min.   : 36.29   Female:12039   Min.   :105.0  
+##  1st Qu.:37.00   1st Qu.: 57.61   Male  :    0   1st Qu.:157.5  
+##  Median :52.00   Median : 65.77                  Median :163.0  
+##  Mean   :51.92   Mean   : 69.05                  Mean   :163.3  
+##  3rd Qu.:67.00   3rd Qu.: 77.11                  3rd Qu.:168.0  
+##  Max.   :99.00   Max.   :272.16                  Max.   :200.7  
+##  NA&#39;s   :103     NA&#39;s   :560                     NA&#39;s   :140    
+##    Year     
+##  1990:5718  
+##  2010:6321  
+##             
+##             
+##             
+##             
+## </code></pre>
+<p>Visualize</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfssFemale)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>Statistical test</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfssFemale)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Year
+## t = -27.133, df = 11079, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -8.723607 -7.548102
+## sample estimates:
+## mean in group 1990 mean in group 2010 
+##           64.81838           72.95424</code></pre>
 </div>
-<div id="applying" class="section level2">
-<h2><span class="header-section-number">7.2</span> Applying</h2>
-<div id="why-does-r-have-apply-functions" class="section level3">
-<h3><span class="header-section-number">7.2.1</span> Why Does R Have Apply Functions</h3>
-<ul>
-<li><p><span>Often we want to apply the same function to all the rows or columns of a matrix, or all the elements of a list.</span></p></li>
-<li><p><span>We could do this in a loop, but loops take a lot of time in an interpreted language like R.</span></p></li>
-<li><p><span>R has more efficient built-in operators, the apply functions.</span></p></li>
-</ul>
-<p><span>example</span> If mat is a matrix and fun is a function (such as mean, var, lm …) that takes a vector as its argument, then you can:</p>
-<pre><code>apply(mat,1,fun) # over rows--second argument is 1      
-apply(mat,2,fun) # over columns--second argument is 2</code></pre>
-<p>In either case, the output is a vector.</p>
-</div>
-<div id="apply-function-exercise" class="section level3">
-<h3><span class="header-section-number">7.2.2</span> Apply Function Exercise</h3>
-<ol style="list-style-type: decimal">
-<li><p><span>Using the matrix and rnorm functions, create a matrix with 20 rows and 10 columns (200 values total) of random normal deviates.</span></p></li>
-<li><p><span>Compute the mean for each row of the matrix.</span></p></li>
-<li><p><span>Compute the median for each column.</span></p></li>
-</ol>
-</div>
-<div id="related-apply-functions" class="section level3">
-<h3><span class="header-section-number">7.2.3</span> Related Apply Functions</h3>
-<ul>
-<li><p><span><code>lapply(list, function)</code> applies the function to every element of list</span></p></li>
-<li><p><span><code>sapply(list or vector, function)</code> applies the function to every element of list or vector, and returns a vector, when possible (easier to process)</span></p></li>
-<li><p><span><code>tapply(x, factor, fun)</code> uses the factor to split vector x into groups, and then applies fun to each group</span></p></li>
-</ul>
-</div>
-<div id="related-apply-function-examples" class="section level3">
-<h3><span class="header-section-number">7.2.4</span> Related Apply Function Examples</h3>
-<pre><code># create a list
-my.list &lt;- list(a=1:3,b=5:10,c=11:20)
-my.list
-# Get the mean for each member of the list
-# return a vector
-sapply( my.list, mean)
-# Get the full summary for each member of
-# the list, returned as a list
-lapply( my.list, summary)
-# Find the mean for each group defined by a factor
-my.vector &lt;- 1:10
-my.factor &lt;- factor(
-  c(1,1,1,2,2,2,3,3,3,3))
-tapply(my.vector, my.factor, mean)</code></pre>
-</div>
+<div id="weight-and-height-in-2010-males" class="section level2">
+<h2><span class="header-section-number">13.3</span> Weight and height in 2010 Males</h2>
+<p>Create a subset of the data</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss2010Male &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss,  Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span> <span class="op">&amp;</span><span class="st"> </span>Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>)
+<span class="kw">summary</span>(brfss2010Male)</code></pre></div>
+<pre><code>##       Age            Weight           Sex           Height      Year     
+##  Min.   :18.00   Min.   : 36.29   Female:   0   Min.   :135   1990:   0  
+##  1st Qu.:45.00   1st Qu.: 77.11   Male  :3679   1st Qu.:173   2010:3679  
+##  Median :57.00   Median : 86.18                 Median :178              
+##  Mean   :56.25   Mean   : 88.85                 Mean   :178              
+##  3rd Qu.:68.00   3rd Qu.: 99.79                 3rd Qu.:183              
+##  Max.   :99.00   Max.   :278.96                 Max.   :218              
+##  NA&#39;s   :30      NA&#39;s   :49                     NA&#39;s   :31</code></pre>
+<p>Visualize the relationship</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss2010Male<span class="op">$</span>Weight)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss2010Male<span class="op">$</span>Height)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-27-3.png" width="672" /></p>
+<p>Fit a linear model (regression)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
+fit</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Height, data = brfss2010Male)
+## 
+## Coefficients:
+## (Intercept)       Height  
+##    -86.8747       0.9873</code></pre>
+<p>Summarize as ANOVA table</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(fit)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Weight
+##             Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Height       1  197664  197664   693.8 &lt; 2.2e-16 ***
+## Residuals 3617 1030484     285                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Plot points, superpose fitted regression line; where am I?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
+<span class="kw">abline</span>(fit, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">points</span>(<span class="dv">180</span>, <span class="dv">88</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">cex=</span><span class="dv">4</span>, <span class="dt">pch=</span><span class="dv">20</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>Class and available ‘methods’</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit)                 <span class="co"># &#39;noun&#39;</span>
+<span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(fit))  <span class="co"># &#39;verb&#39;</span></code></pre></div>
+<p>Diagnostics</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(fit)
+?plot.lm</code></pre></div>
 </div>
 </div>
             </section>
@@ -340,8 +347,8 @@ tapply(my.vector, my.factor, mean)</code></pre>
           </div>
         </div>
       </div>
-<a href="plotting-and-graphics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="functions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exercise-2-all-phenotypic-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multivariate-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -373,7 +380,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -381,17 +388,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

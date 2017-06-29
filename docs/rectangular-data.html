@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="rstudio-a-quick-tour.html">
-<link rel="next" href="exercise-1-brfss-survey-data.html">
+<link rel="prev" href="introduction-to-r-data-structures.html">
+<link rel="next" href="plotting-and-graphics.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,245 +238,307 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-first-impressions" class="section level1">
-<h1><span class="header-section-number">10</span> <em>R</em>: First Impressions</h1>
-<p>Type values and mathematical formulas into <em>R</em>’s command prompt</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span></code></pre></div>
-<pre><code>## [1] 2</code></pre>
-<p>Assign values to symbols (variables)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="dv">1</span>
-x <span class="op">+</span><span class="st"> </span>x</code></pre></div>
-<pre><code>## [1] 2</code></pre>
-<p>Invoke functions such as <code>c()</code>, which takes any number of values and returns a single <em>vector</em></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
-x</code></pre></div>
-<pre><code>## [1] 1 2 3</code></pre>
-<p><em>R</em> functions, such as <code>sqrt()</code>, often operate efficiently on vectors</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y =<span class="st"> </span><span class="kw">sqrt</span>(x)
-y</code></pre></div>
-<pre><code>## [1] 1.000000 1.414214 1.732051</code></pre>
-<p>There are often several ways to accomplish a task in <em>R</em></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
-x</code></pre></div>
-<pre><code>## [1] 1 2 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)
-x</code></pre></div>
-<pre><code>## [1] 4 5 6</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">7</span><span class="op">:</span><span class="dv">9</span>
-x</code></pre></div>
-<pre><code>## [1] 7 8 9</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">10</span><span class="op">:</span><span class="dv">12</span> -&gt;<span class="st"> </span>x
-x</code></pre></div>
-<pre><code>## [1] 10 11 12</code></pre>
-<p>Sometimes <em>R</em> does ‘surprising’ things that can be fun to figure out</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>) -&gt;<span class="st"> </span>y
-x</code></pre></div>
-<pre><code>## [1] 1 2 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y</code></pre></div>
-<pre><code>## [1] 1 2 3</code></pre>
-<div id="r-data-types-vector-and-list" class="section level2">
-<h2><span class="header-section-number">10.1</span> <em>R</em> Data types: vector and list</h2>
-<p>‘Atomic’ vectors</p>
+<div id="rectangular-data" class="section level1">
+<h1><span class="header-section-number">5</span> Rectangular Data</h1>
+<div id="matrices-and-data-frames" class="section level3">
+<h3><span class="header-section-number">5.0.1</span> Matrices and Data Frames</h3>
 <ul>
-<li><p>Types include integer, numeric (float-point; real), complex, logical, character, raw (bytes)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">people &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Lori&quot;</span>, <span class="st">&quot;Nitesh&quot;</span>, <span class="st">&quot;Valerie&quot;</span>, <span class="st">&quot;Herve&quot;</span>)
-people</code></pre></div>
-<pre><code>## [1] &quot;Lori&quot;    &quot;Nitesh&quot;  &quot;Valerie&quot; &quot;Herve&quot;</code></pre></li>
-<li><p>Atomic vectors can be named</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">population &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">Buffalo=</span><span class="dv">259000</span>, <span class="dt">Rochester=</span><span class="dv">210000</span>, <span class="st">`</span><span class="dt">New York</span><span class="st">`</span>=<span class="dv">8400000</span>)
-population</code></pre></div>
-<pre><code>##   Buffalo Rochester  New York 
-##    259000    210000   8400000</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">log10</span>(population)</code></pre></div>
-<pre><code>##   Buffalo Rochester  New York 
-##  5.413300  5.322219  6.924279</code></pre></li>
-<li><p>Statistical concepts like <code>NA</code> (“not available”)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">NA</span>)
-truthiness</code></pre></div>
-<pre><code>## [1]  TRUE FALSE    NA</code></pre></li>
-<li><p>Logical concepts like ‘and’ (<code>&amp;</code>), ‘or’ (<code>|</code>), and ‘not’ (<code>!</code>)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">!</span>truthiness</code></pre></div>
-<pre><code>## [1] FALSE  TRUE    NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">|</span><span class="st"> </span><span class="op">!</span>truthiness</code></pre></div>
-<pre><code>## [1] TRUE TRUE   NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>truthiness</code></pre></div>
-<pre><code>## [1] FALSE FALSE    NA</code></pre></li>
-<li><p>Numerical concepts like infinity (<code>Inf</code>) or not-a-number (<code>NaN</code>, e.g., 0 / 0)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">undefined_numeric_values &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">0</span><span class="op">/</span><span class="dv">0</span>, <span class="ot">NaN</span>, <span class="ot">Inf</span>, <span class="op">-</span><span class="ot">Inf</span>)
-undefined_numeric_values</code></pre></div>
-<pre><code>## [1]   NA  NaN  NaN  Inf -Inf</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(undefined_numeric_values)</code></pre></div>
-<pre><code>## Warning in sqrt(undefined_numeric_values): NaNs produced</code></pre>
-<pre><code>## [1]  NA NaN NaN Inf NaN</code></pre></li>
-<li><p>Common string manipulations</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">toupper</span>(people)</code></pre></div>
-<pre><code>## [1] &quot;LORI&quot;    &quot;NITESH&quot;  &quot;VALERIE&quot; &quot;HERVE&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(people, <span class="dv">1</span>, <span class="dv">3</span>)</code></pre></div>
-<pre><code>## [1] &quot;Lor&quot; &quot;Nit&quot; &quot;Val&quot; &quot;Her&quot;</code></pre></li>
-<li><p><em>R</em> is a green consumer – recycling short vectors to align with long vectors</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
-x <span class="op">*</span><span class="st"> </span><span class="dv">2</span>            <span class="co"># &#39;2&#39; (vector of length 1) recycled to c(2, 2, 2)</span></code></pre></div>
-<pre><code>## [1] 2 4 6</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">|</span><span class="st"> </span><span class="ot">NA</span></code></pre></div>
-<pre><code>## [1] TRUE   NA   NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">&amp;</span><span class="st"> </span><span class="ot">NA</span></code></pre></div>
-<pre><code>## [1]    NA FALSE    NA</code></pre></li>
-<li><p>It’s very common to nest operations, which can be simultaneously compact, confusing, and expressive (<code>[</code>: subset; <code>&lt;</code>: less than)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">tolower</span>(people), <span class="dv">1</span>, <span class="dv">3</span>)</code></pre></div>
-<pre><code>## [1] &quot;lor&quot; &quot;nit&quot; &quot;val&quot; &quot;her&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">population[population <span class="op">&lt;</span><span class="st"> </span><span class="dv">1000000</span>]</code></pre></div>
-<pre><code>##   Buffalo Rochester 
-##    259000    210000</code></pre></li>
-</ul>
-<p>Lists</p>
-<ul>
-<li><p>The list type can contain other vectors, including other lists</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies =<span class="st"> </span><span class="kw">list</span>(
-    <span class="dt">friends=</span><span class="kw">c</span>(<span class="st">&quot;Larry&quot;</span>, <span class="st">&quot;Richard&quot;</span>, <span class="st">&quot;Vivian&quot;</span>),
-    <span class="dt">enemies=</span><span class="kw">c</span>(<span class="st">&quot;Dick&quot;</span>, <span class="st">&quot;Mike&quot;</span>)
-)
-frenemies</code></pre></div>
-<pre><code>## $friends
-## [1] &quot;Larry&quot;   &quot;Richard&quot; &quot;Vivian&quot; 
-## 
-## $enemies
-## [1] &quot;Dick&quot; &quot;Mike&quot;</code></pre></li>
-<li><p><code>[</code> subsets one list to create another list, <code>[[</code> extracts a list element</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies[<span class="dv">1</span>]</code></pre></div>
-<pre><code>## $friends
-## [1] &quot;Larry&quot;   &quot;Richard&quot; &quot;Vivian&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies[<span class="kw">c</span>(<span class="st">&quot;enemies&quot;</span>, <span class="st">&quot;friends&quot;</span>)]</code></pre></div>
-<pre><code>## $enemies
-## [1] &quot;Dick&quot; &quot;Mike&quot;
-## 
-## $friends
-## [1] &quot;Larry&quot;   &quot;Richard&quot; &quot;Vivian&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies[[<span class="st">&quot;enemies&quot;</span>]]</code></pre></div>
-<pre><code>## [1] &quot;Dick&quot; &quot;Mike&quot;</code></pre></li>
-</ul>
-<p>Factors</p>
-<ul>
-<li><p>Character-like vectors, but with values restricted to specific levels</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sex =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Female&quot;</span>),
-             <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Hermaphrodite&quot;</span>))
-sex</code></pre></div>
-<pre><code>## [1] Male   Male   Female
-## Levels: Female Male Hermaphrodite</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span></code></pre></div>
-<pre><code>## [1] FALSE FALSE  TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(sex)</code></pre></div>
-<pre><code>## sex
-##        Female          Male Hermaphrodite 
-##             1             2             0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sex[sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>]</code></pre></div>
-<pre><code>## [1] Female
-## Levels: Female Male Hermaphrodite</code></pre></li>
+<li><p><span>A matrix is a rectangular array. It can be viewed as a collection of column vectors all of the same length and the same type (i.e. numeric, character or logical).</span></p></li>
+<li><p><span>A data frame is <em>also</em> a rectangular array. All of the columns must be the same length, but they may be of <em>different</em> types.</span></p></li>
+<li><p><span>The rows and columns of a matrix or data frame can be given names.</span></p></li>
+<li><p><span>However these are implemented differently in R; many operations will work for one but not both.</span></p></li>
 </ul>
 </div>
-<div id="classes-data.frame-and-beyond" class="section level2">
-<h2><span class="header-section-number">10.2</span> Classes: data.frame and beyond</h2>
-<p>Variables are often related to one another in a highly structured way, e.g., two ‘columns’ of data in a spreadsheet</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)       <span class="co"># 1000 random normal deviates</span>
-y =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)   <span class="co"># another 1000 deviates, as a function of x</span>
-<span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x)           <span class="co"># relationship between x and y</span></code></pre></div>
-<p><img src="_main_files/figure-html/related-variables-1.png" width="672" /></p>
-<p>Convenient to manipulate them together</p>
+<div id="matrix-operations" class="section level2">
+<h2><span class="header-section-number">5.1</span> Matrix Operations</h2>
+<div id="matrix-operations-1" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> Matrix Operations</h3>
+<pre><code>x&lt;-1:10 
+y&lt;-rnorm(10)
+# make a matrix by column binding two numeric vectors
+mat&lt;-cbind(x,y)
+mat
+##        x          y
+##  [1,]  1  0.3842634
+##  [2,]  2 -1.2536470
+##  [3,]  3 -1.4098608
+##  [4,]  4  1.7139083
+##  [5,]  5 -0.1876347
+##  [6,]  6 -0.3343492
+##  [7,]  7  1.6553040
+##  [8,]  8  0.5974976
+##  [9,]  9 -1.8443792
+## [10,] 10  1.4203497
+# And the names of the rows and columns
+rownames(mat)
+## NULL
+colnames(mat)
+## [1] &quot;x&quot; &quot;y&quot;</code></pre>
+</div>
+<div id="matrix-operations-2" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> Matrix Operations</h3>
+<p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
+<pre><code># The 2nd element of the 1st row of mat
+mat[1,2]
+##         y 
+## 0.3842634
+# The first ROW of mat
+mat[1,]
+##         x         y 
+## 1.0000000 0.3842634
+# The first COLUMN of mat
+mat[,1]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+# and all elements of mat that are &gt; 4; note no comma
+mat[mat&gt;4]
+## [1]  5  6  7  8  9 10</code></pre>
+</div>
+<div id="matrix-operations-3" class="section level3">
+<h3><span class="header-section-number">5.1.3</span> Matrix Operations</h3>
+<pre><code># create a matrix with 2 columns and 10 rows
+# filled with random normal deviates
+m = matrix(rnorm(20),nrow=10)
+# multiply all values in the matrix by 20
+m = m*20
+# and add 100 to the first column of m
+m[,1] = m[,1] + 100
+# summarize m
+summary(m)
+##        V1               V2          
+##  Min.   : 44.58   Min.   :-42.4628  
+##  1st Qu.: 93.26   1st Qu.:-19.8712  
+##  Median :100.72   Median :  3.6691  
+##  Mean   : 95.27   Mean   : -0.4271  
+##  3rd Qu.:106.33   3rd Qu.: 17.3559  
+##  Max.   :111.29   Max.   : 31.2418</code></pre>
+</div>
+</div>
+<div id="data-frames" class="section level2">
+<h2><span class="header-section-number">5.2</span> Data Frames</h2>
+<div id="matrices-versus-data-frames" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Matrices Versus Data Frames</h3>
+<pre><code>mat&lt;-cbind(x,y)
+class(mat[,1])          
+## [1] &quot;numeric&quot;
+z = paste0(&#39;a&#39;,1:10)
+tab&lt;-cbind(x,y,z)
+class(tab)
+## [1] &quot;matrix&quot;
+mode(tab[,1])
+## [1] &quot;character&quot;
+head(tab,4)
+##      x   y                   z   
+## [1,] &quot;1&quot; &quot;0.384263423333191&quot; &quot;a1&quot;
+## [2,] &quot;2&quot; &quot;-1.25364703104426&quot; &quot;a2&quot;
+## [3,] &quot;3&quot; &quot;-1.40986082624299&quot; &quot;a3&quot;
+## [4,] &quot;4&quot; &quot;1.7139082579506&quot;   &quot;a4&quot;</code></pre>
+</div>
+<div id="matrices-versus-data-frames-1" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Matrices Versus Data Frames</h3>
+<pre><code>tab&lt;-data.frame(x,y,z)
+class(tab)
+## [1] &quot;data.frame&quot;
+head(tab)
+##   x          y  z
+## 1 1  0.3842634 a1
+## 2 2 -1.2536470 a2
+## 3 3 -1.4098608 a3
+## 4 4  1.7139083 a4
+## 5 5 -0.1876347 a5
+## 6 6 -0.3343492 a6
+mode(tab[,1])
+## [1] &quot;numeric&quot;
+class(tab[,3])
+## [1] &quot;factor&quot;
+rownames(tab)           
+##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot;
+rownames(tab)&lt;-paste0(&quot;row&quot;,1:10)
+rownames(tab)
+##  [1] &quot;row1&quot;  &quot;row2&quot;  &quot;row3&quot;  &quot;row4&quot;  &quot;row5&quot;  &quot;row6&quot;  &quot;row7&quot;  &quot;row8&quot; 
+##  [9] &quot;row9&quot;  &quot;row10&quot;</code></pre>
+</div>
+<div id="data-frames-continued" class="section level3">
+<h3><span class="header-section-number">5.2.3</span> Data Frames, Continued</h3>
 <ul>
-<li><p><code>data.frame()</code>: like columns in a spreadsheet</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">X=</span>x, <span class="dt">Y=</span>y)
-<span class="kw">head</span>(df)           <span class="co"># first 6 rows</span></code></pre></div>
-<pre><code>##             X          Y
-## 1 -0.23926790 -0.3937137
-## 2 -0.07412402 -0.3799202
-## 3  0.99624820  1.1667748
-## 4  0.39307812  0.8211909
-## 5  0.57966738  2.3522918
-## 6  0.42136109  0.2216827</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, df)    <span class="co"># same as above</span></code></pre></div>
-<p><img src="_main_files/figure-html/data.frame-1.png" width="672" /></p></li>
-<li><p>See all data with <code>View(df)</code>. Summarize data with <code>summary(df)</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(df)</code></pre></div>
-<pre><code>##        X                   Y           
-##  Min.   :-3.488112   Min.   :-3.69944  
-##  1st Qu.:-0.669377   1st Qu.:-0.90624  
-##  Median : 0.004582   Median : 0.03182  
-##  Mean   : 0.007979   Mean   : 0.05199  
-##  3rd Qu.: 0.703727   3rd Qu.: 1.02445  
-##  Max.   : 3.362927   Max.   : 4.96088</code></pre></li>
-<li><p>Easy to manipulate data in a coordinated way, e.g., access column <code>X</code> with <code>$</code> and subset for just those values greater than 0</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">positiveX =<span class="st"> </span>df[df<span class="op">$</span>X <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,]
-<span class="kw">head</span>(positiveX)</code></pre></div>
-<pre><code>##           X         Y
-## 3 0.9962482 1.1667748
-## 4 0.3930781 0.8211909
-## 5 0.5796674 2.3522918
-## 6 0.4213611 0.2216827
-## 7 0.9418160 1.2713186
-## 8 0.6829870 2.8699771</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, positiveX)</code></pre></div>
-<p><img src="_main_files/figure-html/data.frame-subset-1.png" width="672" /></p></li>
-<li><p><em>R</em> is introspective – ask it about itself</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(df)</code></pre></div>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(df)</code></pre></div>
-<pre><code>## [1] 1000    2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(df)</code></pre></div>
-<pre><code>## [1] &quot;X&quot; &quot;Y&quot;</code></pre></li>
-<li><p><code>matrix()</code> a related class, where all elements have the same type (a <code>data.frame()</code> requires elements within a column to be the same type, but elements between columns can be different types).</p></li>
-</ul>
-<p>A scatterplot makes one want to fit a linear model (do a regression analysis)</p>
-<ul>
-<li>Use a <em>formula</em> to describe the relationship between variables</li>
-<li><p>Variables found in the second argument</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>X, df)</code></pre></div></li>
-<li><p>Visualize the points, and add the regression line</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, df)
-<span class="kw">abline</span>(fit, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/lm-plot-1.png" width="672" /></p></li>
-<li><p>Summarize the fit as an ANOVA table</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(fit)</code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: Y
-##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## X           1 982.56  982.56  1007.4 &lt; 2.2e-16 ***
-## Residuals 998 973.42    0.98                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre></li>
-<li><p>N.B. – ‘Type I’ sums-of-squares, so order of independent variables matters; use <code>drop1()</code> for ‘Type III’. See <a href="http://www.statmethods.net/stats/anova.html">DataCamp Quick-R</a></p></li>
-<li><p>Introspection – what class is <code>fit</code>? What <em>methods</em> can I apply to an object of that class?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit)</code></pre></div>
-<pre><code>## [1] &quot;lm&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(fit))</code></pre></div>
-<pre><code>##  [1] add1           alias          anova          case.names    
-##  [5] coerce         confint        cooks.distance deviance      
-##  [9] dfbeta         dfbetas        drop1          dummy.coef    
-## [13] effects        extractAIC     family         formula       
-## [17] hatvalues      influence      initialize     kappa         
-## [21] labels         logLik         model.frame    model.matrix  
-## [25] nobs           plot           predict        print         
-## [29] proj           qr             residuals      rstandard     
-## [33] rstudent       show           simulate       slotsFromS3   
-## [37] summary        variable.names vcov          
-## see &#39;?methods&#39; for accessing help and source code</code></pre></li>
+<li><p><span>Data frame columns can be refered to by name using the “dollar sign” operator</span></p>
+<pre><code>tab\$x
+##  [1]  1  2  3  4  5  6  7  8  9 10
+tab\$y
+##  [1]  0.3842634 -1.2536470 -1.4098608  1.7139083 -0.1876347 -0.3343492
+##  [7]  1.6553040  0.5974976 -1.8443792  1.4203497</code></pre></li>
+<li><p><span>Column names can be set, which can be useful for referring to data later</span></p>
+<pre><code>colnames(tab)
+## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;
+colnames(tab) = paste0(&#39;col&#39;,1:3)</code></pre></li>
 </ul>
 </div>
-<div id="help" class="section level2">
-<h2><span class="header-section-number">10.3</span> Help!</h2>
-<p>Help available in <em>Rstudio</em> or interactively</p>
+<div id="exercise-subsetting-data-frames" class="section level3">
+<h3><span class="header-section-number">5.2.4</span> Exercise: Subsetting Data Frames</h3>
+<p>Try these</p>
+<pre><code>ncol(tab)
+nrow(tab)
+dim(tab)
+summary(tab)
+tab[1:3,]
+tab[,2:3]
+tab[,1]&gt;7
+tab[tab[,1]&gt;7,]
+tab[tab[,1]&gt;7,3]
+tab[tab[,1]&gt;7,2:3]
+tab[tab\$x&gt;7,3]
+tab\$z[tab\$x&gt;3]</code></pre>
+</div>
+</div>
+<div id="basic-textual-input-and-output" class="section level2">
+<h2><span class="header-section-number">5.3</span> Basic Textual Input and Output</h2>
+<div id="reading-and-writing-data-frames-to-disk" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> Reading and Writing Data Frames to Disk</h3>
 <ul>
-<li><p>Check out the help page for <code>rnorm()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?rnorm</code></pre></div></li>
-<li><p>‘Usage’ section describes how the function can be used</p>
-<pre><code>rnorm(n, mean = 0, sd = 1)</code></pre></li>
-<li><p>Arguments, some with default values. Arguments matched first by name, then position</p></li>
-<li><p>‘Arguments’ section describes what the arguments are supposed to be</p></li>
-<li><p>‘Value’ section describes return value</p></li>
-<li><p>‘Examples’ section illustrates use</p></li>
-<li><p>Often include citations to relevant technical documentation, reference to related functions, obscure details</p></li>
-<li><p>Can be intimidating, but in the end actually <em>very</em> useful</p></li>
+<li><p><span>The <code>write.table</code> function and friends write a data.frame or matrix to disk as a text file.</span></p>
+<pre><code>write.table(tab,file=&#39;tab.txt&#39;,sep=&quot;\t&quot;,col.names=TRUE)
+# remove tab from the workspace
+rm(tab)
+# make sure it is gone
+ls(pattern=&quot;tab&quot;)
+## character(0)</code></pre></li>
+<li><p><span>The <code>read.table</code> function and friends read a data.frame or matrix from a text file.</span></p>
+<pre><code>tab = read.table(&#39;tab.txt&#39;,sep=&quot;\t&quot;,header=TRUE)
+head(tab,3)
+##      col1       col2 col3
+## row1    1  0.3842634   a1
+## row2    2 -1.2536470   a2
+## row3    3 -1.4098608   a3</code></pre></li>
 </ul>
-
+</div>
+</div>
+<div id="lists-and-objects" class="section level2">
+<h2><span class="header-section-number">5.4</span> Lists and Objects</h2>
+<div id="lists" class="section level3">
+<h3><span class="header-section-number">5.4.1</span> Lists</h3>
+<ul>
+<li><p><span>A list is a collection of objects that may be the same or different types.</span></p></li>
+<li><p>[The objects generally have names, and may be indexed either by name (e.g. my.list$name3) or component number (e.g. my.list[[3]])</p></li>
+<li><p><span>A data frame is a list of matched column vectors.</span></p></li>
+</ul>
+</div>
+<div id="lists-in-practice" class="section level3">
+<h3><span class="header-section-number">5.4.2</span> Lists in Practice</h3>
+<ul>
+<li><p><span>Create a list, noting the different data types involved.</span></p>
+<pre><code>a = list(1,&quot;b&quot;,c(1,2,3))
+a
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] &quot;b&quot;
+## 
+## [[3]]
+## [1] 1 2 3
+length(a)
+## [1] 3
+class(a)
+## [1] &quot;list&quot;
+a[[3]]
+## [1] 1 2 3</code></pre></li>
+</ul>
+</div>
+<div id="lists-in-practice-1" class="section level3">
+<h3><span class="header-section-number">5.4.3</span> Lists in Practice</h3>
+<ul>
+<li><p><span>A data frame <em>is</em> a list.</span></p>
+<pre><code># test if our friend &quot;tab&quot; is a list
+is.list(tab)
+## [1] TRUE
+tab[[2]]
+##  [1]  0.3842634 -1.2536470 -1.4098608  1.7139083 -0.1876347 -0.3343492
+##  [7]  1.6553040  0.5974976 -1.8443792  1.4203497
+names(tab)
+## [1] &quot;col1&quot; &quot;col2&quot; &quot;col3&quot;</code></pre></li>
+</ul>
+</div>
+<div id="summary-of-simple-data-types-1" class="section level3">
+<h3><span class="header-section-number">5.4.4</span> Summary of Simple Data Types</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Data type</th>
+<th align="center">Stores</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">real</td>
+<td align="center">floating point numbers</td>
+</tr>
+<tr class="even">
+<td align="center">integer</td>
+<td align="center">integers</td>
+</tr>
+<tr class="odd">
+<td align="center">complex</td>
+<td align="center">complex numbers</td>
+</tr>
+<tr class="even">
+<td align="center">factor</td>
+<td align="center">categorical data</td>
+</tr>
+<tr class="odd">
+<td align="center">character</td>
+<td align="center">strings</td>
+</tr>
+<tr class="even">
+<td align="center">logical</td>
+<td align="center">TRUE or FALSE</td>
+</tr>
+<tr class="odd">
+<td align="center">NA</td>
+<td align="center">missing</td>
+</tr>
+<tr class="even">
+<td align="center">NULL</td>
+<td align="center">empty</td>
+</tr>
+<tr class="odd">
+<td align="center">function</td>
+<td align="center">function type</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="summary-of-aggregate-data-types" class="section level3">
+<h3><span class="header-section-number">5.4.5</span> Summary of Aggregate Data Types</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Data type</th>
+<th align="center">Stores</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">vector</td>
+<td align="center">one-dimensional data, single data type</td>
+</tr>
+<tr class="even">
+<td align="center">matrix</td>
+<td align="center">two-dimensional data, single data type</td>
+</tr>
+<tr class="odd">
+<td align="center">data frame</td>
+<td align="center">two-dimensional data, multiple data types</td>
+</tr>
+<tr class="even">
+<td align="center">list</td>
+<td align="center">list of data types, not all need to be the same type</td>
+</tr>
+<tr class="odd">
+<td align="center">object</td>
+<td align="center">a list with attributes and potentially slots and methods</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
             </section>
@@ -484,8 +546,8 @@ y =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span>
           </div>
         </div>
       </div>
-<a href="rstudio-a-quick-tour.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="exercise-1-brfss-survey-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction-to-r-data-structures.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="plotting-and-graphics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -517,7 +579,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -525,17 +587,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="r-first-impressions.html">
-<link rel="next" href="exercise-2-all-phenotypic-data.html">
+<link rel="prev" href="exploration-and-simple-univariate-measures.html">
+<link rel="next" href="using-r-in-real-life.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,117 +238,114 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exercise-1-brfss-survey-data" class="section level1">
-<h1><span class="header-section-number">11</span> Exercise 1: BRFSS Survey Data</h1>
-<p>We will explore a subset of data collected by the CDC through its extensive Behavioral Risk Factor Surveillance System (<a href="http://www.cdc.gov/brfss/about/index.htm">BRFSS</a>) telephone survey. Check out the link for more information. We’ll look at a subset of the data.</p>
-<ol style="list-style-type: decimal">
-<li><p>Use <code>file.choose()</code> to find the path to the file ‘BRFSS-subset.csv’</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()</code></pre></div></li>
-</ol>
+<div id="multivariate-analysis" class="section level1">
+<h1><span class="header-section-number">14</span> Multivariate analysis</h1>
+<p>This is a classic microarray experiment. Microarrays consist of ‘probesets’ that interogate genes for their level of expression. In the experiment we’re looking at, there are 12625 probesets measured on each of the 128 samples. The raw expression levels estimated by microarray assays require considerable pre-processing, the data we’ll work with has been pre-processed.</p>
+<div id="input-and-setup" class="section level2">
+<h2><span class="header-section-number">14.1</span> Input and setup</h2>
+<p>Start by finding the expression data file on disk.</p>
 <!--
-    
+
 -->
-<ol start="2" style="list-style-type: decimal">
-<li><p>Input the data using <code>read.csv()</code>, assigning to a variable <code>brfss</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div></li>
-<li><p>Use command like <code>class()</code>, <code>head()</code>, <code>dim()</code>, <code>summary()</code> to explore the data.</p>
-<ul>
-<li><p>What variables have been measured?</p></li>
-<li><p>Can you guess at the units used for, e.g., Weight and Height?</p></li>
-</ul>
-<pre><code>class(brfss)
-head(brfss)
-dim(brfss)
-summary(brfss)</code></pre></li>
-<li><p>Use the <code>$</code> operator to extract the ‘Sex’ column, and summarize the number of males and females in the survey using <code>table()</code>. Do the same for ‘Year’, and for both <code>Sex</code> and <code>Year</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Sex)</code></pre></div>
-<pre><code>## 
-## Female   Male 
-##  12039   7961</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Year)</code></pre></div>
-<pre><code>## 
-##  1990  2010 
-## 10000 10000</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Sex, brfss<span class="op">$</span>Year)</code></pre></div>
-<pre><code>##         
-##          1990 2010
-##   Female 5718 6321
-##   Male   4282 3679</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">table</span>(Sex, Year))                <span class="co"># same, but easier</span></code></pre></div>
-<pre><code>##         Year
-## Sex      1990 2010
-##   Female 5718 6321
-##   Male   4282 3679</code></pre></li>
-<li><p>Use <code>aggregate()</code> to summarize the mean weight of each group. What about the median weight of each group? What about the <em>number</em> of observations in each group?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">aggregate</span>(Weight, <span class="kw">list</span>(Year, Sex), mean, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>##   Group.1 Group.2        x
-## 1    1990  Female 64.81838
-## 2    2010  Female 72.95424
-## 3    1990    Male 81.17999
-## 4    2010    Male 88.84657</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">aggregate</span>(Weight, <span class="kw">list</span>(<span class="dt">Year=</span>Year, <span class="dt">Sex=</span>Sex), mean, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>##   Year    Sex        x
-## 1 1990 Female 64.81838
-## 2 2010 Female 72.95424
-## 3 1990   Male 81.17999
-## 4 2010   Male 88.84657</code></pre></li>
-<li><p>Use a <code>formula</code> and the <code>aggregate()</code> function to describe the relationship between Year, Sex, and Weight</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(Weight <span class="op">~</span><span class="st"> </span>Year <span class="op">+</span><span class="st"> </span>Sex, brfss, mean)  <span class="co"># same, but more informative</span></code></pre></div>
-<pre><code>##   Year    Sex   Weight
-## 1 1990 Female 64.81838
-## 2 2010 Female 72.95424
-## 3 1990   Male 81.17999
-## 4 2010   Male 88.84657</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(. <span class="op">~</span><span class="st"> </span>Year <span class="op">+</span><span class="st"> </span>Sex, brfss, mean)       <span class="co"># all variables</span></code></pre></div>
-<pre><code>##   Year    Sex      Age   Weight   Height
-## 1 1990 Female 46.09153 64.84333 163.2914
-## 2 2010 Female 57.07807 73.03178 163.2469
-## 3 1990   Male 43.87574 81.19496 178.2242
-## 4 2010   Male 56.25465 88.91136 178.0139</code></pre></li>
-<li><p>Create a subset of the data consisting of only the 1990 observations. Perform a t-test comparing the weight of males and females (“‘Weight’ as a function of ‘Sex’”, <code>Weight ~ Sex</code>)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss_<span class="dv">1990</span> =<span class="st"> </span>brfss[brfss<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>,]
-<span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Sex, brfss_<span class="dv">1990</span>)</code></pre></div>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  Weight by Sex
-## t = -58.734, df = 9214, p-value &lt; 2.2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -16.90767 -15.81554
-## sample estimates:
-## mean in group Female   mean in group Male 
-##             64.81838             81.17999</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Sex, brfss, <span class="dt">subset =</span> Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>)</code></pre></div>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  Weight by Sex
-## t = -58.734, df = 9214, p-value &lt; 2.2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -16.90767 -15.81554
-## sample estimates:
-## mean in group Female   mean in group Male 
-##             64.81838             81.17999</code></pre>
-<p>What about differences between weights of males (or females) in 1990 versus 2010? Check out the help page <code>?t.test.formula</code>. Is there a way of performing a t-test on <code>brfss</code> without explicitly creating the object <code>brfss_1990</code>?</p></li>
-<li><p>Use <code>boxplot()</code> to plot the weights of the Male individuals. Can you transform weight, e.g., <code>sqrt(Weight) ~ Year</code>? Interpret the results. Do similar boxplots for the t-tests of the previous question.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfss, <span class="dt">subset =</span> Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>,
-        <span class="dt">main=</span><span class="st">&quot;Males&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/brfss-boxplot-1.png" width="480" /></p></li>
-<li><p>Use <code>hist()</code> to plot a histogram of weights of the 1990 Female individuals.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss_<span class="dv">1990</span>[brfss_<span class="dv">1990</span><span class="op">$</span>Sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>, <span class="st">&quot;Weight&quot;</span>],
-     <span class="dt">main=</span><span class="st">&quot;Females, 1990&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Weight&quot;</span> )</code></pre></div>
-<p><img src="_main_files/figure-html/brfss-hist-1.png" width="480" /></p></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()          <span class="co"># look for ALL-expression.csv</span>
+<span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))</code></pre></div>
+<p>The data is stored in ‘comma-separate value’ format, with each probeset occupying a line, and the expression value for each sample in that probeset separated by a comma. Input the data using <code>read.csv()</code>. There are three challenges:</p>
+<ol style="list-style-type: decimal">
+<li>The row names are present in the first column of the data. Tell <em>R</em> this by adding the argument <code>row.names=1</code> to <code>read.csv()</code>.</li>
+<li>By default, <em>R</em> checks that column names do not look like numbers, but our column names <em>do</em> look like numbers. Use the argument <code>check.colnames=FALSE</code> to over-ride <em>R</em>’s default.</li>
+<li><code>read.csv()</code> returns a <code>data.frame</code>. We could use a <code>data.frame</code> to work with our data, but really it is a <code>matrix()</code> – the columns are of the same type and measure the same thing. Use <code>as.matrix()</code> to coerce the <code>data.frame</code> we input to a <code>matrix</code>.</li>
 </ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exprs &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path, <span class="dt">row.names=</span><span class="dv">1</span>, <span class="dt">check.names=</span><span class="ot">FALSE</span>)
+exprs &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(exprs)
+<span class="kw">class</span>(exprs)</code></pre></div>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(exprs)</code></pre></div>
+<pre><code>## [1] 12625   128</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exprs[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<pre><code>##              01005     01010    03002    04006    04007     04008
+## 1000_at   7.597323  7.479445 7.567593 7.384684 7.905312  7.065914
+## 1001_at   5.046194  4.932537 4.799294 4.922627 4.844565  5.147762
+## 1002_f_at 3.900466  4.208155 3.886169 4.206798 3.416923  3.945869
+## 1003_s_at 5.903856  6.169024 5.860459 6.116890 5.687997  6.208061
+## 1004_at   5.925260  5.912780 5.893209 6.170245 5.615210  5.923487
+## 1005_at   8.570990 10.428299 9.616713 9.937155 9.983809 10.063484
+##               04010     04016    06002     08001
+## 1000_at    7.474537  7.536119 7.183331  7.735545
+## 1001_at    5.122518  5.016132 5.288943  4.633217
+## 1002_f_at  4.150506  3.576360 3.900935  3.630190
+## 1003_s_at  6.292713  5.665991 5.842326  5.875375
+## 1004_at    6.046607  5.738218 5.994515  5.748350
+## 1005_at   10.662059 11.269115 8.812869 10.165159</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(exprs)</code></pre></div>
+<pre><code>## [1]  1.984919 14.126571</code></pre>
+<p>We’ll make use of the data describing the samples</p>
+<!--
+
+-->
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()         <span class="co"># look for ALL-phenoData.csv</span>
+<span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path, <span class="dt">row.names=</span><span class="dv">1</span>)
+<span class="kw">class</span>(pdata)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pdata)</code></pre></div>
+<pre><code>## [1] 128  21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata)</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
+<p>Some of the results below involve plots, and it’s convenient to choose pretty and functional colors. We use the <a href="https://cran.r-project.org/?package=RColorBrewer">RColorBrewer</a> package; see <a href="http://colorbrewer.org">colorbrewer.org</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RColorBrewer)  ## not available? install package via RStudio
+highlight &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">3</span>, <span class="st">&quot;Set2&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</code></pre></div>
+<p>`highlight’ is a vector of length 2, light and dark green.</p>
+<p>For more options see <code>?RColorBrewer</code> and to view the predefined palettes <code>display.brewer.all()</code></p>
+</div>
+<div id="cleaning" class="section level2">
+<h2><span class="header-section-number">14.2</span> Cleaning</h2>
+<p>We’ll add a column to <code>pdata</code>, derived from the <code>BT</code> column, to indicate whether the sample is B-cell or T-cell ALL.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata<span class="op">$</span>BorT &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">substr</span>(pdata<span class="op">$</span>BT, <span class="dv">1</span>, <span class="dv">1</span>))</code></pre></div>
+<p>Microarray expression data is usually represented as a matrix of genes as rows and samples as columns. Statisticians usually think of their data as samples as rows, features as columns. So we’ll transpose the expression values</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exprs &lt;-<span class="st"> </span><span class="kw">t</span>(exprs)</code></pre></div>
+<p>Confirm that the <code>pdata</code> rows correspond to the <code>exprs</code> rows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">identical</span>(<span class="kw">rownames</span>(pdata), <span class="kw">rownames</span>(exprs)))</code></pre></div>
+</div>
+<div id="unsupervised-machine-learning-multi-dimensional-scaling" class="section level2">
+<h2><span class="header-section-number">14.3</span> Unsupervised machine learning – multi-dimensional scaling</h2>
+<p>Reduce high-dimensional data to lower dimension for visualization.</p>
+<p>Calculate distance between <em>samples</em> (requires that the expression matrix be transposed).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">dist</span>(exprs)</code></pre></div>
+<p>Use the <code>cmdscale()</code> function to summarize the distance matrix into two points in two dimensions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmd &lt;-<span class="st"> </span><span class="kw">cmdscale</span>(d)</code></pre></div>
+<p>Visualize the result, coloring points by B- or T-cell status</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(cmd, <span class="dt">col=</span>highlight[pdata<span class="op">$</span>BorT])</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="r-first-impressions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="exercise-2-all-phenotypic-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exploration-and-simple-univariate-measures.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="using-r-in-real-life.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -380,7 +377,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -388,17 +385,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

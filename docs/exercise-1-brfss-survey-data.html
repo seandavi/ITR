@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="using-r-in-real-life.html">
-
+<link rel="prev" href="r-first-impressions.html">
+<link rel="next" href="exercise-2-all-phenotypic-data.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,98 +238,117 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="graphics-and-visualization" class="section level1">
-<h1><span class="header-section-number">16</span> Graphics and Visualization</h1>
-<p>Load the BRFSS-subset.csv data</p>
+<div id="exercise-1-brfss-survey-data" class="section level1">
+<h1><span class="header-section-number">11</span> Exercise 1: BRFSS Survey Data</h1>
+<p>We will explore a subset of data collected by the CDC through its extensive Behavioral Risk Factor Surveillance System (<a href="http://www.cdc.gov/brfss/about/index.htm">BRFSS</a>) telephone survey. Check out the link for more information. We’ll look at a subset of the data.</p>
+<ol style="list-style-type: decimal">
+<li><p>Use <code>file.choose()</code> to find the path to the file ‘BRFSS-subset.csv’</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()</code></pre></div></li>
+</ol>
 <!--
-
-```r
-path <- "BRFSS-subset.csv"
-brfss <- read.csv(path)
-```
+    
 -->
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> &quot;BRFSS-subset.csv&quot;</span>   <span class="co"># or file.choose()</span>
-brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div>
-<p>Clean it by coercing <code>Year</code> to factor</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss<span class="op">$</span>Year &lt;-<span class="st"> </span><span class="kw">factor</span>(brfss<span class="op">$</span>Year)</code></pre></div>
-<div id="base-r-graphics" class="section level2">
-<h2><span class="header-section-number">16.1</span> Base <em>R</em> Graphics</h2>
-<p>Useful for quick exploration during a normal work flow.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Input the data using <code>read.csv()</code>, assigning to a variable <code>brfss</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div></li>
+<li><p>Use command like <code>class()</code>, <code>head()</code>, <code>dim()</code>, <code>summary()</code> to explore the data.</p>
 <ul>
-<li>Main functions: <code>plot()</code>, <code>hist()</code>, <code>boxplot()</code>, …</li>
-<li>Graphical parameters – see <code>?par</code>, but often provided as arguments to <code>plot()</code>, etc.</li>
-<li><p>Construct complicated plots by layering information, e.g., points, regression line, annotation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss2010Male &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss, (Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span>) <span class="op">&amp;</span><span class="st"> </span>(Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>))
-fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
-
-<span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male, <span class="dt">main=</span><span class="st">&quot;2010, Males&quot;</span>)
-<span class="kw">abline</span>(fit, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
-<span class="kw">points</span>(<span class="dv">180</span>, <span class="dv">90</span>, <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">cex=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p></li>
-<li><p>Approach to complicated graphics: create a grid of panels (e.g., <code>par(mfrows=c(1, 2))</code>, populate with plots, restore original layout.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfssFemale &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss, Sex<span class="op">==</span><span class="st">&quot;Female&quot;</span>)
-
-opar =<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))     <span class="co"># layout: 2 &#39;rows&#39; and 1 &#39;column&#39;</span>
-<span class="kw">hist</span>(                         <span class="co"># first panel -- 1990</span>
-    brfssFemale[ brfssFemale<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>, <span class="st">&quot;Weight&quot;</span> ],
-    <span class="dt">main =</span> <span class="st">&quot;Female, 1990&quot;</span>)
-<span class="kw">hist</span>(                         <span class="co"># second panel -- 2010</span>
-    brfssFemale[ brfssFemale<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span>, <span class="st">&quot;Weight&quot;</span> ],
-    <span class="dt">main =</span> <span class="st">&quot;Female, 2010&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(opar)                      <span class="co"># restore original layout</span></code></pre></div></li>
+<li><p>What variables have been measured?</p></li>
+<li><p>Can you guess at the units used for, e.g., Weight and Height?</p></li>
 </ul>
-</div>
-<div id="what-makes-for-a-good-graphical-display" class="section level2">
-<h2><span class="header-section-number">16.2</span> What makes for a good graphical display?</h2>
-<ul>
-<li>Common scales for comparison</li>
-<li>Efficient use of space</li>
-<li>Careful color choice – qualitative, gradient, divergent schemes; color blind aware; …</li>
-<li>Emphasis on data rather than labels</li>
-<li>Convey statistical uncertainty</li>
-</ul>
-</div>
-<div id="grammar-of-graphics-ggplot2" class="section level2">
-<h2><span class="header-section-number">16.3</span> Grammar of Graphics: ggplot2</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
-<ul>
-<li><a href="http://docs.ggplot2.org" class="uri">http://docs.ggplot2.org</a></li>
-</ul>
-<p>‘Grammar of graphics’</p>
-<ul>
-<li>Specify data and ‘aesthetics’ (<code>aes()</code>) to be plotted</li>
-<li><p>Add layers (<code>geom_*()</code>) of information</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p></li>
-<li><p>Capture a plot and augment it</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt &lt;-<span class="st"> </span><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)
-plt <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;2010 Male&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p></li>
-<li><p>Use <code>facet_*()</code> for layouts</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Year)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p></li>
-<li><p>Choose display to emphasize relevant aspects of data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(Weight, <span class="dt">fill=</span>Year)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p></li>
-</ul>
-
-</div>
+<pre><code>class(brfss)
+head(brfss)
+dim(brfss)
+summary(brfss)</code></pre></li>
+<li><p>Use the <code>$</code> operator to extract the ‘Sex’ column, and summarize the number of males and females in the survey using <code>table()</code>. Do the same for ‘Year’, and for both <code>Sex</code> and <code>Year</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Sex)</code></pre></div>
+<pre><code>## 
+## Female   Male 
+##  12039   7961</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Year)</code></pre></div>
+<pre><code>## 
+##  1990  2010 
+## 10000 10000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Sex, brfss<span class="op">$</span>Year)</code></pre></div>
+<pre><code>##         
+##          1990 2010
+##   Female 5718 6321
+##   Male   4282 3679</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">table</span>(Sex, Year))                <span class="co"># same, but easier</span></code></pre></div>
+<pre><code>##         Year
+## Sex      1990 2010
+##   Female 5718 6321
+##   Male   4282 3679</code></pre></li>
+<li><p>Use <code>aggregate()</code> to summarize the mean weight of each group. What about the median weight of each group? What about the <em>number</em> of observations in each group?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">aggregate</span>(Weight, <span class="kw">list</span>(Year, Sex), mean, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>##   Group.1 Group.2        x
+## 1    1990  Female 64.81838
+## 2    2010  Female 72.95424
+## 3    1990    Male 81.17999
+## 4    2010    Male 88.84657</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">aggregate</span>(Weight, <span class="kw">list</span>(<span class="dt">Year=</span>Year, <span class="dt">Sex=</span>Sex), mean, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>##   Year    Sex        x
+## 1 1990 Female 64.81838
+## 2 2010 Female 72.95424
+## 3 1990   Male 81.17999
+## 4 2010   Male 88.84657</code></pre></li>
+<li><p>Use a <code>formula</code> and the <code>aggregate()</code> function to describe the relationship between Year, Sex, and Weight</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(Weight <span class="op">~</span><span class="st"> </span>Year <span class="op">+</span><span class="st"> </span>Sex, brfss, mean)  <span class="co"># same, but more informative</span></code></pre></div>
+<pre><code>##   Year    Sex   Weight
+## 1 1990 Female 64.81838
+## 2 2010 Female 72.95424
+## 3 1990   Male 81.17999
+## 4 2010   Male 88.84657</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(. <span class="op">~</span><span class="st"> </span>Year <span class="op">+</span><span class="st"> </span>Sex, brfss, mean)       <span class="co"># all variables</span></code></pre></div>
+<pre><code>##   Year    Sex      Age   Weight   Height
+## 1 1990 Female 46.09153 64.84333 163.2914
+## 2 2010 Female 57.07807 73.03178 163.2469
+## 3 1990   Male 43.87574 81.19496 178.2242
+## 4 2010   Male 56.25465 88.91136 178.0139</code></pre></li>
+<li><p>Create a subset of the data consisting of only the 1990 observations. Perform a t-test comparing the weight of males and females (“‘Weight’ as a function of ‘Sex’”, <code>Weight ~ Sex</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss_<span class="dv">1990</span> =<span class="st"> </span>brfss[brfss<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>,]
+<span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Sex, brfss_<span class="dv">1990</span>)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Sex
+## t = -58.734, df = 9214, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -16.90767 -15.81554
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             64.81838             81.17999</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Sex, brfss, <span class="dt">subset =</span> Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Sex
+## t = -58.734, df = 9214, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -16.90767 -15.81554
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             64.81838             81.17999</code></pre>
+<p>What about differences between weights of males (or females) in 1990 versus 2010? Check out the help page <code>?t.test.formula</code>. Is there a way of performing a t-test on <code>brfss</code> without explicitly creating the object <code>brfss_1990</code>?</p></li>
+<li><p>Use <code>boxplot()</code> to plot the weights of the Male individuals. Can you transform weight, e.g., <code>sqrt(Weight) ~ Year</code>? Interpret the results. Do similar boxplots for the t-tests of the previous question.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfss, <span class="dt">subset =</span> Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>,
+        <span class="dt">main=</span><span class="st">&quot;Males&quot;</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/brfss-boxplot-1.png" width="480" /></p></li>
+<li><p>Use <code>hist()</code> to plot a histogram of weights of the 1990 Female individuals.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss_<span class="dv">1990</span>[brfss_<span class="dv">1990</span><span class="op">$</span>Sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>, <span class="st">&quot;Weight&quot;</span>],
+     <span class="dt">main=</span><span class="st">&quot;Females, 1990&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Weight&quot;</span> )</code></pre></div>
+<p><img src="_main_files/figure-html/brfss-hist-1.png" width="480" /></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="using-r-in-real-life.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="r-first-impressions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercise-2-all-phenotypic-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -361,7 +380,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -369,17 +388,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

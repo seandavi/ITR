@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="exploration-and-simple-univariate-measures.html">
-<link rel="next" href="using-r-in-real-life.html">
+<link rel="prev" href="rstudio-a-quick-tour.html">
+<link rel="next" href="exercise-1-brfss-survey-data.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,104 +238,244 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="multivariate-analysis" class="section level1">
-<h1><span class="header-section-number">14</span> Multivariate analysis</h1>
-<p>This is a classic microarray experiment. Microarrays consist of ‘probesets’ that interogate genes for their level of expression. In the experiment we’re looking at, there are 12625 probesets measured on each of the 128 samples. The raw expression levels estimated by microarray assays require considerable pre-processing, the data we’ll work with has been pre-processed.</p>
-<div id="input-and-setup" class="section level2">
-<h2><span class="header-section-number">14.1</span> Input and setup</h2>
-<p>Start by finding the expression data file on disk.</p>
-<!--
-
--->
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()          <span class="co"># look for ALL-expression.csv</span>
-<span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))</code></pre></div>
-<p>The data is stored in ‘comma-separate value’ format, with each probeset occupying a line, and the expression value for each sample in that probeset separated by a comma. Input the data using <code>read.csv()</code>. There are three challenges:</p>
-<ol style="list-style-type: decimal">
-<li>The row names are present in the first column of the data. Tell <em>R</em> this by adding the argument <code>row.names=1</code> to <code>read.csv()</code>.</li>
-<li>By default, <em>R</em> checks that column names do not look like numbers, but our column names <em>do</em> look like numbers. Use the argument <code>check.colnames=FALSE</code> to over-ride <em>R</em>’s default.</li>
-<li><code>read.csv()</code> returns a <code>data.frame</code>. We could use a <code>data.frame</code> to work with our data, but really it is a <code>matrix()</code> – the columns are of the same type and measure the same thing. Use <code>as.matrix()</code> to coerce the <code>data.frame</code> we input to a <code>matrix</code>.</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exprs &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path, <span class="dt">row.names=</span><span class="dv">1</span>, <span class="dt">check.names=</span><span class="ot">FALSE</span>)
-exprs &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(exprs)
-<span class="kw">class</span>(exprs)</code></pre></div>
-<pre><code>## [1] &quot;matrix&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(exprs)</code></pre></div>
-<pre><code>## [1] 12625   128</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exprs[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
-<pre><code>##              01005     01010    03002    04006    04007     04008
-## 1000_at   7.597323  7.479445 7.567593 7.384684 7.905312  7.065914
-## 1001_at   5.046194  4.932537 4.799294 4.922627 4.844565  5.147762
-## 1002_f_at 3.900466  4.208155 3.886169 4.206798 3.416923  3.945869
-## 1003_s_at 5.903856  6.169024 5.860459 6.116890 5.687997  6.208061
-## 1004_at   5.925260  5.912780 5.893209 6.170245 5.615210  5.923487
-## 1005_at   8.570990 10.428299 9.616713 9.937155 9.983809 10.063484
-##               04010     04016    06002     08001
-## 1000_at    7.474537  7.536119 7.183331  7.735545
-## 1001_at    5.122518  5.016132 5.288943  4.633217
-## 1002_f_at  4.150506  3.576360 3.900935  3.630190
-## 1003_s_at  6.292713  5.665991 5.842326  5.875375
-## 1004_at    6.046607  5.738218 5.994515  5.748350
-## 1005_at   10.662059 11.269115 8.812869 10.165159</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(exprs)</code></pre></div>
-<pre><code>## [1]  1.984919 14.126571</code></pre>
-<p>We’ll make use of the data describing the samples</p>
-<!--
-
--->
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()         <span class="co"># look for ALL-phenoData.csv</span>
-<span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path, <span class="dt">row.names=</span><span class="dv">1</span>)
-<span class="kw">class</span>(pdata)</code></pre></div>
+<div id="r-first-impressions" class="section level1">
+<h1><span class="header-section-number">10</span> <em>R</em>: First Impressions</h1>
+<p>Type values and mathematical formulas into <em>R</em>’s command prompt</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>Assign values to symbols (variables)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="dv">1</span>
+x <span class="op">+</span><span class="st"> </span>x</code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>Invoke functions such as <code>c()</code>, which takes any number of values and returns a single <em>vector</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
+x</code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<p><em>R</em> functions, such as <code>sqrt()</code>, often operate efficiently on vectors</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y =<span class="st"> </span><span class="kw">sqrt</span>(x)
+y</code></pre></div>
+<pre><code>## [1] 1.000000 1.414214 1.732051</code></pre>
+<p>There are often several ways to accomplish a task in <em>R</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
+x</code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)
+x</code></pre></div>
+<pre><code>## [1] 4 5 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">7</span><span class="op">:</span><span class="dv">9</span>
+x</code></pre></div>
+<pre><code>## [1] 7 8 9</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">10</span><span class="op">:</span><span class="dv">12</span> -&gt;<span class="st"> </span>x
+x</code></pre></div>
+<pre><code>## [1] 10 11 12</code></pre>
+<p>Sometimes <em>R</em> does ‘surprising’ things that can be fun to figure out</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>) -&gt;<span class="st"> </span>y
+x</code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y</code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<div id="r-data-types-vector-and-list" class="section level2">
+<h2><span class="header-section-number">10.1</span> <em>R</em> Data types: vector and list</h2>
+<p>‘Atomic’ vectors</p>
+<ul>
+<li><p>Types include integer, numeric (float-point; real), complex, logical, character, raw (bytes)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">people &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Lori&quot;</span>, <span class="st">&quot;Nitesh&quot;</span>, <span class="st">&quot;Valerie&quot;</span>, <span class="st">&quot;Herve&quot;</span>)
+people</code></pre></div>
+<pre><code>## [1] &quot;Lori&quot;    &quot;Nitesh&quot;  &quot;Valerie&quot; &quot;Herve&quot;</code></pre></li>
+<li><p>Atomic vectors can be named</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">population &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">Buffalo=</span><span class="dv">259000</span>, <span class="dt">Rochester=</span><span class="dv">210000</span>, <span class="st">`</span><span class="dt">New York</span><span class="st">`</span>=<span class="dv">8400000</span>)
+population</code></pre></div>
+<pre><code>##   Buffalo Rochester  New York 
+##    259000    210000   8400000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">log10</span>(population)</code></pre></div>
+<pre><code>##   Buffalo Rochester  New York 
+##  5.413300  5.322219  6.924279</code></pre></li>
+<li><p>Statistical concepts like <code>NA</code> (“not available”)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">NA</span>)
+truthiness</code></pre></div>
+<pre><code>## [1]  TRUE FALSE    NA</code></pre></li>
+<li><p>Logical concepts like ‘and’ (<code>&amp;</code>), ‘or’ (<code>|</code>), and ‘not’ (<code>!</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">!</span>truthiness</code></pre></div>
+<pre><code>## [1] FALSE  TRUE    NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">|</span><span class="st"> </span><span class="op">!</span>truthiness</code></pre></div>
+<pre><code>## [1] TRUE TRUE   NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>truthiness</code></pre></div>
+<pre><code>## [1] FALSE FALSE    NA</code></pre></li>
+<li><p>Numerical concepts like infinity (<code>Inf</code>) or not-a-number (<code>NaN</code>, e.g., 0 / 0)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">undefined_numeric_values &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">0</span><span class="op">/</span><span class="dv">0</span>, <span class="ot">NaN</span>, <span class="ot">Inf</span>, <span class="op">-</span><span class="ot">Inf</span>)
+undefined_numeric_values</code></pre></div>
+<pre><code>## [1]   NA  NaN  NaN  Inf -Inf</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(undefined_numeric_values)</code></pre></div>
+<pre><code>## Warning in sqrt(undefined_numeric_values): NaNs produced</code></pre>
+<pre><code>## [1]  NA NaN NaN Inf NaN</code></pre></li>
+<li><p>Common string manipulations</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">toupper</span>(people)</code></pre></div>
+<pre><code>## [1] &quot;LORI&quot;    &quot;NITESH&quot;  &quot;VALERIE&quot; &quot;HERVE&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(people, <span class="dv">1</span>, <span class="dv">3</span>)</code></pre></div>
+<pre><code>## [1] &quot;Lor&quot; &quot;Nit&quot; &quot;Val&quot; &quot;Her&quot;</code></pre></li>
+<li><p><em>R</em> is a green consumer – recycling short vectors to align with long vectors</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
+x <span class="op">*</span><span class="st"> </span><span class="dv">2</span>            <span class="co"># &#39;2&#39; (vector of length 1) recycled to c(2, 2, 2)</span></code></pre></div>
+<pre><code>## [1] 2 4 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">|</span><span class="st"> </span><span class="ot">NA</span></code></pre></div>
+<pre><code>## [1] TRUE   NA   NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">truthiness <span class="op">&amp;</span><span class="st"> </span><span class="ot">NA</span></code></pre></div>
+<pre><code>## [1]    NA FALSE    NA</code></pre></li>
+<li><p>It’s very common to nest operations, which can be simultaneously compact, confusing, and expressive (<code>[</code>: subset; <code>&lt;</code>: less than)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="kw">tolower</span>(people), <span class="dv">1</span>, <span class="dv">3</span>)</code></pre></div>
+<pre><code>## [1] &quot;lor&quot; &quot;nit&quot; &quot;val&quot; &quot;her&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">population[population <span class="op">&lt;</span><span class="st"> </span><span class="dv">1000000</span>]</code></pre></div>
+<pre><code>##   Buffalo Rochester 
+##    259000    210000</code></pre></li>
+</ul>
+<p>Lists</p>
+<ul>
+<li><p>The list type can contain other vectors, including other lists</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies =<span class="st"> </span><span class="kw">list</span>(
+    <span class="dt">friends=</span><span class="kw">c</span>(<span class="st">&quot;Larry&quot;</span>, <span class="st">&quot;Richard&quot;</span>, <span class="st">&quot;Vivian&quot;</span>),
+    <span class="dt">enemies=</span><span class="kw">c</span>(<span class="st">&quot;Dick&quot;</span>, <span class="st">&quot;Mike&quot;</span>)
+)
+frenemies</code></pre></div>
+<pre><code>## $friends
+## [1] &quot;Larry&quot;   &quot;Richard&quot; &quot;Vivian&quot; 
+## 
+## $enemies
+## [1] &quot;Dick&quot; &quot;Mike&quot;</code></pre></li>
+<li><p><code>[</code> subsets one list to create another list, <code>[[</code> extracts a list element</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies[<span class="dv">1</span>]</code></pre></div>
+<pre><code>## $friends
+## [1] &quot;Larry&quot;   &quot;Richard&quot; &quot;Vivian&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies[<span class="kw">c</span>(<span class="st">&quot;enemies&quot;</span>, <span class="st">&quot;friends&quot;</span>)]</code></pre></div>
+<pre><code>## $enemies
+## [1] &quot;Dick&quot; &quot;Mike&quot;
+## 
+## $friends
+## [1] &quot;Larry&quot;   &quot;Richard&quot; &quot;Vivian&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frenemies[[<span class="st">&quot;enemies&quot;</span>]]</code></pre></div>
+<pre><code>## [1] &quot;Dick&quot; &quot;Mike&quot;</code></pre></li>
+</ul>
+<p>Factors</p>
+<ul>
+<li><p>Character-like vectors, but with values restricted to specific levels</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sex =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Female&quot;</span>),
+             <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Male&quot;</span>, <span class="st">&quot;Hermaphrodite&quot;</span>))
+sex</code></pre></div>
+<pre><code>## [1] Male   Male   Female
+## Levels: Female Male Hermaphrodite</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(sex)</code></pre></div>
+<pre><code>## sex
+##        Female          Male Hermaphrodite 
+##             1             2             0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sex[sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>]</code></pre></div>
+<pre><code>## [1] Female
+## Levels: Female Male Hermaphrodite</code></pre></li>
+</ul>
+</div>
+<div id="classes-data.frame-and-beyond" class="section level2">
+<h2><span class="header-section-number">10.2</span> Classes: data.frame and beyond</h2>
+<p>Variables are often related to one another in a highly structured way, e.g., two ‘columns’ of data in a spreadsheet</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)       <span class="co"># 1000 random normal deviates</span>
+y =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)   <span class="co"># another 1000 deviates, as a function of x</span>
+<span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x)           <span class="co"># relationship between x and y</span></code></pre></div>
+<p><img src="_main_files/figure-html/related-variables-1.png" width="672" /></p>
+<p>Convenient to manipulate them together</p>
+<ul>
+<li><p><code>data.frame()</code>: like columns in a spreadsheet</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">X=</span>x, <span class="dt">Y=</span>y)
+<span class="kw">head</span>(df)           <span class="co"># first 6 rows</span></code></pre></div>
+<pre><code>##             X          Y
+## 1 -0.23926790 -0.3937137
+## 2 -0.07412402 -0.3799202
+## 3  0.99624820  1.1667748
+## 4  0.39307812  0.8211909
+## 5  0.57966738  2.3522918
+## 6  0.42136109  0.2216827</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, df)    <span class="co"># same as above</span></code></pre></div>
+<p><img src="_main_files/figure-html/data.frame-1.png" width="672" /></p></li>
+<li><p>See all data with <code>View(df)</code>. Summarize data with <code>summary(df)</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(df)</code></pre></div>
+<pre><code>##        X                   Y           
+##  Min.   :-3.488112   Min.   :-3.69944  
+##  1st Qu.:-0.669377   1st Qu.:-0.90624  
+##  Median : 0.004582   Median : 0.03182  
+##  Mean   : 0.007979   Mean   : 0.05199  
+##  3rd Qu.: 0.703727   3rd Qu.: 1.02445  
+##  Max.   : 3.362927   Max.   : 4.96088</code></pre></li>
+<li><p>Easy to manipulate data in a coordinated way, e.g., access column <code>X</code> with <code>$</code> and subset for just those values greater than 0</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">positiveX =<span class="st"> </span>df[df<span class="op">$</span>X <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,]
+<span class="kw">head</span>(positiveX)</code></pre></div>
+<pre><code>##           X         Y
+## 3 0.9962482 1.1667748
+## 4 0.3930781 0.8211909
+## 5 0.5796674 2.3522918
+## 6 0.4213611 0.2216827
+## 7 0.9418160 1.2713186
+## 8 0.6829870 2.8699771</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, positiveX)</code></pre></div>
+<p><img src="_main_files/figure-html/data.frame-subset-1.png" width="672" /></p></li>
+<li><p><em>R</em> is introspective – ask it about itself</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(df)</code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pdata)</code></pre></div>
-<pre><code>## [1] 128  21</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata)</code></pre></div>
-<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
-## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
-## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
-## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
-## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
-## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
-## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
-##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
-## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
-## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
-## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
-## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
-## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
-## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
-##       relapse transplant               f.u date.last.seen
-## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
-## 01010    TRUE      FALSE               REL      8/28/2000
-## 03002    TRUE      FALSE               REL     10/15/1999
-## 04006    TRUE      FALSE               REL      1/23/1998
-## 04007    TRUE      FALSE               REL      11/4/1997
-## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
-<p>Some of the results below involve plots, and it’s convenient to choose pretty and functional colors. We use the <a href="https://cran.r-project.org/?package=RColorBrewer">RColorBrewer</a> package; see <a href="http://colorbrewer.org">colorbrewer.org</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RColorBrewer)  ## not available? install package via RStudio
-highlight &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">3</span>, <span class="st">&quot;Set2&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</code></pre></div>
-<p>`highlight’ is a vector of length 2, light and dark green.</p>
-<p>For more options see <code>?RColorBrewer</code> and to view the predefined palettes <code>display.brewer.all()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(df)</code></pre></div>
+<pre><code>## [1] 1000    2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(df)</code></pre></div>
+<pre><code>## [1] &quot;X&quot; &quot;Y&quot;</code></pre></li>
+<li><p><code>matrix()</code> a related class, where all elements have the same type (a <code>data.frame()</code> requires elements within a column to be the same type, but elements between columns can be different types).</p></li>
+</ul>
+<p>A scatterplot makes one want to fit a linear model (do a regression analysis)</p>
+<ul>
+<li>Use a <em>formula</em> to describe the relationship between variables</li>
+<li><p>Variables found in the second argument</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Y <span class="op">~</span><span class="st"> </span>X, df)</code></pre></div></li>
+<li><p>Visualize the points, and add the regression line</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, df)
+<span class="kw">abline</span>(fit, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/lm-plot-1.png" width="672" /></p></li>
+<li><p>Summarize the fit as an ANOVA table</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(fit)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Y
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## X           1 982.56  982.56  1007.4 &lt; 2.2e-16 ***
+## Residuals 998 973.42    0.98                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre></li>
+<li><p>N.B. – ‘Type I’ sums-of-squares, so order of independent variables matters; use <code>drop1()</code> for ‘Type III’. See <a href="http://www.statmethods.net/stats/anova.html">DataCamp Quick-R</a></p></li>
+<li><p>Introspection – what class is <code>fit</code>? What <em>methods</em> can I apply to an object of that class?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit)</code></pre></div>
+<pre><code>## [1] &quot;lm&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(fit))</code></pre></div>
+<pre><code>##  [1] add1           alias          anova          case.names    
+##  [5] coerce         confint        cooks.distance deviance      
+##  [9] dfbeta         dfbetas        drop1          dummy.coef    
+## [13] effects        extractAIC     family         formula       
+## [17] hatvalues      influence      initialize     kappa         
+## [21] labels         logLik         model.frame    model.matrix  
+## [25] nobs           plot           predict        print         
+## [29] proj           qr             residuals      rstandard     
+## [33] rstudent       show           simulate       slotsFromS3   
+## [37] summary        variable.names vcov          
+## see &#39;?methods&#39; for accessing help and source code</code></pre></li>
+</ul>
 </div>
-<div id="cleaning" class="section level2">
-<h2><span class="header-section-number">14.2</span> Cleaning</h2>
-<p>We’ll add a column to <code>pdata</code>, derived from the <code>BT</code> column, to indicate whether the sample is B-cell or T-cell ALL.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata<span class="op">$</span>BorT &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">substr</span>(pdata<span class="op">$</span>BT, <span class="dv">1</span>, <span class="dv">1</span>))</code></pre></div>
-<p>Microarray expression data is usually represented as a matrix of genes as rows and samples as columns. Statisticians usually think of their data as samples as rows, features as columns. So we’ll transpose the expression values</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exprs &lt;-<span class="st"> </span><span class="kw">t</span>(exprs)</code></pre></div>
-<p>Confirm that the <code>pdata</code> rows correspond to the <code>exprs</code> rows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">identical</span>(<span class="kw">rownames</span>(pdata), <span class="kw">rownames</span>(exprs)))</code></pre></div>
-</div>
-<div id="unsupervised-machine-learning-multi-dimensional-scaling" class="section level2">
-<h2><span class="header-section-number">14.3</span> Unsupervised machine learning – multi-dimensional scaling</h2>
-<p>Reduce high-dimensional data to lower dimension for visualization.</p>
-<p>Calculate distance between <em>samples</em> (requires that the expression matrix be transposed).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">dist</span>(exprs)</code></pre></div>
-<p>Use the <code>cmdscale()</code> function to summarize the distance matrix into two points in two dimensions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmd &lt;-<span class="st"> </span><span class="kw">cmdscale</span>(d)</code></pre></div>
-<p>Visualize the result, coloring points by B- or T-cell status</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(cmd, <span class="dt">col=</span>highlight[pdata<span class="op">$</span>BorT])</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<div id="help" class="section level2">
+<h2><span class="header-section-number">10.3</span> Help!</h2>
+<p>Help available in <em>Rstudio</em> or interactively</p>
+<ul>
+<li><p>Check out the help page for <code>rnorm()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?rnorm</code></pre></div></li>
+<li><p>‘Usage’ section describes how the function can be used</p>
+<pre><code>rnorm(n, mean = 0, sd = 1)</code></pre></li>
+<li><p>Arguments, some with default values. Arguments matched first by name, then position</p></li>
+<li><p>‘Arguments’ section describes what the arguments are supposed to be</p></li>
+<li><p>‘Value’ section describes return value</p></li>
+<li><p>‘Examples’ section illustrates use</p></li>
+<li><p>Often include citations to relevant technical documentation, reference to related functions, obscure details</p></li>
+<li><p>Can be intimidating, but in the end actually <em>very</em> useful</p></li>
+</ul>
 
 </div>
 </div>
@@ -344,8 +484,8 @@ highlight &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span
           </div>
         </div>
       </div>
-<a href="exploration-and-simple-univariate-measures.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="using-r-in-real-life.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rstudio-a-quick-tour.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercise-1-brfss-survey-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -377,7 +517,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -385,17 +525,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

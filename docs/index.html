@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="control-structures-looping-and-applying.html">
-<link rel="next" href="rstudio-a-quick-tour.html">
+
+<link rel="next" href="r-mechanics.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,44 +238,58 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="functions" class="section level1">
-<h1><span class="header-section-number">8</span> Functions</h1>
-<div id="function-overview" class="section level3">
-<h3><span class="header-section-number">8.0.1</span> Function Overview</h3>
+<div id="header">
+<h1 class="title">Background</h1>
+<h4 class="author"><em>Sean Davis</em></h4>
+<h4 class="date"><em>6/29/2017</em></h4>
+</div>
+<div id="why-r" class="section level1">
+<h1><span class="header-section-number">1</span> Why R?</h1>
+<div id="what-is-r" class="section level2">
+<h2><span class="header-section-number">1.1</span> What is R?</h2>
+<p>R is a number of things, simultaneously. Depending on who is being asked, R is:</p>
 <ul>
-<li><p><span>Functions are objects and are assigned to names, just like data.</span></p>
-<pre><code>myFunction = function(argument1,argument2) {
-  expression1
-  expression2
-}</code></pre></li>
-<li><p><span>We write functions for anything we need to do again and again.</span></p></li>
-<li><p><span>You may test your commands interactively at first, and then use the <code>history()</code> feature and an editor to create the function.</span></p></li>
-<li><p><span>It is wise to include a comment at the start of each function to say what it does and to document functions of more than a few lines.</span></p></li>
+<li>A software package</li>
+<li>A programming language</li>
+<li>A toolkit for developing statistical and analytical tools</li>
+<li>An extensive library of statistical and mathematical software and algorithms</li>
+<li>A scripting language</li>
+<li>much, much more</li>
 </ul>
 </div>
-<div id="example-functions" class="section level3">
-<h3><span class="header-section-number">8.0.2</span> Example Functions</h3>
-<pre><code>add1 = function(x) {
-    # this function adds one to the first argument and returns it
-    x + 1
-}
-add1(17)
-## [1] 18
-add1(c(17,18,19,20))
-## [1] 18 19 20 21</code></pre>
-<p>You can use the <code>edit()</code> function to make changes to a function. The following command will open a window, allow you to make changes, and assign the result to a new function, <code>add2</code>.</p>
-<pre><code>add2 = edit(add1)</code></pre>
-</div>
-<div id="further-reading" class="section level3">
-<h3><span class="header-section-number">8.0.3</span> Further Reading</h3>
-<p>The amount of learning material for R is simply astonishing!</p>
+<div id="why-use-r" class="section level2">
+<h2><span class="header-section-number">1.2</span> Why use R?</h2>
 <ul>
-<li><p><span><a href="http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual">Thomas Girke’s R and Bioconductor Manual</a></span></p></li>
-<li><p><span><a href="http://cran.r-project.org/other-docs.html">A HUGE collection of contributed R documentation and tutorials</a></span></p></li>
-<li><p><span><a href="http://www.bioconductor.org/help/course-materials/">Bioconductor course materials</a></span></p></li>
-<li><p><span><a href="http://watson.nci.nih.gov/~sdavis/">Sean Davis’ website</a></span></p></li>
-<li><p><span><a href="http://cran.r-project.org/manuals.html">The Official R Manuals</a></span></p></li>
+<li>R is cross-platform and runs on Windows, Mac, and Linux (as well as more obscure systems).</li>
+<li>R provides a vast number of useful statistical tools, many of which have been painstakingly tested.</li>
+<li>R produces publication-quality graphics in a variety of formats.</li>
+<li>R plays well with FORTRAN, C, and scripts in many languages.</li>
+<li>R scales, making it useful for small and large projects. It is NOT Excel.</li>
+<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
 </ul>
+<p>I can develop code for analysis on my Mac laptop. I can then install the <em>same</em> code on our 20k core cluster and run it in parallel on 100 samples, monitor the process, and then update a database (for example) with R when complete.</p>
+</div>
+<div id="why-not-use-r" class="section level2">
+<h2><span class="header-section-number">1.3</span> Why not use R?</h2>
+<ul>
+<li>R cannot do everything.</li>
+<li>R is not always the “best” tool for the job.</li>
+<li>R will <em>not</em> hold your hand. Often, it will <em>slap</em> your hand instead.</li>
+<li>The documentation can be opaque (but there is documentation).</li>
+<li>R can drive you crazy (on a good day) or age you prematurely (on a bad one).</li>
+<li>Finding the right package to do the job you want to do can be challenging; worse, some contributed packages are unreliable.]{}</li>
+<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
+</ul>
+</div>
+<div id="r-license-and-the-open-source-ideal" class="section level2">
+<h2><span class="header-section-number">1.4</span> R License and the Open Source Ideal</h2>
+<p>R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:</p>
+<ul>
+<li>Download the source code</li>
+<li>Modify the source code to your heart’s content</li>
+<li>Distribute the modified source code and even charge money for it, but you must distribute the modified source code under the original GNU license]{}</li>
+</ul>
+<p>This license means that R will always be available, will always be open source, and can grow organically without constraint.</p>
 
 </div>
 </div>
@@ -284,8 +298,8 @@ add1(c(17,18,19,20))
           </div>
         </div>
       </div>
-<a href="control-structures-looping-and-applying.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="rstudio-a-quick-tour.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+<a href="r-mechanics.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -317,7 +331,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -325,17 +339,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

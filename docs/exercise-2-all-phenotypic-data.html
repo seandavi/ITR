@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="multivariate-analysis.html">
-<link rel="next" href="graphics-and-visualization.html">
+<link rel="prev" href="exercise-1-brfss-survey-data.html">
+<link rel="next" href="exploration-and-simple-univariate-measures.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,48 +238,243 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="using-r-in-real-life" class="section level1">
-<h1><span class="header-section-number">15</span> Using <em>R</em> in real life</h1>
-<div id="organizing-work" class="section level2">
-<h2><span class="header-section-number">15.1</span> Organizing work</h2>
-<p>Usually, work is organized into a directory with:</p>
-<ul>
-<li>A folder containing <em>R</em> scripts (<code>scripts/BRFSS-visualize.R</code>)</li>
-<li>‘External’ data like the csv files that we’ve been working with, usually in a separate folder (<code>extdata/BRFSS-subset.csv</code>)</li>
-<li>(sometimes) <em>R</em> objects written to disk using <code>saveRDS()</code> (<code>.rds</code> files) that represent final results or intermediate ‘checkpoints’ (<code>extdata/ALL-cleaned.rds</code>). Read the data into an <em>R</em> session using <code>readRDS()</code>.</li>
-<li>Use <code>setwd()</code> to navigate to folder containing scripts/, extdata/ folder</li>
-<li>Source an entire script with <code>source(&quot;scripts/BRFSS-visualization.R&quot;)</code>.</li>
-</ul>
-<p><em>R</em> can also save the state of the current session (prompt when choosing to <code>quit()</code> <em>R</em>), and to view and save the <code>history()</code> of the the current session; I do not find these to be helpful in my own work flows.</p>
-</div>
-<div id="r-packages" class="section level2">
-<h2><span class="header-section-number">15.2</span> <em>R</em> Packages</h2>
-<p>All the functionality we have been using comes from <em>packages</em> that are automatically <em>loaded</em> when <em>R</em> starts. Loaded packages are on the <code>search()</code> path.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">search</span>()</code></pre></div>
-<pre><code>##  [1] &quot;.GlobalEnv&quot;           &quot;package:RColorBrewer&quot; &quot;package:stats&quot;       
-##  [4] &quot;package:graphics&quot;     &quot;package:grDevices&quot;    &quot;package:utils&quot;       
-##  [7] &quot;package:datasets&quot;     &quot;package:methods&quot;      &quot;Autoloads&quot;           
-## [10] &quot;package:base&quot;</code></pre>
-<p>Additional packages may be <em>installed</em> in <em>R</em>’s libraries. Use `installed.packages() or the <em>RStudio</em> interface to see installed packages. To use these packages, it is necessary to attach them to the search path, e.g., for survival analysis</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;survival&quot;</span>)</code></pre></div>
-<p>There are many thousands of <em>R</em> packages, and not all of them are installed in a single installation. Important repositories are</p>
-<ul>
-<li>CRAN: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></li>
-<li>Bioconductor: <a href="https://bioconductor.org/packages" class="uri">https://bioconductor.org/packages</a></li>
-</ul>
-<p>Packages can be discovered in various ways, including <a href="https://cran.r-project.org/web/views/">CRAN Task Views</a> and the <a href="https://bioconductor.org"><em>Bioconductor</em> web</a> and <a href="https://support.bioconductor.org"><em>Bioconductor</em> support</a> sites.</p>
-<p>To install a package, use <code>install.packages()</code> or, for <em>Bioconductor</em> packages, instructions on the package landing page, e.g., for <a href="https://bioconductor.org/packages/GenomicRanges">GenomicRanges</a>. Here we install the <a href="https://cran.r-project.org/package=ggplot2">ggplot2</a> package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="dt">repos=</span><span class="st">&quot;https://cran.r-project.org&quot;</span>)</code></pre></div>
-<p>A package needs to be installed once, and then can be used in any <em>R</em> session.</p>
-</div>
+<div id="exercise-2-all-phenotypic-data" class="section level1">
+<h1><span class="header-section-number">12</span> Exercise 2: ALL Phenotypic Data</h1>
+<p>This data comes from an (old) Acute Lymphoid Leukemia microarray data set.</p>
+<p>Choose the file that contains ALL (acute lymphoblastic leukemia) patient information and input the date using <code>read.csv()</code>; for <code>read.csv()</code>, use <code>row.names=1</code> to indicate that the first column contains row names.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()    <span class="co"># look for ALL-phenoData.csv</span></code></pre></div>
+<!--
+
+-->
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))
+pdata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre></div>
+<p>Check out the help page <code>?read.delim</code> for input options. The exercises use <code>?read.csv</code>; Can you guess why? Explore basic properties of the object you’ve created, for instance…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(pdata)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(pdata)</code></pre></div>
+<pre><code>##  [1] &quot;cod&quot;            &quot;diagnosis&quot;      &quot;sex&quot;            &quot;age&quot;           
+##  [5] &quot;BT&quot;             &quot;remission&quot;      &quot;CR&quot;             &quot;date.cr&quot;       
+##  [9] &quot;t.4.11.&quot;        &quot;t.9.22.&quot;        &quot;cyto.normal&quot;    &quot;citog&quot;         
+## [13] &quot;mol.biol&quot;       &quot;fusion.protein&quot; &quot;mdr&quot;            &quot;kinet&quot;         
+## [17] &quot;ccr&quot;            &quot;relapse&quot;        &quot;transplant&quot;     &quot;f.u&quot;           
+## [21] &quot;date.last.seen&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pdata)</code></pre></div>
+<pre><code>## [1] 128  21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata)</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(pdata<span class="op">$</span>sex)</code></pre></div>
+<pre><code>##    F    M NA&#39;s 
+##   42   83    3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(pdata<span class="op">$</span>cyto.normal)</code></pre></div>
+<pre><code>##    Mode   FALSE    TRUE    NA&#39;s 
+## logical      69      24      35</code></pre>
+<p>Remind yourselves about various ways to subset and access columns of a data.frame</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]</code></pre></div>
+<pre><code>##       sex age
+## 01005   M  53
+## 01010   M  19
+## 03002   F  52
+## 04006   M  38
+## 04007   M  57</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, ]</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+##       cyto.normal       citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE     t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA        &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE     t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE     del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata[, <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
+<pre><code>##       sex age BT
+## 01005   M  53 B2
+## 01010   M  19 B2
+## 03002   F  52 B4
+## 04006   M  38 B1
+## 04007   M  57 B2
+## 04008   M  17 B1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(pdata[, <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>], <span class="dv">3</span>)</code></pre></div>
+<pre><code>##        sex age BT
+## 65003    M  30 T3
+## 83001    M  29 T2
+## LAL4  &lt;NA&gt;  NA  T</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata<span class="op">$</span>age)</code></pre></div>
+<pre><code>## [1] 53 19 52 38 57 17</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata<span class="op">$</span>sex)</code></pre></div>
+<pre><code>## [1] M M F M M M
+## Levels: F M</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata[pdata<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span><span class="dv">21</span>,])</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 08001 8001 1/15/1997   M  40 B2        CR CR 3/26/1997   FALSE   FALSE
+## 08011 8011 8/21/1998   M  33 B3        CR CR 10/8/1998   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 08001       FALSE     del(p15)  BCR/ABL           p190 NEG    &lt;NA&gt; FALSE
+## 08011       FALSE del(p15/p16)  BCR/ABL      p190/p210 NEG dyploid FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 08001    TRUE      FALSE               REL      7/11/1997
+## 08011   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;</code></pre>
+<p>It seems from below that there are 17 females over 40 in the data set. However, some individuals have <code>NA</code> for the age and / or sex, and these <code>NA</code> values propagate through some computations. Use <code>table()</code> to summarize the number of females over 40, and the number of samples for which this classification cannot be determined. When <em>R</em> encounters an <code>NA</code> value in a subscript index, it introduces an <code>NA</code> into the result. Observe this (rows of <code>NA</code> values introduced into the result) when subsetting using <code>[</code> versus using the <code>subset()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idx &lt;-<span class="st"> </span>pdata<span class="op">$</span>sex <span class="op">==</span><span class="st"> &quot;F&quot;</span> <span class="op">&amp;</span><span class="st"> </span>pdata<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span><span class="dv">40</span>
+<span class="kw">table</span>(idx, <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</code></pre></div>
+<pre><code>## idx
+## FALSE  TRUE  &lt;NA&gt; 
+##   108    17     3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pdata[idx,])           <span class="co"># </span><span class="al">WARNING</span><span class="co">: &#39;NA&#39; rows introduced</span></code></pre></div>
+<pre><code>## [1] 20 21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(pdata[idx,])</code></pre></div>
+<pre><code>##         cod  diagnosis  sex age   BT remission                 CR
+## 49006 49006  8/12/1998    F  43   B2        CR                 CR
+## 57001 57001  1/29/1997    F  53   B3      &lt;NA&gt; DEATH IN INDUCTION
+## 62001 62001 11/11/1997    F  50   B4       REF                REF
+## NA.1   &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;  NA &lt;NA&gt;      &lt;NA&gt;               &lt;NA&gt;
+## 02020  2020  3/23/2000    F  48   T2      &lt;NA&gt; DEATH IN INDUCTION
+## NA.2   &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;  NA &lt;NA&gt;      &lt;NA&gt;               &lt;NA&gt;
+##          date.cr t.4.11. t.9.22. cyto.normal         citog mol.biol
+## 49006 11/19/1998      NA      NA          NA          &lt;NA&gt;  BCR/ABL
+## 57001       &lt;NA&gt;   FALSE   FALSE        TRUE        normal      NEG
+## 62001       &lt;NA&gt;   FALSE    TRUE       FALSE t(9;22)+other  BCR/ABL
+## NA.1        &lt;NA&gt;      NA      NA          NA          &lt;NA&gt;     &lt;NA&gt;
+## 02020       &lt;NA&gt;   FALSE   FALSE       FALSE  complex alt.      NEG
+## NA.2        &lt;NA&gt;      NA      NA          NA          &lt;NA&gt;     &lt;NA&gt;
+##       fusion.protein  mdr   kinet   ccr relapse transplant  f.u
+## 49006           p210  NEG dyploid FALSE    TRUE      FALSE  REL
+## 57001           &lt;NA&gt;  NEG hyperd.    NA      NA         NA &lt;NA&gt;
+## 62001           &lt;NA&gt;  NEG hyperd.    NA      NA         NA &lt;NA&gt;
+## NA.1            &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    NA      NA         NA &lt;NA&gt;
+## 02020           &lt;NA&gt;  NEG dyploid    NA      NA         NA &lt;NA&gt;
+## NA.2            &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    NA      NA         NA &lt;NA&gt;
+##       date.last.seen
+## 49006      4/26/1999
+## 57001           &lt;NA&gt;
+## 62001           &lt;NA&gt;
+## NA.1            &lt;NA&gt;
+## 02020           &lt;NA&gt;
+## NA.2            &lt;NA&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(<span class="kw">subset</span>(pdata, idx))    <span class="co"># BETTER: no NA rows</span></code></pre></div>
+<pre><code>## [1] 17 21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(<span class="kw">subset</span>(pdata, (sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>) <span class="op">&amp;</span><span class="st"> </span>(age <span class="op">&gt;</span><span class="st"> </span><span class="dv">40</span>)))  <span class="co"># alternative</span></code></pre></div>
+<pre><code>## [1] 17 21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="kw">subset</span>(pdata,idx))</code></pre></div>
+<pre><code>##         cod  diagnosis sex age BT remission                 CR    date.cr
+## 28032 28032  9/26/1998   F  52 B1        CR                 CR 10/30/1998
+## 30001 30001  1/16/1997   F  54 B3      &lt;NA&gt; DEATH IN INDUCTION       &lt;NA&gt;
+## 49006 49006  8/12/1998   F  43 B2        CR                 CR 11/19/1998
+## 57001 57001  1/29/1997   F  53 B3      &lt;NA&gt; DEATH IN INDUCTION       &lt;NA&gt;
+## 62001 62001 11/11/1997   F  50 B4       REF                REF       &lt;NA&gt;
+## 02020  2020  3/23/2000   F  48 T2      &lt;NA&gt; DEATH IN INDUCTION       &lt;NA&gt;
+##       t.4.11. t.9.22. cyto.normal         citog mol.biol fusion.protein
+## 28032    TRUE   FALSE       FALSE       t(4;11) ALL1/AF4           &lt;NA&gt;
+## 30001   FALSE    TRUE       FALSE t(9;22)+other  BCR/ABL           p190
+## 49006      NA      NA          NA          &lt;NA&gt;  BCR/ABL           p210
+## 57001   FALSE   FALSE        TRUE        normal      NEG           &lt;NA&gt;
+## 62001   FALSE    TRUE       FALSE t(9;22)+other  BCR/ABL           &lt;NA&gt;
+## 02020   FALSE   FALSE       FALSE  complex alt.      NEG           &lt;NA&gt;
+##       mdr   kinet   ccr relapse transplant  f.u date.last.seen
+## 28032 NEG dyploid  TRUE   FALSE      FALSE  CCR      5/16/2002
+## 30001 NEG hyperd.    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;
+## 49006 NEG dyploid FALSE    TRUE      FALSE  REL      4/26/1999
+## 57001 NEG hyperd.    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;
+## 62001 NEG hyperd.    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;
+## 02020 NEG dyploid    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## robust `[`: exclude NA values
+<span class="kw">dim</span>(pdata[idx <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(idx),])</code></pre></div>
+<pre><code>## [1] 17 21</code></pre>
+<p>Use the <code>mol.biol</code> column to subset the data to contain just individuals with ‘BCR/ABL’ or ‘NEG’, e.g.,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bcrabl &lt;-<span class="st"> </span><span class="kw">subset</span>(pdata, mol.biol <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BCR/ABL&quot;</span>, <span class="st">&quot;NEG&quot;</span>))</code></pre></div>
+<p>The <code>mol.biol</code> column is a factor, and retains all levels even after subsetting. It is sometimes convenient to retain factor levels, but in our case we use <code>droplevels()</code> to removed unused levels</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bcrabl<span class="op">$</span>mol.biol &lt;-<span class="st"> </span><span class="kw">droplevels</span>(bcrabl<span class="op">$</span>mol.biol)</code></pre></div>
+<p>The <code>BT</code> column is a factor describing B- and T-cell subtypes</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(bcrabl<span class="op">$</span>BT)</code></pre></div>
+<pre><code>##  [1] &quot;B&quot;  &quot;B1&quot; &quot;B2&quot; &quot;B3&quot; &quot;B4&quot; &quot;T&quot;  &quot;T1&quot; &quot;T2&quot; &quot;T3&quot; &quot;T4&quot;</code></pre>
+<p>How might one collapse B1, B2, … to a single type B, and likewise for T1, T2, …, so there are only two subtypes, B and T? One strategy is to replace two-letter level (e.g., <code>B1</code>) with the single-letter level (e.g., <code>B</code>). Do this using <code>substring()</code> to select the first letter of level, and update the previous levels with the new value using <code>levels&lt;-</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(bcrabl<span class="op">$</span>BT)</code></pre></div>
+<pre><code>## 
+##  B B1 B2 B3 B4  T T1 T2 T3 T4 
+##  4  9 35 22  9  5  1 15  9  2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(bcrabl<span class="op">$</span>BT) &lt;-<span class="st"> </span><span class="kw">substring</span>(<span class="kw">levels</span>(bcrabl<span class="op">$</span>BT), <span class="dv">1</span>, <span class="dv">1</span>)
+<span class="kw">table</span>(bcrabl<span class="op">$</span>BT)</code></pre></div>
+<pre><code>## 
+##  B  T 
+## 79 32</code></pre>
+<p>Use <code>aggregate()</code> to count the number of samples with B- and T-cell types in each of the BCR/ABL and NEG groups</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(<span class="kw">rownames</span>(bcrabl) <span class="op">~</span><span class="st"> </span>BT <span class="op">+</span><span class="st"> </span>mol.biol, bcrabl, length)</code></pre></div>
+<pre><code>##   BT mol.biol rownames(bcrabl)
+## 1  B  BCR/ABL               37
+## 2  B      NEG               42
+## 3  T      NEG               32</code></pre>
+<p>Use <code>aggregate()</code> to calculate the average age of males and females in the BCR/ABL and NEG treatment groups.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(age <span class="op">~</span><span class="st"> </span>mol.biol <span class="op">+</span><span class="st"> </span>sex, bcrabl, mean)</code></pre></div>
+<pre><code>##   mol.biol sex      age
+## 1  BCR/ABL   F 39.93750
+## 2      NEG   F 30.42105
+## 3  BCR/ABL   M 40.50000
+## 4      NEG   M 27.21154</code></pre>
+<p>Use <code>t.test()</code> to compare the age of individuals in the BCR/ABL versus NEG groups; visualize the results using <code>boxplot()</code>. In both cases, use the <code>formula</code> interface. Consult the help page <code>?t.test</code> and re-do the test assuming that variance of ages in the two groups is identical. What parts of the test output change?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(age <span class="op">~</span><span class="st"> </span>mol.biol, bcrabl)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  age by mol.biol
+## t = 4.8172, df = 68.529, p-value = 8.401e-06
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   7.13507 17.22408
+## sample estimates:
+## mean in group BCR/ABL     mean in group NEG 
+##              40.25000              28.07042</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(age <span class="op">~</span><span class="st"> </span>mol.biol, bcrabl)</code></pre></div>
+<p><img src="_main_files/figure-html/ALL-age-1.png" width="672" /></p>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="multivariate-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="graphics-and-visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exercise-1-brfss-survey-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exploration-and-simple-univariate-measures.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -311,7 +506,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -319,17 +514,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

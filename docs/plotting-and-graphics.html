@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="first-steps.html">
+<link rel="prev" href="rectangular-data.html">
+<link rel="next" href="control-structures-looping-and-applying.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -238,52 +238,121 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="r-mechanics" class="section level1">
-<h1><span class="header-section-number">2</span> R Mechanics</h1>
-<div id="installing-r" class="section level2">
-<h2><span class="header-section-number">2.1</span> Installing R</h2>
-<p>The home page for R is called the Comprehensive R Archive Network (CRAN). The <a href="http://cran.r-project.or">website</a> is not pretty (see figure <a href="r-mechanics.html#fig:cranscreenshot">2.1</a>), but it has quite a bit of information on it. It is not the best place to find help on R, although it is one of the best places to get R-related software, tools, and updates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&#39;images/CRAN-screenshot.png&#39;</span>)</code></pre></div>
-<div class="figure"><span id="fig:cranscreenshot"></span>
-<img src="images/CRAN-screenshot.png" alt="The Comprehensive R Archive Network (CRAN) website" width="730" />
-<p class="caption">
-Figure 2.1: The Comprehensive R Archive Network (CRAN) website
-</p>
+<div id="plotting-and-graphics" class="section level1">
+<h1><span class="header-section-number">6</span> Plotting and Graphics</h1>
+<div id="basics-of-plotting" class="section level2">
+<h2><span class="header-section-number">6.1</span> Basics of Plotting</h2>
+<div id="basic-plot-functions" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Basic Plot Functions</h3>
+<ul>
+<li><p><span>The command <code>plot(x,y)</code> will plot vector x as the independent variable and vector y as the dependent variable.</span></p></li>
+<li><p><span>Within the command line, you can specify the title of the graph, the name of the x-axis, and the name of the y-axis.</span></p>
+<ul>
+<li><p><span>main=’title’</span></p></li>
+<li><p><span>xlab=’name of x axis’</span></p></li>
+<li><p><span>ylab=’name of y axis’</span></p></li>
+</ul></li>
+<li><p><span>The command <code>lines(x,y)</code> adds a line segment to the plot.</span></p></li>
+<li><p><span>The command <code>points(x,y)</code> adds points to the plot.</span></p></li>
+<li><p><span>A legend can be created using <code>legend</code>.</span></p></li>
+</ul>
+<p><span>demo</span></p>
+<pre><code>demo(graphics)</code></pre>
 </div>
-<p>Detailed installation instructions are readily available, but here are abbreviated instructions for convenience.</p>
-<div id="windows" class="section level3">
-<h3><span class="header-section-number">2.1.1</span> Windows</h3>
-<p>NOTE: See <a href="https://cran.r-project.org/bin/windows/">Windows installation instructions</a> for more detail. Install <em>R</em> and <em>RStudio</em> as regular users.</p>
-<p>To install <em>R</em>, visit the <a href="https://cran.r-project.org/bin/windows/base/">Windows base</a> distribution page. Click on the <code>Download R-3.4.0 for Windows</code> link (or use the latest version available). Click on the installer and make the default selection for each option.</p>
-<p>To install <em>RStudio</em>, visit the <a href="https://www.rstudio.com/products/rstudio/download/">RStudio download</a> page. Click on the current RStudio release for Windows link. Click on the installer and follow default instructions.</p>
+<div id="simple-plotting-example" class="section level3">
+<h3><span class="header-section-number">6.1.2</span> Simple Plotting Example</h3>
+<p>Try this yourself:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>
+    y =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>,<span class="dv">3</span>,<span class="dv">1</span>) <span class="co"># 100 random normal deviates with mean=3, sd=1</span>
+    <span class="kw">plot</span>(x,y)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">plot</span>(x,y,<span class="dt">main=</span><span class="st">&#39;My First Plot&#39;</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># change point type</span>
+    <span class="kw">plot</span>(x,y,<span class="dt">pch=</span><span class="dv">3</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># change color</span>
+    <span class="kw">plot</span>(x,y,<span class="dt">pch=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="dv">2</span>)
+    <span class="co"># draw lines between points</span>
+    <span class="kw">lines</span>(x,y,<span class="dt">col=</span><span class="dv">3</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
-<div id="mac" class="section level3">
-<h3><span class="header-section-number">2.1.2</span> Mac</h3>
-<p>NOTE: See <a href="https://cran.r-project.org/bin/macosx/">R for Mac OS X</a> for more detail.</p>
-<p>To install <em>R</em>, visit the <a href="https://cran.r-project.org/bin/macosx/">R for Mac OS X</a>. Click on the the <code>R-3.4.0.pkg</code> link (or use the latest version available). Click on the installer and follow default instructions.</p>
-<p>To install <em>RStudio</em>, visit the <a href="https://www.rstudio.com/products/rstudio/download/">RStudio download</a> page. Click on the current RStudio release for Windows link. Click on the installer and follow default instructions.</p>
+<div id="more-plotting" class="section level3">
+<h3><span class="header-section-number">6.1.3</span> More Plotting</h3>
+<pre><code>z=sort(y)
+# plot a sorted variable vs x
+plot(x,z,main=&#39;Random Normal Numbers&#39;,
+xlab=&#39;Index&#39;,ylab=&#39;Random Number&#39;)
+
+
+# another example
+plot(-4:4,-4:4) 
+# and add a point at (0,2) to the plot
+points(0,2,pch=6,col=12)</code></pre>
 </div>
-<div id="linux" class="section level3">
-<h3><span class="header-section-number">2.1.3</span> Linux</h3>
-<p>NOTE: See <a href="https://cran.r-project.org/bin/linux/">distribution-specific instructions</a> for additional detail.</p>
-<p>On debian-based systems, the easiest way to install <em>R</em> is through a package manager manager, run under an administrator account. On Linux one usually needs to install <em>R</em> packages from source, and <em>R</em> package source often contains C, C++, or Fortran code requiring a compiler and <code>-dev</code> versions of various system libraries. It is therefore convenient to install the <code>-dev</code> version of R.</p>
-<pre><code>sudo apt-get install r-base r-base-dev</code></pre>
-<p>When installing source packages, it may be necessary to have access to the <code>-dev</code> version of various system libraries. Many of these are installed as dependencies of <code>r-base-dev</code>; other common examples include the xml and curl libraries</p>
-<pre><code>sudo apt-get install libxml2-dev
-sudo apt-get install libcurl-dev</code></pre>
-<p>Note in particular the use specification of libraries (the <code>lib</code> prefix) and the use of the <code>-dev</code> version.</p>
-<p>To install <em>RStudio</em>, visit the <a href="https://www.rstudio.com/products/rstudio/download/">RStudio download</a> page. Download the appropriate archive for your OS. On Ubuntu, install the <code>.deb</code> installer with</p>
-<pre><code>sudo dpkg -i rstudio-1.0.136-amd64.deb</code></pre>
+<div id="more-plotting-1" class="section level3">
+<h3><span class="header-section-number">6.1.4</span> More Plotting</h3>
+<pre><code># check margin and outer margin settings
+par(c(&quot;mar&quot;, &quot;oma&quot;)) 
+plot(x,y)
+par(oma=c(1,1,1,1))  # set outer margin
+plot(x,y)
+par(mar=c(2.5,2.1,2.1,1)) # set margin
+plot(x,y)
+
+
+# A basic histogram
+hist(z, main=&quot;Histogram&quot;,
+    sub=&quot;Random normal&quot;)
+
+
+# A &quot;density&quot; plot
+plot(density(z), main=&quot;Density plot&quot;,
+    sub=&quot;Random normal&quot;)
+
+
+# A smaller &quot;bandwidth&quot; to capture more detail
+plot(density(z, adjust=0.5),
+  sub=&quot;smaller bandwidth&quot;)</code></pre>
 </div>
+<div id="graphics-devices-and-saving-plots" class="section level3">
+<h3><span class="header-section-number">6.1.5</span> Graphics Devices and Saving Plots</h3>
+<ul>
+<li><p><span>to make a plot directly to a file use: <code>png()</code>, <code>postscript()</code>, etc.</span></p></li>
+<li><p><span>R can have multiple graphics “devices” open.</span></p>
+<ul>
+<li><p><span>To see a list of active devices: <code>dev.list()</code></span></p></li>
+<li><p><span>To close the most recent device: <code>dev.off()</code></span></p></li>
+<li><p><span>To close device 5: <code>dev.off(5)</code></span></p></li>
+<li><p><span>To use device 5: <code>dev.set(5)</code></span></p></li>
+</ul></li>
+</ul>
 </div>
-<div id="starting-r" class="section level2">
-<h2><span class="header-section-number">2.2</span> Starting R</h2>
-<p>How to start R depends a bit on the operating system (Mac, Windows, Linux) and interface. In this course, we will largely be using an Integrated Development Environment (IDE) called <em>RStudio</em>, but there is nothing to prohibit using R at the command line or in some other interface (and there are a few). A screenshot of the interface is shown in figure <a href="r-mechanics.html#fig:rstudiointerface">2.2</a>.</p>
-<div class="figure"><span id="fig:rstudiointerface"></span>
-<img src="images/RStudio.png" alt="The Rstudio interface" width="960" />
-<p class="caption">
-Figure 2.2: The Rstudio interface
-</p>
+<div id="more-plotting-2" class="section level3">
+<h3><span class="header-section-number">6.1.6</span> More Plotting</h3>
+<ul>
+<li><p><span>Save a png image to a file</span></p>
+<pre><code>png(file=&quot;myplot.png&quot;,width=480,height=480)
+plot(density(z,adjust=2.0),sub=&quot;larger bandwidth&quot;)
+dev.off()</code></pre></li>
+<li><p><span>On your own, save a pdf to a file. NOTE: The dimensions in <code>pdf()</code> are in <em>inches</em></span></p></li>
+<li><p><span>Multiple plots on the same page:</span></p>
+<pre><code>par(mfrow=c(2,1))
+plot(density(z,adjust=2.0),sub=&quot;larger bandwidth&quot;)
+hist(z)
+
+
+# use dev.off() to turn off the two-row plotting</code></pre></li>
+</ul>
+</div>
+<div id="r-graphics-galleries-and-resources" class="section level3">
+<h3><span class="header-section-number">6.1.7</span> R Graphics Galleries and Resources</h3>
+<p>Visit these sites for some ideas.</p>
+<ul>
+<li><p><span><a href="http://www.sr.bham.ac.uk/~ajrs/R/r-gallery.html" class="uri">http://www.sr.bham.ac.uk/~ajrs/R/r-gallery.html</a></span></p></li>
+<li><p><span><a href="http://gallery.r-enthusiasts.com/" class="uri">http://gallery.r-enthusiasts.com/</a></span></p></li>
+<li><p><span><a href="http://cran.r-project.org/web/views/Graphics.html" class="uri">http://cran.r-project.org/web/views/Graphics.html</a></span></p></li>
+</ul>
 </div>
 </div>
 </div>
@@ -292,8 +361,8 @@ Figure 2.2: The Rstudio interface
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="first-steps.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rectangular-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="control-structures-looping-and-applying.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -325,7 +394,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }
@@ -333,17 +402,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
