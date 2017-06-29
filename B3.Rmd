@@ -2,7 +2,9 @@
 title: "More Stuff"
 author: "Sean Davis"
 date: "6/29/2017"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 # R Mechanics
 
@@ -95,41 +97,45 @@ How to start R depends a bit on the operating system (Mac, Windows, Linux) and i
 knitr::include_graphics("images/RStudio.png")
 ```
 
-## Getting Started
+# First steps
 
--   [R Commands are either:]{}
+## Interacting with R
 
-    1.  [Assignments]{}
+The only meaningful way of interacting with R is by typing into the R console. At the most basic level, anything that we type at the command line will fall into one of two categories:
 
-            x = 1
-            y <- 2
+1. Assignments
+    
+    ```{r}
+    x = 1
+    y <- 2
+    ```
+    
+2. Expressions
 
-    2.  [Expressions]{}
+    ```{r}
+    1 + pi + sin(42)
+    ```
 
-            1 + pi + sin(3.7)
-            ## [1] 3.611757
+The assignment type is obvious because either the The “<-” or “=” are used. Note that when we type expressions, R will return a result.  In this case, the result of R evaluating `1 + pi + sin(42)` is ``r 1 + pi + sin(42)``.
 
--   [The “&lt;-” and “=” are both assignment operators.]{}
+The standard R prompt is a ">" sign. When present, R is waiting for the next expression or assignment.  If a line is not a complete R command, R will continue the next line with a "+". For example, typing the fillowing with a "Return" after the second "+" will result in R giving back a "+" on the next line, a prompt to keep typing.
 
--   [The standard R prompt is a “&gt;” sign.]{}
-
--   [If a line is not a complete R command, R will continue the next
-    line with a “+”.]{}
-
-        1 + pi + 
-        sin(3.7)
-        ## [1] 3.611757
+```{r tidy=FALSE}
+1 + pi +
+sin(3.7)
+```
 
 ## Rules for Names in R
 
--   [Any combination of letters, numbers, underscore, and “.”]{}
+R allows users to assign names to objects such as variables, functions, and even dimensions of data. However, these names must follow a few rules.
 
--   [May not start with numbers, underscore.]{}
+- Names may contain any combination of letters, numbers, underscore, and "."
+- Names may not start with numbers, underscore.
+- R names are case-sensitive.
 
--   [R is case-sensitive.]{}
+Examples of valid R names include:
 
-[Examples]{}
-
+```
     pi
     x
     camelCaps
@@ -139,98 +145,139 @@ knitr::include_graphics("images/RStudio.png")
     ABC123
     abc1234asdf
     .hi
+```
 
-# Resources for Getting Help
+## Resources for Getting Help
 
-## R Help Functions
+There is extensive built-in help and documentation within R. 
 
--   [If you know the name of the function or object on which you want
-    help:]{}
+If the name of the function or object on which help is sought is known, the following approaches with the name of the function or object will be helpful. For a concrete example, examine the help for the `print` method.
 
-        help(print)
-        help('print')
-        ?print
+```{r eval=FALSE}
+help(print)
+help('print')
+?print
+```
 
--   [If you *do not* know the name of the function or object on which
-    you want help:]{}
+If the name of the function or object on which help is sought is *not* known, the following from within R will be helpful. 
 
-        help.search('microarray')
-        RSiteSearch('microarray')
+```{r eval=FALSE}
+help.search('microarray')
+RSiteSearch('microarray')
+```
 
--   [Many online resources which you will collect over the space of the
-    course]{}
+There are also tons of online resources that Google will include in searches if online searching feels more appropriate.
 
-[Using Help]{} I strongly recommend using `help(newfunction)` for all
+I strongly recommend using `help(newfunction)` for all
 functions that are new or unfamiliar to you.
 
-# Vectors
+# Introduction to R data structures
 
+As in many programming languages, understanding how data are stored and manipulated is important to getting the most out of the experience. In these next few sections, we will introduce some basic R data types and structures as well as some general approaches for working with them.
 
 ## Vectors
 
--   [In R, even a single value is a vector with length=1.]{}
+In R, even a single value is a vector with length=1. 
 
-        z = 1
-        z
-        ## [1] 1
-        length(z)
-        ## [1] 1
+```{r}
+z = 1
+z
+length(z)
+```
 
--   [Vectors can contain numbers, strings (character data), or logical
-    values (TRUE and FALSE)]{}
+In the code above, we "assigned" the value 1 to the variable named `z`. Typing `z` by itself is an "expression" that returns a result which is, in this case, the value that we just assigned. The `length` method takes an R object and returns the R length. There are numerous ways of asking R about what an object represents, and `length` is one of them.
 
--   [Vectors cannot contain a mix of types!]{}
+Vectors can contain numbers, strings (character data), or logical values (`TRUE` and `FALSE`) or other "atomic" data types (table \@ref(tab:simpletypes)). *Vectors cannot contain a mix of types!* We will introduce another data structure, the R `list` for situations when we need to store a mix of base R data types. 
 
-[Character Vectors]{} Character vectors are entered with each value
+Table: (\#tab:simpletypes) Atomic (simplest) data types in R.
+
+  Data type   Stores
+  ----------- ------------------------
+    numeric      floating point numbers
+    integer           integers
+    complex       complex numbers
+    factor        categorical data
+   character          strings
+    logical        TRUE or FALSE
+      NA              missing
+     NULL              empty
+   function        function type
+
+### Creating vectors
+
+Character vectors (also sometimes called "string" vectors) are entered with each value
 surrounded by single or double quotes; either is acceptable, but they
-must match. They are always displayed by R with double quotes.
+must match. They are always displayed by R with double quotes. Here are some examples of creating vectors:
 
+```{r}
+# examples of vectors
+c('hello','world')
+c(1,3,4,5,1,2)
+c(1.12341e7,78234.126)
+c(TRUE,FALSE,TRUE,TRUE)
+# note how in the next case the TRUE is converted to "TRUE"
+# with quotes around it.
+c(TRUE,'hello')
+```
 
-[Example Vectors]{}
+We can also create vectors as "regular sequences" of numbers. For example:
 
-    # examples of vectors
-    c('hello','world')
-    ## [1] "hello" "world"
-    c(1,3,4,5,1,2)
-    ## [1] 1 3 4 5 1 2
-    c(1.12341e7,78234.126)
-    ## [1] 11234100.00    78234.13
-    c(TRUE,FALSE,TRUE,TRUE)
-    ## [1]  TRUE FALSE  TRUE  TRUE
-    # note how in the next case the TRUE is converted to "TRUE"
-    c(TRUE,'hello')
-    ## [1] "TRUE"  "hello"
+```{r}
+# create a vector of integers from 1 to 10
+x = 1:10
+# and backwards
+x = 10:1
+```
 
-## Regular Sequences
+The `seq` function can create more flexible regular sequences. You _did_ read the help for `seq`, right?
+  
+```{r}
+# create a vector of numbers from 1 to 4 skipping by 0.3
+y = seq(1,4,0.3)
+```    
 
-    # create a vector of integers from 1 to 10
-    x = 1:10
-    # and backwards
-    x = 10:1
-    # create a vector of numbers from 1 to 4 skipping by 0.3
-    y = seq(1,4,0.3)
-    # create a sequence by concatenating two other sequences
-    z = c(y,x)
-    z
-    ##  [1]  1.0  1.3  1.6  1.9  2.2  2.5  2.8  3.1  3.4  3.7  4.0 10.0  9.0  8.0
-    ## [15]  7.0  6.0  5.0  4.0  3.0  2.0  1.0
+And creating a new vector by concatenating existing vectors is possible, as well.
 
-## Vector Operations
+```{r}
+# create a sequence by concatenating two other sequences
+z = c(y,x)
+z
+```
 
--   [Operations on a single vector are typically done
-    element-by-element]{}
+### Vector Operations
 
--   [If the operation involves two vectors:]{}
+Operations on a single vector are typically done element-by-element. For example, we can add `2` to a vector, `2` is added to each element of the vector and a new vector of the same length is returned.
 
-    -   [Same length: R simply applies the operation to each pair of
-        elements.]{}
+```{r}
+x = 1:10
+x + 2
+```
 
-    -   [Different lengths, but one length a multiple of the other: R
-        reuses the shorter vector as needed]{}
+If the operation involves two vectors, the following rules apply. If the vectors are the same length: R simply applies the operation to each pair of elements.
 
-    -   [Different lengths, but one length *not* a multiple of the
-        other: R reuses the shorter vector as needed *and* delivers a
-        warning]{}
+```{r}
+x + x
+```
+
+If the vectors are different lengths, but one length a multiple of the other, R
+reuses the shorter vector as needed.
+
+```{r}
+x = 1:10
+y = c(1,2)
+x * y
+```
+
+If the vectors are different lengths, but one length *not* a multiple of the
+other, R reuses the shorter vector as needed *and* delivers a
+warning.
+
+```{r}
+x = 1:10
+y = c(2,3,4)
+x * y
+```
+
 
 -   [Typical operations include multiplication (“\*”), addition,
     subtraction, division, exponentiation (“ \^”), but many operations
@@ -250,23 +297,8 @@ must match. They are always displayed by R with double quotes.
      NULL              empty
    function        function type
 
-## Vector Operations
 
-    x = 1:10
-    x+x
-    ##  [1]  2  4  6  8 10 12 14 16 18 20
-    y = 7
-    x * y
-    ##  [1]  7 14 21 28 35 42 49 56 63 70
-    y = c(1,2,3)
-    z = x * y
-
-    length(z)
-    ## [1] 10
-    z
-    ##  [1]  1  4  9  4 10 18  7 16 27 10
-
-## Logical Vectors
+### Logical Vectors
 
 Logical vectors are vectors composed on only the values `TRUE` and
 `FALSE`. Note the all-upper-case and no quotation marks.
@@ -674,8 +706,8 @@ Lists and Objects
     types.]{}
 
 -   [The objects generally have names, and may be indexed either by name
-    (e.g. my.list\\$name3) or component number (e.g.
-    my.list\[\[3\]\]).]{}
+    (e.g. my.list$name3) or component number (e.g.
+    my.list[[3]])
 
 -   [A data frame is a list of matched column vectors.]{}
 
@@ -771,27 +803,30 @@ Basics of Plotting
 
 Try this yourself:
 
+```{r}
     x = 1:100
     y = rnorm(100,3,1) # 100 random normal deviates with mean=3, sd=1
     plot(x,y)
+```
 
-![image](figure/plots-1){width="\maxwidth"}
-
+```{r}
     plot(x,y,main='My First Plot')
+```
 
-![image](figure/plots-2){width="\maxwidth"}
 
+```{r}
     # change point type
     plot(x,y,pch=3)
+```
 
-![image](figure/plots-3){width="\maxwidth"}
 
+```{r}
     # change color
     plot(x,y,pch=4,col=2)
     # draw lines between points
     lines(x,y,col=3)
+```
 
-![image](figure/plots-4){width="\maxwidth"}
 
 ### More Plotting
 
@@ -800,14 +835,12 @@ Try this yourself:
     plot(x,z,main='Random Normal Numbers',
     xlab='Index',ylab='Random Number')
 
-![image](figure/plots2-1){width="\maxwidth"}
 
     # another example
     plot(-4:4,-4:4) 
     # and add a point at (0,2) to the plot
     points(0,2,pch=6,col=12)
 
-![image](figure/plots2-2){width="\maxwidth"}
 
 ### More Plotting
 
@@ -819,25 +852,21 @@ Try this yourself:
     par(mar=c(2.5,2.1,2.1,1)) # set margin
     plot(x,y)
 
-![image](figure/plots3-1){width="\maxwidth"}
 
     # A basic histogram
     hist(z, main="Histogram",
         sub="Random normal")
 
-![image](figure/plots3-2){width="\maxwidth"}
 
     # A "density" plot
     plot(density(z), main="Density plot",
         sub="Random normal")
 
-![image](figure/plots3-3){width="\maxwidth"}
 
     # A smaller "bandwidth" to capture more detail
     plot(density(z, adjust=0.5),
       sub="smaller bandwidth")
 
-![image](figure/plots3-4){width="\maxwidth"}
 
 ### Graphics Devices and Saving Plots
 
@@ -871,7 +900,6 @@ Try this yourself:
         plot(density(z,adjust=2.0),sub="larger bandwidth")
         hist(z)
 
-    ![image](figure/mfrow-1){width="\maxwidth"}
 
         # use dev.off() to turn off the two-row plotting
 
