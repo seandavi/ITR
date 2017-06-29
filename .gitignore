@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+_main.aux
+_main.fdb_latexmk
+_main.fls
+_main.log
+_main.out
+_main.toc
