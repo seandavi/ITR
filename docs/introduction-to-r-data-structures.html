@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Background</title>
-  <meta name="description" content="Background">
+  <title>Introduction to R (ITR)</title>
+  <meta name="description" content="Introduction to R (ITR)">
   <meta name="generator" content="bookdown 0.4.1 and GitBook 2.6.7">
 
-  <meta property="og:title" content="Background" />
+  <meta property="og:title" content="Introduction to R (ITR)" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Background" />
+  <meta name="twitter:title" content="Introduction to R (ITR)" />
   
   
   
@@ -213,7 +213,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Background</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to R (ITR)</a>
           </h1>
         </div>
 
@@ -392,16 +392,16 @@ myvec =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1
 <span class="co"># create logical vector that is TRUE where myvec is &gt;0.25</span>
 gt1 =<span class="st"> </span>(myvec <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.25</span>)
 <span class="kw">sum</span>(gt1)</code></pre></div>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 5</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># and use our logical vector to create a vector of myvec values that are &gt;0.25</span>
 myvec[gt1]</code></pre></div>
-<pre><code>## [1] 0.7177777 1.7385063 1.6556000 0.5456691 0.5706619 1.0628216</code></pre>
+<pre><code>## [1] 1.5003354 0.6501773 0.9197571 0.6597422 1.9432968</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;</span>
 myvec[<span class="op">!</span>gt1]</code></pre></div>
-<pre><code>## [1] -0.2141878 -0.7771291 -1.0870944 -1.7378650</code></pre>
+<pre><code>## [1] -0.8476936 -0.2495540 -0.5153575 -0.9828247 -0.5996902</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># shorter, one line approach</span>
 myvec[myvec <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.25</span>]</code></pre></div>
-<pre><code>## [1] 0.7177777 1.7385063 1.6556000 0.5456691 0.5706619 1.0628216</code></pre>
+<pre><code>## [1] 1.5003354 0.6501773 0.9197571 0.6597422 1.9432968</code></pre>
 </div>
 <div id="character-vectors-a.k.a.-strings" class="section level3">
 <h3><span class="header-section-number">4.1.6</span> Character Vectors, A.K.A. Strings</h3>
