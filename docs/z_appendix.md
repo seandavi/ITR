@@ -1,0 +1,38 @@
+lsls---
+author: "Sean Davis"
+date: "6/29/2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# (APPENDIX) Appendix {-}
+
+# Appendix A -- Swirl
+
+The following is from the [swirl website](http://swirlstats.com/students.html).
+
+> The swirl R package makes it fun and easy to learn R programming and data science. If you are new to R, have no fear. 
+
+
+To get started, we need to install a new package into R. 
+
+
+```r
+install.packages('swirl')
+```
+
+Once installed, we want to load it into the R workspace so we can use it.
+
+
+```r
+library('swirl')
+```
+
+Finally, to get going, start swirl and follow the instructions.
+
+
+```r
+swirl()
+```
+

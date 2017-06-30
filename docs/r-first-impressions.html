@@ -356,42 +356,42 @@ sex</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)       <span class="co"># 1000 random normal deviates</span>
 y =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)   <span class="co"># another 1000 deviates, as a function of x</span>
 <span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x)           <span class="co"># relationship between x and y</span></code></pre></div>
-<p><img src="_main_files/figure-html/related-variables-1.png" width="672" /></p>
+<p><img src="D1_Using_R_files/figure-html/related-variables-1.png" width="672" /></p>
 <p>Convenient to manipulate them together</p>
 <ul>
 <li><p><code>data.frame()</code>: like columns in a spreadsheet</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">X=</span>x, <span class="dt">Y=</span>y)
 <span class="kw">head</span>(df)           <span class="co"># first 6 rows</span></code></pre></div>
 <pre><code>##             X          Y
-## 1 -0.23926790 -0.3937137
-## 2 -0.07412402 -0.3799202
-## 3  0.99624820  1.1667748
-## 4  0.39307812  0.8211909
-## 5  0.57966738  2.3522918
-## 6  0.42136109  0.2216827</code></pre>
+## 1 -0.04732344  0.7840313
+## 2 -1.59249549 -3.0961430
+## 3 -0.72153705  0.2662046
+## 4  1.14214343 -0.8641628
+## 5 -0.78047438 -1.5064495
+## 6  1.37266293  0.2043120</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, df)    <span class="co"># same as above</span></code></pre></div>
-<p><img src="_main_files/figure-html/data.frame-1.png" width="672" /></p></li>
+<p><img src="D1_Using_R_files/figure-html/data.frame-1.png" width="672" /></p></li>
 <li><p>See all data with <code>View(df)</code>. Summarize data with <code>summary(df)</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(df)</code></pre></div>
-<pre><code>##        X                   Y           
-##  Min.   :-3.488112   Min.   :-3.69944  
-##  1st Qu.:-0.669377   1st Qu.:-0.90624  
-##  Median : 0.004582   Median : 0.03182  
-##  Mean   : 0.007979   Mean   : 0.05199  
-##  3rd Qu.: 0.703727   3rd Qu.: 1.02445  
-##  Max.   : 3.362927   Max.   : 4.96088</code></pre></li>
+<pre><code>##        X                  Y           
+##  Min.   :-3.42857   Min.   :-4.18902  
+##  1st Qu.:-0.65599   1st Qu.:-0.89595  
+##  Median : 0.03235   Median : 0.06488  
+##  Mean   : 0.01031   Mean   : 0.02457  
+##  3rd Qu.: 0.68548   3rd Qu.: 1.00547  
+##  Max.   : 3.60129   Max.   : 4.81667</code></pre></li>
 <li><p>Easy to manipulate data in a coordinated way, e.g., access column <code>X</code> with <code>$</code> and subset for just those values greater than 0</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">positiveX =<span class="st"> </span>df[df<span class="op">$</span>X <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,]
 <span class="kw">head</span>(positiveX)</code></pre></div>
-<pre><code>##           X         Y
-## 3 0.9962482 1.1667748
-## 4 0.3930781 0.8211909
-## 5 0.5796674 2.3522918
-## 6 0.4213611 0.2216827
-## 7 0.9418160 1.2713186
-## 8 0.6829870 2.8699771</code></pre>
+<pre><code>##            X           Y
+## 4  1.1421434 -0.86416277
+## 6  1.3726629  0.20431204
+## 7  0.3630616 -0.88145320
+## 12 0.9126994  0.85139178
+## 15 2.2144485  2.96934998
+## 17 1.3105291 -0.03774609</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, positiveX)</code></pre></div>
-<p><img src="_main_files/figure-html/data.frame-subset-1.png" width="672" /></p></li>
+<p><img src="D1_Using_R_files/figure-html/data.frame-subset-1.png" width="672" /></p></li>
 <li><p><em>R</em> is introspective – ask it about itself</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(df)</code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
@@ -409,15 +409,15 @@ y =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span>
 <li><p>Visualize the points, and add the regression line</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Y <span class="op">~</span><span class="st"> </span>X, df)
 <span class="kw">abline</span>(fit, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/lm-plot-1.png" width="672" /></p></li>
+<p><img src="D1_Using_R_files/figure-html/lm-plot-1.png" width="672" /></p></li>
 <li><p>Summarize the fit as an ANOVA table</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(fit)</code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: Y
-##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## X           1 982.56  982.56  1007.4 &lt; 2.2e-16 ***
-## Residuals 998 973.42    0.98                      
+##            Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## X           1  957.97  957.97  916.93 &lt; 2.2e-16 ***
+## Residuals 998 1042.67    1.04                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre></li>
 <li><p>N.B. – ‘Type I’ sums-of-squares, so order of independent variables matters; use <code>drop1()</code> for ‘Type III’. See <a href="http://www.statmethods.net/stats/anova.html">DataCamp Quick-R</a></p></li>
@@ -426,15 +426,14 @@ y =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span>
 <pre><code>## [1] &quot;lm&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(fit))</code></pre></div>
 <pre><code>##  [1] add1           alias          anova          case.names    
-##  [5] coerce         confint        cooks.distance deviance      
-##  [9] dfbeta         dfbetas        drop1          dummy.coef    
-## [13] effects        extractAIC     family         formula       
-## [17] hatvalues      influence      initialize     kappa         
-## [21] labels         logLik         model.frame    model.matrix  
-## [25] nobs           plot           predict        print         
-## [29] proj           qr             residuals      rstandard     
-## [33] rstudent       show           simulate       slotsFromS3   
-## [37] summary        variable.names vcov          
+##  [5] confint        cooks.distance deviance       dfbeta        
+##  [9] dfbetas        drop1          dummy.coef     effects       
+## [13] extractAIC     family         formula        hatvalues     
+## [17] influence      kappa          labels         logLik        
+## [21] model.frame    model.matrix   nobs           plot          
+## [25] predict        print          proj           qr            
+## [29] residuals      rstandard      rstudent       simulate      
+## [33] summary        variable.names vcov          
 ## see &#39;?methods&#39; for accessing help and source code</code></pre></li>
 </ul>
 </div>
@@ -491,8 +490,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/seandavi/ITR/edit/master/D1_Using_R.Rmd",
+"text": "Edit"
 },
 "download": ["_main.pdf"],
 "toc": {

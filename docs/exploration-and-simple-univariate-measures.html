@@ -251,7 +251,7 @@ brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code
 ## </code></pre>
 <p>Visualize</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfssFemale)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Statistical test</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfssFemale)</code></pre></div>
 <pre><code>## 
@@ -281,11 +281,11 @@ brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code
 ##  NA&#39;s   :30      NA&#39;s   :49                     NA&#39;s   :31</code></pre>
 <p>Visualize the relationship</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss2010Male<span class="op">$</span>Weight)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss2010Male<span class="op">$</span>Height)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-56-2.png" width="672" /></p>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-56-3.png" width="672" /></p>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 <p>Fit a linear model (regression)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
 fit</code></pre></div>
@@ -310,7 +310,7 @@ fit</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
 <span class="kw">abline</span>(fit, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)
 <span class="kw">points</span>(<span class="dv">180</span>, <span class="dv">88</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">cex=</span><span class="dv">4</span>, <span class="dt">pch=</span><span class="dv">20</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Class and available ‘methods’</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit)                 <span class="co"># &#39;noun&#39;</span>
 <span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(fit))  <span class="co"># &#39;verb&#39;</span></code></pre></div>
@@ -354,8 +354,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/seandavi/ITR/edit/master/D3_Statistics.Rmd",
+"text": "Edit"
 },
 "download": ["_main.pdf"],
 "toc": {

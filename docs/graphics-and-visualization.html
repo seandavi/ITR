@@ -242,7 +242,7 @@ fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class=
 <span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male, <span class="dt">main=</span><span class="st">&quot;2010, Males&quot;</span>)
 <span class="kw">abline</span>(fit, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
 <span class="kw">points</span>(<span class="dv">180</span>, <span class="dv">90</span>, <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">cex=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p></li>
+<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p></li>
 <li><p>Approach to complicated graphics: create a grid of panels (e.g., <code>par(mfrows=c(1, 2))</code>, populate with plots, restore original layout.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfssFemale &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss, Sex<span class="op">==</span><span class="st">&quot;Female&quot;</span>)
 
@@ -253,7 +253,7 @@ opar =<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfro
 <span class="kw">hist</span>(                         <span class="co"># second panel -- 2010</span>
     brfssFemale[ brfssFemale<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span>, <span class="st">&quot;Weight&quot;</span> ],
     <span class="dt">main =</span> <span class="st">&quot;Female, 2010&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(opar)                      <span class="co"># restore original layout</span></code></pre></div></li>
 </ul>
 </div>
@@ -280,22 +280,22 @@ opar =<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfro
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p></li>
+<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p></li>
 <li><p>Capture a plot and augment it</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt &lt;-<span class="st"> </span><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)
 plt <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;2010 Male&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p></li>
+<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p></li>
 <li><p>Use <code>facet_*()</code> for layouts</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Year)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p></li>
+<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p></li>
 <li><p>Choose display to emphasize relevant aspects of data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(Weight, <span class="dt">fill=</span>Year)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p></li>
+<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p></li>
 </ul>
 
 <p>lsls— author: “Sean Davis” date: “6/29/2017” output: html_document: default pdf_document: default —</p>
@@ -339,8 +339,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/seandavi/ITR/edit/master/D4_Graphics.Rmd",
+"text": "Edit"
 },
 "download": ["_main.pdf"],
 "toc": {
