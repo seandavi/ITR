@@ -33,12 +33,12 @@
   
 <link rel="prev" href="first-steps.html">
 <link rel="next" href="plotting-and-graphics.html">
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 
 
 
@@ -389,13 +389,13 @@ gt1 =<span class="st"> </span>(myvec <span class="op">&gt;</span><span class="st
 <pre><code>## [1] 4</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># and use our logical vector to create a vector of myvec values that are &gt;0.25</span>
 myvec[gt1]</code></pre></div>
-<pre><code>## [1] 0.7922966 0.4011807 1.5907811 1.0329126</code></pre>
+<pre><code>## [1] 0.4682182 0.6994318 0.6326461 0.3393558</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;</span>
 myvec[<span class="op">!</span>gt1]</code></pre></div>
-<pre><code>## [1]  0.04261484 -0.11992920  0.06570932  0.10136541 -0.53299343 -0.36385699</code></pre>
+<pre><code>## [1] -0.1925745  0.1725700 -0.7178438 -1.2355301 -0.1527377 -0.1214755</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># shorter, one line approach</span>
 myvec[myvec <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.25</span>]</code></pre></div>
-<pre><code>## [1] 0.7922966 0.4011807 1.5907811 1.0329126</code></pre>
+<pre><code>## [1] 0.4682182 0.6994318 0.6326461 0.3393558</code></pre>
 </div>
 <div id="character-vectors-a.k.a.-strings" class="section level3">
 <h3><span class="header-section-number">4.1.6</span> Character Vectors, A.K.A. Strings</h3>
@@ -505,16 +505,16 @@ y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1
 mat&lt;-<span class="kw">cbind</span>(x,y)
 mat</code></pre></div>
 <pre><code>##        x           y
-##  [1,]  1  1.12190689
-##  [2,]  2 -2.30707142
-##  [3,]  3 -0.67035112
-##  [4,]  4  0.06287886
-##  [5,]  5 -0.92432375
-##  [6,]  6 -0.44097624
-##  [7,]  7 -2.59727292
-##  [8,]  8 -0.23659881
-##  [9,]  9  0.71313048
-## [10,] 10  1.81000479</code></pre>
+##  [1,]  1 -1.47371567
+##  [2,]  2  0.27580102
+##  [3,]  3 -0.80137502
+##  [4,]  4  1.73971299
+##  [5,]  5  0.88191625
+##  [6,]  6 -0.08598927
+##  [7,]  7  2.87370142
+##  [8,]  8  1.18183332
+##  [9,]  9 -0.42494324
+## [10,] 10 -0.91132793</code></pre>
 <p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(mat)</code></pre></div>
 <pre><code>## NULL</code></pre>
@@ -530,12 +530,12 @@ mat</code></pre></div>
 <p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The 2nd element of the 1st row of mat</span>
 mat[<span class="dv">1</span>,<span class="dv">2</span>]</code></pre></div>
-<pre><code>##        y 
-## 1.121907</code></pre>
+<pre><code>##         y 
+## -1.473716</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The first ROW of mat</span>
 mat[<span class="dv">1</span>,]</code></pre></div>
-<pre><code>##        x        y 
-## 1.000000 1.121907</code></pre>
+<pre><code>##         x         y 
+##  1.000000 -1.473716</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The first COLUMN of mat</span>
 mat[,<span class="dv">1</span>]</code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -552,13 +552,13 @@ m =<span class="st"> </span>m<span class="op">*</span><span class="dv">20</span>
 m[,<span class="dv">1</span>] =<span class="st"> </span>m[,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="dv">100</span>
 <span class="co"># summarize m</span>
 <span class="kw">summary</span>(m)</code></pre></div>
-<pre><code>##        V1               V2         
-##  Min.   : 76.16   Min.   :-35.156  
-##  1st Qu.: 88.37   1st Qu.: -6.099  
-##  Median :101.62   Median : -3.088  
-##  Mean   :100.15   Mean   :  4.119  
-##  3rd Qu.:106.36   3rd Qu.: 22.933  
-##  Max.   :131.52   Max.   : 43.941</code></pre>
+<pre><code>##        V1               V2          
+##  Min.   : 72.31   Min.   :-40.0758  
+##  1st Qu.: 88.13   1st Qu.: -3.4712  
+##  Median : 94.45   Median :  5.4513  
+##  Mean   :100.33   Mean   :  0.9912  
+##  3rd Qu.:114.31   3rd Qu.: 11.6959  
+##  Max.   :133.43   Max.   : 17.4667</code></pre>
 </div>
 <div id="data-frames" class="section level3">
 <h3><span class="header-section-number">4.2.2</span> Data Frames</h3>
@@ -567,12 +567,12 @@ m[,<span class="dv">1</span>] =<span class="st"> </span>m[,<span class="dv">1</s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat&lt;-<span class="kw">cbind</span>(x,y)
 <span class="kw">head</span>(mat)</code></pre></div>
 <pre><code>##      x           y
-## [1,] 1  1.12190689
-## [2,] 2 -2.30707142
-## [3,] 3 -0.67035112
-## [4,] 4  0.06287886
-## [5,] 5 -0.92432375
-## [6,] 6 -0.44097624</code></pre>
+## [1,] 1 -1.47371567
+## [2,] 2  0.27580102
+## [3,] 3 -0.80137502
+## [4,] 4  1.73971299
+## [5,] 5  0.88191625
+## [6,] 6 -0.08598927</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mat[,<span class="dv">1</span>])          </code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;a&#39;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
@@ -583,21 +583,21 @@ tab&lt;-<span class="kw">cbind</span>(x,y,z)
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tab,<span class="dv">4</span>)</code></pre></div>
 <pre><code>##      x   y                    z   
-## [1,] &quot;1&quot; &quot;1.12190689479292&quot;   &quot;a1&quot;
-## [2,] &quot;2&quot; &quot;-2.30707142376978&quot;  &quot;a2&quot;
-## [3,] &quot;3&quot; &quot;-0.670351123216398&quot; &quot;a3&quot;
-## [4,] &quot;4&quot; &quot;0.0628788591418253&quot; &quot;a4&quot;</code></pre>
+## [1,] &quot;1&quot; &quot;-1.47371567373589&quot;  &quot;a1&quot;
+## [2,] &quot;2&quot; &quot;0.275801017697362&quot;  &quot;a2&quot;
+## [3,] &quot;3&quot; &quot;-0.801375024040154&quot; &quot;a3&quot;
+## [4,] &quot;4&quot; &quot;1.73971299447169&quot;   &quot;a4&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab&lt;-<span class="kw">data.frame</span>(x,y,z)
 <span class="kw">class</span>(tab)</code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tab)</code></pre></div>
 <pre><code>##   x           y  z
-## 1 1  1.12190689 a1
-## 2 2 -2.30707142 a2
-## 3 3 -0.67035112 a3
-## 4 4  0.06287886 a4
-## 5 5 -0.92432375 a5
-## 6 6 -0.44097624 a6</code></pre>
+## 1 1 -1.47371567 a1
+## 2 2  0.27580102 a2
+## 3 3 -0.80137502 a3
+## 4 4  1.73971299 a4
+## 5 5  0.88191625 a5
+## 6 6 -0.08598927 a6</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mode</span>(tab[,<span class="dv">1</span>])</code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(tab[,<span class="dv">3</span>])</code></pre></div>
@@ -611,17 +611,17 @@ tab&lt;-<span class="kw">cbind</span>(x,y,z)
 <p>Data frame columns can be refered to by name using the “dollar sign” operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tab)</code></pre></div>
 <pre><code>##      x           y  z
-## row1 1  1.12190689 a1
-## row2 2 -2.30707142 a2
-## row3 3 -0.67035112 a3
-## row4 4  0.06287886 a4
-## row5 5 -0.92432375 a5
-## row6 6 -0.44097624 a6</code></pre>
+## row1 1 -1.47371567 a1
+## row2 2  0.27580102 a2
+## row3 3 -0.80137502 a3
+## row4 4  1.73971299 a4
+## row5 5  0.88191625 a5
+## row6 6 -0.08598927 a6</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab<span class="op">$</span>x</code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab<span class="op">$</span>y</code></pre></div>
-<pre><code>##  [1]  1.12190689 -2.30707142 -0.67035112  0.06287886 -0.92432375
-##  [6] -0.44097624 -2.59727292 -0.23659881  0.71313048  1.81000479</code></pre>
+<pre><code>##  [1] -1.47371567  0.27580102 -0.80137502  1.73971299  0.88191625
+##  [6] -0.08598927  2.87370142  1.18183332 -0.42494324 -0.91132793</code></pre>
 <p>Column names can be set, which can be useful for referring to data later.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(tab)</code></pre></div>
 <pre><code>## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
@@ -634,47 +634,47 @@ tab&lt;-<span class="kw">cbind</span>(x,y,z)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(tab)</code></pre></div>
 <pre><code>## [1] 10  3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab)</code></pre></div>
-<pre><code>##       col1            col2              col3  
-##  Min.   : 1.00   Min.   :-2.5973   a1     :1  
-##  1st Qu.: 3.25   1st Qu.:-0.8608   a10    :1  
-##  Median : 5.50   Median :-0.3388   a2     :1  
-##  Mean   : 5.50   Mean   :-0.3469   a3     :1  
-##  3rd Qu.: 7.75   3rd Qu.: 0.5506   a4     :1  
-##  Max.   :10.00   Max.   : 1.8100   a5     :1  
-##                                    (Other):4</code></pre>
+<pre><code>##       col1            col2               col3  
+##  Min.   : 1.00   Min.   :-1.47372   a1     :1  
+##  1st Qu.: 3.25   1st Qu.:-0.70727   a10    :1  
+##  Median : 5.50   Median : 0.09491   a2     :1  
+##  Mean   : 5.50   Mean   : 0.32556   a3     :1  
+##  3rd Qu.: 7.75   3rd Qu.: 1.10685   a4     :1  
+##  Max.   :10.00   Max.   : 2.87370   a5     :1  
+##                                     (Other):4</code></pre>
 <p>Extracting parts of a <code>data.frame</code> work as for matrices. Try to think about what each of the following will do before asking R to evaluate the result.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]</code></pre></div>
-<pre><code>##      col1       col2 col3
-## row1    1  1.1219069   a1
-## row2    2 -2.3070714   a2
-## row3    3 -0.6703511   a3</code></pre>
+<pre><code>##      col1      col2 col3
+## row1    1 -1.473716   a1
+## row2    2  0.275801   a2
+## row3    3 -0.801375   a3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
 <pre><code>##              col2 col3
-## row1   1.12190689   a1
-## row2  -2.30707142   a2
-## row3  -0.67035112   a3
-## row4   0.06287886   a4
-## row5  -0.92432375   a5
-## row6  -0.44097624   a6
-## row7  -2.59727292   a7
-## row8  -0.23659881   a8
-## row9   0.71313048   a9
-## row10  1.81000479  a10</code></pre>
+## row1  -1.47371567   a1
+## row2   0.27580102   a2
+## row3  -0.80137502   a3
+## row4   1.73971299   a4
+## row5   0.88191625   a5
+## row6  -0.08598927   a6
+## row7   2.87370142   a7
+## row8   1.18183332   a8
+## row9  -0.42494324   a9
+## row10 -0.91132793  a10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span></code></pre></div>
 <pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span>,]</code></pre></div>
 <pre><code>##       col1       col2 col3
-## row8     8 -0.2365988   a8
-## row9     9  0.7131305   a9
-## row10   10  1.8100048  a10</code></pre>
+## row8     8  1.1818333   a8
+## row9     9 -0.4249432   a9
+## row10   10 -0.9113279  a10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span>,<span class="dv">3</span>]</code></pre></div>
 <pre><code>## [1] a8  a9  a10
 ## Levels: a1 a10 a2 a3 a4 a5 a6 a7 a8 a9</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
 <pre><code>##             col2 col3
-## row8  -0.2365988   a8
-## row9   0.7131305   a9
-## row10  1.8100048  a10</code></pre>
+## row8   1.1818333   a8
+## row9  -0.4249432   a9
+## row10 -0.9113279  a10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab<span class="op">$</span>x<span class="op">&gt;</span><span class="dv">7</span>,<span class="dv">3</span>]</code></pre></div>
 <pre><code>## factor(0)
 ## Levels: a1 a10 a2 a3 a4 a5 a6 a7 a8 a9</code></pre>
@@ -784,6 +784,25 @@ names(tab)
 </div>
 </div>
 </div>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
             </section>
 
           </div>
@@ -793,13 +812,13 @@ names(tab)
 <a href="plotting-and-graphics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({

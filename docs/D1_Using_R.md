@@ -405,7 +405,7 @@ y = x + rnorm(1000)   # another 1000 deviates, as a function of x
 plot(y ~ x)           # relationship between x and y
 ```
 
-![](D1_Using_R_files/figure-latex/related-variables-1.pdf)<!-- --> 
+<img src="D1_Using_R_files/figure-html/related-variables-1.png" width="672" />
 
 Convenient to manipulate them together
 
@@ -418,20 +418,20 @@ Convenient to manipulate them together
     ```
     
     ```
-    ##            X          Y
-    ## 1  0.2412286  1.7552819
-    ## 2  0.6542801 -0.2277761
-    ## 3 -0.6545977 -1.2613852
-    ## 4 -0.2626758 -2.3230579
-    ## 5 -1.9706712 -2.0776550
-    ## 6  1.0008351  0.1921736
+    ##             X          Y
+    ## 1 -0.04732344  0.7840313
+    ## 2 -1.59249549 -3.0961430
+    ## 3 -0.72153705  0.2662046
+    ## 4  1.14214343 -0.8641628
+    ## 5 -0.78047438 -1.5064495
+    ## 6  1.37266293  0.2043120
     ```
     
     ```r
     plot(Y ~ X, df)    # same as above
     ```
     
-    ![](D1_Using_R_files/figure-latex/data.frame-1.pdf)<!-- --> 
+    <img src="D1_Using_R_files/figure-html/data.frame-1.png" width="672" />
 
 - See all data with `View(df)`. Summarize data with `summary(df)`
 
@@ -441,13 +441,13 @@ Convenient to manipulate them together
     ```
     
     ```
-    ##        X                   Y            
-    ##  Min.   :-3.379308   Min.   :-4.648441  
-    ##  1st Qu.:-0.672767   1st Qu.:-0.936939  
-    ##  Median :-0.007956   Median :-0.002262  
-    ##  Mean   :-0.006235   Mean   :-0.014590  
-    ##  3rd Qu.: 0.658513   3rd Qu.: 0.828722  
-    ##  Max.   : 3.653966   Max.   : 4.881259
+    ##        X                  Y           
+    ##  Min.   :-3.42857   Min.   :-4.18902  
+    ##  1st Qu.:-0.65599   1st Qu.:-0.89595  
+    ##  Median : 0.03235   Median : 0.06488  
+    ##  Mean   : 0.01031   Mean   : 0.02457  
+    ##  3rd Qu.: 0.68548   3rd Qu.: 1.00547  
+    ##  Max.   : 3.60129   Max.   : 4.81667
     ```
 
 - Easy to manipulate data in a coordinated way, e.g., access column
@@ -460,20 +460,20 @@ Convenient to manipulate them together
     ```
     
     ```
-    ##            X          Y
-    ## 1  0.2412286  1.7552819
-    ## 2  0.6542801 -0.2277761
-    ## 6  1.0008351  0.1921736
-    ## 9  0.7185336  3.4859036
-    ## 10 0.2097822 -1.1744343
-    ## 11 0.3971115 -0.4739930
+    ##            X           Y
+    ## 4  1.1421434 -0.86416277
+    ## 6  1.3726629  0.20431204
+    ## 7  0.3630616 -0.88145320
+    ## 12 0.9126994  0.85139178
+    ## 15 2.2144485  2.96934998
+    ## 17 1.3105291 -0.03774609
     ```
     
     ```r
     plot(Y ~ X, positiveX)
     ```
     
-    ![](D1_Using_R_files/figure-latex/data.frame-subset-1.pdf)<!-- --> 
+    <img src="D1_Using_R_files/figure-html/data.frame-subset-1.png" width="672" />
 
 - _R_ is introspective -- ask it about itself
 
@@ -525,7 +525,7 @@ analysis)
     abline(fit, col="red", lwd=3)
     ```
     
-    ![](D1_Using_R_files/figure-latex/lm-plot-1.pdf)<!-- --> 
+    <img src="D1_Using_R_files/figure-html/lm-plot-1.png" width="672" />
 
 - Summarize the fit as an ANOVA table
 
@@ -538,9 +538,9 @@ analysis)
     ## Analysis of Variance Table
     ## 
     ## Response: Y
-    ##            Df Sum Sq Mean Sq F value    Pr(>F)    
-    ## X           1 960.93  960.93  999.81 < 2.2e-16 ***
-    ## Residuals 998 959.19    0.96                      
+    ##            Df  Sum Sq Mean Sq F value    Pr(>F)    
+    ## X           1  957.97  957.97  916.93 < 2.2e-16 ***
+    ## Residuals 998 1042.67    1.04                      
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ```
