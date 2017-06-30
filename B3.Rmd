@@ -1,5 +1,4 @@
 ---
-title: "More Stuff"
 author: "Sean Davis"
 date: "6/29/2017"
 output:
@@ -611,78 +610,31 @@ tab[tab$x>7,3]
 tab$z[tab$x>3]
 ```
 
-Basic Textual Input and Output
-------------------------------
+## Lists and Objects
 
-### Reading and Writing Data Frames to Disk
+A list is a collection of objects that may be the same or different
+types. The objects in a list often have names, and may be indexed either by name
+(e.g. `my_list$name3`) or component number (e.g. `my_list[[3]]`). 
+As an aside, a data frame is a list of matched column vectors.
 
--   [The `write.table` function and friends write a data.frame or matrix
-    to disk as a text file.]{}
+We can reate a list, noting the different data types involved.
 
-        write.table(tab,file='tab.txt',sep="\t",col.names=TRUE)
-        # remove tab from the workspace
-        rm(tab)
-        # make sure it is gone
-        ls(pattern="tab")
-        ## character(0)
+```{r}
+a = list(1,"b",c(1,2,3))
+a
+length(a)
+class(a)
+a[[3]]
+```
 
--   [The `read.table` function and friends read a data.frame or matrix
-    from a text file.]{}
+A data frame *is* a list.
 
-        tab = read.table('tab.txt',sep="\t",header=TRUE)
-        head(tab,3)
-        ##      col1       col2 col3
-        ## row1    1  0.3842634   a1
-        ## row2    2 -1.2536470   a2
-        ## row3    3 -1.4098608   a3
-
-Lists and Objects
------------------
-
-### Lists
-
--   [A list is a collection of objects that may be the same or different
-    types.]{}
-
--   [The objects generally have names, and may be indexed either by name
-    (e.g. my.list$name3) or component number (e.g.
-    my.list[[3]])
-
--   [A data frame is a list of matched column vectors.]{}
-
-### Lists in Practice
-
--   [Create a list, noting the different data types involved.]{}
-
-        a = list(1,"b",c(1,2,3))
-        a
-        ## [[1]]
-        ## [1] 1
-        ## 
-        ## [[2]]
-        ## [1] "b"
-        ## 
-        ## [[3]]
-        ## [1] 1 2 3
-        length(a)
-        ## [1] 3
-        class(a)
-        ## [1] "list"
-        a[[3]]
-        ## [1] 1 2 3
-
-### Lists in Practice
-
--   [A data frame *is* a list.]{}
-
-        # test if our friend "tab" is a list
-        is.list(tab)
-        ## [1] TRUE
-        tab[[2]]
-        ##  [1]  0.3842634 -1.2536470 -1.4098608  1.7139083 -0.1876347 -0.3343492
-        ##  [7]  1.6553040  0.5974976 -1.8443792  1.4203497
-        names(tab)
-        ## [1] "col1" "col2" "col3"
+```{r}
+# test if our friend "tab" is a list
+is.list(tab)
+tab[[2]]
+names(tab)
+```
 
 Table (\#tab:datatypes) Summary of basic R data structures.
 
@@ -693,6 +645,25 @@ Table (\#tab:datatypes) Summary of basic R data structures.
    data frame          two-dimensional data, multiple data types
       list        list of data types, not all need to be the same type
      object     a list with attributes and potentially slots and methods
+
+# Basic Textual Input and Output
+
+The `write.table` function and friends write a data.frame or matrix to disk as a text file.
+
+```{r}
+write.table(tab,file='tab.txt',sep="\t",col.names=TRUE)
+# remove tab from the workspace
+rm(tab)
+# make sure it is gone
+ls(pattern="tab")
+```
+
+The `read.table` function and friends read a data.frame or matrix from a text file.
+
+```{r}
+tab = read.table('tab.txt',sep="\t",header=TRUE)
+head(tab,3)
+```
 
 # Plotting and Graphics
 

@@ -69,7 +69,7 @@ Visualize
 plot(Weight ~ Year, brfssFemale)
 ```
 
-<img src="D3_Statistics_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+![](D3_Statistics_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 Statistical test
 
@@ -120,19 +120,19 @@ Visualize the relationship
 hist(brfss2010Male$Weight)
 ```
 
-<img src="D3_Statistics_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+![](D3_Statistics_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
 ```r
 hist(brfss2010Male$Height)
 ```
 
-<img src="D3_Statistics_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+![](D3_Statistics_files/figure-latex/unnamed-chunk-7-2.pdf)<!-- --> 
 
 ```r
 plot(Weight ~ Height, brfss2010Male)
 ```
 
-<img src="D3_Statistics_files/figure-html/unnamed-chunk-7-3.png" width="672" />
+![](D3_Statistics_files/figure-latex/unnamed-chunk-7-3.pdf)<!-- --> 
 
 Fit a linear model (regression)
 
@@ -179,7 +179,7 @@ abline(fit, col="blue", lwd=2)
 points(180, 88, col="red", cex=4, pch=20)
 ```
 
-<img src="D3_Statistics_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+![](D3_Statistics_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 Class and available 'methods'
 
@@ -413,4 +413,4 @@ Visualize the result, coloring points by B- or T-cell status
 plot(cmd, col=highlight[pdata$BorT])
 ```
 
-<img src="D3_Statistics_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+![](D3_Statistics_files/figure-latex/unnamed-chunk-23-1.pdf)<!-- --> 

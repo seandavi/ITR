@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="using-r-in-real-life.html">
-<link rel="next" href="appendix-a-swirl.html">
+<link rel="prev" href="introduction-to-r-data-structures.html">
+<link rel="next" href="plotting-and-graphics.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -209,95 +209,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="graphics-and-visualization" class="section level1">
-<h1><span class="header-section-number">16</span> Graphics and Visualization</h1>
-<p>Load the BRFSS-subset.csv data</p>
-<!--
-
-```r
-path <- "BRFSS-subset.csv"
-brfss <- read.csv(path)
-```
--->
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> &quot;BRFSS-subset.csv&quot;</span>   <span class="co"># or file.choose()</span>
-brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div>
-<p>Clean it by coercing <code>Year</code> to factor</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss<span class="op">$</span>Year &lt;-<span class="st"> </span><span class="kw">factor</span>(brfss<span class="op">$</span>Year)</code></pre></div>
-<div id="base-r-graphics" class="section level2">
-<h2><span class="header-section-number">16.1</span> Base <em>R</em> Graphics</h2>
-<p>Useful for quick exploration during a normal work flow.</p>
-<ul>
-<li>Main functions: <code>plot()</code>, <code>hist()</code>, <code>boxplot()</code>, …</li>
-<li>Graphical parameters – see <code>?par</code>, but often provided as arguments to <code>plot()</code>, etc.</li>
-<li><p>Construct complicated plots by layering information, e.g., points, regression line, annotation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss2010Male &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss, (Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span>) <span class="op">&amp;</span><span class="st"> </span>(Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>))
-fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male)
-
-<span class="kw">plot</span>(Weight <span class="op">~</span><span class="st"> </span>Height, brfss2010Male, <span class="dt">main=</span><span class="st">&quot;2010, Males&quot;</span>)
-<span class="kw">abline</span>(fit, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
-<span class="kw">points</span>(<span class="dv">180</span>, <span class="dv">90</span>, <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">cex=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p></li>
-<li><p>Approach to complicated graphics: create a grid of panels (e.g., <code>par(mfrows=c(1, 2))</code>, populate with plots, restore original layout.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfssFemale &lt;-<span class="st"> </span><span class="kw">subset</span>(brfss, Sex<span class="op">==</span><span class="st">&quot;Female&quot;</span>)
-
-opar =<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))     <span class="co"># layout: 2 &#39;rows&#39; and 1 &#39;column&#39;</span>
-<span class="kw">hist</span>(                         <span class="co"># first panel -- 1990</span>
-    brfssFemale[ brfssFemale<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>, <span class="st">&quot;Weight&quot;</span> ],
-    <span class="dt">main =</span> <span class="st">&quot;Female, 1990&quot;</span>)
-<span class="kw">hist</span>(                         <span class="co"># second panel -- 2010</span>
-    brfssFemale[ brfssFemale<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span>, <span class="st">&quot;Weight&quot;</span> ],
-    <span class="dt">main =</span> <span class="st">&quot;Female, 2010&quot;</span>)</code></pre></div>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(opar)                      <span class="co"># restore original layout</span></code></pre></div></li>
-</ul>
+<div id="basic-textual-input-and-output" class="section level1">
+<h1><span class="header-section-number">5</span> Basic Textual Input and Output</h1>
+<p>The <code>write.table</code> function and friends write a data.frame or matrix to disk as a text file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(tab,<span class="dt">file=</span><span class="st">&#39;tab.txt&#39;</span>,<span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>,<span class="dt">col.names=</span><span class="ot">TRUE</span>)
+<span class="co"># remove tab from the workspace</span>
+<span class="kw">rm</span>(tab)
+<span class="co"># make sure it is gone</span>
+<span class="kw">ls</span>(<span class="dt">pattern=</span><span class="st">&quot;tab&quot;</span>)</code></pre></div>
+<pre><code>## character(0)</code></pre>
+<p>The <code>read.table</code> function and friends read a data.frame or matrix from a text file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab =<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&#39;tab.txt&#39;</span>,<span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>,<span class="dt">header=</span><span class="ot">TRUE</span>)
+<span class="kw">head</span>(tab,<span class="dv">3</span>)</code></pre></div>
+<pre><code>##      col1       col2 col3
+## row1    1 -0.5483399   a1
+## row2    2 -0.2268919   a2
+## row3    3 -1.5459086   a3</code></pre>
 </div>
-<div id="what-makes-for-a-good-graphical-display" class="section level2">
-<h2><span class="header-section-number">16.2</span> What makes for a good graphical display?</h2>
-<ul>
-<li>Common scales for comparison</li>
-<li>Efficient use of space</li>
-<li>Careful color choice – qualitative, gradient, divergent schemes; color blind aware; …</li>
-<li>Emphasis on data rather than labels</li>
-<li>Convey statistical uncertainty</li>
-</ul>
-</div>
-<div id="grammar-of-graphics-ggplot2" class="section level2">
-<h2><span class="header-section-number">16.3</span> Grammar of Graphics: ggplot2</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
-<ul>
-<li><a href="http://docs.ggplot2.org" class="uri">http://docs.ggplot2.org</a></li>
-</ul>
-<p>‘Grammar of graphics’</p>
-<ul>
-<li>Specify data and ‘aesthetics’ (<code>aes()</code>) to be plotted</li>
-<li><p>Add layers (<code>geom_*()</code>) of information</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</code></pre></div>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p></li>
-<li><p>Capture a plot and augment it</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt &lt;-<span class="st"> </span><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)
-plt <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;2010 Male&quot;</span>)</code></pre></div>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p></li>
-<li><p>Use <code>facet_*()</code> for layouts</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Year)</code></pre></div>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p></li>
-<li><p>Choose display to emphasize relevant aspects of data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(Weight, <span class="dt">fill=</span>Year)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p></li>
-</ul>
-
-<p>lsls— author: “Sean Davis” date: “6/29/2017” output: html_document: default pdf_document: default —</p>
-</div>
-</div>
-
-
-
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -322,8 +250,8 @@ plt <span class="op">+</span><span class="st"> </span><span class="kw">labs</spa
           </div>
         </div>
       </div>
-<a href="using-r-in-real-life.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="appendix-a-swirl.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction-to-r-data-structures.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="plotting-and-graphics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -352,7 +280,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/seandavi/ITR/edit/master/D4_Graphics.Rmd",
+"link": "https://github.com/seandavi/ITR/edit/master/B3.Rmd",
 "text": "Edit"
 },
 "download": ["_main.pdf"],

@@ -208,7 +208,7 @@ at a subset of the data.
             main="Males")
     ```
     
-    <img src="D2_IO_files/figure-html/brfss-boxplot-1.png" width="480" />
+    ![](D2_IO_files/figure-latex/brfss-boxplot-1.pdf)<!-- --> 
 
 9. Use `hist()` to plot a histogram of weights of the 1990 Female individuals.
 
@@ -218,7 +218,7 @@ at a subset of the data.
          main="Females, 1990", xlab="Weight" )
     ```
     
-    <img src="D2_IO_files/figure-html/brfss-hist-1.png" width="480" />
+    ![](D2_IO_files/figure-latex/brfss-hist-1.pdf)<!-- --> 
 
 [BRFSS]: http://www.cdc.gov/brfss/about/index.htm
 
@@ -674,4 +674,4 @@ t.test(age ~ mol.biol, bcrabl)
 boxplot(age ~ mol.biol, bcrabl)
 ```
 
-<img src="D2_IO_files/figure-html/ALL-age-1.png" width="672" />
+![](D2_IO_files/figure-latex/ALL-age-1.pdf)<!-- --> 
