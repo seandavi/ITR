@@ -478,167 +478,138 @@ Tabulating factors is a useful way to get a sense of the "sample" set available.
 table(citizenf)
 ```
 
+
 ## Rectangular Data
 
-### Matrices and Data Frames
 
--   [A matrix is a rectangular array. It can be viewed as a collection
-    of column vectors all of the same length and the same type (i.e.
-    numeric, character or logical).]{}
+A _matrix_ is a rectangular collection of the same data type. It can be viewed as a collection
+of column vectors all of the same length and the same type (i.e. numeric, character or logical). A _data.frame_ is *also* a rectangular array. All of the columns must be the same length, but they may be of *different* types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.
 
--   [A data frame is *also* a rectangular array. All of the columns must
-    be the same length, but they may be of *different* types.]{}
-
--   [The rows and columns of a matrix or data frame can be given
-    names.]{}
-
--   [However these are implemented differently in R; many operations
-    will work for one but not both.]{}
+### Matrices
 
 
+We start by building a matrix from parts:
 
-### Matrix Operations
+```{r}
+x <- 1:10 
+y <- rnorm(10)
 
-    x<-1:10 
-    y<-rnorm(10)
-    # make a matrix by column binding two numeric vectors
-    mat<-cbind(x,y)
-    mat
-    ##        x          y
-    ##  [1,]  1  0.3842634
-    ##  [2,]  2 -1.2536470
-    ##  [3,]  3 -1.4098608
-    ##  [4,]  4  1.7139083
-    ##  [5,]  5 -0.1876347
-    ##  [6,]  6 -0.3343492
-    ##  [7,]  7  1.6553040
-    ##  [8,]  8  0.5974976
-    ##  [9,]  9 -1.8443792
-    ## [10,] 10  1.4203497
-    # And the names of the rows and columns
-    rownames(mat)
-    ## NULL
-    colnames(mat)
-    ## [1] "x" "y"
+# make a matrix by column binding two numeric vectors
+mat<-cbind(x,y)
+mat
+```
 
-### Matrix Operations
+Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning. 
+
+```{r}
+rownames(mat)
+colnames(mat)
+```
+
+Matrices have dimensions.
+
+```{r}
+dim(mat)
+nrow(mat)
+ncol(mat)
+```
 
 Indexing for matrices works as for vectors except that we now need to
 include both the row and column (in that order).
 
-    # The 2nd element of the 1st row of mat
-    mat[1,2]
-    ##         y 
-    ## 0.3842634
-    # The first ROW of mat
-    mat[1,]
-    ##         x         y 
-    ## 1.0000000 0.3842634
-    # The first COLUMN of mat
-    mat[,1]
-    ##  [1]  1  2  3  4  5  6  7  8  9 10
-    # and all elements of mat that are > 4; note no comma
-    mat[mat>4]
-    ## [1]  5  6  7  8  9 10
+```{r}
+# The 2nd element of the 1st row of mat
+mat[1,2]
+# The first ROW of mat
+mat[1,]
+# The first COLUMN of mat
+mat[,1]
+# and all elements of mat that are > 4; note no comma
+mat[mat>4]
+## [1]  5  6  7  8  9 10
+```
 
-### Matrix Operations
+Note that in the last case, there is no ",", so R treats the matrix as a long vector (length=20). This is convenient, sometimes, but it can also be a source of error, as some code may "work" but be doing something unexpected.
 
-    # create a matrix with 2 columns and 10 rows
-    # filled with random normal deviates
-    m = matrix(rnorm(20),nrow=10)
-    # multiply all values in the matrix by 20
-    m = m*20
-    # and add 100 to the first column of m
-    m[,1] = m[,1] + 100
-    # summarize m
-    summary(m)
-    ##        V1               V2          
-    ##  Min.   : 44.58   Min.   :-42.4628  
-    ##  1st Qu.: 93.26   1st Qu.:-19.8712  
-    ##  Median :100.72   Median :  3.6691  
-    ##  Mean   : 95.27   Mean   : -0.4271  
-    ##  3rd Qu.:106.33   3rd Qu.: 17.3559  
-    ##  Max.   :111.29   Max.   : 31.2418
+In the next example, we create a matrix with 2 columns and 10 rows.
 
-Data Frames
------------
+```{r}
+m = matrix(rnorm(20),nrow=10)
+# multiply all values in the matrix by 20
+m = m*20
+# and add 100 to the first column of m
+m[,1] = m[,1] + 100
+# summarize m
+summary(m)
+```
 
-### Matrices Versus Data Frames
+### Data Frames
 
-    mat<-cbind(x,y)
-    class(mat[,1])          
-    ## [1] "numeric"
-    z = paste0('a',1:10)
-    tab<-cbind(x,y,z)
-    class(tab)
-    ## [1] "matrix"
-    mode(tab[,1])
-    ## [1] "character"
-    head(tab,4)
-    ##      x   y                   z   
-    ## [1,] "1" "0.384263423333191" "a1"
-    ## [2,] "2" "-1.25364703104426" "a2"
-    ## [3,] "3" "-1.40986082624299" "a3"
-    ## [4,] "4" "1.7139082579506"   "a4"
+#### Matrices Versus Data Frames
 
-### Matrices Versus Data Frames
 
-    tab<-data.frame(x,y,z)
-    class(tab)
-    ## [1] "data.frame"
-    head(tab)
-    ##   x          y  z
-    ## 1 1  0.3842634 a1
-    ## 2 2 -1.2536470 a2
-    ## 3 3 -1.4098608 a3
-    ## 4 4  1.7139083 a4
-    ## 5 5 -0.1876347 a5
-    ## 6 6 -0.3343492 a6
-    mode(tab[,1])
-    ## [1] "numeric"
-    class(tab[,3])
-    ## [1] "factor"
-    rownames(tab)           
-    ##  [1] "1"  "2"  "3"  "4"  "5"  "6"  "7"  "8"  "9"  "10"
-    rownames(tab)<-paste0("row",1:10)
-    rownames(tab)
-    ##  [1] "row1"  "row2"  "row3"  "row4"  "row5"  "row6"  "row7"  "row8" 
-    ##  [9] "row9"  "row10"
+```{r}
+mat<-cbind(x,y)
+head(mat)
+class(mat[,1])          
+z = paste0('a',1:10)
+tab<-cbind(x,y,z)
+class(tab)
+mode(tab[,1])
+head(tab,4)
+```
 
-### Data Frames, Continued
 
--   [Data frame columns can be refered to by name using the “dollar
-    sign” operator]{}
+```{r}
+tab<-data.frame(x,y,z)
+class(tab)
+head(tab)
+mode(tab[,1])
+class(tab[,3])
+rownames(tab)           
+rownames(tab)<-paste0("row",1:10)
+rownames(tab)
+```
 
-        tab\$x
-        ##  [1]  1  2  3  4  5  6  7  8  9 10
-        tab\$y
-        ##  [1]  0.3842634 -1.2536470 -1.4098608  1.7139083 -0.1876347 -0.3343492
-        ##  [7]  1.6553040  0.5974976 -1.8443792  1.4203497
 
--   [Column names can be set, which can be useful for referring to data
-    later]{}
 
-        colnames(tab)
-        ## [1] "x" "y" "z"
-        colnames(tab) = paste0('col',1:3)
 
-### Exercise: Subsetting Data Frames
+Data frame columns can be refered to by name using the "dollar sign" operator.
 
-Try these
+```{r}
+head(tab)
+tab$x
+tab$y
+```
 
-    ncol(tab)
-    nrow(tab)
-    dim(tab)
-    summary(tab)
-    tab[1:3,]
-    tab[,2:3]
-    tab[,1]>7
-    tab[tab[,1]>7,]
-    tab[tab[,1]>7,3]
-    tab[tab[,1]>7,2:3]
-    tab[tab\$x>7,3]
-    tab\$z[tab\$x>3]
+Column names can be set, which can be useful for referring to data
+later.
+
+```{r}
+colnames(tab)
+colnames(tab) = paste0('col',1:3)
+```
+
+Data frames have functions to report size and even `summary` functions. Try the following:
+
+```{r}
+ncol(tab)
+nrow(tab)
+dim(tab)
+summary(tab)
+```
+
+Extracting parts of a `data.frame` work as for matrices. Try to think about what each of the following will do before asking R to evaluate the result. 
+```{r}
+tab[1:3,]
+tab[,2:3]
+tab[,1]>7
+tab[tab[,1]>7,]
+tab[tab[,1]>7,3]
+tab[tab[,1]>7,2:3]
+tab[tab$x>7,3]
+tab$z[tab$x>3]
+```
 
 Basic Textual Input and Output
 ------------------------------
