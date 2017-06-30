@@ -33,12 +33,12 @@
   
 <link rel="prev" href="first-steps.html">
 <link rel="next" href="basic-textual-input-and-output.html">
-<script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
-<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 
 
 
@@ -383,13 +383,13 @@ gt1 =<span class="st"> </span>(myvec <span class="op">&gt;</span><span class="st
 <pre><code>## [1] 6</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># and use our logical vector to create a vector of myvec values that are &gt;0.25</span>
 myvec[gt1]</code></pre></div>
-<pre><code>## [1] 0.6501825 0.9298229 1.0520740 1.6606895 0.7479910 0.5859046</code></pre>
+<pre><code>## [1] 0.8386700 2.5270888 1.8484906 1.6477362 0.6594236 2.5636102</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;</span>
 myvec[<span class="op">!</span>gt1]</code></pre></div>
-<pre><code>## [1] -0.1623548 -0.9908024  0.1939620 -0.5053917</code></pre>
+<pre><code>## [1] -0.4583701 -0.3723138 -0.4451370 -0.7341693</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># shorter, one line approach</span>
 myvec[myvec <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.25</span>]</code></pre></div>
-<pre><code>## [1] 0.6501825 0.9298229 1.0520740 1.6606895 0.7479910 0.5859046</code></pre>
+<pre><code>## [1] 0.8386700 2.5270888 1.8484906 1.6477362 0.6594236 2.5636102</code></pre>
 </div>
 <div id="character-vectors-a.k.a.-strings" class="section level3">
 <h3><span class="header-section-number">4.1.6</span> Character Vectors, A.K.A. Strings</h3>
@@ -499,16 +499,16 @@ y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1
 mat&lt;-<span class="kw">cbind</span>(x,y)
 mat</code></pre></div>
 <pre><code>##        x           y
-##  [1,]  1 -0.54833990
-##  [2,]  2 -0.22689194
-##  [3,]  3 -1.54590859
-##  [4,]  4  0.58909602
-##  [5,]  5 -0.83401303
-##  [6,]  6 -1.25567778
-##  [7,]  7  0.90024754
-##  [8,]  8 -0.09479493
-##  [9,]  9  0.68106009
-## [10,] 10 -0.54461085</code></pre>
+##  [1,]  1 -0.92602857
+##  [2,]  2  1.51288833
+##  [3,]  3  0.01616257
+##  [4,]  4  1.35109912
+##  [5,]  5 -0.60914759
+##  [6,]  6  0.94849648
+##  [7,]  7 -0.70250338
+##  [8,]  8  0.07497098
+##  [9,]  9 -0.59131121
+## [10,] 10  0.24393806</code></pre>
 <p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(mat)</code></pre></div>
 <pre><code>## NULL</code></pre>
@@ -525,11 +525,11 @@ mat</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The 2nd element of the 1st row of mat</span>
 mat[<span class="dv">1</span>,<span class="dv">2</span>]</code></pre></div>
 <pre><code>##          y 
-## -0.5483399</code></pre>
+## -0.9260286</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The first ROW of mat</span>
 mat[<span class="dv">1</span>,]</code></pre></div>
 <pre><code>##          x          y 
-##  1.0000000 -0.5483399</code></pre>
+##  1.0000000 -0.9260286</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The first COLUMN of mat</span>
 mat[,<span class="dv">1</span>]</code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -547,12 +547,12 @@ m[,<span class="dv">1</span>] =<span class="st"> </span>m[,<span class="dv">1</s
 <span class="co"># summarize m</span>
 <span class="kw">summary</span>(m)</code></pre></div>
 <pre><code>##        V1               V2         
-##  Min.   : 71.54   Min.   :-15.772  
-##  1st Qu.: 89.28   1st Qu.: -3.069  
-##  Median : 93.71   Median : 17.684  
-##  Mean   : 96.19   Mean   : 11.846  
-##  3rd Qu.:104.46   3rd Qu.: 20.764  
-##  Max.   :122.16   Max.   : 40.738</code></pre>
+##  Min.   : 81.21   Min.   :-29.178  
+##  1st Qu.: 82.00   1st Qu.: -6.521  
+##  Median : 86.82   Median :  1.643  
+##  Mean   : 91.60   Mean   :  3.591  
+##  3rd Qu.:102.56   3rd Qu.:  6.752  
+##  Max.   :107.12   Max.   : 39.894</code></pre>
 </div>
 <div id="data-frames" class="section level3">
 <h3><span class="header-section-number">4.2.2</span> Data Frames</h3>
@@ -560,13 +560,13 @@ m[,<span class="dv">1</span>] =<span class="st"> </span>m[,<span class="dv">1</s
 <h4><span class="header-section-number">4.2.2.1</span> Matrices Versus Data Frames</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat&lt;-<span class="kw">cbind</span>(x,y)
 <span class="kw">head</span>(mat)</code></pre></div>
-<pre><code>##      x          y
-## [1,] 1 -0.5483399
-## [2,] 2 -0.2268919
-## [3,] 3 -1.5459086
-## [4,] 4  0.5890960
-## [5,] 5 -0.8340130
-## [6,] 6 -1.2556778</code></pre>
+<pre><code>##      x           y
+## [1,] 1 -0.92602857
+## [2,] 2  1.51288833
+## [3,] 3  0.01616257
+## [4,] 4  1.35109912
+## [5,] 5 -0.60914759
+## [6,] 6  0.94849648</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mat[,<span class="dv">1</span>])          </code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;a&#39;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
@@ -577,21 +577,21 @@ tab&lt;-<span class="kw">cbind</span>(x,y,z)
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tab,<span class="dv">4</span>)</code></pre></div>
 <pre><code>##      x   y                    z   
-## [1,] &quot;1&quot; &quot;-0.548339904933252&quot; &quot;a1&quot;
-## [2,] &quot;2&quot; &quot;-0.226891938350153&quot; &quot;a2&quot;
-## [3,] &quot;3&quot; &quot;-1.54590858766932&quot;  &quot;a3&quot;
-## [4,] &quot;4&quot; &quot;0.589096022565874&quot;  &quot;a4&quot;</code></pre>
+## [1,] &quot;1&quot; &quot;-0.92602857096029&quot;  &quot;a1&quot;
+## [2,] &quot;2&quot; &quot;1.51288832985976&quot;   &quot;a2&quot;
+## [3,] &quot;3&quot; &quot;0.0161625713223032&quot; &quot;a3&quot;
+## [4,] &quot;4&quot; &quot;1.35109911521925&quot;   &quot;a4&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab&lt;-<span class="kw">data.frame</span>(x,y,z)
 <span class="kw">class</span>(tab)</code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tab)</code></pre></div>
-<pre><code>##   x          y  z
-## 1 1 -0.5483399 a1
-## 2 2 -0.2268919 a2
-## 3 3 -1.5459086 a3
-## 4 4  0.5890960 a4
-## 5 5 -0.8340130 a5
-## 6 6 -1.2556778 a6</code></pre>
+<pre><code>##   x           y  z
+## 1 1 -0.92602857 a1
+## 2 2  1.51288833 a2
+## 3 3  0.01616257 a3
+## 4 4  1.35109912 a4
+## 5 5 -0.60914759 a5
+## 6 6  0.94849648 a6</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mode</span>(tab[,<span class="dv">1</span>])</code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(tab[,<span class="dv">3</span>])</code></pre></div>
@@ -604,18 +604,18 @@ tab&lt;-<span class="kw">cbind</span>(x,y,z)
 ##  [9] &quot;row9&quot;  &quot;row10&quot;</code></pre>
 <p>Data frame columns can be refered to by name using the “dollar sign” operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tab)</code></pre></div>
-<pre><code>##      x          y  z
-## row1 1 -0.5483399 a1
-## row2 2 -0.2268919 a2
-## row3 3 -1.5459086 a3
-## row4 4  0.5890960 a4
-## row5 5 -0.8340130 a5
-## row6 6 -1.2556778 a6</code></pre>
+<pre><code>##      x           y  z
+## row1 1 -0.92602857 a1
+## row2 2  1.51288833 a2
+## row3 3  0.01616257 a3
+## row4 4  1.35109912 a4
+## row5 5 -0.60914759 a5
+## row6 6  0.94849648 a6</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab<span class="op">$</span>x</code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab<span class="op">$</span>y</code></pre></div>
-<pre><code>##  [1] -0.54833990 -0.22689194 -1.54590859  0.58909602 -0.83401303
-##  [6] -1.25567778  0.90024754 -0.09479493  0.68106009 -0.54461085</code></pre>
+<pre><code>##  [1] -0.92602857  1.51288833  0.01616257  1.35109912 -0.60914759
+##  [6]  0.94849648 -0.70250338  0.07497098 -0.59131121  0.24393806</code></pre>
 <p>Column names can be set, which can be useful for referring to data later.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(tab)</code></pre></div>
 <pre><code>## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
@@ -628,47 +628,47 @@ tab&lt;-<span class="kw">cbind</span>(x,y,z)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(tab)</code></pre></div>
 <pre><code>## [1] 10  3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab)</code></pre></div>
-<pre><code>##       col1            col2              col3  
-##  Min.   : 1.00   Min.   :-1.5459   a1     :1  
-##  1st Qu.: 3.25   1st Qu.:-0.7626   a10    :1  
-##  Median : 5.50   Median :-0.3858   a2     :1  
-##  Mean   : 5.50   Mean   :-0.2880   a3     :1  
-##  3rd Qu.: 7.75   3rd Qu.: 0.4181   a4     :1  
-##  Max.   :10.00   Max.   : 0.9002   a5     :1  
-##                                    (Other):4</code></pre>
+<pre><code>##       col1            col2               col3  
+##  Min.   : 1.00   Min.   :-0.92603   a1     :1  
+##  1st Qu.: 3.25   1st Qu.:-0.60469   a10    :1  
+##  Median : 5.50   Median : 0.04557   a2     :1  
+##  Mean   : 5.50   Mean   : 0.13186   a3     :1  
+##  3rd Qu.: 7.75   3rd Qu.: 0.77236   a4     :1  
+##  Max.   :10.00   Max.   : 1.51289   a5     :1  
+##                                     (Other):4</code></pre>
 <p>Extracting parts of a <code>data.frame</code> work as for matrices. Try to think about what each of the following will do before asking R to evaluate the result.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]</code></pre></div>
-<pre><code>##      col1       col2 col3
-## row1    1 -0.5483399   a1
-## row2    2 -0.2268919   a2
-## row3    3 -1.5459086   a3</code></pre>
+<pre><code>##      col1        col2 col3
+## row1    1 -0.92602857   a1
+## row2    2  1.51288833   a2
+## row3    3  0.01616257   a3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
 <pre><code>##              col2 col3
-## row1  -0.54833990   a1
-## row2  -0.22689194   a2
-## row3  -1.54590859   a3
-## row4   0.58909602   a4
-## row5  -0.83401303   a5
-## row6  -1.25567778   a6
-## row7   0.90024754   a7
-## row8  -0.09479493   a8
-## row9   0.68106009   a9
-## row10 -0.54461085  a10</code></pre>
+## row1  -0.92602857   a1
+## row2   1.51288833   a2
+## row3   0.01616257   a3
+## row4   1.35109912   a4
+## row5  -0.60914759   a5
+## row6   0.94849648   a6
+## row7  -0.70250338   a7
+## row8   0.07497098   a8
+## row9  -0.59131121   a9
+## row10  0.24393806  a10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span></code></pre></div>
 <pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span>,]</code></pre></div>
 <pre><code>##       col1        col2 col3
-## row8     8 -0.09479493   a8
-## row9     9  0.68106009   a9
-## row10   10 -0.54461085  a10</code></pre>
+## row8     8  0.07497098   a8
+## row9     9 -0.59131121   a9
+## row10   10  0.24393806  a10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span>,<span class="dv">3</span>]</code></pre></div>
 <pre><code>## [1] a8  a9  a10
 ## Levels: a1 a10 a2 a3 a4 a5 a6 a7 a8 a9</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab[,<span class="dv">1</span>]<span class="op">&gt;</span><span class="dv">7</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
 <pre><code>##              col2 col3
-## row8  -0.09479493   a8
-## row9   0.68106009   a9
-## row10 -0.54461085  a10</code></pre>
+## row8   0.07497098   a8
+## row9  -0.59131121   a9
+## row10  0.24393806  a10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[tab<span class="op">$</span>x<span class="op">&gt;</span><span class="dv">7</span>,<span class="dv">3</span>]</code></pre></div>
 <pre><code>## factor(0)
 ## Levels: a1 a10 a2 a3 a4 a5 a6 a7 a8 a9</code></pre>
@@ -702,8 +702,8 @@ a</code></pre></div>
 <span class="kw">is.list</span>(tab)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[[<span class="dv">2</span>]]</code></pre></div>
-<pre><code>##  [1] -0.54833990 -0.22689194 -1.54590859  0.58909602 -0.83401303
-##  [6] -1.25567778  0.90024754 -0.09479493  0.68106009 -0.54461085</code></pre>
+<pre><code>##  [1] -0.92602857  1.51288833  0.01616257  1.35109912 -0.60914759
+##  [6]  0.94849648 -0.70250338  0.07497098 -0.59131121  0.24393806</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(tab)</code></pre></div>
 <pre><code>## [1] &quot;col1&quot; &quot;col2&quot; &quot;col3&quot;</code></pre>
 <p>Table (#tab:datatypes) Summary of basic R data structures.</p>
@@ -739,25 +739,6 @@ a</code></pre></div>
 </table>
 </div>
 </div>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-93043521-1', 'auto');
-        ga('send', 'pageview');
-
-         
-        var links = document.querySelectorAll('a');
-        Array.prototype.map.call(links, function(item) {
-            if (item.host != document.location.host) {
-                item.addEventListener('click', function() {
-                    var action = item.getAttribute('data-action') || 'follow';
-                    ga('send', 'event', 'outbound', action, item.href);
-                });
-            }
-        });
-    </script>
             </section>
 
           </div>
@@ -767,13 +748,13 @@ a</code></pre></div>
 <a href="basic-textual-input-and-output.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
-<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
-<script src="book_assets/gitbook-2.6.7/js/lunr.js"></script>
-<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -796,7 +777,7 @@ gitbook.start({
 "link": "https://github.com/seandavi/ITR/edit/master/B3.Rmd",
 "text": "Edit"
 },
-"download": ["_main.pdf"],
+"download": ["ITR.pdf"],
 "toc": {
 "collapse": "subsection"
 }

@@ -129,7 +129,7 @@ Useful for quick exploration during a normal work flow.
     points(180, 90, pch=20, cex=3, col="red")
     ```
     
-    ![](D4_Graphics_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
+    <img src="D4_Graphics_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 - Approach to complicated graphics: create a grid of panels (e.g.,
   `par(mfrows=c(1, 2))`, populate with plots, restore original layout.
@@ -147,7 +147,7 @@ Useful for quick exploration during a normal work flow.
         main = "Female, 2010")
     ```
     
-    ![](D4_Graphics_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+    <img src="D4_Graphics_files/figure-html/unnamed-chunk-7-1.png" width="672" />
     
     ```r
     par(opar)                      # restore original layout
@@ -183,7 +183,7 @@ library(ggplot2)
         geom_smooth(method="lm")
     ```
     
-    ![](D4_Graphics_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+    <img src="D4_Graphics_files/figure-html/unnamed-chunk-9-1.png" width="672" />
     
 - Capture a plot and augment it
 
@@ -195,7 +195,7 @@ library(ggplot2)
     plt + labs(title = "2010 Male")
     ```
     
-    ![](D4_Graphics_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+    <img src="D4_Graphics_files/figure-html/unnamed-chunk-10-1.png" width="672" />
     
 - Use `facet_*()` for layouts
 
@@ -206,7 +206,7 @@ library(ggplot2)
         facet_grid(. ~ Year)
     ```
     
-    ![](D4_Graphics_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+    <img src="D4_Graphics_files/figure-html/unnamed-chunk-11-1.png" width="672" />
         
 - Choose display to emphasize relevant aspects of data
 
@@ -216,4 +216,4 @@ library(ggplot2)
         geom_density(alpha=.2)
     ```
     
-    ![](D4_Graphics_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
+    <img src="D4_Graphics_files/figure-html/unnamed-chunk-12-1.png" width="672" />
