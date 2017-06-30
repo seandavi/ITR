@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="first-steps.html">
-<link rel="next" href="rectangular-data.html">
+<link rel="next" href="plotting-and-graphics.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -124,98 +124,85 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#logical-vectors"><i class="fa fa-check"></i><b>4.1.3</b> Logical Vectors</a></li>
 <li class="chapter" data-level="4.1.4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#logical-operators"><i class="fa fa-check"></i><b>4.1.4</b> Logical Operators</a></li>
 <li class="chapter" data-level="4.1.5" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#indexing-vectors"><i class="fa fa-check"></i><b>4.1.5</b> Indexing Vectors</a></li>
-<li class="chapter" data-level="4.1.6" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#indexing-vectors-and-logical-vectors"><i class="fa fa-check"></i><b>4.1.6</b> Indexing Vectors and Logical Vectors</a></li>
+<li class="chapter" data-level="4.1.6" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#character-vectors-a.k.a.-strings"><i class="fa fa-check"></i><b>4.1.6</b> Character Vectors, A.K.A. Strings</a></li>
+<li class="chapter" data-level="4.1.7" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#missing-values-aka-na"><i class="fa fa-check"></i><b>4.1.7</b> Missing Values, AKA “NA”</a></li>
+<li class="chapter" data-level="4.1.8" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#factors"><i class="fa fa-check"></i><b>4.1.8</b> Factors</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#string-handling-in-r"><i class="fa fa-check"></i><b>4.2</b> String Handling in R</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#concatenating-strings"><i class="fa fa-check"></i><b>4.2.1</b> Concatenating Strings</a></li>
-<li class="chapter" data-level="4.2.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#more-string-functions"><i class="fa fa-check"></i><b>4.2.2</b> More String Functions</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#rectangular-data"><i class="fa fa-check"></i><b>4.2</b> Rectangular Data</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrices-and-data-frames"><i class="fa fa-check"></i><b>4.2.1</b> Matrices and Data Frames</a></li>
+<li class="chapter" data-level="4.2.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrix-operations"><i class="fa fa-check"></i><b>4.2.2</b> Matrix Operations</a></li>
+<li class="chapter" data-level="4.2.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrix-operations-1"><i class="fa fa-check"></i><b>4.2.3</b> Matrix Operations</a></li>
+<li class="chapter" data-level="4.2.4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrix-operations-2"><i class="fa fa-check"></i><b>4.2.4</b> Matrix Operations</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#special-data-types"><i class="fa fa-check"></i><b>4.3</b> Special Data Types</a><ul>
-<li class="chapter" data-level="4.3.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#missing-values-aka-na"><i class="fa fa-check"></i><b>4.3.1</b> Missing Values, AKA “NA”</a></li>
-<li class="chapter" data-level="4.3.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#factors"><i class="fa fa-check"></i><b>4.3.2</b> Factors</a></li>
-<li class="chapter" data-level="4.3.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#factors-in-practice"><i class="fa fa-check"></i><b>4.3.3</b> Factors in Practice</a></li>
-<li class="chapter" data-level="4.3.4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#factors-in-practice-1"><i class="fa fa-check"></i><b>4.3.4</b> Factors in Practice</a></li>
+<li class="chapter" data-level="4.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#data-frames"><i class="fa fa-check"></i><b>4.3</b> Data Frames</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrices-versus-data-frames"><i class="fa fa-check"></i><b>4.3.1</b> Matrices Versus Data Frames</a></li>
+<li class="chapter" data-level="4.3.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrices-versus-data-frames-1"><i class="fa fa-check"></i><b>4.3.2</b> Matrices Versus Data Frames</a></li>
+<li class="chapter" data-level="4.3.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#data-frames-continued"><i class="fa fa-check"></i><b>4.3.3</b> Data Frames, Continued</a></li>
+<li class="chapter" data-level="4.3.4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#exercise-subsetting-data-frames"><i class="fa fa-check"></i><b>4.3.4</b> Exercise: Subsetting Data Frames</a></li>
 </ul></li>
+<li class="chapter" data-level="4.4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#basic-textual-input-and-output"><i class="fa fa-check"></i><b>4.4</b> Basic Textual Input and Output</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#reading-and-writing-data-frames-to-disk"><i class="fa fa-check"></i><b>4.4.1</b> Reading and Writing Data Frames to Disk</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="rectangular-data.html"><a href="rectangular-data.html"><i class="fa fa-check"></i><b>5</b> Rectangular Data</a><ul>
-<li class="chapter" data-level="5.0.1" data-path="rectangular-data.html"><a href="rectangular-data.html#matrices-and-data-frames"><i class="fa fa-check"></i><b>5.0.1</b> Matrices and Data Frames</a></li>
-<li class="chapter" data-level="5.1" data-path="rectangular-data.html"><a href="rectangular-data.html#matrix-operations"><i class="fa fa-check"></i><b>5.1</b> Matrix Operations</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="rectangular-data.html"><a href="rectangular-data.html#matrix-operations-1"><i class="fa fa-check"></i><b>5.1.1</b> Matrix Operations</a></li>
-<li class="chapter" data-level="5.1.2" data-path="rectangular-data.html"><a href="rectangular-data.html#matrix-operations-2"><i class="fa fa-check"></i><b>5.1.2</b> Matrix Operations</a></li>
-<li class="chapter" data-level="5.1.3" data-path="rectangular-data.html"><a href="rectangular-data.html#matrix-operations-3"><i class="fa fa-check"></i><b>5.1.3</b> Matrix Operations</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="rectangular-data.html"><a href="rectangular-data.html#data-frames"><i class="fa fa-check"></i><b>5.2</b> Data Frames</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="rectangular-data.html"><a href="rectangular-data.html#matrices-versus-data-frames"><i class="fa fa-check"></i><b>5.2.1</b> Matrices Versus Data Frames</a></li>
-<li class="chapter" data-level="5.2.2" data-path="rectangular-data.html"><a href="rectangular-data.html#matrices-versus-data-frames-1"><i class="fa fa-check"></i><b>5.2.2</b> Matrices Versus Data Frames</a></li>
-<li class="chapter" data-level="5.2.3" data-path="rectangular-data.html"><a href="rectangular-data.html#data-frames-continued"><i class="fa fa-check"></i><b>5.2.3</b> Data Frames, Continued</a></li>
-<li class="chapter" data-level="5.2.4" data-path="rectangular-data.html"><a href="rectangular-data.html#exercise-subsetting-data-frames"><i class="fa fa-check"></i><b>5.2.4</b> Exercise: Subsetting Data Frames</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="rectangular-data.html"><a href="rectangular-data.html#basic-textual-input-and-output"><i class="fa fa-check"></i><b>5.3</b> Basic Textual Input and Output</a><ul>
-<li class="chapter" data-level="5.3.1" data-path="rectangular-data.html"><a href="rectangular-data.html#reading-and-writing-data-frames-to-disk"><i class="fa fa-check"></i><b>5.3.1</b> Reading and Writing Data Frames to Disk</a></li>
-</ul></li>
-<li class="chapter" data-level="5.4" data-path="rectangular-data.html"><a href="rectangular-data.html#lists-and-objects"><i class="fa fa-check"></i><b>5.4</b> Lists and Objects</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="rectangular-data.html"><a href="rectangular-data.html#lists"><i class="fa fa-check"></i><b>5.4.1</b> Lists</a></li>
-<li class="chapter" data-level="5.4.2" data-path="rectangular-data.html"><a href="rectangular-data.html#lists-in-practice"><i class="fa fa-check"></i><b>5.4.2</b> Lists in Practice</a></li>
-<li class="chapter" data-level="5.4.3" data-path="rectangular-data.html"><a href="rectangular-data.html#lists-in-practice-1"><i class="fa fa-check"></i><b>5.4.3</b> Lists in Practice</a></li>
-<li class="chapter" data-level="5.4.4" data-path="rectangular-data.html"><a href="rectangular-data.html#summary-of-simple-data-types"><i class="fa fa-check"></i><b>5.4.4</b> Summary of Simple Data Types</a></li>
-<li class="chapter" data-level="5.4.5" data-path="rectangular-data.html"><a href="rectangular-data.html#summary-of-aggregate-data-types"><i class="fa fa-check"></i><b>5.4.5</b> Summary of Aggregate Data Types</a></li>
+<li class="chapter" data-level="4.5" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#lists-and-objects"><i class="fa fa-check"></i><b>4.5</b> Lists and Objects</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#lists"><i class="fa fa-check"></i><b>4.5.1</b> Lists</a></li>
+<li class="chapter" data-level="4.5.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#lists-in-practice"><i class="fa fa-check"></i><b>4.5.2</b> Lists in Practice</a></li>
+<li class="chapter" data-level="4.5.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#lists-in-practice-1"><i class="fa fa-check"></i><b>4.5.3</b> Lists in Practice</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html"><i class="fa fa-check"></i><b>6</b> Plotting and Graphics</a><ul>
-<li class="chapter" data-level="6.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#basics-of-plotting"><i class="fa fa-check"></i><b>6.1</b> Basics of Plotting</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#basic-plot-functions"><i class="fa fa-check"></i><b>6.1.1</b> Basic Plot Functions</a></li>
-<li class="chapter" data-level="6.1.2" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#simple-plotting-example"><i class="fa fa-check"></i><b>6.1.2</b> Simple Plotting Example</a></li>
-<li class="chapter" data-level="6.1.3" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting"><i class="fa fa-check"></i><b>6.1.3</b> More Plotting</a></li>
-<li class="chapter" data-level="6.1.4" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting-1"><i class="fa fa-check"></i><b>6.1.4</b> More Plotting</a></li>
-<li class="chapter" data-level="6.1.5" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#graphics-devices-and-saving-plots"><i class="fa fa-check"></i><b>6.1.5</b> Graphics Devices and Saving Plots</a></li>
-<li class="chapter" data-level="6.1.6" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting-2"><i class="fa fa-check"></i><b>6.1.6</b> More Plotting</a></li>
-<li class="chapter" data-level="6.1.7" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#r-graphics-galleries-and-resources"><i class="fa fa-check"></i><b>6.1.7</b> R Graphics Galleries and Resources</a></li>
+<li class="chapter" data-level="5" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html"><i class="fa fa-check"></i><b>5</b> Plotting and Graphics</a><ul>
+<li class="chapter" data-level="5.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#basic-plot-functions"><i class="fa fa-check"></i><b>5.1</b> Basic Plot Functions</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#simple-plotting-example"><i class="fa fa-check"></i><b>5.1.1</b> Simple Plotting Example</a></li>
+<li class="chapter" data-level="5.1.2" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting"><i class="fa fa-check"></i><b>5.1.2</b> More Plotting</a></li>
+<li class="chapter" data-level="5.1.3" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting-1"><i class="fa fa-check"></i><b>5.1.3</b> More Plotting</a></li>
+<li class="chapter" data-level="5.1.4" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#graphics-devices-and-saving-plots"><i class="fa fa-check"></i><b>5.1.4</b> Graphics Devices and Saving Plots</a></li>
+<li class="chapter" data-level="5.1.5" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting-2"><i class="fa fa-check"></i><b>5.1.5</b> More Plotting</a></li>
+<li class="chapter" data-level="5.1.6" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#r-graphics-galleries-and-resources"><i class="fa fa-check"></i><b>5.1.6</b> R Graphics Galleries and Resources</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html"><i class="fa fa-check"></i><b>7</b> Control Structures, Looping, and Applying</a><ul>
-<li class="chapter" data-level="7.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-and-looping"><i class="fa fa-check"></i><b>7.1</b> Control Structures and Looping</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-in-r"><i class="fa fa-check"></i><b>7.1.1</b> Control Structures in R</a></li>
-<li class="chapter" data-level="7.1.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples"><i class="fa fa-check"></i><b>7.1.2</b> Control Structure and Looping Examples</a></li>
-<li class="chapter" data-level="7.1.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples-1"><i class="fa fa-check"></i><b>7.1.3</b> Control Structure and Looping Examples</a></li>
+<li class="chapter" data-level="6" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html"><i class="fa fa-check"></i><b>6</b> Control Structures, Looping, and Applying</a><ul>
+<li class="chapter" data-level="6.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-and-looping"><i class="fa fa-check"></i><b>6.1</b> Control Structures and Looping</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-in-r"><i class="fa fa-check"></i><b>6.1.1</b> Control Structures in R</a></li>
+<li class="chapter" data-level="6.1.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples"><i class="fa fa-check"></i><b>6.1.2</b> Control Structure and Looping Examples</a></li>
+<li class="chapter" data-level="6.1.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples-1"><i class="fa fa-check"></i><b>6.1.3</b> Control Structure and Looping Examples</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#applying"><i class="fa fa-check"></i><b>7.2</b> Applying</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#why-does-r-have-apply-functions"><i class="fa fa-check"></i><b>7.2.1</b> Why Does R Have Apply Functions</a></li>
-<li class="chapter" data-level="7.2.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#apply-function-exercise"><i class="fa fa-check"></i><b>7.2.2</b> Apply Function Exercise</a></li>
-<li class="chapter" data-level="7.2.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-functions"><i class="fa fa-check"></i><b>7.2.3</b> Related Apply Functions</a></li>
-<li class="chapter" data-level="7.2.4" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-function-examples"><i class="fa fa-check"></i><b>7.2.4</b> Related Apply Function Examples</a></li>
+<li class="chapter" data-level="6.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#applying"><i class="fa fa-check"></i><b>6.2</b> Applying</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#why-does-r-have-apply-functions"><i class="fa fa-check"></i><b>6.2.1</b> Why Does R Have Apply Functions</a></li>
+<li class="chapter" data-level="6.2.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#apply-function-exercise"><i class="fa fa-check"></i><b>6.2.2</b> Apply Function Exercise</a></li>
+<li class="chapter" data-level="6.2.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-functions"><i class="fa fa-check"></i><b>6.2.3</b> Related Apply Functions</a></li>
+<li class="chapter" data-level="6.2.4" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-function-examples"><i class="fa fa-check"></i><b>6.2.4</b> Related Apply Function Examples</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>8</b> Functions</a><ul>
-<li class="chapter" data-level="8.0.1" data-path="functions.html"><a href="functions.html#function-overview"><i class="fa fa-check"></i><b>8.0.1</b> Function Overview</a></li>
-<li class="chapter" data-level="8.0.2" data-path="functions.html"><a href="functions.html#example-functions"><i class="fa fa-check"></i><b>8.0.2</b> Example Functions</a></li>
-<li class="chapter" data-level="8.0.3" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>8.0.3</b> Further Reading</a></li>
+<li class="chapter" data-level="7" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>7</b> Functions</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="functions.html"><a href="functions.html#function-overview"><i class="fa fa-check"></i><b>7.0.1</b> Function Overview</a></li>
+<li class="chapter" data-level="7.0.2" data-path="functions.html"><a href="functions.html#example-functions"><i class="fa fa-check"></i><b>7.0.2</b> Example Functions</a></li>
+<li class="chapter" data-level="7.0.3" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>7.0.3</b> Further Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="rstudio-a-quick-tour.html"><a href="rstudio-a-quick-tour.html"><i class="fa fa-check"></i><b>9</b> <em>RStudio</em>: A Quick Tour</a></li>
-<li class="chapter" data-level="10" data-path="r-first-impressions.html"><a href="r-first-impressions.html"><i class="fa fa-check"></i><b>10</b> <em>R</em>: First Impressions</a><ul>
-<li class="chapter" data-level="10.1" data-path="r-first-impressions.html"><a href="r-first-impressions.html#r-data-types-vector-and-list"><i class="fa fa-check"></i><b>10.1</b> <em>R</em> Data types: vector and list</a></li>
-<li class="chapter" data-level="10.2" data-path="r-first-impressions.html"><a href="r-first-impressions.html#classes-data.frame-and-beyond"><i class="fa fa-check"></i><b>10.2</b> Classes: data.frame and beyond</a></li>
-<li class="chapter" data-level="10.3" data-path="r-first-impressions.html"><a href="r-first-impressions.html#help"><i class="fa fa-check"></i><b>10.3</b> Help!</a></li>
+<li class="chapter" data-level="8" data-path="rstudio-a-quick-tour.html"><a href="rstudio-a-quick-tour.html"><i class="fa fa-check"></i><b>8</b> <em>RStudio</em>: A Quick Tour</a></li>
+<li class="chapter" data-level="9" data-path="r-first-impressions.html"><a href="r-first-impressions.html"><i class="fa fa-check"></i><b>9</b> <em>R</em>: First Impressions</a><ul>
+<li class="chapter" data-level="9.1" data-path="r-first-impressions.html"><a href="r-first-impressions.html#r-data-types-vector-and-list"><i class="fa fa-check"></i><b>9.1</b> <em>R</em> Data types: vector and list</a></li>
+<li class="chapter" data-level="9.2" data-path="r-first-impressions.html"><a href="r-first-impressions.html#classes-data.frame-and-beyond"><i class="fa fa-check"></i><b>9.2</b> Classes: data.frame and beyond</a></li>
+<li class="chapter" data-level="9.3" data-path="r-first-impressions.html"><a href="r-first-impressions.html#help"><i class="fa fa-check"></i><b>9.3</b> Help!</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="exercise-1-brfss-survey-data.html"><a href="exercise-1-brfss-survey-data.html"><i class="fa fa-check"></i><b>11</b> Exercise 1: BRFSS Survey Data</a></li>
-<li class="chapter" data-level="12" data-path="exercise-2-all-phenotypic-data.html"><a href="exercise-2-all-phenotypic-data.html"><i class="fa fa-check"></i><b>12</b> Exercise 2: ALL Phenotypic Data</a></li>
-<li class="chapter" data-level="13" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html"><i class="fa fa-check"></i><b>13</b> Exploration and simple univariate measures</a><ul>
-<li class="chapter" data-level="13.1" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#clean-data"><i class="fa fa-check"></i><b>13.1</b> Clean data</a></li>
-<li class="chapter" data-level="13.2" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-in-1990-vs.2010-females"><i class="fa fa-check"></i><b>13.2</b> Weight in 1990 vs. 2010 Females</a></li>
-<li class="chapter" data-level="13.3" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-and-height-in-2010-males"><i class="fa fa-check"></i><b>13.3</b> Weight and height in 2010 Males</a></li>
+<li class="chapter" data-level="10" data-path="exercise-1-brfss-survey-data.html"><a href="exercise-1-brfss-survey-data.html"><i class="fa fa-check"></i><b>10</b> Exercise 1: BRFSS Survey Data</a></li>
+<li class="chapter" data-level="11" data-path="exercise-2-all-phenotypic-data.html"><a href="exercise-2-all-phenotypic-data.html"><i class="fa fa-check"></i><b>11</b> Exercise 2: ALL Phenotypic Data</a></li>
+<li class="chapter" data-level="12" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html"><i class="fa fa-check"></i><b>12</b> Exploration and simple univariate measures</a><ul>
+<li class="chapter" data-level="12.1" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#clean-data"><i class="fa fa-check"></i><b>12.1</b> Clean data</a></li>
+<li class="chapter" data-level="12.2" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-in-1990-vs.2010-females"><i class="fa fa-check"></i><b>12.2</b> Weight in 1990 vs. 2010 Females</a></li>
+<li class="chapter" data-level="12.3" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-and-height-in-2010-males"><i class="fa fa-check"></i><b>12.3</b> Weight and height in 2010 Males</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html"><i class="fa fa-check"></i><b>14</b> Multivariate analysis</a><ul>
-<li class="chapter" data-level="14.1" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#input-and-setup"><i class="fa fa-check"></i><b>14.1</b> Input and setup</a></li>
-<li class="chapter" data-level="14.2" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#cleaning"><i class="fa fa-check"></i><b>14.2</b> Cleaning</a></li>
-<li class="chapter" data-level="14.3" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#unsupervised-machine-learning-multi-dimensional-scaling"><i class="fa fa-check"></i><b>14.3</b> Unsupervised machine learning – multi-dimensional scaling</a></li>
+<li class="chapter" data-level="13" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html"><i class="fa fa-check"></i><b>13</b> Multivariate analysis</a><ul>
+<li class="chapter" data-level="13.1" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#input-and-setup"><i class="fa fa-check"></i><b>13.1</b> Input and setup</a></li>
+<li class="chapter" data-level="13.2" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#cleaning"><i class="fa fa-check"></i><b>13.2</b> Cleaning</a></li>
+<li class="chapter" data-level="13.3" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#unsupervised-machine-learning-multi-dimensional-scaling"><i class="fa fa-check"></i><b>13.3</b> Unsupervised machine learning – multi-dimensional scaling</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html"><i class="fa fa-check"></i><b>15</b> Using <em>R</em> in real life</a><ul>
-<li class="chapter" data-level="15.1" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#organizing-work"><i class="fa fa-check"></i><b>15.1</b> Organizing work</a></li>
-<li class="chapter" data-level="15.2" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#r-packages"><i class="fa fa-check"></i><b>15.2</b> <em>R</em> Packages</a></li>
+<li class="chapter" data-level="14" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html"><i class="fa fa-check"></i><b>14</b> Using <em>R</em> in real life</a><ul>
+<li class="chapter" data-level="14.1" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#organizing-work"><i class="fa fa-check"></i><b>14.1</b> Organizing work</a></li>
+<li class="chapter" data-level="14.2" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#r-packages"><i class="fa fa-check"></i><b>14.2</b> <em>R</em> Packages</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html"><i class="fa fa-check"></i><b>16</b> Graphics and Visualization</a><ul>
-<li class="chapter" data-level="16.1" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#base-r-graphics"><i class="fa fa-check"></i><b>16.1</b> Base <em>R</em> Graphics</a></li>
-<li class="chapter" data-level="16.2" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#what-makes-for-a-good-graphical-display"><i class="fa fa-check"></i><b>16.2</b> What makes for a good graphical display?</a></li>
-<li class="chapter" data-level="16.3" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#grammar-of-graphics-ggplot2"><i class="fa fa-check"></i><b>16.3</b> Grammar of Graphics: ggplot2</a></li>
+<li class="chapter" data-level="15" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html"><i class="fa fa-check"></i><b>15</b> Graphics and Visualization</a><ul>
+<li class="chapter" data-level="15.1" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#base-r-graphics"><i class="fa fa-check"></i><b>15.1</b> Base <em>R</em> Graphics</a></li>
+<li class="chapter" data-level="15.2" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#what-makes-for-a-good-graphical-display"><i class="fa fa-check"></i><b>15.2</b> What makes for a good graphical display?</a></li>
+<li class="chapter" data-level="15.3" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#grammar-of-graphics-ggplot2"><i class="fa fa-check"></i><b>15.3</b> Grammar of Graphics: ggplot2</a></li>
 </ul></li>
 </ul>
 
@@ -315,7 +302,7 @@ z</code></pre></div>
 x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>
 <span class="co"># and backwards</span>
 x =<span class="st"> </span><span class="dv">10</span><span class="op">:</span><span class="dv">1</span></code></pre></div>
-<p>The <code>seq</code> function can create more flexible regular sequences. You <em>did</em> read the help for <code>seq</code>, right?</p>
+<p>The <code>seq</code> function can create more flexible regular sequences.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create a vector of numbers from 1 to 4 skipping by 0.3</span>
 y =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="fl">0.3</span>)</code></pre></div>
 <p>And creating a new vector by concatenating existing vectors is possible, as well.</p>
@@ -398,136 +385,366 @@ x[<span class="dv">4</span>]</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y =<span class="st"> </span><span class="dv">3</span><span class="op">:</span><span class="dv">6</span>
 x[y]</code></pre></div>
 <pre><code>## [1] 0.2 0.3 0.4 0.5</code></pre>
-</div>
-<div id="indexing-vectors-and-logical-vectors" class="section level3">
-<h3><span class="header-section-number">4.1.6</span> Indexing Vectors and Logical Vectors</h3>
 <p>Combining the concept of indexing with the concept of logical vectors results in a very power combination.</p>
-<pre><code># use help(&#39;rnorm&#39;) to figure out what is happening next
-myvec = rnorm(10)
-# create logical vector that is TRUE where myvec is &gt;0.25
-gt1 = (myvec &gt; 0.25)
-sum(gt1)
-## [1] 2
-# and use our logical vector to create a vector of myvec values that are &gt;0.25
-myvec[gt1]
-## [1] 0.8500783 1.2182233
-# or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;
-myvec[!gt1]
-## [1] -0.52361528 -1.96734990  0.09722437 -0.09474050 -0.92634247  0.10862202
-## [7] -0.01423129 -1.10639317
-# shorter, one line approach
-myvec[myvec &gt; 0.25]
-## [1] 0.8500783 1.2182233</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use help(&#39;rnorm&#39;) to figure out what is happening next</span>
+myvec =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)
+
+<span class="co"># create logical vector that is TRUE where myvec is &gt;0.25</span>
+gt1 =<span class="st"> </span>(myvec <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.25</span>)
+<span class="kw">sum</span>(gt1)</code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># and use our logical vector to create a vector of myvec values that are &gt;0.25</span>
+myvec[gt1]</code></pre></div>
+<pre><code>## [1] 0.7177777 1.7385063 1.6556000 0.5456691 0.5706619 1.0628216</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;</span>
+myvec[<span class="op">!</span>gt1]</code></pre></div>
+<pre><code>## [1] -0.2141878 -0.7771291 -1.0870944 -1.7378650</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># shorter, one line approach</span>
+myvec[myvec <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.25</span>]</code></pre></div>
+<pre><code>## [1] 0.7177777 1.7385063 1.6556000 0.5456691 0.5706619 1.0628216</code></pre>
 </div>
-</div>
-<div id="string-handling-in-r" class="section level2">
-<h2><span class="header-section-number">4.2</span> String Handling in R</h2>
-<div id="concatenating-strings" class="section level3">
-<h3><span class="header-section-number">4.2.1</span> Concatenating Strings</h3>
+<div id="character-vectors-a.k.a.-strings" class="section level3">
+<h3><span class="header-section-number">4.1.6</span> Character Vectors, A.K.A. Strings</h3>
 <p>R uses the <code>paste</code> function to concatenate strings.</p>
-<pre><code>paste(&quot;abc&quot;,&quot;def&quot;)
-## [1] &quot;abc def&quot;
-paste(&quot;abc&quot;,&quot;def&quot;,sep=&quot;THISSEP&quot;)
-## [1] &quot;abcTHISSEPdef&quot;
-paste0(&quot;abc&quot;,&quot;def&quot;)
-## [1] &quot;abcdef&quot;
-paste(c(&quot;X&quot;,&quot;Y&quot;),1:10)
-##  [1] &quot;X 1&quot;  &quot;Y 2&quot;  &quot;X 3&quot;  &quot;Y 4&quot;  &quot;X 5&quot;  &quot;Y 6&quot;  &quot;X 7&quot;  &quot;Y 8&quot;  &quot;X 9&quot;  &quot;Y 10&quot;
-paste(c(&quot;X&quot;,&quot;Y&quot;),1:10,sep=&quot;_&quot;)
-##  [1] &quot;X_1&quot;  &quot;Y_2&quot;  &quot;X_3&quot;  &quot;Y_4&quot;  &quot;X_5&quot;  &quot;Y_6&quot;  &quot;X_7&quot;  &quot;Y_8&quot;  &quot;X_9&quot;  &quot;Y_10&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">paste</span>(<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;def&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;abc def&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">paste</span>(<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;def&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;THISSEP&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;abcTHISSEPdef&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">paste0</span>(<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;def&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;abcdef&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## [1] &quot;abcdef&quot;
+<span class="kw">paste</span>(<span class="kw">c</span>(<span class="st">&quot;X&quot;</span>,<span class="st">&quot;Y&quot;</span>),<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</code></pre></div>
+<pre><code>##  [1] &quot;X 1&quot;  &quot;Y 2&quot;  &quot;X 3&quot;  &quot;Y 4&quot;  &quot;X 5&quot;  &quot;Y 6&quot;  &quot;X 7&quot;  &quot;Y 8&quot;  &quot;X 9&quot;  &quot;Y 10&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">paste</span>(<span class="kw">c</span>(<span class="st">&quot;X&quot;</span>,<span class="st">&quot;Y&quot;</span>),<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre></div>
+<pre><code>##  [1] &quot;X_1&quot;  &quot;Y_2&quot;  &quot;X_3&quot;  &quot;Y_4&quot;  &quot;X_5&quot;  &quot;Y_6&quot;  &quot;X_7&quot;  &quot;Y_8&quot;  &quot;X_9&quot;  &quot;Y_10&quot;</code></pre>
+<p>We can count the number of characters in a string.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nchar</span>(<span class="st">&#39;abc&#39;</span>)</code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nchar</span>(<span class="kw">c</span>(<span class="st">&#39;abc&#39;</span>,<span class="st">&#39;d&#39;</span>,<span class="dv">123456</span>))</code></pre></div>
+<pre><code>## [1] 3 1 6</code></pre>
+<p>Pulling out parts of strings is also sometimes useful.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">substr</span>(<span class="st">&#39;This is a good sentence.&#39;</span>,<span class="dt">start=</span><span class="dv">10</span>,<span class="dt">stop=</span><span class="dv">15</span>)</code></pre></div>
+<pre><code>## [1] &quot; good &quot;</code></pre>
+<p>Another common operation is to replace something in a string with something (a find-and-replace).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&#39;This&#39;</span>,<span class="st">&#39;That&#39;</span>,<span class="st">&#39;This is a good sentence.&#39;</span>)</code></pre></div>
+<pre><code>## [1] &quot;That is a good sentence.&quot;</code></pre>
+<p>When we want to find all strings that match some other string, we can use <code>grep</code>, or “grab regular expression”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&#39;bcd&#39;</span>,<span class="kw">c</span>(<span class="st">&#39;abcdef&#39;</span>,<span class="st">&#39;abcd&#39;</span>,<span class="st">&#39;bcde&#39;</span>,<span class="st">&#39;cdef&#39;</span>,<span class="st">&#39;defg&#39;</span>))</code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&#39;bcd&#39;</span>,<span class="kw">c</span>(<span class="st">&#39;abcdef&#39;</span>,<span class="st">&#39;abcd&#39;</span>,<span class="st">&#39;bcde&#39;</span>,<span class="st">&#39;cdef&#39;</span>,<span class="st">&#39;defg&#39;</span>),<span class="dt">value=</span><span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] &quot;abcdef&quot; &quot;abcd&quot;   &quot;bcde&quot;</code></pre>
 </div>
-<div id="more-string-functions" class="section level3">
-<h3><span class="header-section-number">4.2.2</span> More String Functions</h3>
-<ul>
-<li><p><span>Number of characters in a string</span></p>
-<pre><code>nchar(&#39;abc&#39;)
-## [1] 3
-nchar(c(&#39;abc&#39;,&#39;d&#39;,123456))
-## [1] 3 1 6</code></pre></li>
-<li><p><span>Extract substrings</span></p>
-<pre><code>substr(&#39;This is a good sentence.&#39;,start=10,stop=15)
-## [1] &quot; good &quot;</code></pre></li>
-<li><p><span>String replacement</span></p>
-<pre><code>sub(&#39;This&#39;,&#39;That&#39;,&#39;This is a good sentence.&#39;)
-## [1] &quot;That is a good sentence.&quot;</code></pre></li>
-<li><p><span>Finding matching strings</span></p>
-<pre><code>grep(&#39;bcd&#39;,c(&#39;abcdef&#39;,&#39;abcd&#39;,&#39;bcde&#39;,&#39;cdef&#39;,&#39;defg&#39;))
-## [1] 1 2 3
-grep(&#39;bcd&#39;,c(&#39;abcdef&#39;,&#39;abcd&#39;,&#39;bcde&#39;,&#39;cdef&#39;,&#39;defg&#39;),value=TRUE)
-## [1] &quot;abcdef&quot; &quot;abcd&quot;   &quot;bcde&quot;</code></pre></li>
-</ul>
-</div>
-</div>
-<div id="special-data-types" class="section level2">
-<h2><span class="header-section-number">4.3</span> Special Data Types</h2>
 <div id="missing-values-aka-na" class="section level3">
-<h3><span class="header-section-number">4.3.1</span> Missing Values, AKA “NA”</h3>
-<p>R has a special value, “NA”, that represents a “missing” value in a vector or other data structure.</p>
-<pre><code>x = 1:5
-x
-## [1] 1 2 3 4 5
-length(x)
-## [1] 5
-is.na(x)
-## [1] FALSE FALSE FALSE FALSE FALSE
-x[2] = NA
-x
-## [1]  1 NA  3  4  5
-length(x)
-## [1] 5
-is.na(x)
-## [1] FALSE  TRUE FALSE FALSE FALSE
-x[!is.na(x)]
-## [1] 1 3 4 5</code></pre>
+<h3><span class="header-section-number">4.1.7</span> Missing Values, AKA “NA”</h3>
+<p>R has a special value, “NA”, that represents a “missing” value, or <em>Not Available</em>, in a vector or other data structure. Here, we just create a vector to experiment.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>
+x</code></pre></div>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(x)</code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(x)</code></pre></div>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="dv">2</span>] =<span class="st"> </span><span class="ot">NA</span>
+x</code></pre></div>
+<pre><code>## [1]  1 NA  3  4  5</code></pre>
+<p>The length of <code>x</code> is unchanged, but there is one value that is marked as “missing” by virtue of being <code>NA</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(x)</code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(x)</code></pre></div>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<p>We can remove <code>NA</code> values by using indexing. In the following, <code>is.na(x)</code> returns a logical vector the length of <code>x</code>. The <code>!</code> is the logical <em>NOT</em> operator and converts <code>TRUE</code> to <code>FALSE</code> and vice-versa.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="op">!</span><span class="kw">is.na</span>(x)]</code></pre></div>
+<pre><code>## [1] 1 3 4 5</code></pre>
 </div>
 <div id="factors" class="section level3">
-<h3><span class="header-section-number">4.3.2</span> Factors</h3>
-<ul>
-<li><p><span>A factor is a special type of vector, normally used to hold a categorical variable in many statistical functions.</span></p></li>
-<li><p><span>Such vectors have class “factor”.</span></p></li>
-<li><p><span>Factors are primarily used in Analysis of Variance (ANOVA). When a factor is used as a predictor variable, the corresponding indicator variables are created.</span></p></li>
-</ul>
-<p><span>Note of caution</span> Factors in R often <em>appear</em> to be character vectors when printed, but you will notice that they do not have double quotes around them. They are stored in R as numbers with a key name, so sometimes you will note that the factor <em>behaves</em> like a numeric vector.</p>
-</div>
-<div id="factors-in-practice" class="section level3">
-<h3><span class="header-section-number">4.3.3</span> Factors in Practice</h3>
-<pre><code># create the character vector
-citizen&lt;-c(&quot;uk&quot;,&quot;us&quot;,&quot;no&quot;,&quot;au&quot;,&quot;uk&quot;,&quot;us&quot;,&quot;us&quot;,&quot;no&quot;,&quot;au&quot;) 
-# convert to factor
-citizenf&lt;-factor(citizen)                                
-citizen             
-## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;
-citizenf
-## [1] uk us no au uk us us no au
-## Levels: au no uk us
-# convert factor back to character vector
-as.character(citizenf)
-## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;
-# convert to numeric vector
-as.numeric(citizenf)
-## [1] 3 4 2 1 3 4 4 2 1</code></pre>
-</div>
-<div id="factors-in-practice-1" class="section level3">
-<h3><span class="header-section-number">4.3.4</span> Factors in Practice</h3>
-<pre><code># R stores many data structures as vectors with &quot;attributes&quot; and &quot;class&quot;
-attributes(citizenf)
-## \$levels
+<h3><span class="header-section-number">4.1.8</span> Factors</h3>
+<p>A factor is a special type of vector, normally used to hold a categorical variable–such as smoker/nonsmoker, state of residency, zipcode–in many statistical functions. Such vectors have class “factor”. Factors are primarily used in Analysis of Variance (ANOVA) or other situations when “categories” are needed. When a factor is used as a predictor variable, the corresponding indicator variables are created (more later).</p>
+<p>Note of caution that factors in R often <em>appear</em> to be character vectors when printed, but you will notice that they do not have double quotes around them. They are stored in R as numbers with a key name, so sometimes you will note that the factor <em>behaves</em> like a numeric vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create the character vector</span>
+citizen&lt;-<span class="kw">c</span>(<span class="st">&quot;uk&quot;</span>,<span class="st">&quot;us&quot;</span>,<span class="st">&quot;no&quot;</span>,<span class="st">&quot;au&quot;</span>,<span class="st">&quot;uk&quot;</span>,<span class="st">&quot;us&quot;</span>,<span class="st">&quot;us&quot;</span>,<span class="st">&quot;no&quot;</span>,<span class="st">&quot;au&quot;</span>) 
+
+<span class="co"># convert to factor</span>
+citizenf&lt;-<span class="kw">factor</span>(citizen)                                
+citizen             </code></pre></div>
+<pre><code>## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citizenf</code></pre></div>
+<pre><code>## [1] uk us no au uk us us no au
+## Levels: au no uk us</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convert factor back to character vector</span>
+<span class="kw">as.character</span>(citizenf)</code></pre></div>
+<pre><code>## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convert to numeric vector</span>
+<span class="kw">as.numeric</span>(citizenf)</code></pre></div>
+<pre><code>## [1] 3 4 2 1 3 4 4 2 1</code></pre>
+<p>R stores many data structures as vectors with “attributes” and “class” (just so you have seen this).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attributes</span>(citizenf)</code></pre></div>
+<pre><code>## $levels
 ## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;
 ## 
-## \$class
-## [1] &quot;factor&quot;
-class(citizenf)
-## [1] &quot;factor&quot;
-# note that after unclassing, we can see the 
-# underlying numeric structure again
-unclass(citizenf)
-## [1] 3 4 2 1 3 4 4 2 1
+## $class
+## [1] &quot;factor&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(citizenf)</code></pre></div>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># note that after unclassing, we can see the </span>
+<span class="co"># underlying numeric structure again</span>
+<span class="kw">unclass</span>(citizenf)</code></pre></div>
+<pre><code>## [1] 3 4 2 1 3 4 4 2 1
 ## attr(,&quot;levels&quot;)
-## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;
-table(citizenf)
-## citizenf
+## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;</code></pre>
+<p>Tabulating factors is a useful way to get a sense of the “sample” set available.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(citizenf)</code></pre></div>
+<pre><code>## citizenf
 ## au no uk us 
 ##  2  2  2  3</code></pre>
+</div>
+</div>
+<div id="rectangular-data" class="section level2">
+<h2><span class="header-section-number">4.2</span> Rectangular Data</h2>
+<div id="matrices-and-data-frames" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Matrices and Data Frames</h3>
+<ul>
+<li><p><span>A matrix is a rectangular array. It can be viewed as a collection of column vectors all of the same length and the same type (i.e. numeric, character or logical).</span></p></li>
+<li><p><span>A data frame is <em>also</em> a rectangular array. All of the columns must be the same length, but they may be of <em>different</em> types.</span></p></li>
+<li><p><span>The rows and columns of a matrix or data frame can be given names.</span></p></li>
+<li><p><span>However these are implemented differently in R; many operations will work for one but not both.</span></p></li>
+</ul>
+</div>
+<div id="matrix-operations" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Matrix Operations</h3>
+<pre><code>x&lt;-1:10 
+y&lt;-rnorm(10)
+# make a matrix by column binding two numeric vectors
+mat&lt;-cbind(x,y)
+mat
+##        x          y
+##  [1,]  1  0.3842634
+##  [2,]  2 -1.2536470
+##  [3,]  3 -1.4098608
+##  [4,]  4  1.7139083
+##  [5,]  5 -0.1876347
+##  [6,]  6 -0.3343492
+##  [7,]  7  1.6553040
+##  [8,]  8  0.5974976
+##  [9,]  9 -1.8443792
+## [10,] 10  1.4203497
+# And the names of the rows and columns
+rownames(mat)
+## NULL
+colnames(mat)
+## [1] &quot;x&quot; &quot;y&quot;</code></pre>
+</div>
+<div id="matrix-operations-1" class="section level3">
+<h3><span class="header-section-number">4.2.3</span> Matrix Operations</h3>
+<p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
+<pre><code># The 2nd element of the 1st row of mat
+mat[1,2]
+##         y 
+## 0.3842634
+# The first ROW of mat
+mat[1,]
+##         x         y 
+## 1.0000000 0.3842634
+# The first COLUMN of mat
+mat[,1]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+# and all elements of mat that are &gt; 4; note no comma
+mat[mat&gt;4]
+## [1]  5  6  7  8  9 10</code></pre>
+</div>
+<div id="matrix-operations-2" class="section level3">
+<h3><span class="header-section-number">4.2.4</span> Matrix Operations</h3>
+<pre><code># create a matrix with 2 columns and 10 rows
+# filled with random normal deviates
+m = matrix(rnorm(20),nrow=10)
+# multiply all values in the matrix by 20
+m = m*20
+# and add 100 to the first column of m
+m[,1] = m[,1] + 100
+# summarize m
+summary(m)
+##        V1               V2          
+##  Min.   : 44.58   Min.   :-42.4628  
+##  1st Qu.: 93.26   1st Qu.:-19.8712  
+##  Median :100.72   Median :  3.6691  
+##  Mean   : 95.27   Mean   : -0.4271  
+##  3rd Qu.:106.33   3rd Qu.: 17.3559  
+##  Max.   :111.29   Max.   : 31.2418</code></pre>
+</div>
+</div>
+<div id="data-frames" class="section level2">
+<h2><span class="header-section-number">4.3</span> Data Frames</h2>
+<div id="matrices-versus-data-frames" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Matrices Versus Data Frames</h3>
+<pre><code>mat&lt;-cbind(x,y)
+class(mat[,1])          
+## [1] &quot;numeric&quot;
+z = paste0(&#39;a&#39;,1:10)
+tab&lt;-cbind(x,y,z)
+class(tab)
+## [1] &quot;matrix&quot;
+mode(tab[,1])
+## [1] &quot;character&quot;
+head(tab,4)
+##      x   y                   z   
+## [1,] &quot;1&quot; &quot;0.384263423333191&quot; &quot;a1&quot;
+## [2,] &quot;2&quot; &quot;-1.25364703104426&quot; &quot;a2&quot;
+## [3,] &quot;3&quot; &quot;-1.40986082624299&quot; &quot;a3&quot;
+## [4,] &quot;4&quot; &quot;1.7139082579506&quot;   &quot;a4&quot;</code></pre>
+</div>
+<div id="matrices-versus-data-frames-1" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Matrices Versus Data Frames</h3>
+<pre><code>tab&lt;-data.frame(x,y,z)
+class(tab)
+## [1] &quot;data.frame&quot;
+head(tab)
+##   x          y  z
+## 1 1  0.3842634 a1
+## 2 2 -1.2536470 a2
+## 3 3 -1.4098608 a3
+## 4 4  1.7139083 a4
+## 5 5 -0.1876347 a5
+## 6 6 -0.3343492 a6
+mode(tab[,1])
+## [1] &quot;numeric&quot;
+class(tab[,3])
+## [1] &quot;factor&quot;
+rownames(tab)           
+##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot;
+rownames(tab)&lt;-paste0(&quot;row&quot;,1:10)
+rownames(tab)
+##  [1] &quot;row1&quot;  &quot;row2&quot;  &quot;row3&quot;  &quot;row4&quot;  &quot;row5&quot;  &quot;row6&quot;  &quot;row7&quot;  &quot;row8&quot; 
+##  [9] &quot;row9&quot;  &quot;row10&quot;</code></pre>
+</div>
+<div id="data-frames-continued" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> Data Frames, Continued</h3>
+<ul>
+<li><p><span>Data frame columns can be refered to by name using the “dollar sign” operator</span></p>
+<pre><code>tab\$x
+##  [1]  1  2  3  4  5  6  7  8  9 10
+tab\$y
+##  [1]  0.3842634 -1.2536470 -1.4098608  1.7139083 -0.1876347 -0.3343492
+##  [7]  1.6553040  0.5974976 -1.8443792  1.4203497</code></pre></li>
+<li><p><span>Column names can be set, which can be useful for referring to data later</span></p>
+<pre><code>colnames(tab)
+## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;
+colnames(tab) = paste0(&#39;col&#39;,1:3)</code></pre></li>
+</ul>
+</div>
+<div id="exercise-subsetting-data-frames" class="section level3">
+<h3><span class="header-section-number">4.3.4</span> Exercise: Subsetting Data Frames</h3>
+<p>Try these</p>
+<pre><code>ncol(tab)
+nrow(tab)
+dim(tab)
+summary(tab)
+tab[1:3,]
+tab[,2:3]
+tab[,1]&gt;7
+tab[tab[,1]&gt;7,]
+tab[tab[,1]&gt;7,3]
+tab[tab[,1]&gt;7,2:3]
+tab[tab\$x&gt;7,3]
+tab\$z[tab\$x&gt;3]</code></pre>
+</div>
+</div>
+<div id="basic-textual-input-and-output" class="section level2">
+<h2><span class="header-section-number">4.4</span> Basic Textual Input and Output</h2>
+<div id="reading-and-writing-data-frames-to-disk" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Reading and Writing Data Frames to Disk</h3>
+<ul>
+<li><p><span>The <code>write.table</code> function and friends write a data.frame or matrix to disk as a text file.</span></p>
+<pre><code>write.table(tab,file=&#39;tab.txt&#39;,sep=&quot;\t&quot;,col.names=TRUE)
+# remove tab from the workspace
+rm(tab)
+# make sure it is gone
+ls(pattern=&quot;tab&quot;)
+## character(0)</code></pre></li>
+<li><p><span>The <code>read.table</code> function and friends read a data.frame or matrix from a text file.</span></p>
+<pre><code>tab = read.table(&#39;tab.txt&#39;,sep=&quot;\t&quot;,header=TRUE)
+head(tab,3)
+##      col1       col2 col3
+## row1    1  0.3842634   a1
+## row2    2 -1.2536470   a2
+## row3    3 -1.4098608   a3</code></pre></li>
+</ul>
+</div>
+</div>
+<div id="lists-and-objects" class="section level2">
+<h2><span class="header-section-number">4.5</span> Lists and Objects</h2>
+<div id="lists" class="section level3">
+<h3><span class="header-section-number">4.5.1</span> Lists</h3>
+<ul>
+<li><p><span>A list is a collection of objects that may be the same or different types.</span></p></li>
+<li><p>[The objects generally have names, and may be indexed either by name (e.g. my.list$name3) or component number (e.g. my.list[[3]])</p></li>
+<li><p><span>A data frame is a list of matched column vectors.</span></p></li>
+</ul>
+</div>
+<div id="lists-in-practice" class="section level3">
+<h3><span class="header-section-number">4.5.2</span> Lists in Practice</h3>
+<ul>
+<li><p><span>Create a list, noting the different data types involved.</span></p>
+<pre><code>a = list(1,&quot;b&quot;,c(1,2,3))
+a
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] &quot;b&quot;
+## 
+## [[3]]
+## [1] 1 2 3
+length(a)
+## [1] 3
+class(a)
+## [1] &quot;list&quot;
+a[[3]]
+## [1] 1 2 3</code></pre></li>
+</ul>
+</div>
+<div id="lists-in-practice-1" class="section level3">
+<h3><span class="header-section-number">4.5.3</span> Lists in Practice</h3>
+<ul>
+<li><p><span>A data frame <em>is</em> a list.</span></p>
+<pre><code># test if our friend &quot;tab&quot; is a list
+is.list(tab)
+## [1] TRUE
+tab[[2]]
+##  [1]  0.3842634 -1.2536470 -1.4098608  1.7139083 -0.1876347 -0.3343492
+##  [7]  1.6553040  0.5974976 -1.8443792  1.4203497
+names(tab)
+## [1] &quot;col1&quot; &quot;col2&quot; &quot;col3&quot;</code></pre></li>
+</ul>
+<p>Table (#tab:datatypes) Summary of basic R data structures.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Data type S</th>
+<th align="left">tores</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vector</td>
+<td align="left">one-dimensional data, single data type</td>
+</tr>
+<tr class="even">
+<td>matrix</td>
+<td align="left">two-dimensional data, single data type</td>
+</tr>
+<tr class="odd">
+<td>data frame</td>
+<td align="left">two-dimensional data, multiple data types</td>
+</tr>
+<tr class="even">
+<td>list</td>
+<td align="left">list of data types, not all need to be the same type</td>
+</tr>
+<tr class="odd">
+<td>object</td>
+<td align="left">a list with attributes and potentially slots and methods</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -537,7 +754,7 @@ table(citizenf)
         </div>
       </div>
 <a href="first-steps.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="rectangular-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="plotting-and-graphics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

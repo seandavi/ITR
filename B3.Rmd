@@ -93,7 +93,7 @@ sudo dpkg -i rstudio-1.0.136-amd64.deb
 
 How to start R depends a bit on the operating system (Mac, Windows, Linux) and interface.  In this course, we will largely be using an Integrated Development Environment (IDE) called *RStudio*, but there is nothing to prohibit using R at the command line or in some other interface (and there are a few). A screenshot of the interface is shown in figure \@ref(fig:rstudiointerface).
 
-```{r rstudiointerface,fig.cap='The Rstudio interface', echo=FALSE}
+```{r rstudiointerface,fig.cap='The Rstudio interface', echo=FALSE, fig.width=7}
 knitr::include_graphics("images/RStudio.png")
 ```
 
@@ -136,15 +136,15 @@ R allows users to assign names to objects such as variables, functions, and even
 Examples of valid R names include:
 
 ```
-    pi
-    x
-    camelCaps
-    my_stuff
-    MY_Stuff
-    this.is.the.name.of.the.man
-    ABC123
-    abc1234asdf
-    .hi
+pi
+x
+camelCaps
+my_stuff
+MY_Stuff
+this.is.the.name.of.the.man
+ABC123
+abc1234asdf
+.hi
 ```
 
 ## Resources for Getting Help
@@ -229,12 +229,13 @@ x = 1:10
 x = 10:1
 ```
 
-The `seq` function can create more flexible regular sequences. You _did_ read the help for `seq`, right?
+The `seq` function can create more flexible regular sequences. 
   
 ```{r}
 # create a vector of numbers from 1 to 4 skipping by 0.3
 y = seq(1,4,0.3)
 ```    
+
 
 And creating a new vector by concatenating existing vectors is possible, as well.
 
@@ -368,130 +369,116 @@ myvec[myvec > 0.25]
 ```
 
 
-### Character Vectors 
+### Character Vectors, A.K.A. Strings
 
 R uses the `paste` function to concatenate strings.
 
-    paste("abc","def")
-    ## [1] "abc def"
-    paste("abc","def",sep="THISSEP")
-    ## [1] "abcTHISSEPdef"
-    paste0("abc","def")
-    ## [1] "abcdef"
-    paste(c("X","Y"),1:10)
-    ##  [1] "X 1"  "Y 2"  "X 3"  "Y 4"  "X 5"  "Y 6"  "X 7"  "Y 8"  "X 9"  "Y 10"
-    paste(c("X","Y"),1:10,sep="_")
-    ##  [1] "X_1"  "Y_2"  "X_3"  "Y_4"  "X_5"  "Y_6"  "X_7"  "Y_8"  "X_9"  "Y_10"
+```{r}
+paste("abc","def")
+paste("abc","def",sep="THISSEP")
+paste0("abc","def")
+## [1] "abcdef"
+paste(c("X","Y"),1:10)
+paste(c("X","Y"),1:10,sep="_")
+```
 
-### More String Functions
+We can count the number of characters in a string.
 
--   [Number of characters in a string]{}
+```{r}
+nchar('abc')
+nchar(c('abc','d',123456))
+```
+        
+Pulling out parts of strings is also sometimes useful.
 
-        nchar('abc')
-        ## [1] 3
-        nchar(c('abc','d',123456))
-        ## [1] 3 1 6
+```{r}
+substr('This is a good sentence.',start=10,stop=15)
+```
 
--   [Extract substrings]{}
+Another common operation is to replace something in a string with something (a find-and-replace).
 
-        substr('This is a good sentence.',start=10,stop=15)
-        ## [1] " good "
+```{r}
+sub('This','That','This is a good sentence.')
+```
 
--   [String replacement]{}
+When we want to find all strings that match some other string, we can use `grep`, or "grab regular expression".
 
-        sub('This','That','This is a good sentence.')
-        ## [1] "That is a good sentence."
-
--   [Finding matching strings]{}
-
-        grep('bcd',c('abcdef','abcd','bcde','cdef','defg'))
-        ## [1] 1 2 3
-        grep('bcd',c('abcdef','abcd','bcde','cdef','defg'),value=TRUE)
-        ## [1] "abcdef" "abcd"   "bcde"
-
-Special Data Types
-------------------
+```{r}
+grep('bcd',c('abcdef','abcd','bcde','cdef','defg'))
+grep('bcd',c('abcdef','abcd','bcde','cdef','defg'),value=TRUE)
+```
 
 ### Missing Values, AKA “NA”
 
-R has a special value, “NA”, that represents a “missing” value in a
-vector or other data structure.
+R has a special value, “NA”, that represents a “missing” value, or *Not Available*, in a
+vector or other data structure. Here, we just create a vector to experiment.
 
-    x = 1:5
-    x
-    ## [1] 1 2 3 4 5
-    length(x)
-    ## [1] 5
-    is.na(x)
-    ## [1] FALSE FALSE FALSE FALSE FALSE
-    x[2] = NA
-    x
-    ## [1]  1 NA  3  4  5
-    length(x)
-    ## [1] 5
-    is.na(x)
-    ## [1] FALSE  TRUE FALSE FALSE FALSE
-    x[!is.na(x)]
-    ## [1] 1 3 4 5
+```{r}
+x = 1:5
+x
+length(x)
+```
+
+```{r}
+is.na(x)
+x[2] = NA
+x
+```
+The length of `x` is unchanged, but there is one value that is marked as "missing" by virtue of being `NA`.
+
+```{r}
+length(x)
+is.na(x)
+```
+
+We can remove `NA` values by using indexing. In the following, `is.na(x)` returns a logical vector the
+length of `x`. The `!` is the logical _NOT_ operator and converts `TRUE` to `FALSE` and vice-versa.
+
+```{r}
+x[!is.na(x)]
+```
 
 ### Factors
 
--   [A factor is a special type of vector, normally used to hold a
-    categorical variable in many statistical functions.]{}
+A factor is a special type of vector, normally used to hold a
+categorical variable--such as smoker/nonsmoker, state of residency, zipcode--in many statistical functions. Such vectors have class “factor”. Factors are primarily used in Analysis of Variance (ANOVA) or other situations when "categories" are needed. When a factor is used as a predictor variable, the corresponding indicator variables are created (more later).
 
--   [Such vectors have class “factor”.]{}
-
--   [Factors are primarily used in Analysis of Variance (ANOVA). When a
-    factor is used as a predictor variable, the corresponding indicator
-    variables are created.]{}
-
-[Note of caution]{} Factors in R often *appear* to be character vectors
+Note of caution that factors in R often *appear* to be character vectors
 when printed, but you will notice that they do not have double quotes
 around them. They are stored in R as numbers with a key name, so
 sometimes you will note that the factor *behaves* like a numeric vector.
 
-### Factors in Practice
+```{r}
+# create the character vector
+citizen<-c("uk","us","no","au","uk","us","us","no","au") 
 
-    # create the character vector
-    citizen<-c("uk","us","no","au","uk","us","us","no","au") 
-    # convert to factor
-    citizenf<-factor(citizen)                                
-    citizen             
-    ## [1] "uk" "us" "no" "au" "uk" "us" "us" "no" "au"
-    citizenf
-    ## [1] uk us no au uk us us no au
-    ## Levels: au no uk us
-    # convert factor back to character vector
-    as.character(citizenf)
-    ## [1] "uk" "us" "no" "au" "uk" "us" "us" "no" "au"
-    # convert to numeric vector
-    as.numeric(citizenf)
-    ## [1] 3 4 2 1 3 4 4 2 1
+# convert to factor
+citizenf<-factor(citizen)                                
+citizen             
+citizenf
+# convert factor back to character vector
+as.character(citizenf)
+# convert to numeric vector
+as.numeric(citizenf)
+```
 
-### Factors in Practice
+R stores many data structures as vectors with "attributes" and "class" (just so you have seen this).
 
-    # R stores many data structures as vectors with "attributes" and "class"
-    attributes(citizenf)
-    ## \$levels
-    ## [1] "au" "no" "uk" "us"
-    ## 
-    ## \$class
-    ## [1] "factor"
-    class(citizenf)
-    ## [1] "factor"
-    # note that after unclassing, we can see the 
-    # underlying numeric structure again
-    unclass(citizenf)
-    ## [1] 3 4 2 1 3 4 4 2 1
-    ## attr(,"levels")
-    ## [1] "au" "no" "uk" "us"
-    table(citizenf)
-    ## citizenf
-    ## au no uk us 
-    ##  2  2  2  3
+```{r}
+attributes(citizenf)
+class(citizenf)
+# note that after unclassing, we can see the 
+# underlying numeric structure again
+unclass(citizenf)
+```
 
-Rectangular Data
-================
+Tabulating factors is a useful way to get a sense of the "sample" set available. 
+
+```{r}
+table(citizenf)
+```
+
+## Rectangular Data
 
 ### Matrices and Data Frames
 
@@ -508,8 +495,7 @@ Rectangular Data
 -   [However these are implemented differently in R; many operations
     will work for one but not both.]{}
 
-Matrix Operations
------------------
+
 
 ### Matrix Operations
 
@@ -727,23 +713,9 @@ Lists and Objects
         names(tab)
         ## [1] "col1" "col2" "col3"
 
-### Summary of Simple Data Types
+Table (\#tab:datatypes) Summary of basic R data structures.
 
-   Data type           Stores
-  ----------- ------------------------
-     real      floating point numbers
-    integer           integers
-    complex       complex numbers
-    factor        categorical data
-   character          strings
-    logical        TRUE or FALSE
-      NA              missing
-     NULL              empty
-   function        function type
-
-### Summary of Aggregate Data Types
-
-   Data type                             Stores
+  Data type   Stores
   ------------ ----------------------------------------------------------
      vector              one-dimensional data, single data type
      matrix              two-dimensional data, single data type
@@ -751,13 +723,9 @@ Lists and Objects
       list        list of data types, not all need to be the same type
      object     a list with attributes and potentially slots and methods
 
-Plotting and Graphics
-=====================
+# Plotting and Graphics
 
-Basics of Plotting
-------------------
-
-### Basic Plot Functions
+## Basic Plot Functions
 
 -   [The command `plot(x,y)` will plot vector x as the independent
     variable and vector y as the dependent variable.]{}
