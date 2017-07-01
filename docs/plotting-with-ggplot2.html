@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="r-mechanics.html">
+<link rel="prev" href="plotting-and-graphics.html">
+<link rel="next" href="control-structures-looping-and-applying.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -204,58 +204,70 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Introduction to R (ITR)</h1>
-<h4 class="author"><em>Sean Davis</em></h4>
-<h4 class="date"><em>6/29/2017</em></h4>
-</div>
-<div id="why-r" class="section level1">
-<h1><span class="header-section-number">1</span> Why R?</h1>
-<div id="what-is-r" class="section level2">
-<h2><span class="header-section-number">1.1</span> What is R?</h2>
-<p>R is a number of things, simultaneously. Depending on who is being asked, R is:</p>
+<div id="plotting-with-ggplot2" class="section level1">
+<h1><span class="header-section-number">6</span> Plotting with ggplot2</h1>
+<p>The <code>ggplot2</code> package is a relatively novel approach to generating highly informative publication-quality graphics. The “gg” stands for “Grammar of Graphics”. In short, instead of thinking about a single function that produces a plot, <code>ggplot2</code> uses a “grammar” approach, akin to building more and more complex sentences to layer on more information or nuance. See the <a href="http://www.r-graph-gallery.com/portfolio/ggplot2-package/">ggplot2 graphics gallery</a> for some examples <em>with accompanying code</em>.</p>
+<p>The <code>ggplot2</code> package assumes that data are in the form of a data.frame. In some cases, the data will need to be manipulated into a form that matches assumptions that <code>ggplot2</code> uses. In particular, if one has a <em>matrix</em> of numbers associated with different subjects (samples, people, etc.), the data will usually need to be transformed into a “long” data frame.</p>
+<p>To use the <code>ggplot2</code> package, it must be installed and loaded. Assuming that installation has been done already, we can load the package directly:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<div id="mtcars-data" class="section level2">
+<h2><span class="header-section-number">6.1</span> mtcars data</h2>
+<p>We are going to use the mtcars dataset, included with R, to experiment with <code>ggplot2</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)</code></pre></div>
 <ul>
-<li>A software package</li>
-<li>A programming language</li>
-<li>A toolkit for developing statistical and analytical tools</li>
-<li>An extensive library of statistical and mathematical software and algorithms</li>
-<li>A scripting language</li>
-<li>much, much more</li>
+<li>Exercise: Explore the <code>mtcars</code> dataset using <code>View</code>, <code>summary</code>, <code>dim</code>, <code>class</code>, etc.</li>
 </ul>
+<p>We can also take a quick look at the relationships between the variables using the <code>pairs</code> plotting function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(mtcars)</code></pre></div>
+<p>That is a useful view of the data. We want to use <code>ggplot2</code> to make an informative plot, so let’s approach this in a piecewise fashion. We first need to decide what type of plot to produce and what our basic variables will be. In this case, we have a number of choices.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp))</code></pre></div>
+<p>First, a little explanation is necessary. The <code>ggplot</code> function takes as its first argument a <code>data.frame</code>. The second argument is the “aesthetic”, <code>aes</code>. The <code>x</code> and <code>y</code> take column names from the <code>mtcars</code> <code>data.frame</code> and will form the basis of our scatter plot.</p>
+<p>But why did we get that “Error: No layers in plot”? Remember that <em>ggplot2</em> is a “grammar of graphics”. We supplied a subject, but no verb (called a <em>layer</em> by ggplot2). So, to generate a plot, we need to supply a verb. There are many possibilities. Each “verb” or <em>layer</em> typically starts with “geom” and then a descriptor. An example is necessary.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="B7_ggplot_files/figure-html/ggplotS2-1.png" width="672" /></p>
+<p>We finally produced a plot. The power of <em>ggplot2</em>, though, is the ability to make very rich plots by adding “grammar” to the “plot sentence”. We have a number of other variables in our <code>mtcars</code> <code>data.frame</code>. How can we add another value to a two-dimensional plot?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp,<span class="dt">color=</span>cyl)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="B7_ggplot_files/figure-html/ggplotS3-1.png" width="672" /></p>
+<p>The color of the points is a based on the numeric variable <code>wt</code>, the weight of the car. Can we do more? We can change the size of the points, also.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp,<span class="dt">color=</span>wt,<span class="dt">size=</span>mpg)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="B7_ggplot_files/figure-html/ggplotS4-1.png" width="672" /></p>
+<p>So, on our 2D plot, we are now plotting four variables. Can we do more? We can manipulate the shape of the points in addition to the color and the size.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>mpg,<span class="dt">color=</span>wt,<span class="dt">shape=</span>cyl))</code></pre></div>
+<p>Why did we get that error? Ggplot2 is trying to be helpful by telling us that a “continuous varialbe cannot be mapped to ‘shape’”. Well, in our <code>mtcars</code> <code>data.frame</code>, we can look at <code>cyl</code> in detail.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   4.000   4.000   6.000   6.188   8.000   8.000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>## 
+##  4  6  8 
+## 11  7 14</code></pre>
+<p>The <code>cyl</code> variable is “kinda” continuous in that it is numeric, but it could also be thought of as a “category” of engines. R has a specific data type for “category” data, called a <em>factor</em>. We can easily convert the <code>cyl</code> column to a factor like so:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">as.factor</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<p>Now, we can go ahead with our previous approach to make a 2-dimensional plot that displays the relationships between <em>five</em> variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>mpg,<span class="dt">color=</span>wt,<span class="dt">shape=</span>cyl))</code></pre></div>
+<p><img src="B7_ggplot_files/figure-html/ggplotS6-1.png" width="672" /></p>
 </div>
-<div id="why-use-r" class="section level2">
-<h2><span class="header-section-number">1.2</span> Why use R?</h2>
-<ul>
-<li>R is cross-platform and runs on Windows, Mac, and Linux (as well as more obscure systems).</li>
-<li>R provides a vast number of useful statistical tools, many of which have been painstakingly tested.</li>
-<li>R produces publication-quality graphics in a variety of formats.</li>
-<li>R plays well with FORTRAN, C, and scripts in many languages.</li>
-<li>R scales, making it useful for small and large projects. It is NOT Excel.</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-<p>I can develop code for analysis on my Mac laptop. I can then install the <em>same</em> code on our 20k core cluster and run it in parallel on 100 samples, monitor the process, and then update a database (for example) with R when complete.</p>
-</div>
-<div id="why-not-use-r" class="section level2">
-<h2><span class="header-section-number">1.3</span> Why not use R?</h2>
-<ul>
-<li>R cannot do everything.</li>
-<li>R is not always the “best” tool for the job.</li>
-<li>R will <em>not</em> hold your hand. Often, it will <em>slap</em> your hand instead.</li>
-<li>The documentation can be opaque (but there is documentation).</li>
-<li>R can drive you crazy (on a good day) or age you prematurely (on a bad one).</li>
-<li>Finding the right package to do the job you want to do can be challenging; worse, some contributed packages are unreliable.]{}</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-</div>
-<div id="r-license-and-the-open-source-ideal" class="section level2">
-<h2><span class="header-section-number">1.4</span> R License and the Open Source Ideal</h2>
-<p>R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:</p>
-<ul>
-<li>Download the source code</li>
-<li>Modify the source code to your heart’s content</li>
-<li>Distribute the modified source code and even charge money for it, but you must distribute the modified source code under the original GNU license]{}</li>
-</ul>
-<p>This license means that R will always be available, will always be open source, and can grow organically without constraint.</p>
+<div id="nyc-flight-data" class="section level2">
+<h2><span class="header-section-number">6.2</span> NYC Flight data</h2>
+<p>I leave this section open-ended for you to explore further options with the <em>ggplot2</em> package. The data represent the on-time data for all flights that departed New York City in 2013.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nycflights13)
+<span class="kw">head</span>(flights)</code></pre></div>
+<pre><code>## # A tibble: 6 x 19
+##    year month   day dep_time sched_dep_time dep_delay arr_time
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+## 1  2013     1     1      517            515         2      830
+## 2  2013     1     1      533            529         4      850
+## 3  2013     1     1      542            540         2      923
+## 4  2013     1     1      544            545        -1     1004
+## 5  2013     1     1      554            600        -6      812
+## 6  2013     1     1      554            558        -4      740
+## # ... with 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
+## #   time_hour &lt;dttm&gt;</code></pre>
+<p>Feel free to explore. Consider using other “geoms” during your exploration.</p>
 
 </div>
 </div>
@@ -283,8 +295,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-
-<a href="r-mechanics.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="plotting-and-graphics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="control-structures-looping-and-applying.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
@@ -313,7 +325,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/seandavi/ITR/edit/master/index.Rmd",
+"link": "https://github.com/seandavi/ITR/edit/master/B7_ggplot.Rmd",
 "text": "Edit"
 },
 "download": ["ITR.pdf"],
