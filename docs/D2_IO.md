@@ -8,12 +8,27 @@ vignette: >
 
 
 
-# Exercise 1: BRFSS Survey Data
+# Data Input and Exploration
+
+## Behavioral Risk Factor Surveillance System
 
 We will explore a subset of data collected by the CDC through its
 extensive Behavioral Risk Factor Surveillance System ([BRFSS][])
 telephone survey. Check out the link for more information. We'll look
 at a subset of the data.
+
+First, we need to get the data. Either download the data
+from [THIS LINK](BRFSS-subset.csv) or have R do it directly from the
+command-line (preferred):
+
+
+```r
+download.file('https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv',
+              destfile = 'BRFSS-subset.csv')
+```
+
+You can check to see the file using the Rstudio file panel or get a
+directory listing using `dir()`
 
 1. Use `file.choose()` to find the path to the file 'BRFSS-subset.csv'
 
@@ -26,15 +41,15 @@ at a subset of the data.
     
 -->
 
-2. Input the data using `read.csv()`, assigning to a variable `brfss`
+2. Read the data into R using `read.csv()`, assigning to a variable `brfss`.
 
     
     ```r
     brfss <- read.csv(path)
     ```
 
-3. Use command like `class()`, `head()`, `dim()`, `summary()` to
-   explore the data.
+3. Use command like `class()`, `head()`, `dim()`, `summary()` to explore
+the data.
 
     - What variables have been measured?
 
@@ -222,10 +237,17 @@ at a subset of the data.
 
 [BRFSS]: http://www.cdc.gov/brfss/about/index.htm
 
-# Exercise 2: ALL Phenotypic Data
+## ALL Phenotypic Data
 
 This data comes from an (old) Acute Lymphoid Leukemia microarray data
-set.
+set. The actual data are available at [THIS LINK](https://raw.githubusercontent.com/seandavi/ITR/master/ALL-phenoData.csv) or by downloading 
+using R.
+
+
+```r
+download.file('https://raw.githubusercontent.com/seandavi/ITR/master/ALL-phenoData.csv',
+              destfile = 'ALL-phenoData.csv')
+```
 
 Choose the file that contains ALL (acute lymphoblastic leukemia)
 patient information and input the date using `read.csv()`; for

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Introduction to R (ITR)</title>
+  <meta name="description" content="Introduction to R (ITR)">
+  <meta name="generator" content="bookdown 0.4.1 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Introduction to R (ITR)" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Introduction to R (ITR)" />
+  
+  
+  
+
+<meta name="author" content="Sean Davis">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="r-first-impressions.html">
+<link rel="next" href="exploration-and-simple-univariate-measures.html">
+<script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Why R?</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#what-is-r"><i class="fa fa-check"></i><b>1.1</b> What is R?</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#why-use-r"><i class="fa fa-check"></i><b>1.2</b> Why use R?</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#why-not-use-r"><i class="fa fa-check"></i><b>1.3</b> Why not use R?</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#r-license-and-the-open-source-ideal"><i class="fa fa-check"></i><b>1.4</b> R License and the Open Source Ideal</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="r-mechanics.html"><a href="r-mechanics.html"><i class="fa fa-check"></i><b>2</b> R Mechanics</a><ul>
+<li class="chapter" data-level="2.1" data-path="r-mechanics.html"><a href="r-mechanics.html#installing-r"><i class="fa fa-check"></i><b>2.1</b> Installing R</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="r-mechanics.html"><a href="r-mechanics.html#windows"><i class="fa fa-check"></i><b>2.1.1</b> Windows</a></li>
+<li class="chapter" data-level="2.1.2" data-path="r-mechanics.html"><a href="r-mechanics.html#mac"><i class="fa fa-check"></i><b>2.1.2</b> Mac</a></li>
+<li class="chapter" data-level="2.1.3" data-path="r-mechanics.html"><a href="r-mechanics.html#linux"><i class="fa fa-check"></i><b>2.1.3</b> Linux</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="r-mechanics.html"><a href="r-mechanics.html#starting-r"><i class="fa fa-check"></i><b>2.2</b> Starting R</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="first-steps.html"><a href="first-steps.html"><i class="fa fa-check"></i><b>3</b> First steps</a><ul>
+<li class="chapter" data-level="3.1" data-path="first-steps.html"><a href="first-steps.html#interacting-with-r"><i class="fa fa-check"></i><b>3.1</b> Interacting with R</a></li>
+<li class="chapter" data-level="3.2" data-path="first-steps.html"><a href="first-steps.html#rules-for-names-in-r"><i class="fa fa-check"></i><b>3.2</b> Rules for Names in R</a></li>
+<li class="chapter" data-level="3.3" data-path="first-steps.html"><a href="first-steps.html#resources-for-getting-help"><i class="fa fa-check"></i><b>3.3</b> Resources for Getting Help</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html"><i class="fa fa-check"></i><b>4</b> Introduction to R data structures</a><ul>
+<li class="chapter" data-level="4.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#vectors"><i class="fa fa-check"></i><b>4.1</b> Vectors</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#creating-vectors"><i class="fa fa-check"></i><b>4.1.1</b> Creating vectors</a></li>
+<li class="chapter" data-level="4.1.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#vector-operations"><i class="fa fa-check"></i><b>4.1.2</b> Vector Operations</a></li>
+<li class="chapter" data-level="4.1.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#logical-vectors"><i class="fa fa-check"></i><b>4.1.3</b> Logical Vectors</a></li>
+<li class="chapter" data-level="4.1.4" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#logical-operators"><i class="fa fa-check"></i><b>4.1.4</b> Logical Operators</a></li>
+<li class="chapter" data-level="4.1.5" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#indexing-vectors"><i class="fa fa-check"></i><b>4.1.5</b> Indexing Vectors</a></li>
+<li class="chapter" data-level="4.1.6" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#character-vectors-a.k.a.-strings"><i class="fa fa-check"></i><b>4.1.6</b> Character Vectors, A.K.A. Strings</a></li>
+<li class="chapter" data-level="4.1.7" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#missing-values-aka-na"><i class="fa fa-check"></i><b>4.1.7</b> Missing Values, AKA “NA”</a></li>
+<li class="chapter" data-level="4.1.8" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#factors"><i class="fa fa-check"></i><b>4.1.8</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#rectangular-data"><i class="fa fa-check"></i><b>4.2</b> Rectangular Data</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#matrices"><i class="fa fa-check"></i><b>4.2.1</b> Matrices</a></li>
+<li class="chapter" data-level="4.2.2" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#data-frames"><i class="fa fa-check"></i><b>4.2.2</b> Data Frames</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#lists-and-objects"><i class="fa fa-check"></i><b>4.3</b> Lists and Objects</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="basic-textual-input-and-output.html"><a href="basic-textual-input-and-output.html"><i class="fa fa-check"></i><b>5</b> Basic Textual Input and Output</a></li>
+<li class="chapter" data-level="6" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html"><i class="fa fa-check"></i><b>6</b> Plotting and Graphics</a><ul>
+<li class="chapter" data-level="6.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#basic-plot-functions"><i class="fa fa-check"></i><b>6.1</b> Basic Plot Functions</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#simple-plotting-example"><i class="fa fa-check"></i><b>6.1.1</b> Simple Plotting Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting"><i class="fa fa-check"></i><b>6.1.2</b> More Plotting</a></li>
+<li class="chapter" data-level="6.1.3" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting-1"><i class="fa fa-check"></i><b>6.1.3</b> More Plotting</a></li>
+<li class="chapter" data-level="6.1.4" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#graphics-devices-and-saving-plots"><i class="fa fa-check"></i><b>6.1.4</b> Graphics Devices and Saving Plots</a></li>
+<li class="chapter" data-level="6.1.5" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#more-plotting-2"><i class="fa fa-check"></i><b>6.1.5</b> More Plotting</a></li>
+<li class="chapter" data-level="6.1.6" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#r-graphics-galleries-and-resources"><i class="fa fa-check"></i><b>6.1.6</b> R Graphics Galleries and Resources</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html"><i class="fa fa-check"></i><b>7</b> Control Structures, Looping, and Applying</a><ul>
+<li class="chapter" data-level="7.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-and-looping"><i class="fa fa-check"></i><b>7.1</b> Control Structures and Looping</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-in-r"><i class="fa fa-check"></i><b>7.1.1</b> Control Structures in R</a></li>
+<li class="chapter" data-level="7.1.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples"><i class="fa fa-check"></i><b>7.1.2</b> Control Structure and Looping Examples</a></li>
+<li class="chapter" data-level="7.1.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples-1"><i class="fa fa-check"></i><b>7.1.3</b> Control Structure and Looping Examples</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#applying"><i class="fa fa-check"></i><b>7.2</b> Applying</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#why-does-r-have-apply-functions"><i class="fa fa-check"></i><b>7.2.1</b> Why Does R Have Apply Functions</a></li>
+<li class="chapter" data-level="7.2.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#apply-function-exercise"><i class="fa fa-check"></i><b>7.2.2</b> Apply Function Exercise</a></li>
+<li class="chapter" data-level="7.2.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-functions"><i class="fa fa-check"></i><b>7.2.3</b> Related Apply Functions</a></li>
+<li class="chapter" data-level="7.2.4" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-function-examples"><i class="fa fa-check"></i><b>7.2.4</b> Related Apply Function Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>8</b> Functions</a><ul>
+<li class="chapter" data-level="8.0.1" data-path="functions.html"><a href="functions.html#function-overview"><i class="fa fa-check"></i><b>8.0.1</b> Function Overview</a></li>
+<li class="chapter" data-level="8.0.2" data-path="functions.html"><a href="functions.html#example-functions"><i class="fa fa-check"></i><b>8.0.2</b> Example Functions</a></li>
+<li class="chapter" data-level="8.0.3" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>8.0.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="rstudio-a-quick-tour.html"><a href="rstudio-a-quick-tour.html"><i class="fa fa-check"></i><b>9</b> <em>RStudio</em>: A Quick Tour</a></li>
+<li class="chapter" data-level="10" data-path="r-first-impressions.html"><a href="r-first-impressions.html"><i class="fa fa-check"></i><b>10</b> <em>R</em>: First Impressions</a><ul>
+<li class="chapter" data-level="10.1" data-path="r-first-impressions.html"><a href="r-first-impressions.html#r-data-types-vector-and-list"><i class="fa fa-check"></i><b>10.1</b> <em>R</em> Data types: vector and list</a></li>
+<li class="chapter" data-level="10.2" data-path="r-first-impressions.html"><a href="r-first-impressions.html#classes-data.frame-and-beyond"><i class="fa fa-check"></i><b>10.2</b> Classes: data.frame and beyond</a></li>
+<li class="chapter" data-level="10.3" data-path="r-first-impressions.html"><a href="r-first-impressions.html#help"><i class="fa fa-check"></i><b>10.3</b> Help!</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="data-exploration-exercises.html"><a href="data-exploration-exercises.html"><i class="fa fa-check"></i><b>11</b> Data Exploration Exercises</a><ul>
+<li class="chapter" data-level="11.1" data-path="data-exploration-exercises.html"><a href="data-exploration-exercises.html#behavioral-risk-factor-surveillance-system-brfss"><i class="fa fa-check"></i><b>11.1</b> Behavioral Risk Factor Surveillance System (<a href="http://www.cdc.gov/brfss/about/index.htm">BRFSS</a>)</a></li>
+<li class="chapter" data-level="11.2" data-path="data-exploration-exercises.html"><a href="data-exploration-exercises.html#all-phenotypic-data"><i class="fa fa-check"></i><b>11.2</b> ALL Phenotypic Data</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html"><i class="fa fa-check"></i><b>12</b> Exploration and simple univariate measures</a><ul>
+<li class="chapter" data-level="12.1" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#clean-data"><i class="fa fa-check"></i><b>12.1</b> Clean data</a></li>
+<li class="chapter" data-level="12.2" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-in-1990-vs.2010-females"><i class="fa fa-check"></i><b>12.2</b> Weight in 1990 vs. 2010 Females</a></li>
+<li class="chapter" data-level="12.3" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-and-height-in-2010-males"><i class="fa fa-check"></i><b>12.3</b> Weight and height in 2010 Males</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html"><i class="fa fa-check"></i><b>13</b> Multivariate analysis</a><ul>
+<li class="chapter" data-level="13.1" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#input-and-setup"><i class="fa fa-check"></i><b>13.1</b> Input and setup</a></li>
+<li class="chapter" data-level="13.2" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#cleaning"><i class="fa fa-check"></i><b>13.2</b> Cleaning</a></li>
+<li class="chapter" data-level="13.3" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#unsupervised-machine-learning-multi-dimensional-scaling"><i class="fa fa-check"></i><b>13.3</b> Unsupervised machine learning – multi-dimensional scaling</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html"><i class="fa fa-check"></i><b>14</b> Using <em>R</em> in real life</a><ul>
+<li class="chapter" data-level="14.1" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#organizing-work"><i class="fa fa-check"></i><b>14.1</b> Organizing work</a></li>
+<li class="chapter" data-level="14.2" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#r-packages"><i class="fa fa-check"></i><b>14.2</b> <em>R</em> Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html"><i class="fa fa-check"></i><b>15</b> Graphics and Visualization</a><ul>
+<li class="chapter" data-level="15.1" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#base-r-graphics"><i class="fa fa-check"></i><b>15.1</b> Base <em>R</em> Graphics</a></li>
+<li class="chapter" data-level="15.2" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#what-makes-for-a-good-graphical-display"><i class="fa fa-check"></i><b>15.2</b> What makes for a good graphical display?</a></li>
+<li class="chapter" data-level="15.3" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#grammar-of-graphics-ggplot2"><i class="fa fa-check"></i><b>15.3</b> Grammar of Graphics: ggplot2</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="appendix-a-swirl.html"><a href="appendix-a-swirl.html"><i class="fa fa-check"></i><b>A</b> Appendix A – Swirl</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to R (ITR)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-exploration-exercises" class="section level1">
+<h1><span class="header-section-number">11</span> Data Exploration Exercises</h1>
+<div id="behavioral-risk-factor-surveillance-system-brfss" class="section level2">
+<h2><span class="header-section-number">11.1</span> Behavioral Risk Factor Surveillance System (<a href="http://www.cdc.gov/brfss/about/index.htm">BRFSS</a>)</h2>
+<p>We will explore a subset of data collected by the CDC through its extensive Behavioral Risk Factor Surveillance System (<a href="http://www.cdc.gov/brfss/about/index.htm">BRFSS</a>) telephone survey. Check out the link for more information. We’ll look at a subset of the data.</p>
+<p>First, we need to get the data. Either download the data from <a href="BRFSS-subset.csv">THIS LINK</a> or have R do it directly from the command-line (preferred):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download.file</span>(<span class="st">&#39;https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv&#39;</span>,
+              <span class="dt">destfile =</span> <span class="st">&#39;BRFSS-subset.csv&#39;</span>)</code></pre></div>
+<p>You can check to see the file using the Rstudio file panel or get a directory listing using <code>dir()</code></p>
+<ol style="list-style-type: decimal">
+<li><p>Use <code>file.choose()</code> to find the path to the file ‘BRFSS-subset.csv’</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()</code></pre></div></li>
+</ol>
+<!--
+    
+-->
+<ol start="2" style="list-style-type: decimal">
+<li><p>Read the data into R using <code>read.csv()</code>, assigning to a variable <code>brfss</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path)</code></pre></div></li>
+<li><p>Use command like <code>class()</code>, <code>head()</code>, <code>dim()</code>, <code>summary()</code> to explore the data.</p>
+<ul>
+<li><p>What variables have been measured?</p></li>
+<li><p>Can you guess at the units used for, e.g., Weight and Height?</p></li>
+</ul>
+<pre><code>class(brfss)
+head(brfss)
+dim(brfss)
+summary(brfss)</code></pre></li>
+<li><p>Use the <code>$</code> operator to extract the ‘Sex’ column, and summarize the number of males and females in the survey using <code>table()</code>. Do the same for ‘Year’, and for both <code>Sex</code> and <code>Year</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Sex)</code></pre></div>
+<pre><code>## 
+## Female   Male 
+##  12039   7961</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Year)</code></pre></div>
+<pre><code>## 
+##  1990  2010 
+## 10000 10000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(brfss<span class="op">$</span>Sex, brfss<span class="op">$</span>Year)</code></pre></div>
+<pre><code>##         
+##          1990 2010
+##   Female 5718 6321
+##   Male   4282 3679</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">table</span>(Sex, Year))                <span class="co"># same, but easier</span></code></pre></div>
+<pre><code>##         Year
+## Sex      1990 2010
+##   Female 5718 6321
+##   Male   4282 3679</code></pre></li>
+<li><p>Use <code>aggregate()</code> to summarize the mean weight of each group. What about the median weight of each group? What about the <em>number</em> of observations in each group?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">aggregate</span>(Weight, <span class="kw">list</span>(Year, Sex), mean, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>##   Group.1 Group.2        x
+## 1    1990  Female 64.81838
+## 2    2010  Female 72.95424
+## 3    1990    Male 81.17999
+## 4    2010    Male 88.84657</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(brfss, <span class="kw">aggregate</span>(Weight, <span class="kw">list</span>(<span class="dt">Year=</span>Year, <span class="dt">Sex=</span>Sex), mean, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>##   Year    Sex        x
+## 1 1990 Female 64.81838
+## 2 2010 Female 72.95424
+## 3 1990   Male 81.17999
+## 4 2010   Male 88.84657</code></pre></li>
+<li><p>Use a <code>formula</code> and the <code>aggregate()</code> function to describe the relationship between Year, Sex, and Weight</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(Weight <span class="op">~</span><span class="st"> </span>Year <span class="op">+</span><span class="st"> </span>Sex, brfss, mean)  <span class="co"># same, but more informative</span></code></pre></div>
+<pre><code>##   Year    Sex   Weight
+## 1 1990 Female 64.81838
+## 2 2010 Female 72.95424
+## 3 1990   Male 81.17999
+## 4 2010   Male 88.84657</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(. <span class="op">~</span><span class="st"> </span>Year <span class="op">+</span><span class="st"> </span>Sex, brfss, mean)       <span class="co"># all variables</span></code></pre></div>
+<pre><code>##   Year    Sex      Age   Weight   Height
+## 1 1990 Female 46.09153 64.84333 163.2914
+## 2 2010 Female 57.07807 73.03178 163.2469
+## 3 1990   Male 43.87574 81.19496 178.2242
+## 4 2010   Male 56.25465 88.91136 178.0139</code></pre></li>
+<li><p>Create a subset of the data consisting of only the 1990 observations. Perform a t-test comparing the weight of males and females (“‘Weight’ as a function of ‘Sex’”, <code>Weight ~ Sex</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss_<span class="dv">1990</span> =<span class="st"> </span>brfss[brfss<span class="op">$</span>Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>,]
+<span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Sex, brfss_<span class="dv">1990</span>)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Sex
+## t = -58.734, df = 9214, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -16.90767 -15.81554
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             64.81838             81.17999</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Weight <span class="op">~</span><span class="st"> </span>Sex, brfss, <span class="dt">subset =</span> Year <span class="op">==</span><span class="st"> </span><span class="dv">1990</span>)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Sex
+## t = -58.734, df = 9214, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -16.90767 -15.81554
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             64.81838             81.17999</code></pre>
+<p>What about differences between weights of males (or females) in 1990 versus 2010? Check out the help page <code>?t.test.formula</code>. Is there a way of performing a t-test on <code>brfss</code> without explicitly creating the object <code>brfss_1990</code>?</p></li>
+<li><p>Use <code>boxplot()</code> to plot the weights of the Male individuals. Can you transform weight, e.g., <code>sqrt(Weight) ~ Year</code>? Interpret the results. Do similar boxplots for the t-tests of the previous question.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(Weight <span class="op">~</span><span class="st"> </span>Year, brfss, <span class="dt">subset =</span> Sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>,
+        <span class="dt">main=</span><span class="st">&quot;Males&quot;</span>)</code></pre></div>
+<p><img src="D2_IO_files/figure-html/brfss-boxplot-1.png" width="480" /></p></li>
+<li><p>Use <code>hist()</code> to plot a histogram of weights of the 1990 Female individuals.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(brfss_<span class="dv">1990</span>[brfss_<span class="dv">1990</span><span class="op">$</span>Sex <span class="op">==</span><span class="st"> &quot;Female&quot;</span>, <span class="st">&quot;Weight&quot;</span>],
+     <span class="dt">main=</span><span class="st">&quot;Females, 1990&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Weight&quot;</span> )</code></pre></div>
+<p><img src="D2_IO_files/figure-html/brfss-hist-1.png" width="480" /></p></li>
+</ol>
+</div>
+<div id="all-phenotypic-data" class="section level2">
+<h2><span class="header-section-number">11.2</span> ALL Phenotypic Data</h2>
+<p>This data comes from an (old) Acute Lymphoid Leukemia microarray data set. The actual data are available at [THIS LINK] or by downloading using R.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download.file</span>(<span class="st">&#39;https://raw.githubusercontent.com/seandavi/ITR/master/ALL-phenoData.csv&#39;</span>,
+              <span class="dt">destfile =</span> <span class="st">&#39;ALL-phenoData.csv&#39;</span>)</code></pre></div>
+<p>Choose the file that contains ALL (acute lymphoblastic leukemia) patient information and input the date using <code>read.csv()</code>; for <code>read.csv()</code>, use <code>row.names=1</code> to indicate that the first column contains row names.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">file.choose</span>()    <span class="co"># look for ALL-phenoData.csv</span></code></pre></div>
+<!--
+
+-->
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">file.exists</span>(path))
+pdata &lt;-<span class="st"> </span><span class="kw">read.csv</span>(path, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre></div>
+<p>Check out the help page <code>?read.delim</code> for input options. The exercises use <code>?read.csv</code>; Can you guess why? Explore basic properties of the object you’ve created, for instance…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(pdata)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(pdata)</code></pre></div>
+<pre><code>##  [1] &quot;cod&quot;            &quot;diagnosis&quot;      &quot;sex&quot;            &quot;age&quot;           
+##  [5] &quot;BT&quot;             &quot;remission&quot;      &quot;CR&quot;             &quot;date.cr&quot;       
+##  [9] &quot;t.4.11.&quot;        &quot;t.9.22.&quot;        &quot;cyto.normal&quot;    &quot;citog&quot;         
+## [13] &quot;mol.biol&quot;       &quot;fusion.protein&quot; &quot;mdr&quot;            &quot;kinet&quot;         
+## [17] &quot;ccr&quot;            &quot;relapse&quot;        &quot;transplant&quot;     &quot;f.u&quot;           
+## [21] &quot;date.last.seen&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pdata)</code></pre></div>
+<pre><code>## [1] 128  21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata)</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(pdata<span class="op">$</span>sex)</code></pre></div>
+<pre><code>##    F    M NA&#39;s 
+##   42   83    3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(pdata<span class="op">$</span>cyto.normal)</code></pre></div>
+<pre><code>##    Mode   FALSE    TRUE    NA&#39;s 
+## logical      69      24      35</code></pre>
+<p>Remind yourselves about various ways to subset and access columns of a data.frame</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]</code></pre></div>
+<pre><code>##       sex age
+## 01005   M  53
+## 01010   M  19
+## 03002   F  52
+## 04006   M  38
+## 04007   M  57</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pdata[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, ]</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+##       cyto.normal       citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE     t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA        &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE     t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE     del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata[, <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
+<pre><code>##       sex age BT
+## 01005   M  53 B2
+## 01010   M  19 B2
+## 03002   F  52 B4
+## 04006   M  38 B1
+## 04007   M  57 B2
+## 04008   M  17 B1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(pdata[, <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>], <span class="dv">3</span>)</code></pre></div>
+<pre><code>##        sex age BT
+## 65003    M  30 T3
+## 83001    M  29 T2
+## LAL4  &lt;NA&gt;  NA  T</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata<span class="op">$</span>age)</code></pre></div>
+<pre><code>## [1] 53 19 52 38 57 17</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata<span class="op">$</span>sex)</code></pre></div>
+<pre><code>## [1] M M F M M M
+## Levels: F M</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pdata[pdata<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span><span class="dv">21</span>,])</code></pre></div>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 08001 8001 1/15/1997   M  40 B2        CR CR 3/26/1997   FALSE   FALSE
+## 08011 8011 8/21/1998   M  33 B3        CR CR 10/8/1998   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 08001       FALSE     del(p15)  BCR/ABL           p190 NEG    &lt;NA&gt; FALSE
+## 08011       FALSE del(p15/p16)  BCR/ABL      p190/p210 NEG dyploid FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 08001    TRUE      FALSE               REL      7/11/1997
+## 08011   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;</code></pre>
+<p>It seems from below that there are 17 females over 40 in the data set. However, some individuals have <code>NA</code> for the age and / or sex, and these <code>NA</code> values propagate through some computations. Use <code>table()</code> to summarize the number of females over 40, and the number of samples for which this classification cannot be determined. When <em>R</em> encounters an <code>NA</code> value in a subscript index, it introduces an <code>NA</code> into the result. Observe this (rows of <code>NA</code> values introduced into the result) when subsetting using <code>[</code> versus using the <code>subset()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idx &lt;-<span class="st"> </span>pdata<span class="op">$</span>sex <span class="op">==</span><span class="st"> &quot;F&quot;</span> <span class="op">&amp;</span><span class="st"> </span>pdata<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span><span class="dv">40</span>
+<span class="kw">table</span>(idx, <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</code></pre></div>
+<pre><code>## idx
+## FALSE  TRUE  &lt;NA&gt; 
+##   108    17     3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pdata[idx,])           <span class="co"># </span><span class="al">WARNING</span><span class="co">: &#39;NA&#39; rows introduced</span></code></pre></div>
+<pre><code>## [1] 20 21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(pdata[idx,])</code></pre></div>
+<pre><code>##         cod  diagnosis  sex age   BT remission                 CR
+## 49006 49006  8/12/1998    F  43   B2        CR                 CR
+## 57001 57001  1/29/1997    F  53   B3      &lt;NA&gt; DEATH IN INDUCTION
+## 62001 62001 11/11/1997    F  50   B4       REF                REF
+## NA.1   &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;  NA &lt;NA&gt;      &lt;NA&gt;               &lt;NA&gt;
+## 02020  2020  3/23/2000    F  48   T2      &lt;NA&gt; DEATH IN INDUCTION
+## NA.2   &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;  NA &lt;NA&gt;      &lt;NA&gt;               &lt;NA&gt;
+##          date.cr t.4.11. t.9.22. cyto.normal         citog mol.biol
+## 49006 11/19/1998      NA      NA          NA          &lt;NA&gt;  BCR/ABL
+## 57001       &lt;NA&gt;   FALSE   FALSE        TRUE        normal      NEG
+## 62001       &lt;NA&gt;   FALSE    TRUE       FALSE t(9;22)+other  BCR/ABL
+## NA.1        &lt;NA&gt;      NA      NA          NA          &lt;NA&gt;     &lt;NA&gt;
+## 02020       &lt;NA&gt;   FALSE   FALSE       FALSE  complex alt.      NEG
+## NA.2        &lt;NA&gt;      NA      NA          NA          &lt;NA&gt;     &lt;NA&gt;
+##       fusion.protein  mdr   kinet   ccr relapse transplant  f.u
+## 49006           p210  NEG dyploid FALSE    TRUE      FALSE  REL
+## 57001           &lt;NA&gt;  NEG hyperd.    NA      NA         NA &lt;NA&gt;
+## 62001           &lt;NA&gt;  NEG hyperd.    NA      NA         NA &lt;NA&gt;
+## NA.1            &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    NA      NA         NA &lt;NA&gt;
+## 02020           &lt;NA&gt;  NEG dyploid    NA      NA         NA &lt;NA&gt;
+## NA.2            &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    NA      NA         NA &lt;NA&gt;
+##       date.last.seen
+## 49006      4/26/1999
+## 57001           &lt;NA&gt;
+## 62001           &lt;NA&gt;
+## NA.1            &lt;NA&gt;
+## 02020           &lt;NA&gt;
+## NA.2            &lt;NA&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(<span class="kw">subset</span>(pdata, idx))    <span class="co"># BETTER: no NA rows</span></code></pre></div>
+<pre><code>## [1] 17 21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(<span class="kw">subset</span>(pdata, (sex <span class="op">==</span><span class="st"> &quot;F&quot;</span>) <span class="op">&amp;</span><span class="st"> </span>(age <span class="op">&gt;</span><span class="st"> </span><span class="dv">40</span>)))  <span class="co"># alternative</span></code></pre></div>
+<pre><code>## [1] 17 21</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="kw">subset</span>(pdata,idx))</code></pre></div>
+<pre><code>##         cod  diagnosis sex age BT remission                 CR    date.cr
+## 28032 28032  9/26/1998   F  52 B1        CR                 CR 10/30/1998
+## 30001 30001  1/16/1997   F  54 B3      &lt;NA&gt; DEATH IN INDUCTION       &lt;NA&gt;
+## 49006 49006  8/12/1998   F  43 B2        CR                 CR 11/19/1998
+## 57001 57001  1/29/1997   F  53 B3      &lt;NA&gt; DEATH IN INDUCTION       &lt;NA&gt;
+## 62001 62001 11/11/1997   F  50 B4       REF                REF       &lt;NA&gt;
+## 02020  2020  3/23/2000   F  48 T2      &lt;NA&gt; DEATH IN INDUCTION       &lt;NA&gt;
+##       t.4.11. t.9.22. cyto.normal         citog mol.biol fusion.protein
+## 28032    TRUE   FALSE       FALSE       t(4;11) ALL1/AF4           &lt;NA&gt;
+## 30001   FALSE    TRUE       FALSE t(9;22)+other  BCR/ABL           p190
+## 49006      NA      NA          NA          &lt;NA&gt;  BCR/ABL           p210
+## 57001   FALSE   FALSE        TRUE        normal      NEG           &lt;NA&gt;
+## 62001   FALSE    TRUE       FALSE t(9;22)+other  BCR/ABL           &lt;NA&gt;
+## 02020   FALSE   FALSE       FALSE  complex alt.      NEG           &lt;NA&gt;
+##       mdr   kinet   ccr relapse transplant  f.u date.last.seen
+## 28032 NEG dyploid  TRUE   FALSE      FALSE  CCR      5/16/2002
+## 30001 NEG hyperd.    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;
+## 49006 NEG dyploid FALSE    TRUE      FALSE  REL      4/26/1999
+## 57001 NEG hyperd.    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;
+## 62001 NEG hyperd.    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;
+## 02020 NEG dyploid    NA      NA         NA &lt;NA&gt;           &lt;NA&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## robust `[`: exclude NA values
+<span class="kw">dim</span>(pdata[idx <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(idx),])</code></pre></div>
+<pre><code>## [1] 17 21</code></pre>
+<p>Use the <code>mol.biol</code> column to subset the data to contain just individuals with ‘BCR/ABL’ or ‘NEG’, e.g.,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bcrabl &lt;-<span class="st"> </span><span class="kw">subset</span>(pdata, mol.biol <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BCR/ABL&quot;</span>, <span class="st">&quot;NEG&quot;</span>))</code></pre></div>
+<p>The <code>mol.biol</code> column is a factor, and retains all levels even after subsetting. It is sometimes convenient to retain factor levels, but in our case we use <code>droplevels()</code> to removed unused levels</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bcrabl<span class="op">$</span>mol.biol &lt;-<span class="st"> </span><span class="kw">droplevels</span>(bcrabl<span class="op">$</span>mol.biol)</code></pre></div>
+<p>The <code>BT</code> column is a factor describing B- and T-cell subtypes</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(bcrabl<span class="op">$</span>BT)</code></pre></div>
+<pre><code>##  [1] &quot;B&quot;  &quot;B1&quot; &quot;B2&quot; &quot;B3&quot; &quot;B4&quot; &quot;T&quot;  &quot;T1&quot; &quot;T2&quot; &quot;T3&quot; &quot;T4&quot;</code></pre>
+<p>How might one collapse B1, B2, … to a single type B, and likewise for T1, T2, …, so there are only two subtypes, B and T? One strategy is to replace two-letter level (e.g., <code>B1</code>) with the single-letter level (e.g., <code>B</code>). Do this using <code>substring()</code> to select the first letter of level, and update the previous levels with the new value using <code>levels&lt;-</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(bcrabl<span class="op">$</span>BT)</code></pre></div>
+<pre><code>## 
+##  B B1 B2 B3 B4  T T1 T2 T3 T4 
+##  4  9 35 22  9  5  1 15  9  2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(bcrabl<span class="op">$</span>BT) &lt;-<span class="st"> </span><span class="kw">substring</span>(<span class="kw">levels</span>(bcrabl<span class="op">$</span>BT), <span class="dv">1</span>, <span class="dv">1</span>)
+<span class="kw">table</span>(bcrabl<span class="op">$</span>BT)</code></pre></div>
+<pre><code>## 
+##  B  T 
+## 79 32</code></pre>
+<p>Use <code>aggregate()</code> to count the number of samples with B- and T-cell types in each of the BCR/ABL and NEG groups</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(<span class="kw">rownames</span>(bcrabl) <span class="op">~</span><span class="st"> </span>BT <span class="op">+</span><span class="st"> </span>mol.biol, bcrabl, length)</code></pre></div>
+<pre><code>##   BT mol.biol rownames(bcrabl)
+## 1  B  BCR/ABL               37
+## 2  B      NEG               42
+## 3  T      NEG               32</code></pre>
+<p>Use <code>aggregate()</code> to calculate the average age of males and females in the BCR/ABL and NEG treatment groups.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(age <span class="op">~</span><span class="st"> </span>mol.biol <span class="op">+</span><span class="st"> </span>sex, bcrabl, mean)</code></pre></div>
+<pre><code>##   mol.biol sex      age
+## 1  BCR/ABL   F 39.93750
+## 2      NEG   F 30.42105
+## 3  BCR/ABL   M 40.50000
+## 4      NEG   M 27.21154</code></pre>
+<p>Use <code>t.test()</code> to compare the age of individuals in the BCR/ABL versus NEG groups; visualize the results using <code>boxplot()</code>. In both cases, use the <code>formula</code> interface. Consult the help page <code>?t.test</code> and re-do the test assuming that variance of ages in the two groups is identical. What parts of the test output change?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(age <span class="op">~</span><span class="st"> </span>mol.biol, bcrabl)</code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  age by mol.biol
+## t = 4.8172, df = 68.529, p-value = 8.401e-06
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   7.13507 17.22408
+## sample estimates:
+## mean in group BCR/ABL     mean in group NEG 
+##              40.25000              28.07042</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(age <span class="op">~</span><span class="st"> </span>mol.biol, bcrabl)</code></pre></div>
+<p><img src="D2_IO_files/figure-html/ALL-age-1.png" width="672" /></p>
+
+</div>
+</div>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="r-first-impressions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exploration-and-simple-univariate-measures.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/seandavi/ITR/edit/master/D2_IO.Rmd",
+"text": "Edit"
+},
+"download": ["ITR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
