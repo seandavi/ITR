@@ -543,6 +543,7 @@ query(ah,c('K562','h3k','E123','narrow'))
 histoneSets = names(query(ah,c('K562','E123','h3k','narrow')))
 ```
 
+### Peak density across the genome
 
 
 ```{r}
@@ -581,6 +582,8 @@ p = ggbio() + circle(tile0.1mb,geom='point', aes(y = peakCount),
 p
 ```
 
+### Compare peak sets
+
 
 ```{r message=FALSE}
 hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
@@ -589,10 +592,6 @@ hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
 hptitles = gsub('E123-|\\.narrowPeak\\.gz','',ah[histoneSets]$title)
 names(hpList) = hptitles
 ```
-
- [1] "H3K4me1"  "H3K4me2"  "H3K4me3"  "H3K9ac"   "H3K9me1"  "H3K9me3" 
- [7] "H3K27ac"  "H3K27me3" "H3K36me3" "H3K79me2"
-
 
 Jaccard Similarity
 
@@ -640,6 +639,38 @@ Heatmap(res,top_annotation=HeatmapAnnotation(
 ```
 
 
+### Histone profiles
+
+```{r}
+wndw = 2000
+proms = promoters(txdb, upstream = wndw, downstream = wndw,
+                  columns = c('tx_name','gene_id'))
+proms = proms[sample(seq_along(proms),20000,replace=FALSE)]
+proms = keepStandardChromosomes(proms,pruning.mode='tidy')
+covg = coverage(hpList[[1]])
+seqlevelsStyle(proms) = seqlevelsStyle(covg)
+covg = covg[seqlevels(proms)]
+vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
+m = as.matrix(vi)
+plot(colSums(m),type='l')
+```
+
+```{r}
+histoneProfile = function(promoters,peaks,n_promoters=10000) {
+    proms = promoters
+    proms = proms[sample(seq_along(proms),min(length(proms),n_promoters),replace=FALSE)]
+    proms = keepStandardChromosomes(proms,pruning.mode='tidy')
+    covg = coverage(peaks)
+    seqlevelsStyle(proms) = seqlevelsStyle(covg)
+    covg = covg[seqlevels(proms)]
+    vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
+    return(colSums(as.matrix(vi)))
+}
+```
+    
+
+
+
 ```{r}
 library(readr)
 k562expr = read_tsv('https://www.encodeproject.org/files/ENCFF812ADD/@@download/ENCFF812ADD.tsv')
@@ -658,18 +689,26 @@ k562expr = subset(k562expr,grepl('ENSG',gene_id))
 ```
 
 ```{r}
-pro = promoters(txdb, upstream = 1000, downstream = 1000,
-                columns = c('tx_name','gene_id'))
+proms$TPM = k562expr$TPM[match(unlist(proms$gene_id),k562expr$gene_id)]
+proms$logTPM =
+    log10(k562expr$TPM[match(unlist(proms$gene_id),k562expr$gene_id)])
+head(proms)
 ```
 
-```{r}
-pro$TPM = k562expr$TPM[match(unlist(pro$gene_id),k562expr$gene_id)]
-pro$logTPM =
-    log10(k562expr$TPM[match(unlist(pro$gene_id),k562expr$gene_id)])
-head(pro)
+```{r }
+promslow = proms[which(proms$logTPM<median(proms$logTPM,na.rm=TRUE))]
+promshigh = proms[which(proms$logTPM>=median(proms$logTPM,na.rm=TRUE))]
 ```
 
-
+```{r warning=FALSE}
+mat = cbind(histoneProfile(promslow,hpList[[1]]),
+            histoneProfile(promshigh,hpList[[1]]),
+            histoneProfile(promslow,hpList[[10]]),
+            histoneProfile(promshigh,hpList[[10]]))
+matplot(mat,type='l',main=hptitles[1])
+legend(0,2000,legend=c('H3K4me1_low','H3K4me1_high','H3K79me2_low','H3K79me2_high'),
+       col=1:4,lty=1:4)
+```
 
 ## `sessionInfo()`
 

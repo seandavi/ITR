@@ -1091,6 +1091,7 @@ query(ah,c('K562','h3k','E123','narrow'))
 histoneSets = names(query(ah,c('K562','E123','h3k','narrow')))
 ```
 
+### Peak density across the genome
 
 
 
@@ -1139,6 +1140,8 @@ p
 
 <img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
+### Compare peak sets
+
 
 
 ```r
@@ -1148,10 +1151,6 @@ hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
 hptitles = gsub('E123-|\\.narrowPeak\\.gz','',ah[histoneSets]$title)
 names(hpList) = hptitles
 ```
-
- [1] "H3K4me1"  "H3K4me2"  "H3K4me3"  "H3K9ac"   "H3K9me1"  "H3K9me3" 
- [7] "H3K27ac"  "H3K27me3" "H3K36me3" "H3K79me2"
-
 
 Jaccard Similarity
 
@@ -1222,6 +1221,73 @@ Heatmap(res,top_annotation=HeatmapAnnotation(
 <img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-28-1.png" width="672" />
 
 
+### Histone profiles
+
+
+```r
+wndw = 2000
+proms = promoters(txdb, upstream = wndw, downstream = wndw,
+                  columns = c('tx_name','gene_id'))
+```
+
+```
+## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 1 out-of-bound range located on sequence GL000199.1. Note that
+##   only ranges located on a non-circular sequence whose length is not NA can be considered
+##   out-of-bound (use seqlengths() and isCircular() to get the lengths and circularity flags
+##   of the underlying sequences). You can use trim() to trim these ranges. See
+##   ?`trim,GenomicRanges-method` for more information.
+
+## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 1 out-of-bound range located on sequence GL000199.1. Note that
+##   only ranges located on a non-circular sequence whose length is not NA can be considered
+##   out-of-bound (use seqlengths() and isCircular() to get the lengths and circularity flags
+##   of the underlying sequences). You can use trim() to trim these ranges. See
+##   ?`trim,GenomicRanges-method` for more information.
+
+## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 1 out-of-bound range located on sequence GL000199.1. Note that
+##   only ranges located on a non-circular sequence whose length is not NA can be considered
+##   out-of-bound (use seqlengths() and isCircular() to get the lengths and circularity flags
+##   of the underlying sequences). You can use trim() to trim these ranges. See
+##   ?`trim,GenomicRanges-method` for more information.
+```
+
+```
+## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 2 out-of-bound ranges located on sequences GL000199.1 and
+##   GL000240.1. Note that only ranges located on a non-circular sequence whose length is not
+##   NA can be considered out-of-bound (use seqlengths() and isCircular() to get the lengths
+##   and circularity flags of the underlying sequences). You can use trim() to trim these
+##   ranges. See ?`trim,GenomicRanges-method` for more information.
+```
+
+```r
+proms = proms[sample(seq_along(proms),20000,replace=FALSE)]
+proms = keepStandardChromosomes(proms,pruning.mode='tidy')
+covg = coverage(hpList[[1]])
+seqlevelsStyle(proms) = seqlevelsStyle(covg)
+covg = covg[seqlevels(proms)]
+vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
+m = as.matrix(vi)
+plot(colSums(m),type='l')
+```
+
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+
+
+```r
+histoneProfile = function(promoters,peaks,n_promoters=10000) {
+    proms = promoters
+    proms = proms[sample(seq_along(proms),min(length(proms),n_promoters),replace=FALSE)]
+    proms = keepStandardChromosomes(proms,pruning.mode='tidy')
+    covg = coverage(peaks)
+    seqlevelsStyle(proms) = seqlevelsStyle(covg)
+    covg = covg[seqlevels(proms)]
+    vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
+    return(colSums(as.matrix(vi)))
+}
+```
+    
+
+
+
 
 ```r
 library(readr)
@@ -1283,33 +1349,44 @@ k562expr = subset(k562expr,grepl('ENSG',gene_id))
 
 
 ```r
-pro = promoters(txdb, upstream = 1000, downstream = 1000,
-                columns = c('tx_name','gene_id'))
-```
-
-
-```r
-pro$TPM = k562expr$TPM[match(unlist(pro$gene_id),k562expr$gene_id)]
-pro$logTPM =
-    log10(k562expr$TPM[match(unlist(pro$gene_id),k562expr$gene_id)])
-head(pro)
+proms$TPM = k562expr$TPM[match(unlist(proms$gene_id),k562expr$gene_id)]
+proms$logTPM =
+    log10(k562expr$TPM[match(unlist(proms$gene_id),k562expr$gene_id)])
+head(proms)
 ```
 
 ```
 ## GRanges object with 6 ranges and 4 metadata columns:
-##       seqnames         ranges strand |         tx_name         gene_id       TPM     logTPM
-##          <Rle>      <IRanges>  <Rle> |     <character> <CharacterList> <numeric>  <numeric>
-##   [1]        1 [10869, 12868]      + | ENST00000456328 ENSG00000223972      0.39 -0.4089354
-##   [2]        1 [10872, 12871]      + | ENST00000515242 ENSG00000223972      0.39 -0.4089354
-##   [3]        1 [10874, 12873]      + | ENST00000518655 ENSG00000223972      0.39 -0.4089354
-##   [4]        1 [11010, 13009]      + | ENST00000450305 ENSG00000223972      0.39 -0.4089354
-##   [5]        1 [28554, 30553]      + | ENST00000473358 ENSG00000243485      0.38 -0.4202164
-##   [6]        1 [29267, 31266]      + | ENST00000469289 ENSG00000243485      0.38 -0.4202164
+##       seqnames                 ranges strand |         tx_name         gene_id       TPM     logTPM
+##          <Rle>              <IRanges>  <Rle> |     <character> <CharacterList> <numeric>  <numeric>
+##   [1]    chr16 [ 11648301,  11652300]      - | ENST00000575426 ENSG00000189067      4.78  0.6794279
+##   [2]    chr19 [  3918505,   3922504]      - | ENST00000584410 ENSG00000266627      0.00       -Inf
+##   [3]     chrX [145894245, 145898244]      - | ENST00000458472 ENSG00000224440      0.00       -Inf
+##   [4]    chr15 [ 79269468,  79273467]      - | ENST00000559926 ENSG00000058335      0.03 -1.5228787
+##   [5]     chr4 [ 52774919,  52778918]      + | ENST00000510518 ENSG00000109184     15.79  1.1983821
+##   [6]     chr1 [213173577, 213177576]      - | ENST00000473303 ENSG00000174606     12.34  1.0913152
 ##   -------
-##   seqinfo: 265 sequences (1 circular) from GRCh37 genome
+##   seqinfo: 25 sequences (1 circular) from GRCh37 genome
 ```
 
 
+```r
+promslow = proms[which(proms$logTPM<median(proms$logTPM,na.rm=TRUE))]
+promshigh = proms[which(proms$logTPM>=median(proms$logTPM,na.rm=TRUE))]
+```
+
+
+```r
+mat = cbind(histoneProfile(promslow,hpList[[1]]),
+            histoneProfile(promshigh,hpList[[1]]),
+            histoneProfile(promslow,hpList[[10]]),
+            histoneProfile(promshigh,hpList[[10]]))
+matplot(mat,type='l',main=hptitles[1])
+legend(0,2000,legend=c('H3K4me1_low','H3K4me1_high','H3K79me2_low','H3K79me2_high'),
+       col=1:4,lty=1:4)
+```
+
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-35-1.png" width="672" />
 
 ## `sessionInfo()`
 
