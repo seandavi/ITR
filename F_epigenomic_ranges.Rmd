@@ -518,7 +518,7 @@ It is trivial to make a transcript database, or _TxDb_, instance of
 these data. We will use this _TxDb_ to quickly access gene annotation
 in genome context. 
 
-```{r gtf2txdb,cache=FALSE}
+```{r gtf2txdb,cache=FALSE,message=FALSE}
 library(GenomicFeatures)         # for makeTxDbFromGRanges
 txdb <- makeTxDbFromGRanges(gtf)
 ````
@@ -535,30 +535,54 @@ peak-caller and summarized as regions of statistically significant
 regions.
 
 Bioconductor has processed all of the ENCODE data into Bioconductor
-data structures and then stored and made available via the
-AnnotationHub system we saw above. 
+data structures (as well as thousands of other datasets) and then
+stored and made available via the
+_AnnotationHub_ system we saw above. 
 
 ```{r}
 query(ah,c('K562','h3k','E123','narrow'))
 histoneSets = names(query(ah,c('K562','E123','h3k','narrow')))
 ```
 
+The `histoneSets` variable now contains the *names* _AnnotationHub_
+datasets from histone modification experiments done in K562 cells and
+summarized using a bioinformatics protocol tunes to produce narrow
+peaks. However, the data still need to be downloaded and then loaded
+into R memory.
+
+_To load your own peaks into R, check out the `rtracklayer::import()` function._
+
+
 ### Peak density across the genome
 
+
+Start (arbitrarily) with the first `histoneSet` by loading the dataset.
 
 ```{r}
 histonePeaks = ah[[histoneSets[1]]]
 ```
 
+The first time the code above is executed, the data will be *both* downloaded *and* loaded into the variable `histonePeaks`. The _next_ time that this line is run, a "cached" version of the data will be used, so no download needs to occur the second time.
+
+
 ```{r}
-si = seqinfo(pro)
-fullchroms = GRanges(seqnames=seqnames(si),
-                     ranges=IRanges(start=rep(1,length(si)),
-                                    end  =seqlengths(si)))
-seqinfo(fullchroms) = seqinfo(pro)
-# 1MB bins
+si = seqinfo(histonePeaks)
+si
+```
+
+The next block of code looks long, but the main *purpose* of the code
+is to produce 100kb windows across the genomic so that we can count
+the number of H3K4me1 peaks in each 100kb window. Most of the lines
+are do deal with small issues of keeping chromosome names and lengths
+straight when transforming our data.
+
+```{r}
+fullchroms = as(si,'GRanges')
+seqinfo(fullchroms)
+# 100kb bins
+# This is the work--using tile()
 tile0.1mb = unlist(tile(fullchroms,width=1e5))
-seqinfo(tile0.1mb) = seqinfo(pro)
+seqinfo(tile0.1mb) = si
 tile0.1mb = keepStandardChromosomes(tile0.1mb,pruning.mode = 'coarse')
 histonePeaks = keepStandardChromosomes(histonePeaks,pruning.mode = 'coarse')
 seqlevelsStyle(tile0.1mb) = seqlevelsStyle(histonePeaks)
@@ -566,24 +590,67 @@ histonePeaks=dropSeqlevels(histonePeaks,'chrM')
 genome(tile0.1mb) = 'hg19'
 ```
 
+Counting peaks in each 100kb window is *VERY* fast using the
+`counterOverlaps()` method.
+
 ```{r}
 tile0.1mb$peakCount = countOverlaps(tile0.1mb,histonePeaks)
 ```
 
+While the following plot is not as informative as it could be,
+sometimes using a circular layout is a good way to show an overview of
+full genome datasets. Data on the scale of 100kb is probably still too
+fine-level for such a plot.
 
 
-```{r}
+```{r message=FALSE}
 library(ggbio)
-p = ggbio() + circle(tile0.1mb,geom='point', aes(y = peakCount),
+ggbio() + circle(tile0.1mb,geom='point', aes(y = peakCount),
                      color='red', alpha=0.25, size=0.25, grid=TRUE,
                      radius=60, trackWidth=30) +
     circle(tile0.1mb, geom = "scale", size = 2,radius=90) +
     circle(tile0.1mb, geom='ideo',fill='gray70')
-p
 ```
+
+
+Getting the `GC` content of the peaks is also straightforward. When you have two peaksets
+
+
+```{r}
+dnaInPeaks = getSeq(BSgenome.Hsapiens.UCSC.hg19,histonePeaks)
+percentGC = letterFrequency(dnaInPeaks,'GC',as.prob=TRUE)
+```
+
+To get a comparison set, just shift all regions to the left by 5kb (for example).
+
+```{r}
+shiftedPeaks = shift(histonePeaks,-5000)
+head(ranges(histonePeaks))
+# data shifted 5kb to the left
+head(ranges(shiftedPeaks))
+```
+
+Grab the `GC` content and plot.
+
+
+```{r}
+dnaInShiftedPeaks = getSeq(BSgenome.Hsapiens.UCSC.hg19,shift(histonePeaks,-5000))
+percentGC1 = letterFrequency(dnaInShiftedPeaks,'GC',as.prob=TRUE)
+plot(density(percentGC))
+lines(density(percentGC1),col='red')
+```
+
 
 ### Compare peak sets
 
+As with many datasets in biology, learning about how data relate to
+each other can be a very powerful technique for hypothesis
+generation. The goal of the next section is to determine the
+similarities aomong a set of 10 histone mark datasets in hopes of
+generating some hypotheses about the functionality of the histone
+marks.
+
+Start by loading the datasets that we found above for the K562 cell line.
 
 ```{r message=FALSE}
 hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
@@ -591,24 +658,53 @@ hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
 # And cleanup the messy names
 hptitles = gsub('E123-|\\.narrowPeak\\.gz','',ah[histoneSets]$title)
 names(hpList) = hptitles
+hptitles
 ```
 
-Jaccard Similarity
+How can we compare two sets of regions? 
+
+
+The Jaccard Similarity measure quantifies the proportion of shared peaks (or proportion of bases covered by the shared peaks) to that covered by the _union_ of those peak sets. In mathematical terms, the _Jaccard Index_ measures this similarity. 
 
  $$ J(A,B) = \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} $$
 
-Jaccard Distance
+The _Jaccard Distance_ simply measures how dissimilar two sets of regions are (1-J(A,b)).
 
  $$ d_J(A,B) = 1 - J(A,B) = 1 - \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} $$
 
-
+The `regionJaccard()` function takes as input two sets of regions and calculates the Jaccard Index using base-level overlaps (as opposed to whole-region overlaps).
 
 ```{r}
+#' Calculate Jaccard Similarity between two sets of ranges
+#'
+#' @param a A set of ranges
+#' @param b A second set of ranges
+#'
+#' @details We calculate the Jaccard Distance
+#'     as a simple ratio of the number of
+#'     shared bases in the regions to
+#'     total number of bases covered by
+#'     both sets.
+#'
+#' @return a value between 0 and 1
 regionJaccard = function(a,b) {
     sum(width(intersect(a,b)))/sum(width(union(a,b)))
 }
+```
 
-multiJaccard <- function(a,b, fun) {
+We can try this on two peakSets:
+
+```{r}
+regionJaccard(hpList[[1]],hpList[[2]])
+```
+
+How would you interpret the result?
+
+To make addressing the question above a bit more intuitive, we can perform the same calculation, but between all pairs of regions using the `multiRegStat()` function below.
+
+
+```{r}
+multiRegStat <- function(a,b, fun) {
     res <- matrix(0L, length(a), length(b))
     for (i in seq_along(a))
     {
@@ -625,8 +721,12 @@ multiJaccard <- function(a,b, fun) {
 ```
 
 ```{r}
-res = multiJaccard(hpList,hpList,regionJaccard)
+res = multiRegStat(hpList,hpList,regionJaccard)
+res
 ```
+
+The `res` matrix now describes the pairwise similarities between the various histone mark peak sets. Making a heatmap and annotating it with knowledge of [wikipedia, for example](https://en.wikipedia.org/wiki/Histone_code) is potentially helpful.
+
 
 ```{r}
 library(ComplexHeatmap)
@@ -638,8 +738,13 @@ Heatmap(res,top_annotation=HeatmapAnnotation(
           df=annot,col=list(exprStatus=c('Active'='yellow',Repressed='blue'))))
 ```
 
+What do you think of the plot above? 
+
 
 ### Histone profiles
+
+
+
 
 ```{r}
 wndw = 2000
@@ -664,7 +769,7 @@ histoneProfile = function(promoters,peaks,n_promoters=10000) {
     seqlevelsStyle(proms) = seqlevelsStyle(covg)
     covg = covg[seqlevels(proms)]
     vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
-    return(colSums(as.matrix(vi)))
+    return(colSums(as.matrix(vi),na.rm = TRUE))
 }
 ```
     
@@ -705,7 +810,7 @@ mat = cbind(histoneProfile(promslow,hpList[[1]]),
             histoneProfile(promshigh,hpList[[1]]),
             histoneProfile(promslow,hpList[[10]]),
             histoneProfile(promshigh,hpList[[10]]))
-matplot(mat,type='l',main=hptitles[1])
+matplot(mat,type='l',main=paste(hptitles[1],hptitles[[10]], sep=" & "))
 legend(0,2000,legend=c('H3K4me1_low','H3K4me1_high','H3K79me2_low','H3K79me2_high'),
        col=1:4,lty=1:4)
 ```

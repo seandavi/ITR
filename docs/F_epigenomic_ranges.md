@@ -981,66 +981,6 @@ in genome context.
 
 ```r
 library(GenomicFeatures)         # for makeTxDbFromGRanges
-```
-
-```
-## Loading required package: S4Vectors
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## 
-## Attaching package: 'S4Vectors'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     expand.grid
-```
-
-```
-## Loading required package: IRanges
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## Loading required package: GenomicRanges
-```
-
-```
-## Loading required package: AnnotationDbi
-```
-
-```
-## Loading required package: Biobase
-```
-
-```
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with 'browseVignettes()'. To cite
-##     Bioconductor, see 'citation("Biobase")', and for packages 'citation("pkgname")'.
-```
-
-```
-## 
-## Attaching package: 'Biobase'
-```
-
-```
-## The following object is masked from 'package:AnnotationHub':
-## 
-##     cache
-```
-
-```r
 txdb <- makeTxDbFromGRanges(gtf)
 ```
 
@@ -1056,8 +996,9 @@ peak-caller and summarized as regions of statistically significant
 regions.
 
 Bioconductor has processed all of the ENCODE data into Bioconductor
-data structures and then stored and made available via the
-AnnotationHub system we saw above. 
+data structures (as well as thousands of other datasets) and then
+stored and made available via the
+_AnnotationHub_ system we saw above. 
 
 
 ```r
@@ -1091,8 +1032,19 @@ query(ah,c('K562','h3k','E123','narrow'))
 histoneSets = names(query(ah,c('K562','E123','h3k','narrow')))
 ```
 
+The `histoneSets` variable now contains the *names* _AnnotationHub_
+datasets from histone modification experiments done in K562 cells and
+summarized using a bioinformatics protocol tunes to produce narrow
+peaks. However, the data still need to be downloaded and then loaded
+into R memory.
+
+_To load your own peaks into R, check out the `rtracklayer::import()` function._
+
+
 ### Peak density across the genome
 
+
+Start (arbitrarily) with the first `histoneSet` by loading the dataset.
 
 
 ```r
@@ -1103,16 +1055,64 @@ histonePeaks = ah[[histoneSets[1]]]
 ## loading from cache '/Users/sdavis2//.AnnotationHub/36270'
 ```
 
+The first time the code above is executed, the data will be *both* downloaded *and* loaded into the variable `histonePeaks`. The _next_ time that this line is run, a "cached" version of the data will be used, so no download needs to occur the second time.
+
+
 
 ```r
-si = seqinfo(pro)
-fullchroms = GRanges(seqnames=seqnames(si),
-                     ranges=IRanges(start=rep(1,length(si)),
-                                    end  =seqlengths(si)))
-seqinfo(fullchroms) = seqinfo(pro)
-# 1MB bins
+si = seqinfo(histonePeaks)
+si
+```
+
+```
+## Seqinfo object with 93 sequences (1 circular) from hg19 genome:
+##   seqnames       seqlengths isCircular genome
+##   chr1            249250621      FALSE   hg19
+##   chr2            243199373      FALSE   hg19
+##   chr3            198022430      FALSE   hg19
+##   chr4            191154276      FALSE   hg19
+##   chr5            180915260      FALSE   hg19
+##   ...                   ...        ...    ...
+##   chrUn_gl000245      36651      FALSE   hg19
+##   chrUn_gl000246      38154      FALSE   hg19
+##   chrUn_gl000247      36422      FALSE   hg19
+##   chrUn_gl000248      39786      FALSE   hg19
+##   chrUn_gl000249      38502      FALSE   hg19
+```
+
+The next block of code looks long, but the main *purpose* of the code
+is to produce 100kb windows across the genomic so that we can count
+the number of H3K4me1 peaks in each 100kb window. Most of the lines
+are do deal with small issues of keeping chromosome names and lengths
+straight when transforming our data.
+
+
+```r
+fullchroms = as(si,'GRanges')
+seqinfo(fullchroms)
+```
+
+```
+## Seqinfo object with 93 sequences (1 circular) from hg19 genome:
+##   seqnames       seqlengths isCircular genome
+##   chr1            249250621      FALSE   hg19
+##   chr2            243199373      FALSE   hg19
+##   chr3            198022430      FALSE   hg19
+##   chr4            191154276      FALSE   hg19
+##   chr5            180915260      FALSE   hg19
+##   ...                   ...        ...    ...
+##   chrUn_gl000245      36651      FALSE   hg19
+##   chrUn_gl000246      38154      FALSE   hg19
+##   chrUn_gl000247      36422      FALSE   hg19
+##   chrUn_gl000248      39786      FALSE   hg19
+##   chrUn_gl000249      38502      FALSE   hg19
+```
+
+```r
+# 100kb bins
+# This is the work--using tile()
 tile0.1mb = unlist(tile(fullchroms,width=1e5))
-seqinfo(tile0.1mb) = seqinfo(pro)
+seqinfo(tile0.1mb) = si
 tile0.1mb = keepStandardChromosomes(tile0.1mb,pruning.mode = 'coarse')
 histonePeaks = keepStandardChromosomes(histonePeaks,pruning.mode = 'coarse')
 seqlevelsStyle(tile0.1mb) = seqlevelsStyle(histonePeaks)
@@ -1120,28 +1120,103 @@ histonePeaks=dropSeqlevels(histonePeaks,'chrM')
 genome(tile0.1mb) = 'hg19'
 ```
 
+Counting peaks in each 100kb window is *VERY* fast using the
+`counterOverlaps()` method.
+
 
 ```r
 tile0.1mb$peakCount = countOverlaps(tile0.1mb,histonePeaks)
 ```
 
+While the following plot is not as informative as it could be,
+sometimes using a circular layout is a good way to show an overview of
+full genome datasets. Data on the scale of 100kb is probably still too
+fine-level for such a plot.
 
 
 
 ```r
 library(ggbio)
-p = ggbio() + circle(tile0.1mb,geom='point', aes(y = peakCount),
+ggbio() + circle(tile0.1mb,geom='point', aes(y = peakCount),
                      color='red', alpha=0.25, size=0.25, grid=TRUE,
                      radius=60, trackWidth=30) +
     circle(tile0.1mb, geom = "scale", size = 2,radius=90) +
     circle(tile0.1mb, geom='ideo',fill='gray70')
-p
 ```
 
-<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+
+
+Getting the `GC` content of the peaks is also straightforward. When you have two peaksets
+
+
+
+```r
+dnaInPeaks = getSeq(BSgenome.Hsapiens.UCSC.hg19,histonePeaks)
+percentGC = letterFrequency(dnaInPeaks,'GC',as.prob=TRUE)
+```
+
+To get a comparison set, just shift all regions to the left by 5kb (for example).
+
+
+```r
+shiftedPeaks = shift(histonePeaks,-5000)
+head(ranges(histonePeaks))
+```
+
+```
+## IRanges object with 6 ranges and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1] 141522283 141524219      1937
+##   [2]  23560218  23563994      3777
+##   [3] 158460103 158464651      4549
+##   [4]   1168831   1169616       786
+##   [5]  80938636  80944222      5587
+##   [6] 159273261 159274505      1245
+```
+
+```r
+# data shifted 5kb to the left
+head(ranges(shiftedPeaks))
+```
+
+```
+## IRanges object with 6 ranges and 0 metadata columns:
+##           start       end     width
+##       <integer> <integer> <integer>
+##   [1] 141517283 141519219      1937
+##   [2]  23555218  23558994      3777
+##   [3] 158455103 158459651      4549
+##   [4]   1163831   1164616       786
+##   [5]  80933636  80939222      5587
+##   [6] 159268261 159269505      1245
+```
+
+Grab the `GC` content and plot.
+
+
+
+```r
+dnaInShiftedPeaks = getSeq(BSgenome.Hsapiens.UCSC.hg19,shift(histonePeaks,-5000))
+percentGC1 = letterFrequency(dnaInShiftedPeaks,'GC',as.prob=TRUE)
+plot(density(percentGC))
+lines(density(percentGC1),col='red')
+```
+
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+
 
 ### Compare peak sets
 
+As with many datasets in biology, learning about how data relate to
+each other can be a very powerful technique for hypothesis
+generation. The goal of the next section is to determine the
+similarities aomong a set of 10 histone mark datasets in hopes of
+generating some hypotheses about the functionality of the histone
+marks.
+
+Start by loading the datasets that we found above for the K562 cell line.
 
 
 ```r
@@ -1150,25 +1225,65 @@ hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
 # And cleanup the messy names
 hptitles = gsub('E123-|\\.narrowPeak\\.gz','',ah[histoneSets]$title)
 names(hpList) = hptitles
+hptitles
 ```
 
-Jaccard Similarity
+```
+##  [1] "H3K4me1"  "H3K4me2"  "H3K4me3"  "H3K9ac"   "H3K9me1"  "H3K9me3"  "H3K27ac"  "H3K27me3"
+##  [9] "H3K36me3" "H3K79me2"
+```
+
+How can we compare two sets of regions? 
+
+
+The Jaccard Similarity measure quantifies the proportion of shared peaks (or proportion of bases covered by the shared peaks) to that covered by the _union_ of those peak sets. In mathematical terms, the _Jaccard Index_ measures this similarity. 
 
  $$ J(A,B) = \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} $$
 
-Jaccard Distance
+The _Jaccard Distance_ simply measures how dissimilar two sets of regions are (1-J(A,b)).
 
  $$ d_J(A,B) = 1 - J(A,B) = 1 - \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} $$
 
+The `regionJaccard()` function takes as input two sets of regions and calculates the Jaccard Index using base-level overlaps (as opposed to whole-region overlaps).
+
+
+```r
+#' Calculate Jaccard Similarity between two sets of ranges
+#'
+#' @param a A set of ranges
+#' @param b A second set of ranges
+#'
+#' @details We calculate the Jaccard Distance
+#'     as a simple ratio of the number of
+#'     shared bases in the regions to
+#'     total number of bases covered by
+#'     both sets.
+#'
+#' @return a value between 0 and 1
+regionJaccard = function(a,b) {
+    sum(width(intersect(a,b)))/sum(width(union(a,b)))
+}
+```
+
+We can try this on two peakSets:
+
+
+```r
+regionJaccard(hpList[[1]],hpList[[2]])
+```
+
+```
+## [1] 0.2811043
+```
+
+How would you interpret the result?
+
+To make addressing the question above a bit more intuitive, we can perform the same calculation, but between all pairs of regions using the `multiRegStat()` function below.
 
 
 
 ```r
-regionJaccard = function(a,b) {
-    sum(width(intersect(a,b)))/sum(width(union(a,b)))
-}
-
-multiJaccard <- function(a,b, fun) {
+multiRegStat <- function(a,b, fun) {
     res <- matrix(0L, length(a), length(b))
     for (i in seq_along(a))
     {
@@ -1186,30 +1301,41 @@ multiJaccard <- function(a,b, fun) {
 
 
 ```r
-res = multiJaccard(hpList,hpList,regionJaccard)
+res = multiRegStat(hpList,hpList,regionJaccard)
+res
 ```
+
+```
+##              H3K4me1     H3K4me2     H3K4me3       H3K9ac      H3K9me1      H3K9me3      H3K27ac
+## H3K4me1  1.000000000 0.281104268 0.183791239 0.1927281172 0.0244827526 0.0027769509 0.2452366595
+## H3K4me2  0.281104268 1.000000000 0.637133591 0.5686767173 0.0175960031 0.0020254595 0.5097245220
+## H3K4me3  0.183791239 0.637133591 1.000000000 0.6514034239 0.0132880861 0.0022354848 0.5049994635
+## H3K9ac   0.192728117 0.568676717 0.651403424 1.0000000000 0.0129846178 0.0011958500 0.6090726088
+## H3K9me1  0.024482753 0.017596003 0.013288086 0.0129846178 1.0000000000 0.0006955316 0.0167764608
+## H3K9me3  0.002776951 0.002025459 0.002235485 0.0011958500 0.0006955316 1.0000000000 0.0039756797
+## H3K27ac  0.245236659 0.509724522 0.504999464 0.6090726088 0.0167764608 0.0039756797 1.0000000000
+## H3K27me3 0.004769609 0.006489705 0.003637553 0.0007145309 0.0107676075 0.0016215449 0.0008692706
+## H3K36me3 0.059625145 0.034442331 0.029895734 0.0308737432 0.0202655273 0.0101396064 0.0417566558
+## H3K79me2 0.156555342 0.221234307 0.232402857 0.2325234359 0.0225853902 0.0035804367 0.2030078886
+##              H3K27me3     H3K36me3     H3K79me2
+## H3K4me1  4.769609e-03 0.0596251450 1.565553e-01
+## H3K4me2  6.489705e-03 0.0344423310 2.212343e-01
+## H3K4me3  3.637553e-03 0.0298957337 2.324029e-01
+## H3K9ac   7.145309e-04 0.0308737432 2.325234e-01
+## H3K9me1  1.076761e-02 0.0202655273 2.258539e-02
+## H3K9me3  1.621545e-03 0.0101396064 3.580437e-03
+## H3K27ac  8.692706e-04 0.0417566558 2.030079e-01
+## H3K27me3 1.000000e+00 0.0003409222 8.774185e-05
+## H3K36me3 3.409222e-04 1.0000000000 1.170739e-01
+## H3K79me2 8.774185e-05 0.1170739250 1.000000e+00
+```
+
+The `res` matrix now describes the pairwise similarities between the various histone mark peak sets. Making a heatmap and annotating it with knowledge of [wikipedia, for example](https://en.wikipedia.org/wiki/Histone_code) is potentially helpful.
+
 
 
 ```r
 library(ComplexHeatmap)
-```
-
-```
-## Loading required package: grid
-```
-
-```
-## 
-## Attaching package: 'ComplexHeatmap'
-```
-
-```
-## The following object is masked from 'package:plotly':
-## 
-##     add_heatmap
-```
-
-```r
 annot = data.frame(exprStatus=c('Active','Active','Active','Active',
                                 'Active','Repressed','Active','Repressed',NA,'Active'),
                    locale=c(NA,NA,'Promoter','Promoter',NA,'Body','Enhancer','Body','Body',NA),
@@ -1218,10 +1344,15 @@ Heatmap(res,top_annotation=HeatmapAnnotation(
           df=annot,col=list(exprStatus=c('Active'='yellow',Repressed='blue'))))
 ```
 
-<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-34-1.png" width="672" />
+
+What do you think of the plot above? 
 
 
 ### Histone profiles
+
+
+
 
 
 ```r
@@ -1269,7 +1400,7 @@ m = as.matrix(vi)
 plot(colSums(m),type='l')
 ```
 
-<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-35-1.png" width="672" />
 
 
 ```r
@@ -1281,7 +1412,7 @@ histoneProfile = function(promoters,peaks,n_promoters=10000) {
     seqlevelsStyle(proms) = seqlevelsStyle(covg)
     covg = covg[seqlevels(proms)]
     vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
-    return(colSums(as.matrix(vi)))
+    return(colSums(as.matrix(vi),na.rm = TRUE))
 }
 ```
     
@@ -1381,12 +1512,12 @@ mat = cbind(histoneProfile(promslow,hpList[[1]]),
             histoneProfile(promshigh,hpList[[1]]),
             histoneProfile(promslow,hpList[[10]]),
             histoneProfile(promshigh,hpList[[10]]))
-matplot(mat,type='l',main=hptitles[1])
+matplot(mat,type='l',main=paste(hptitles[1],hptitles[[10]], sep=" & "))
 legend(0,2000,legend=c('H3K4me1_low','H3K4me1_high','H3K79me2_low','H3K79me2_high'),
        col=1:4,lty=1:4)
 ```
 
-<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-35-1.png" width="672" />
+<img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-41-1.png" width="672" />
 
 ## `sessionInfo()`
 

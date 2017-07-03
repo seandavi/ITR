@@ -787,35 +787,14 @@ E126</code></pre></div>
 ##   -------
 ##   seqinfo: 265 sequences (1 circular) from GRCh37 genome</code></pre>
 <p>It is trivial to make a transcript database, or <em>TxDb</em>, instance of these data. We will use this <em>TxDb</em> to quickly access gene annotation in genome context.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GenomicFeatures)         <span class="co"># for makeTxDbFromGRanges</span></code></pre></div>
-<pre><code>## Loading required package: S4Vectors</code></pre>
-<pre><code>## Loading required package: stats4</code></pre>
-<pre><code>## 
-## Attaching package: &#39;S4Vectors&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     expand.grid</code></pre>
-<pre><code>## Loading required package: IRanges</code></pre>
-<pre><code>## Loading required package: GenomeInfoDb</code></pre>
-<pre><code>## Loading required package: GenomicRanges</code></pre>
-<pre><code>## Loading required package: AnnotationDbi</code></pre>
-<pre><code>## Loading required package: Biobase</code></pre>
-<pre><code>## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with &#39;browseVignettes()&#39;. To cite
-##     Bioconductor, see &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Biobase&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:AnnotationHub&#39;:
-## 
-##     cache</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txdb &lt;-<span class="st"> </span><span class="kw">makeTxDbFromGRanges</span>(gtf)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GenomicFeatures)         <span class="co"># for makeTxDbFromGRanges</span>
+txdb &lt;-<span class="st"> </span><span class="kw">makeTxDbFromGRanges</span>(gtf)</code></pre></div>
 </div>
 </div>
 <div id="epigenomics-case-study" class="section level2">
 <h2><span class="header-section-number">14.7</span> Epigenomics case study</h2>
 <p>We are going to use data from the <a href="https://www.genome.gov/10005107/">ENCODE project</a> as a playground for using the Bioconductor ranges infrastructure. To keep things manageable, we will focus on only the K562 leukemia cell line and on histone marks. To keep the data smallish, but without loss of generality, we will use data that have been processed using a peak-caller and summarized as regions of statistically significant regions.</p>
-<p>Bioconductor has processed all of the ENCODE data into Bioconductor data structures and then stored and made available via the AnnotationHub system we saw above.</p>
+<p>Bioconductor has processed all of the ENCODE data into Bioconductor data structures (as well as thousands of other datasets) and then stored and made available via the <em>AnnotationHub</em> system we saw above.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">query</span>(ah,<span class="kw">c</span>(<span class="st">&#39;K562&#39;</span>,<span class="st">&#39;h3k&#39;</span>,<span class="st">&#39;E123&#39;</span>,<span class="st">&#39;narrow&#39;</span>))</code></pre></div>
 <pre><code>## AnnotationHub with 10 records
 ## # snapshotDate(): 2017-04-24 
@@ -838,49 +817,136 @@ E126</code></pre></div>
 ##   AH30838 | E123-H3K36me3.narrowPeak.gz
 ##   AH30839 | E123-H3K79me2.narrowPeak.gz</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">histoneSets =<span class="st"> </span><span class="kw">names</span>(<span class="kw">query</span>(ah,<span class="kw">c</span>(<span class="st">&#39;K562&#39;</span>,<span class="st">&#39;E123&#39;</span>,<span class="st">&#39;h3k&#39;</span>,<span class="st">&#39;narrow&#39;</span>)))</code></pre></div>
+<p>The <code>histoneSets</code> variable now contains the <em>names</em> <em>AnnotationHub</em> datasets from histone modification experiments done in K562 cells and summarized using a bioinformatics protocol tunes to produce narrow peaks. However, the data still need to be downloaded and then loaded into R memory.</p>
+<p><em>To load your own peaks into R, check out the <code>rtracklayer::import()</code> function.</em></p>
 <div id="peak-density-across-the-genome" class="section level3">
 <h3><span class="header-section-number">14.7.1</span> Peak density across the genome</h3>
+<p>Start (arbitrarily) with the first <code>histoneSet</code> by loading the dataset.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">histonePeaks =<span class="st"> </span>ah[[histoneSets[<span class="dv">1</span>]]]</code></pre></div>
 <pre><code>## loading from cache &#39;/Users/sdavis2//.AnnotationHub/36270&#39;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si =<span class="st"> </span><span class="kw">seqinfo</span>(pro)
-fullchroms =<span class="st"> </span><span class="kw">GRanges</span>(<span class="dt">seqnames=</span><span class="kw">seqnames</span>(si),
-                     <span class="dt">ranges=</span><span class="kw">IRanges</span>(<span class="dt">start=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(si)),
-                                    <span class="dt">end  =</span><span class="kw">seqlengths</span>(si)))
-<span class="kw">seqinfo</span>(fullchroms) =<span class="st"> </span><span class="kw">seqinfo</span>(pro)
-<span class="co"># 1MB bins</span>
+<p>The first time the code above is executed, the data will be <em>both</em> downloaded <em>and</em> loaded into the variable <code>histonePeaks</code>. The <em>next</em> time that this line is run, a “cached” version of the data will be used, so no download needs to occur the second time.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si =<span class="st"> </span><span class="kw">seqinfo</span>(histonePeaks)
+si</code></pre></div>
+<pre><code>## Seqinfo object with 93 sequences (1 circular) from hg19 genome:
+##   seqnames       seqlengths isCircular genome
+##   chr1            249250621      FALSE   hg19
+##   chr2            243199373      FALSE   hg19
+##   chr3            198022430      FALSE   hg19
+##   chr4            191154276      FALSE   hg19
+##   chr5            180915260      FALSE   hg19
+##   ...                   ...        ...    ...
+##   chrUn_gl000245      36651      FALSE   hg19
+##   chrUn_gl000246      38154      FALSE   hg19
+##   chrUn_gl000247      36422      FALSE   hg19
+##   chrUn_gl000248      39786      FALSE   hg19
+##   chrUn_gl000249      38502      FALSE   hg19</code></pre>
+<p>The next block of code looks long, but the main <em>purpose</em> of the code is to produce 100kb windows across the genomic so that we can count the number of H3K4me1 peaks in each 100kb window. Most of the lines are do deal with small issues of keeping chromosome names and lengths straight when transforming our data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fullchroms =<span class="st"> </span><span class="kw">as</span>(si,<span class="st">&#39;GRanges&#39;</span>)
+<span class="kw">seqinfo</span>(fullchroms)</code></pre></div>
+<pre><code>## Seqinfo object with 93 sequences (1 circular) from hg19 genome:
+##   seqnames       seqlengths isCircular genome
+##   chr1            249250621      FALSE   hg19
+##   chr2            243199373      FALSE   hg19
+##   chr3            198022430      FALSE   hg19
+##   chr4            191154276      FALSE   hg19
+##   chr5            180915260      FALSE   hg19
+##   ...                   ...        ...    ...
+##   chrUn_gl000245      36651      FALSE   hg19
+##   chrUn_gl000246      38154      FALSE   hg19
+##   chrUn_gl000247      36422      FALSE   hg19
+##   chrUn_gl000248      39786      FALSE   hg19
+##   chrUn_gl000249      38502      FALSE   hg19</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 100kb bins</span>
+<span class="co"># This is the work--using tile()</span>
 tile0.1mb =<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">tile</span>(fullchroms,<span class="dt">width=</span><span class="fl">1e5</span>))
-<span class="kw">seqinfo</span>(tile0.1mb) =<span class="st"> </span><span class="kw">seqinfo</span>(pro)
+<span class="kw">seqinfo</span>(tile0.1mb) =<span class="st"> </span>si
 tile0.1mb =<span class="st"> </span><span class="kw">keepStandardChromosomes</span>(tile0.1mb,<span class="dt">pruning.mode =</span> <span class="st">&#39;coarse&#39;</span>)
 histonePeaks =<span class="st"> </span><span class="kw">keepStandardChromosomes</span>(histonePeaks,<span class="dt">pruning.mode =</span> <span class="st">&#39;coarse&#39;</span>)
 <span class="kw">seqlevelsStyle</span>(tile0.1mb) =<span class="st"> </span><span class="kw">seqlevelsStyle</span>(histonePeaks)
 histonePeaks=<span class="kw">dropSeqlevels</span>(histonePeaks,<span class="st">&#39;chrM&#39;</span>)
 <span class="kw">genome</span>(tile0.1mb) =<span class="st"> &#39;hg19&#39;</span></code></pre></div>
+<p>Counting peaks in each 100kb window is <em>VERY</em> fast using the <code>counterOverlaps()</code> method.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tile0.1mb<span class="op">$</span>peakCount =<span class="st"> </span><span class="kw">countOverlaps</span>(tile0.1mb,histonePeaks)</code></pre></div>
+<p>While the following plot is not as informative as it could be, sometimes using a circular layout is a good way to show an overview of full genome datasets. Data on the scale of 100kb is probably still too fine-level for such a plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggbio)
-p =<span class="st"> </span><span class="kw">ggbio</span>() <span class="op">+</span><span class="st"> </span><span class="kw">circle</span>(tile0.1mb,<span class="dt">geom=</span><span class="st">&#39;point&#39;</span>, <span class="kw">aes</span>(<span class="dt">y =</span> peakCount),
+<span class="kw">ggbio</span>() <span class="op">+</span><span class="st"> </span><span class="kw">circle</span>(tile0.1mb,<span class="dt">geom=</span><span class="st">&#39;point&#39;</span>, <span class="kw">aes</span>(<span class="dt">y =</span> peakCount),
                      <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.25</span>, <span class="dt">size=</span><span class="fl">0.25</span>, <span class="dt">grid=</span><span class="ot">TRUE</span>,
                      <span class="dt">radius=</span><span class="dv">60</span>, <span class="dt">trackWidth=</span><span class="dv">30</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw">circle</span>(tile0.1mb, <span class="dt">geom =</span> <span class="st">&quot;scale&quot;</span>, <span class="dt">size =</span> <span class="dv">2</span>,<span class="dt">radius=</span><span class="dv">90</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">circle</span>(tile0.1mb, <span class="dt">geom=</span><span class="st">&#39;ideo&#39;</span>,<span class="dt">fill=</span><span class="st">&#39;gray70&#39;</span>)
-p</code></pre></div>
-<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<span class="st">    </span><span class="kw">circle</span>(tile0.1mb, <span class="dt">geom=</span><span class="st">&#39;ideo&#39;</span>,<span class="dt">fill=</span><span class="st">&#39;gray70&#39;</span>)</code></pre></div>
+<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>Getting the <code>GC</code> content of the peaks is also straightforward. When you have two peaksets</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dnaInPeaks =<span class="st"> </span><span class="kw">getSeq</span>(BSgenome.Hsapiens.UCSC.hg19,histonePeaks)
+percentGC =<span class="st"> </span><span class="kw">letterFrequency</span>(dnaInPeaks,<span class="st">&#39;GC&#39;</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p>To get a comparison set, just shift all regions to the left by 5kb (for example).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">shiftedPeaks =<span class="st"> </span><span class="kw">shift</span>(histonePeaks,<span class="op">-</span><span class="dv">5000</span>)
+<span class="kw">head</span>(<span class="kw">ranges</span>(histonePeaks))</code></pre></div>
+<pre><code>## IRanges object with 6 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1] 141522283 141524219      1937
+##   [2]  23560218  23563994      3777
+##   [3] 158460103 158464651      4549
+##   [4]   1168831   1169616       786
+##   [5]  80938636  80944222      5587
+##   [6] 159273261 159274505      1245</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># data shifted 5kb to the left</span>
+<span class="kw">head</span>(<span class="kw">ranges</span>(shiftedPeaks))</code></pre></div>
+<pre><code>## IRanges object with 6 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1] 141517283 141519219      1937
+##   [2]  23555218  23558994      3777
+##   [3] 158455103 158459651      4549
+##   [4]   1163831   1164616       786
+##   [5]  80933636  80939222      5587
+##   [6] 159268261 159269505      1245</code></pre>
+<p>Grab the <code>GC</code> content and plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dnaInShiftedPeaks =<span class="st"> </span><span class="kw">getSeq</span>(BSgenome.Hsapiens.UCSC.hg19,<span class="kw">shift</span>(histonePeaks,<span class="op">-</span><span class="dv">5000</span>))
+percentGC1 =<span class="st"> </span><span class="kw">letterFrequency</span>(dnaInShiftedPeaks,<span class="st">&#39;GC&#39;</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+<span class="kw">plot</span>(<span class="kw">density</span>(percentGC))
+<span class="kw">lines</span>(<span class="kw">density</span>(percentGC1),<span class="dt">col=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
+<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
 <div id="compare-peak-sets" class="section level3">
 <h3><span class="header-section-number">14.7.2</span> Compare peak sets</h3>
+<p>As with many datasets in biology, learning about how data relate to each other can be a very powerful technique for hypothesis generation. The goal of the next section is to determine the similarities aomong a set of 10 histone mark datasets in hopes of generating some hypotheses about the functionality of the histone marks.</p>
+<p>Start by loading the datasets that we found above for the K562 cell line.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hpList =<span class="st"> </span><span class="kw">sapply</span>(histoneSets,<span class="cf">function</span>(ahname) ah[[ahname]])
 <span class="co"># get the &quot;titles&quot; for the experiment</span>
 <span class="co"># And cleanup the messy names</span>
 hptitles =<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&#39;E123-|</span><span class="ch">\\</span><span class="st">.narrowPeak</span><span class="ch">\\</span><span class="st">.gz&#39;</span>,<span class="st">&#39;&#39;</span>,ah[histoneSets]<span class="op">$</span>title)
-<span class="kw">names</span>(hpList) =<span class="st"> </span>hptitles</code></pre></div>
-<p>Jaccard Similarity</p>
+<span class="kw">names</span>(hpList) =<span class="st"> </span>hptitles
+hptitles</code></pre></div>
+<pre><code>##  [1] &quot;H3K4me1&quot;  &quot;H3K4me2&quot;  &quot;H3K4me3&quot;  &quot;H3K9ac&quot;   &quot;H3K9me1&quot;  &quot;H3K9me3&quot;  &quot;H3K27ac&quot;  &quot;H3K27me3&quot;
+##  [9] &quot;H3K36me3&quot; &quot;H3K79me2&quot;</code></pre>
+<p>How can we compare two sets of regions?</p>
+<p>The Jaccard Similarity measure quantifies the proportion of shared peaks (or proportion of bases covered by the shared peaks) to that covered by the <em>union</em> of those peak sets. In mathematical terms, the <em>Jaccard Index</em> measures this similarity.</p>
 <p><span class="math display">\[ J(A,B) = \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} \]</span></p>
-<p>Jaccard Distance</p>
+<p>The <em>Jaccard Distance</em> simply measures how dissimilar two sets of regions are (1-J(A,b)).</p>
 <p><span class="math display">\[ d_J(A,B) = 1 - J(A,B) = 1 - \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">regionJaccard =<span class="st"> </span><span class="cf">function</span>(a,b) {
+<p>The <code>regionJaccard()</code> function takes as input two sets of regions and calculates the Jaccard Index using base-level overlaps (as opposed to whole-region overlaps).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&#39; Calculate Jaccard Similarity between two sets of ranges</span>
+<span class="co">#&#39;</span>
+<span class="co">#&#39; @param a A set of ranges</span>
+<span class="co">#&#39; @param b A second set of ranges</span>
+<span class="co">#&#39;</span>
+<span class="co">#&#39; @details We calculate the Jaccard Distance</span>
+<span class="co">#&#39;     as a simple ratio of the number of</span>
+<span class="co">#&#39;     shared bases in the regions to</span>
+<span class="co">#&#39;     total number of bases covered by</span>
+<span class="co">#&#39;     both sets.</span>
+<span class="co">#&#39;</span>
+<span class="co">#&#39; @return a value between 0 and 1</span>
+regionJaccard =<span class="st"> </span><span class="cf">function</span>(a,b) {
     <span class="kw">sum</span>(<span class="kw">width</span>(<span class="kw">intersect</span>(a,b)))<span class="op">/</span><span class="kw">sum</span>(<span class="kw">width</span>(<span class="kw">union</span>(a,b)))
-}
-
-multiJaccard &lt;-<span class="st"> </span><span class="cf">function</span>(a,b, fun) {
+}</code></pre></div>
+<p>We can try this on two peakSets:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">regionJaccard</span>(hpList[[<span class="dv">1</span>]],hpList[[<span class="dv">2</span>]])</code></pre></div>
+<pre><code>## [1] 0.2811043</code></pre>
+<p>How would you interpret the result?</p>
+<p>To make addressing the question above a bit more intuitive, we can perform the same calculation, but between all pairs of regions using the <code>multiRegStat()</code> function below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">multiRegStat &lt;-<span class="st"> </span><span class="cf">function</span>(a,b, fun) {
     res &lt;-<span class="st"> </span><span class="kw">matrix</span>(0L, <span class="kw">length</span>(a), <span class="kw">length</span>(b))
     <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(a))
     {
@@ -894,21 +960,40 @@ multiJaccard &lt;-<span class="st"> </span><span class="cf">function</span>(a,b,
     
     res
 }</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res =<span class="st"> </span><span class="kw">multiJaccard</span>(hpList,hpList,regionJaccard)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ComplexHeatmap)</code></pre></div>
-<pre><code>## Loading required package: grid</code></pre>
-<pre><code>## 
-## Attaching package: &#39;ComplexHeatmap&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:plotly&#39;:
-## 
-##     add_heatmap</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">annot =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exprStatus=</span><span class="kw">c</span>(<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Active&#39;</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res =<span class="st"> </span><span class="kw">multiRegStat</span>(hpList,hpList,regionJaccard)
+res</code></pre></div>
+<pre><code>##              H3K4me1     H3K4me2     H3K4me3       H3K9ac      H3K9me1      H3K9me3      H3K27ac
+## H3K4me1  1.000000000 0.281104268 0.183791239 0.1927281172 0.0244827526 0.0027769509 0.2452366595
+## H3K4me2  0.281104268 1.000000000 0.637133591 0.5686767173 0.0175960031 0.0020254595 0.5097245220
+## H3K4me3  0.183791239 0.637133591 1.000000000 0.6514034239 0.0132880861 0.0022354848 0.5049994635
+## H3K9ac   0.192728117 0.568676717 0.651403424 1.0000000000 0.0129846178 0.0011958500 0.6090726088
+## H3K9me1  0.024482753 0.017596003 0.013288086 0.0129846178 1.0000000000 0.0006955316 0.0167764608
+## H3K9me3  0.002776951 0.002025459 0.002235485 0.0011958500 0.0006955316 1.0000000000 0.0039756797
+## H3K27ac  0.245236659 0.509724522 0.504999464 0.6090726088 0.0167764608 0.0039756797 1.0000000000
+## H3K27me3 0.004769609 0.006489705 0.003637553 0.0007145309 0.0107676075 0.0016215449 0.0008692706
+## H3K36me3 0.059625145 0.034442331 0.029895734 0.0308737432 0.0202655273 0.0101396064 0.0417566558
+## H3K79me2 0.156555342 0.221234307 0.232402857 0.2325234359 0.0225853902 0.0035804367 0.2030078886
+##              H3K27me3     H3K36me3     H3K79me2
+## H3K4me1  4.769609e-03 0.0596251450 1.565553e-01
+## H3K4me2  6.489705e-03 0.0344423310 2.212343e-01
+## H3K4me3  3.637553e-03 0.0298957337 2.324029e-01
+## H3K9ac   7.145309e-04 0.0308737432 2.325234e-01
+## H3K9me1  1.076761e-02 0.0202655273 2.258539e-02
+## H3K9me3  1.621545e-03 0.0101396064 3.580437e-03
+## H3K27ac  8.692706e-04 0.0417566558 2.030079e-01
+## H3K27me3 1.000000e+00 0.0003409222 8.774185e-05
+## H3K36me3 3.409222e-04 1.0000000000 1.170739e-01
+## H3K79me2 8.774185e-05 0.1170739250 1.000000e+00</code></pre>
+<p>The <code>res</code> matrix now describes the pairwise similarities between the various histone mark peak sets. Making a heatmap and annotating it with knowledge of <a href="https://en.wikipedia.org/wiki/Histone_code">wikipedia, for example</a> is potentially helpful.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ComplexHeatmap)
+annot =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exprStatus=</span><span class="kw">c</span>(<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Active&#39;</span>,
                                 <span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Repressed&#39;</span>,<span class="st">&#39;Active&#39;</span>,<span class="st">&#39;Repressed&#39;</span>,<span class="ot">NA</span>,<span class="st">&#39;Active&#39;</span>),
                    <span class="dt">locale=</span><span class="kw">c</span>(<span class="ot">NA</span>,<span class="ot">NA</span>,<span class="st">&#39;Promoter&#39;</span>,<span class="st">&#39;Promoter&#39;</span>,<span class="ot">NA</span>,<span class="st">&#39;Body&#39;</span>,<span class="st">&#39;Enhancer&#39;</span>,<span class="st">&#39;Body&#39;</span>,<span class="st">&#39;Body&#39;</span>,<span class="ot">NA</span>),
                    <span class="dt">row.names=</span>hptitles)
 <span class="kw">Heatmap</span>(res,<span class="dt">top_annotation=</span><span class="kw">HeatmapAnnotation</span>(
           <span class="dt">df=</span>annot,<span class="dt">col=</span><span class="kw">list</span>(<span class="dt">exprStatus=</span><span class="kw">c</span>(<span class="st">&#39;Active&#39;</span>=<span class="st">&#39;yellow&#39;</span>,<span class="dt">Repressed=</span><span class="st">&#39;blue&#39;</span>))))</code></pre></div>
-<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>What do you think of the plot above?</p>
 </div>
 <div id="histone-profiles" class="section level3">
 <h3><span class="header-section-number">14.7.3</span> Histone profiles</h3>
@@ -945,7 +1030,7 @@ covg =<span class="st"> </span>covg[<span class="kw">seqlevels</span>(proms)]
 vi =<span class="st"> </span><span class="kw">Views</span>(covg,<span class="kw">as</span>(proms[<span class="kw">strand</span>(proms)<span class="op">==</span><span class="st">&#39;+&#39;</span>,],<span class="st">&#39;RangesList&#39;</span>))
 m =<span class="st"> </span><span class="kw">as.matrix</span>(vi)
 <span class="kw">plot</span>(<span class="kw">colSums</span>(m),<span class="dt">type=</span><span class="st">&#39;l&#39;</span>)</code></pre></div>
-<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">histoneProfile =<span class="st"> </span><span class="cf">function</span>(promoters,peaks,<span class="dt">n_promoters=</span><span class="dv">10000</span>) {
     proms =<span class="st"> </span>promoters
     proms =<span class="st"> </span>proms[<span class="kw">sample</span>(<span class="kw">seq_along</span>(proms),<span class="kw">min</span>(<span class="kw">length</span>(proms),n_promoters),<span class="dt">replace=</span><span class="ot">FALSE</span>)]
@@ -954,7 +1039,7 @@ m =<span class="st"> </span><span class="kw">as.matrix</span>(vi)
     <span class="kw">seqlevelsStyle</span>(proms) =<span class="st"> </span><span class="kw">seqlevelsStyle</span>(covg)
     covg =<span class="st"> </span>covg[<span class="kw">seqlevels</span>(proms)]
     vi =<span class="st"> </span><span class="kw">Views</span>(covg,<span class="kw">as</span>(proms[<span class="kw">strand</span>(proms)<span class="op">==</span><span class="st">&#39;+&#39;</span>,],<span class="st">&#39;RangesList&#39;</span>))
-    <span class="kw">return</span>(<span class="kw">colSums</span>(<span class="kw">as.matrix</span>(vi)))
+    <span class="kw">return</span>(<span class="kw">colSums</span>(<span class="kw">as.matrix</span>(vi),<span class="dt">na.rm =</span> <span class="ot">TRUE</span>))
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
 k562expr =<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&#39;https://www.encodeproject.org/files/ENCFF812ADD/@@download/ENCFF812ADD.tsv&#39;</span>)</code></pre></div>
@@ -1015,10 +1100,10 @@ promshigh =<span class="st"> </span>proms[<span class="kw">which</span>(proms<sp
             <span class="kw">histoneProfile</span>(promshigh,hpList[[<span class="dv">1</span>]]),
             <span class="kw">histoneProfile</span>(promslow,hpList[[<span class="dv">10</span>]]),
             <span class="kw">histoneProfile</span>(promshigh,hpList[[<span class="dv">10</span>]]))
-<span class="kw">matplot</span>(mat,<span class="dt">type=</span><span class="st">&#39;l&#39;</span>,<span class="dt">main=</span>hptitles[<span class="dv">1</span>])
+<span class="kw">matplot</span>(mat,<span class="dt">type=</span><span class="st">&#39;l&#39;</span>,<span class="dt">main=</span><span class="kw">paste</span>(hptitles[<span class="dv">1</span>],hptitles[[<span class="dv">10</span>]], <span class="dt">sep=</span><span class="st">&quot; &amp; &quot;</span>))
 <span class="kw">legend</span>(<span class="dv">0</span>,<span class="dv">2000</span>,<span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&#39;H3K4me1_low&#39;</span>,<span class="st">&#39;H3K4me1_high&#39;</span>,<span class="st">&#39;H3K79me2_low&#39;</span>,<span class="st">&#39;H3K79me2_high&#39;</span>),
        <span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,<span class="dt">lty=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</code></pre></div>
-<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 </div>
 </div>
 <div id="sessioninfo" class="section level2">
