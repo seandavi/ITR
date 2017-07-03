@@ -1,0 +1,678 @@
+---
+title: 'Epigenomic Data Science with Bioconductor'
+subtitle: "Using the Bioconductor Ranges Infrastructure"
+author: 'Martin Morgan & Sean Davis <seandavi@gmail.com>'
+output: html_document
+---
+
+# _Bioconductor_ 'infrastructure' for sequence analysis
+
+
+```{r style, echo = FALSE, results = 'asis'}
+options(width=100, max.print=1000)
+knitr::opts_chunk$set(
+    eval=as.logical(Sys.getenv("KNITR_EVAL", "TRUE")),
+    cache=as.logical(Sys.getenv("KNITR_CACHE", "TRUE")))
+```
+
+```{r setup, echo=FALSE, messages=FALSE, warnings=FALSE}
+suppressPackageStartupMessages({
+    library(GenomicRanges)
+    library(GenomicAlignments)
+})
+```
+
+We will need to install a few bioconductor packages for this section.
+
+```{r eval=FALSE}
+source('https://bioconductor.org/biocLite.R')
+biocLite(c("GenomicAlignments",
+           "BSgenome.Hsapiens.UCSC.hg19",
+           "AnnotationHub",
+           "TxDb.Hsapiens.BioMart.igis",
+           "rtracklayer",
+           "readr",
+           "ComplexHeatmap",
+           "ggbio"))
+```
+
+## Introduction
+
+### Classes, methods, and packages
+
+This section focuses on classes, methods, and packages, with the goal
+being to learn to navigate the help system and interactive discovery
+facilities.
+
+### Motivation
+
+Sequence analysis is specialized
+
+- Large data needs to be processed in a memory- and time-efficient manner
+- Specific algorithms have been developed for the unique
+  characteristics of sequence data
+
+Additional considerations
+
+- Re-use of existing, tested code is easier to do and less error-prone
+  than re-inventing the wheel.
+- Interoperability between packages is easier when the packages share
+  similar data structures.
+
+Solution: use well-defined _classes_ to represent complex data;
+_methods_ operate on the classes to perform useful functions.  Classes
+and methods are placed together and distributed as _packages_ so that
+we can all benefit from the hard work and tested code of others.
+
+## Core packages
+
+<pre>
+                   VariantAnnotation
+                           |
+                           v
+                    GenomicFeatures
+                           |
+                           v
+                       BSgenome
+                           |
+                           v
+                      rtracklayer
+                           |
+                           v
+                    GenomicAlignments
+                      |           |
+                      v           v
+     SummarizedExperiment   Rsamtools  ShortRead
+                  |         |      |      |
+                  v         v      v      v
+                GenomicRanges     Biostrings
+                        |          |
+                        v          v
+               GenomeInfoDb   (XVector)
+                        |     |
+                        v     v
+                        IRanges
+                           |
+                           v 
+                      (S4Vectors)
+</pre>
+
+## _IRanges_ and _GRanges_
+
+The [IRanges][] package defines an important class for specifying
+integer ranges, e.g.,
+```{r iranges}
+library(IRanges)
+ir <- IRanges(start=c(10, 20, 30), width=5)
+ir
+```
+
+There are many interesting operations to be performed on ranges, e.g,
+`flank()` identifies adjacent ranges
+```{r iranges-flank}
+flank(ir, 3)
+```
+
+The `IRanges` class is part of a class hierarchy. To see this, ask R for
+the class of `ir`, and for the class definition of the `IRanges` class
+```{r iranges-class}
+class(ir)
+getClass(class(ir))
+```
+
+Notice that `IRanges` extends the `Ranges` class. Show
+
+Now try entering `?flank` (if not using _RStudio_, enter
+`?"flank,<tab>"` where `<tab>` means to press the tab key to ask for
+tab completion). You can see that there are help pages for `flank`
+operating on several different classes. Select the completion
+
+```{r iranges-flank-method, eval=FALSE}
+?"flank,Ranges-method" 
+```
+
+and verify that you're at the page that describes the method relevant
+to an `IRanges` instance.  Explore other range-based operations.
+
+The [GenomicRanges][] package extends the notion of ranges to include
+features relevant to application of ranges in sequence analysis,
+particularly the ability to associate a range with a sequence name
+(e.g., chromosome) and a strand. Create a `GRanges` instance based on
+our `IRanges` instance, as follows
+```{r granges}
+library(GenomicRanges)
+gr <- GRanges(c("chr1", "chr1", "chr2"), ir, strand=c("+", "-", "+"))
+gr
+```
+
+The notion of flanking sequence has a more nuanced meaning in
+biology. In particular we might expect that flanking sequence on the
+`+` strand would precede the range, but on the minus strand would
+follow it. Verify that `flank` applied to a `GRanges` object has this
+behavior.
+```{r granges-flank}
+flank(gr, 3)
+```
+
+Discover what classes `GRanges` extends, find the help page
+documenting the behavior of `flank` when applied to a `GRanges` object,
+
+It seems like there might be a number of helpful methods available for
+working with genomic ranges; we can discover some of these from the
+command line, indicating that the methods should be on the current
+`search()` path
+
+```{r granges-methods}
+methods(class="GRanges")
+```
+
+Notice that the available `flank()` methods have been augmented by the
+methods defined in the _GenomicRanges_ package, including those that are relevant (via inheritance) to the _GRanges_ class.
+
+```{r granges-flank-method}
+grep("flank", methods(class="GRanges"), value=TRUE)
+```
+
+Verify that the help page documents the behavior we just observed.
+
+```{r granges-flank-method-help, eval=FALSE}
+?"flank,GenomicRanges-method"
+```
+
+Use `help()` to list the help pages in the `GenomicRanges` package,
+and `vignettes()` to view and access available vignettes; these are
+also available in the Rstudio 'Help' tab.
+```{r granges-man-and-vignettes, eval=FALSE}
+help(package="GenomicRanges")
+vignette(package="GenomicRanges")
+vignette(package="GenomicRanges", "GenomicRangesHOWTOs")
+```
+
+### The `GRanges` and `GRangesList` classes
+
+Aside: 'TxDb' packages provide an R representation of gene models
+
+```{r txdb}
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+```
+
+`exons()`: _GRanges_
+
+```{r txdb-exons}
+exons(txdb)
+```
+
+
+`exonsBy()`: _GRangesList_
+
+```{r txdb-exonsby}
+exonsBy(txdb, "tx")
+```
+
+
+_GRanges_ / _GRangesList_ are incredibly useful
+
+- Represent **annotations** -- genes, variants, regulatory elements,
+  copy number regions, ...
+- Represent **data** -- aligned reads, ChIP peaks, called variants,
+  ...
+
+### Algebra of genomic ranges
+  
+Many biologically interesting questions represent operations on ranges
+
+- Count overlaps between aligned reads and known genes --
+  `GenomicRanges::summarizeOverlaps()`
+- Genes nearest to regulatory regions -- `GenomicRanges::nearest()`,
+  [ChIPseeker][]
+- Called variants relevant to clinical phenotypes -- 
+  [VariantFiltering][]
+
+_GRanges_ Algebra
+
+- Intra-range methods
+    - Independent of other ranges in the same object
+    - GRanges variants strand-aware
+    - `shift()`, `narrow()`, `flank()`, `promoters()`, `resize()`,
+      `restrict()`, `trim()`
+    - See `?"intra-range-methods"`
+- Inter-range methods
+    - Depends on other ranges in the same object
+    - `range()`, `reduce()`, `gaps()`, `disjoin()`
+    - `coverage()` (!)
+    - see `?"inter-range-methods"`
+- Between-range methods
+    - Functions of two (or more) range objects
+    - `findOverlaps()`, `countOverlaps()`, ..., `%over%`, `%within%`,
+      `%outside%`; `union()`, `intersect()`, `setdiff()`, `punion()`,
+      `pintersect()`, `psetdiff()`
+
+![Alt Ranges Algebra](images/RangeOperations.png)
+
+## _Biostrings_ (DNA or amino acid sequences)
+
+Classes
+
+- XString, XStringSet, e.g., DNAString (genomes),
+  DNAStringSet (reads)
+
+Methods --
+
+- [Cheat sheat](http://bioconductor.org/packages/release/bioc/vignettes/Biostrings/inst/doc/BiostringsQuickOverview.pdf)
+- Manipulation, e.g., `reverseComplement()`
+- Summary, e.g., `letterFrequency()`
+- Matching, e.g., `matchPDict()`, `matchPWM()`
+
+Related packages
+
+- [BSgenome][]
+  - Whole-genome representations
+  - Model and custom
+- [ShortRead][]
+  - FASTQ files
+
+Example 
+
+- Whole-genome sequences are distrubuted by ENSEMBL, NCBI, and others
+  as FASTA files; model organism whole genome sequences are packaged
+  into more user-friendly `BSgenome` packages. The following
+  calculates GC content across chr14.
+
+    ```{r BSgenome-require, message=FALSE}
+    library(BSgenome.Hsapiens.UCSC.hg19)
+    chr14_range = GRanges("chr14", IRanges(1, seqlengths(Hsapiens)["chr14"]))
+    chr14_dna <- getSeq(Hsapiens, chr14_range)
+    letterFrequency(chr14_dna, "GC", as.prob=TRUE)
+    ```
+    
+## Other formats and packages
+
+![Alt Files and the Bioconductor packages that input them](images/FilesToPackages.png)
+
+Acknowledgements
+
+- Core (Seattle): Sonali Arora, Marc Carlson, Nate Hayden, Jim Hester,
+  Valerie Obenchain, Herv&eacute; Pag&egrave;s, Paul Shannon, Dan
+  Tenenbaum.
+
+- The research reported in this presentation was supported by the
+  National Cancer Institute and the National Human Genome Research
+  Institute of the National Institutes of Health under Award numbers
+  U24CA180996 and U41HG004059, and the National Science Foundation
+  under Award number 1247813. The content is solely the responsibility
+  of the authors and does not necessarily represent the official views
+  of the National Institutes of Health or the National Science
+  Foundation.
+
+
+[AnnotationDbi]: http://bioconductor.org/packages/AnnotationDbi
+[BSgenome]: http://bioconductor.org/packages/BSgenome
+[BiocParallel]: http://bioconductor.org/packages/BiocParallel
+[Biostrings]: http://bioconductor.org/packages/Biostrings
+[CNTools]: http://bioconductor.org/packages/CNTools
+[ChIPQC]: http://bioconductor.org/packages/ChIPQC
+[ChIPpeakAnno]: http://bioconductor.org/packages/ChIPpeakAnno
+[DESeq2]: http://bioconductor.org/packages/DESeq2
+[DiffBind]: http://bioconductor.org/packages/DiffBind
+[GenomicAlignments]: http://bioconductor.org/packages/GenomicAlignments
+[GenomicRanges]: http://bioconductor.org/packages/GenomicRanges
+[IRanges]: http://bioconductor.org/packages/IRanges
+[KEGGREST]: http://bioconductor.org/packages/KEGGREST
+[PSICQUIC]: http://bioconductor.org/packages/PSICQUIC
+[rtracklayer]: http://bioconductor.org/packages/rtracklayer
+[Rsamtools]: http://bioconductor.org/packages/Rsamtools
+[ShortRead]: http://bioconductor.org/packages/ShortRead
+[VariantAnnotation]: http://bioconductor.org/packages/VariantAnnotation
+[VariantFiltering]: http://bioconductor.org/packages/VariantFiltering
+[VariantTools]: http://bioconductor.org/packages/VariantTools
+[biomaRt]: http://bioconductor.org/packages/biomaRt
+[cn.mops]: http://bioconductor.org/packages/cn.mops
+[h5vc]: http://bioconductor.org/packages/h5vc
+[edgeR]: http://bioconductor.org/packages/edgeR
+[ensemblVEP]: http://bioconductor.org/packages/ensemblVEP
+[limma]: http://bioconductor.org/packages/limma
+[metagenomeSeq]: http://bioconductor.org/packages/metagenomeSeq
+[phyloseq]: http://bioconductor.org/packages/phyloseq
+[snpStats]: http://bioconductor.org/packages/snpStats
+
+[org.Hs.eg.db]: http://bioconductor.org/packages/org.Hs.eg.db
+[TxDb.Hsapiens.UCSC.hg19.knownGene]: http://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg19.knownGene
+[BSgenome.Hsapiens.UCSC.hg19]: http://bioconductor.org/packages/BSgenome.Hsapiens.UCSC.hg19
+
+
+## Public Data and Annotation from _AnnotationHub_
+
+### Roadmap Epigenomics Project 
+
+All Roadmap Epigenomics files are hosted
+[here](http://egg2.wustl.edu/roadmap/data/byFileType/). If one had to
+download these files on their own, one would navigate through the web
+interface to find useful files, then use something like the following
+_R_ code.
+
+```{r, eval=FALSE}
+url <- "http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E001-H3K4me1.broadPeak.gz"
+filename <-  basename(url)
+download.file(url, destfile=filename)
+if (file.exists(filename))
+   data <- import(filename, format="bed")
+```
+This would have to be repeated for all files, and the onus would lie
+on the user to identify, download, import, and manage the local disk
+location of these files.
+
+AnnotationHub reduces this task to just a few lines of _R_ code 
+```{r results='hide', cache=FALSE}
+library(AnnotationHub)
+ah = AnnotationHub()
+epiFiles <- query(ah, "EpigenomeRoadMap")
+```
+A look at the value returned by `epiFiles` shows us that 
+`r length(epiFiles)` roadmap resources are available via 
+AnnotationHub.  Additional information about 
+the files is also available, e.g., where the files came from
+(dataprovider), genome, species, sourceurl, sourcetypes.
+
+```{r}
+epiFiles
+```
+
+A good sanity check to ensure that we have files only from the Roadmap Epigenomics
+project is to check that all the files in the returned smaller hub object
+come from _Homo sapiens_ and the `r unique(epiFiles$genome)` genome 
+```{r}
+unique(epiFiles$species)
+unique(epiFiles$genome)
+```
+Broadly, one can get an idea of the different files from this project 
+looking at the sourcetype
+```{r}
+table(epiFiles$sourcetype)
+```
+To get a more descriptive idea of these different files one can use:
+```{r}
+head(sort(table(epiFiles$description), decreasing=TRUE))
+```
+
+The 'metadata' provided by the Roadmap Epigenomics Project is also
+available. Note that the information displayed about a hub with a
+single resource is quite different from the information displayed when
+the hub references more than one resource.
+```{r}
+metadata.tab <- query(ah , c("EpigenomeRoadMap", "Metadata"))
+metadata.tab
+```
+
+So far we have been exploring information about resources, without
+downloading the resource to a local cache and importing it into R.
+One can retrieve the resource using `[[` as indicated at the
+end of the show method
+
+```{r echo=FALSE, results='hide'}
+metadata.tab <- ah[["AH41830"]]
+```
+
+```{r}
+metadata.tab <- ah[["AH41830"]]
+```
+
+The metadata.tab file is returned as a _data.frame_. The first 6 rows
+of the first 5 columns are shown here:
+
+```{r}
+metadata.tab[1:6, 1:5]
+```
+
+One can keep constructing different queries using multiple arguments to 
+trim down these `r length(epiFiles)` to get the files one wants. 
+For example, to get the ChIP-Seq files for consolidated epigenomes, 
+one could use
+
+```{r}
+bpChipEpi <- query(ah , c("EpigenomeRoadMap", "broadPeak", "chip", "consolidated"))
+```
+To get all the bigWig signal files, one can query the hub using 
+
+```{r}
+allBigWigFiles <- query(ah, c("EpigenomeRoadMap", "BigWig"))
+```
+To access the 15 state chromatin segmentations, one can use
+
+```{r}
+seg <- query(ah, c("EpigenomeRoadMap", "segmentations"))
+```
+If one is interested in getting all the files related to one sample
+
+```{r}
+E126 <- query(ah , c("EpigenomeRoadMap", "E126", "H3K4ME2"))
+E126
+```
+
+Hub resources can also be selected using `$`, `subset()`, and
+`display()`; see the main
+[_AnnotationHub_ vignette](AnnotationHub.html) for additional detail.
+
+Hub resources are imported as the appropriate _Bioconductor_ object
+for use in further analysis.  For example, peak files are returned as
+_GRanges_ objects.
+
+```{r echo=FALSE, results='hide'}
+peaks <- E126[['AH29817']]
+```
+
+```{r}
+peaks <- E126[['AH29817']]
+seqinfo(peaks)
+```
+
+BigWig files are returned as _BigWigFile_ objects. A _BigWigFile_ is a
+reference to a file on disk; the data in the file can be read in using
+`rtracklayer::import()`, perhaps querying these large files for
+particular genomic regions of interest as described on the help page
+`?import.bw`.
+
+Each record inside AnnotationHub is associated with a
+unique identifier. Most _GRanges_ objects returned by 
+AnnotationHub contain the unique AnnotationHub identifier of
+the resource from which the _GRanges_ is derived.  This can come handy
+when working with the _GRanges_ object for a while, and additional
+information about the object (e.g., the name of the file in the cache,
+or the original sourceurl for the data underlying the resource) that
+is being worked with.
+
+```{r}
+metadata(peaks)
+ah[metadata(peaks)$AnnotationHubName]$sourceurl
+```
+
+### Ensembl GTF TxDb gene models
+
+_Bioconductor_ represents gene models using 'transcript'
+databases. These are available via packages such as
+_TxDb.Hsapiens.UCSC.hg38.knownGene_
+or can be constructed using functions such as
+`GenomicFeatures::makeTxDbFromBiomart()`.
+
+_AnnotationHub_ provides an easy way to work with gene models
+published by Ensembl. We are going to be working with human data
+that are mapped to GRCh37 (hg19). We have a choice of providers (UCSC,
+NCBI, Ensembl), but we will just choose Ensembl here to minimize the
+amount of ID changing.
+
+```{r ah-gene-models}
+query(ah,c('gtf','ensembl','sapiens','GRCh37'))
+```
+
+We see that there is a GTF file describing gene models.
+The GTF file is imported as a _GRanges_ instance, but with a number of
+columns that allow the _Granges_ object to encode the complexity of
+exons, CDS, and utrs.  
+
+```{r}
+gtf <- ah[['AH10684']]
+head(gtf, 3)
+```
+
+It is trivial to make a transcript database, or _TxDb_, instance of
+these data. We will use this _TxDb_ to quickly access gene annotation
+in genome context. 
+
+```{r gtf2txdb,cache=FALSE}
+library(GenomicFeatures)         # for makeTxDbFromGRanges
+txdb <- makeTxDbFromGRanges(gtf)
+````
+
+## Epigenomics case study
+
+We are going to use data from the
+[ENCODE project](https://www.genome.gov/10005107/)
+as  a playground for using the Bioconductor ranges infrastructure. To
+keep things manageable, we will focus on only the K562 leukemia cell
+line and on histone marks. To keep the data smallish, but without loss
+of generality, we will use data that have been processed using a
+peak-caller and summarized as regions of statistically significant
+regions.
+
+Bioconductor has processed all of the ENCODE data into Bioconductor
+data structures and then stored and made available via the
+AnnotationHub system we saw above. 
+
+```{r}
+query(ah,c('K562','h3k','E123','narrow'))
+histoneSets = names(query(ah,c('K562','E123','h3k','narrow')))
+```
+
+
+
+```{r}
+histonePeaks = ah[[histoneSets[1]]]
+```
+
+```{r}
+si = seqinfo(pro)
+fullchroms = GRanges(seqnames=seqnames(si),
+                     ranges=IRanges(start=rep(1,length(si)),
+                                    end  =seqlengths(si)))
+seqinfo(fullchroms) = seqinfo(pro)
+# 1MB bins
+tile0.1mb = unlist(tile(fullchroms,width=1e5))
+seqinfo(tile0.1mb) = seqinfo(pro)
+tile0.1mb = keepStandardChromosomes(tile0.1mb,pruning.mode = 'coarse')
+histonePeaks = keepStandardChromosomes(histonePeaks,pruning.mode = 'coarse')
+seqlevelsStyle(tile0.1mb) = seqlevelsStyle(histonePeaks)
+histonePeaks=dropSeqlevels(histonePeaks,'chrM')
+genome(tile0.1mb) = 'hg19'
+```
+
+```{r}
+tile0.1mb$peakCount = countOverlaps(tile0.1mb,histonePeaks)
+```
+
+
+
+```{r}
+library(ggbio)
+p = ggbio() + circle(tile0.1mb,geom='point', aes(y = peakCount),
+                     color='red', alpha=0.25, size=0.25, grid=TRUE,
+                     radius=60, trackWidth=30) +
+    circle(tile0.1mb, geom = "scale", size = 2,radius=90) +
+    circle(tile0.1mb, geom='ideo',fill='gray70')
+p
+```
+
+
+```{r message=FALSE}
+hpList = sapply(histoneSets,function(ahname) ah[[ahname]])
+# get the "titles" for the experiment
+# And cleanup the messy names
+hptitles = gsub('E123-|\\.narrowPeak\\.gz','',ah[histoneSets]$title)
+names(hpList) = hptitles
+```
+
+ [1] "H3K4me1"  "H3K4me2"  "H3K4me3"  "H3K9ac"   "H3K9me1"  "H3K9me3" 
+ [7] "H3K27ac"  "H3K27me3" "H3K36me3" "H3K79me2"
+
+
+Jaccard Similarity
+
+ $$ J(A,B) = \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} $$
+
+Jaccard Distance
+
+ $$ d_J(A,B) = 1 - J(A,B) = 1 - \frac{\left | A \bigcap B \right |}{\left | A \bigcup B \right |} $$
+
+
+
+```{r}
+regionJaccard = function(a,b) {
+    sum(width(intersect(a,b)))/sum(width(union(a,b)))
+}
+
+multiJaccard <- function(a,b, fun) {
+    res <- matrix(0L, length(a), length(b))
+    for (i in seq_along(a))
+    {
+       for (j in seq_along(b))
+       {
+          res[i,j] = fun(a[[i]],b[[j]])
+       }
+    }
+    if(!is.null(names(a))) rownames(res) = names(a)
+    if(!is.null(names(b))) colnames(res) = names(b)
+    
+    res
+}
+```
+
+```{r}
+res = multiJaccard(hpList,hpList,regionJaccard)
+```
+
+```{r}
+library(ComplexHeatmap)
+annot = data.frame(exprStatus=c('Active','Active','Active','Active',
+                                'Active','Repressed','Active','Repressed',NA,'Active'),
+                   locale=c(NA,NA,'Promoter','Promoter',NA,'Body','Enhancer','Body','Body',NA),
+                   row.names=hptitles)
+Heatmap(res,top_annotation=HeatmapAnnotation(
+          df=annot,col=list(exprStatus=c('Active'='yellow',Repressed='blue'))))
+```
+
+
+```{r}
+library(readr)
+k562expr = read_tsv('https://www.encodeproject.org/files/ENCFF812ADD/@@download/ENCFF812ADD.tsv')
+head(k562expr)
+```
+
+These data have several columns of values, including `tpm` or
+transcripts-per-million, which we be using as our measure of
+expression. Go ahead and take a look at the distribution and other
+characteristics of the `tpm` column.
+
+```{r}
+# Fix gene names
+k562expr$gene_id=sub('\\..*','',k562expr$gene_id)
+k562expr = subset(k562expr,grepl('ENSG',gene_id))
+```
+
+```{r}
+pro = promoters(txdb, upstream = 1000, downstream = 1000,
+                columns = c('tx_name','gene_id'))
+```
+
+```{r}
+pro$TPM = k562expr$TPM[match(unlist(pro$gene_id),k562expr$gene_id)]
+pro$logTPM =
+    log10(k562expr$TPM[match(unlist(pro$gene_id),k562expr$gene_id)])
+head(pro)
+```
+
+
+
+## `sessionInfo()`
+
+```{r sessionInfo}
+sessionInfo()
+```

@@ -43,16 +43,27 @@ We can also take a quick look at the relationships between the variables using t
 pairs(mtcars)
 ```
 
-That is a useful view of the data. We want to use `ggplot2` to make an informative plot, so let's approach this in a piecewise fashion.  We first need to decide what type of plot to produce and what our basic variables will be.  In this case, we have a number of choices.  
+That is a useful view of the data. We want to use `ggplot2` to make an
+informative plot, so let's approach this in a piecewise fashion.  We
+first need to decide what type of plot to produce and what our basic
+variables will be.  In this case, we have a number of choices.
 
 
 ```r
 ggplot(mtcars,aes(x=disp,y=hp))
 ```
 
-First, a little explanation is necessary.  The `ggplot` function takes as its first argument a `data.frame`.  The second argument is the "aesthetic", `aes`.  The `x` and `y` take column names from the `mtcars` `data.frame` and will form the basis of our scatter plot. 
+First, a little explanation is necessary.  The `ggplot` function takes
+as its first argument a `data.frame`.  The second argument is the
+"aesthetic", `aes`.  The `x` and `y` take column names from the
+`mtcars` `data.frame` and will form the basis of our scatter plot.
 
-But why did we get that "Error: No layers in plot"? Remember that *ggplot2* is a "grammar of graphics". We supplied a subject, but no verb (called a *layer* by ggplot2). So, to generate a plot, we need to supply a verb.  There are many possibilities. Each "verb" or *layer* typically starts with "geom" and then a descriptor. An example is necessary.
+But why did we get that "Error: No layers in plot"? Remember that
+*ggplot2* is a "grammar of graphics". We supplied a subject, but no
+verb (called a *layer* by ggplot2). So, to generate a plot, we need to
+supply a verb.  There are many possibilities. Each "verb" or *layer*
+typically starts with "geom" and then a descriptor. An example is
+necessary.
 
 
 ```r
@@ -61,7 +72,10 @@ ggplot(mtcars,aes(x=disp,y=hp)) + geom_point()
 
 <img src="B7_ggplot_files/figure-html/ggplotS2-1.png" width="672" />
 
-We finally produced a plot. The power of *ggplot2*, though, is the ability to make very rich plots by adding "grammar" to the "plot sentence". We have a number of other variables in our `mtcars` `data.frame`. How can we add another value to a two-dimensional plot?
+We finally produced a plot. The power of *ggplot2*, though, is the
+ability to make very rich plots by adding "grammar" to the "plot
+sentence". We have a number of other variables in our `mtcars`
+`data.frame`. How can we add another value to a two-dimensional plot?
 
 
 ```r
@@ -79,14 +93,18 @@ ggplot(mtcars,aes(x=disp,y=hp,color=wt,size=mpg)) + geom_point()
 
 <img src="B7_ggplot_files/figure-html/ggplotS4-1.png" width="672" />
 
-So, on our 2D plot, we are now plotting four variables.  Can we do more? We can manipulate the shape of the points in addition to the color and the size.
+So, on our 2D plot, we are now plotting four variables.  Can we do
+more? We can manipulate the shape of the points in addition to the
+color and the size.
 
 
 ```r
 ggplot(mtcars,aes(x=disp,y=hp)) + geom_point(aes(size=mpg,color=wt,shape=cyl))
 ```
 
-Why did we get that error? Ggplot2 is trying to be helpful by telling us that a "continuous varialbe cannot be mapped to 'shape'". Well, in our `mtcars` `data.frame`, we can look at `cyl` in detail.
+Why did we get that error? Ggplot2 is trying to be helpful by telling
+us that a "continuous varialbe cannot be mapped to 'shape'". Well, in
+our `mtcars` `data.frame`, we can look at `cyl` in detail.
 
 
 ```r
@@ -116,14 +134,19 @@ table(mtcars$cyl)
 ## 11  7 14
 ```
 
-The `cyl` variable is "kinda" continuous in that it is numeric, but it could also be thought of as a "category" of engines. R has a specific data type for "category" data, called a *factor*. We can easily convert the `cyl` column to a factor like so:
+The `cyl` variable is "kinda" continuous in that it is numeric, but it
+could also be thought of as a "category" of engines. R has a specific
+data type for "category" data, called a *factor*. We can easily
+convert the `cyl` column to a factor like so:
 
 
 ```r
 mtcars$cyl = as.factor(mtcars$cyl)
 ```
 
-Now, we can go ahead with our previous approach to make a 2-dimensional plot that displays the relationships between *five* variables.
+Now, we can go ahead with our previous approach to make a
+2-dimensional plot that displays the relationships between *five*
+variables.
 
 
 ```r
@@ -132,13 +155,23 @@ ggplot(mtcars,aes(x=disp,y=hp)) + geom_point(aes(size=mpg,color=wt,shape=cyl))
 
 <img src="B7_ggplot_files/figure-html/ggplotS6-1.png" width="672" />
 
+### Additional exercises
+
+- Use `geom_text` to add labels to your plot.
+- Convert all your work to [plotly](https://plot.ly/ggplot2/) for interactive versions of the plots.
+
+
 ## NYC Flight data
 
-I leave this section open-ended for you to explore further options with the *ggplot2* package.  The data represent the on-time data for all flights that departed New York City in 2013.
+I leave this section open-ended for you to explore further options
+with the *ggplot2* package.  The data represent the on-time data for
+all flights that departed New York City in 2013.
 
 
 ```r
+# install.packages('nycflights13')
 library(nycflights13)
+data(flights)
 head(flights)
 ```
 
@@ -158,5 +191,7 @@ head(flights)
 ## #   time_hour <dttm>
 ```
 
-Feel free to explore. Consider using other "geoms" during your exploration.
+Use ggplot and other plotting tools to explore the data and look for
+features that might contribute to airport delays. Consider using other
+"geoms" during your exploration.
 
