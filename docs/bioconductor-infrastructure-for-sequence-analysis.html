@@ -910,7 +910,7 @@ percentGC1 =<span class="st"> </span><span class="kw">letterFrequency</span>(dna
 </div>
 <div id="compare-peak-sets" class="section level3">
 <h3><span class="header-section-number">14.7.2</span> Compare peak sets</h3>
-<p>As with many datasets in biology, learning about how data relate to each other can be a very powerful technique for hypothesis generation. The goal of the next section is to determine the similarities aomong a set of 10 histone mark datasets in hopes of generating some hypotheses about the functionality of the histone marks.</p>
+<p>As with many datasets in biology, learning about how data relate to each other can be a very powerful technique for hypothesis generation. The goal of the next section is to determine the similarities among a set of 10 histone mark datasets in hopes of generating some hypotheses about the functionality of the histone marks.</p>
 <p>Start by loading the datasets that we found above for the K562 cell line.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hpList =<span class="st"> </span><span class="kw">sapply</span>(histoneSets,<span class="cf">function</span>(ahname) ah[[ahname]])
 <span class="co"># get the &quot;titles&quot; for the experiment</span>
@@ -997,6 +997,17 @@ annot =<span class="st"> </span><span class="kw">data.frame</span>(<span class="
 </div>
 <div id="histone-profiles" class="section level3">
 <h3><span class="header-section-number">14.7.3</span> Histone profiles</h3>
+<p>In the following code block, we:</p>
+<ol style="list-style-type: decimal">
+<li>Grab the “regions” of “promoters”, defined as a window around the transcript start site.
+<ul>
+<li>Subsample the promoters randomly to reduce runtime and memory usage.</li>
+</ul></li>
+<li>Calculate “coverage” of our peaks. For each base in the genome, we will have a single number, mostly zeros, and some ones.</li>
+<li>Create slices of our coverage data, called “Views”.</li>
+<li>Convert the slices of coverage to rows of a matrix.</li>
+<li>Sum the columns of the matrix to produce a summary binding profile.</li>
+</ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wndw =<span class="st"> </span><span class="dv">2000</span>
 proms =<span class="st"> </span><span class="kw">promoters</span>(txdb, <span class="dt">upstream =</span> wndw, <span class="dt">downstream =</span> wndw,
                   <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">&#39;tx_name&#39;</span>,<span class="st">&#39;gene_id&#39;</span>))</code></pre></div>
@@ -1029,8 +1040,9 @@ covg =<span class="st"> </span><span class="kw">coverage</span>(hpList[[<span cl
 covg =<span class="st"> </span>covg[<span class="kw">seqlevels</span>(proms)]
 vi =<span class="st"> </span><span class="kw">Views</span>(covg,<span class="kw">as</span>(proms[<span class="kw">strand</span>(proms)<span class="op">==</span><span class="st">&#39;+&#39;</span>,],<span class="st">&#39;RangesList&#39;</span>))
 m =<span class="st"> </span><span class="kw">as.matrix</span>(vi)
-<span class="kw">plot</span>(<span class="kw">colSums</span>(m),<span class="dt">type=</span><span class="st">&#39;l&#39;</span>)</code></pre></div>
+<span class="kw">plot</span>(<span class="kw">colSums</span>(m,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),<span class="dt">type=</span><span class="st">&#39;l&#39;</span>)</code></pre></div>
 <p><img src="F_epigenomic_ranges_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>We can wrap all this up as a function to reuse as we see fit.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">histoneProfile =<span class="st"> </span><span class="cf">function</span>(promoters,peaks,<span class="dt">n_promoters=</span><span class="dv">10000</span>) {
     proms =<span class="st"> </span>promoters
     proms =<span class="st"> </span>proms[<span class="kw">sample</span>(<span class="kw">seq_along</span>(proms),<span class="kw">min</span>(<span class="kw">length</span>(proms),n_promoters),<span class="dt">replace=</span><span class="ot">FALSE</span>)]
@@ -1041,6 +1053,7 @@ m =<span class="st"> </span><span class="kw">as.matrix</span>(vi)
     vi =<span class="st"> </span><span class="kw">Views</span>(covg,<span class="kw">as</span>(proms[<span class="kw">strand</span>(proms)<span class="op">==</span><span class="st">&#39;+&#39;</span>,],<span class="st">&#39;RangesList&#39;</span>))
     <span class="kw">return</span>(<span class="kw">colSums</span>(<span class="kw">as.matrix</span>(vi),<span class="dt">na.rm =</span> <span class="ot">TRUE</span>))
 }</code></pre></div>
+<p>Now, we are going to load gene expression for K562 so that we can look at how the binding profiles vary with expression. The gene expression from ENCODE data is available from many sources. In this case, we are downloading directly from Ensembl in Europe.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
 k562expr =<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&#39;https://www.encodeproject.org/files/ENCFF812ADD/@@download/ENCFF812ADD.tsv&#39;</span>)</code></pre></div>
 <pre><code>## Parsed with column specification:
@@ -1079,6 +1092,7 @@ k562expr =<span class="st"> </span><span class="kw">read_tsv</span>(<span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fix gene names</span>
 k562expr<span class="op">$</span>gene_id=<span class="kw">sub</span>(<span class="st">&#39;</span><span class="ch">\\</span><span class="st">..*&#39;</span>,<span class="st">&#39;&#39;</span>,k562expr<span class="op">$</span>gene_id)
 k562expr =<span class="st"> </span><span class="kw">subset</span>(k562expr,<span class="kw">grepl</span>(<span class="st">&#39;ENSG&#39;</span>,gene_id))</code></pre></div>
+<p>Below, I am simply attaching the expression values to their associated promoters based on gene id matching.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">proms<span class="op">$</span>TPM =<span class="st"> </span>k562expr<span class="op">$</span>TPM[<span class="kw">match</span>(<span class="kw">unlist</span>(proms<span class="op">$</span>gene_id),k562expr<span class="op">$</span>gene_id)]
 proms<span class="op">$</span>logTPM =
 <span class="st">    </span><span class="kw">log10</span>(k562expr<span class="op">$</span>TPM[<span class="kw">match</span>(<span class="kw">unlist</span>(proms<span class="op">$</span>gene_id),k562expr<span class="op">$</span>gene_id)])
@@ -1094,8 +1108,10 @@ proms<span class="op">$</span>logTPM =
 ##   [6]     chr1 [213173577, 213177576]      - | ENST00000473303 ENSG00000174606     12.34  1.0913152
 ##   -------
 ##   seqinfo: 25 sequences (1 circular) from GRCh37 genome</code></pre>
+<p>Now, subset promoters into those with low expression and those with high.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">promslow =<span class="st"> </span>proms[<span class="kw">which</span>(proms<span class="op">$</span>logTPM<span class="op">&lt;</span><span class="kw">median</span>(proms<span class="op">$</span>logTPM,<span class="dt">na.rm=</span><span class="ot">TRUE</span>))]
 promshigh =<span class="st"> </span>proms[<span class="kw">which</span>(proms<span class="op">$</span>logTPM<span class="op">&gt;=</span><span class="kw">median</span>(proms<span class="op">$</span>logTPM,<span class="dt">na.rm=</span><span class="ot">TRUE</span>))]</code></pre></div>
+<p>And finally, produce a plot of two histone marks with low and high expression.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat =<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">histoneProfile</span>(promslow,hpList[[<span class="dv">1</span>]]),
             <span class="kw">histoneProfile</span>(promshigh,hpList[[<span class="dv">1</span>]]),
             <span class="kw">histoneProfile</span>(promslow,hpList[[<span class="dv">10</span>]]),

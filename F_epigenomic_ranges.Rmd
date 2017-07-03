@@ -646,7 +646,7 @@ lines(density(percentGC1),col='red')
 As with many datasets in biology, learning about how data relate to
 each other can be a very powerful technique for hypothesis
 generation. The goal of the next section is to determine the
-similarities aomong a set of 10 histone mark datasets in hopes of
+similarities among a set of 10 histone mark datasets in hopes of
 generating some hypotheses about the functionality of the histone
 marks.
 
@@ -743,6 +743,14 @@ What do you think of the plot above?
 
 ### Histone profiles
 
+In the following code block, we:
+
+1. Grab the "regions" of "promoters", defined as a window around the transcript start site.
+    - Subsample the promoters randomly to reduce runtime and memory usage.
+2. Calculate "coverage" of our peaks. For each base in the genome, we will have a single number, mostly zeros, and some ones. 
+3. Create slices of our coverage data, called "Views".
+4. Convert the slices of coverage to rows of a matrix.
+5. Sum the columns of the matrix to produce a summary binding profile.
 
 
 
@@ -757,8 +765,10 @@ seqlevelsStyle(proms) = seqlevelsStyle(covg)
 covg = covg[seqlevels(proms)]
 vi = Views(covg,as(proms[strand(proms)=='+',],'RangesList'))
 m = as.matrix(vi)
-plot(colSums(m),type='l')
+plot(colSums(m,na.rm=TRUE),type='l')
 ```
+
+We can wrap all this up as a function to reuse as we see fit.
 
 ```{r}
 histoneProfile = function(promoters,peaks,n_promoters=10000) {
@@ -773,7 +783,10 @@ histoneProfile = function(promoters,peaks,n_promoters=10000) {
 }
 ```
     
-
+Now, we are going to load gene expression for K562 so that we can look
+at how the binding profiles vary with expression. The gene expression
+from ENCODE data is available from many sources. In this case, we are
+downloading directly from Ensembl in Europe.
 
 
 ```{r}
@@ -793,6 +806,10 @@ k562expr$gene_id=sub('\\..*','',k562expr$gene_id)
 k562expr = subset(k562expr,grepl('ENSG',gene_id))
 ```
 
+Below, I am simply attaching the expression values to their associated
+promoters based on gene id matching.
+
+
 ```{r}
 proms$TPM = k562expr$TPM[match(unlist(proms$gene_id),k562expr$gene_id)]
 proms$logTPM =
@@ -800,10 +817,16 @@ proms$logTPM =
 head(proms)
 ```
 
+Now, subset promoters into those with low expression and those with high.
+
 ```{r }
 promslow = proms[which(proms$logTPM<median(proms$logTPM,na.rm=TRUE))]
 promshigh = proms[which(proms$logTPM>=median(proms$logTPM,na.rm=TRUE))]
 ```
+
+And finally, produce a plot of two histone marks with low and high
+expression.
+
 
 ```{r warning=FALSE}
 mat = cbind(histoneProfile(promslow,hpList[[1]]),
