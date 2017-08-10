@@ -1,7 +1,4 @@
 ---
-title: "Introduction to R (ITR)"
-author: "Sean Davis"
-date: "6/29/2017"
 site: "bookdown::bookdown_site"
 output:
   bookdown::gitbook:

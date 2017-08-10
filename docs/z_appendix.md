@@ -8,7 +8,14 @@ output:
 
 # (APPENDIX) Appendix {-}
 
-# Appendix A -- Swirl
+# Appendix -- Data Sets
+
+- [BRFSS subset](BRFSS-subset.csv)
+- [ALL clinical data](ALL-phenoData.csv)
+- [ALL expression data](ALL-expression.csv)
+
+
+# Appendix -- Swirl
 
 The following is from the [swirl website](http://swirlstats.com/students.html).
 
