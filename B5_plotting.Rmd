@@ -1,3 +1,6 @@
+---
+title: ''
+---
 # Plotting and Graphics
 
 Visit these sites for some ideas.
