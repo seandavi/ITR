@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Introduction to the Grammar of Graphics, ggplot2</title>
-  <meta name="description" content="Introduction to the Grammar of Graphics, ggplot2">
+  <title>Control structures and functions</title>
+  <meta name="description" content="Control structures and functions">
   <meta name="generator" content="bookdown 0.4.1 and GitBook 2.6.7">
 
-  <meta property="og:title" content="Introduction to the Grammar of Graphics, ggplot2" />
+  <meta property="og:title" content="Control structures and functions" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Introduction to the Grammar of Graphics, ggplot2" />
+  <meta name="twitter:title" content="Control structures and functions" />
   
   
   
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="introduction-to-r-data-structures.html">
-<link rel="next" href="plotting-with-ggplot2.html">
+<link rel="next" href="control-structures-looping-and-applying.html">
 <script src="book_assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -135,80 +135,76 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.3" data-path="introduction-to-r-data-structures.html"><a href="introduction-to-r-data-structures.html#lists-and-objects"><i class="fa fa-check"></i><b>4.3</b> Lists and Objects</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html"><i class="fa fa-check"></i><b>5</b> Plotting and Graphics</a><ul>
-<li class="chapter" data-level="5.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#basic-plot-functions"><i class="fa fa-check"></i><b>5.1</b> Basic Plot Functions</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#simple-plotting-example"><i class="fa fa-check"></i><b>5.1.1</b> Simple Plotting Example</a></li>
-<li class="chapter" data-level="5.1.2" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#graphics-devices-and-saving-plots"><i class="fa fa-check"></i><b>5.1.2</b> Graphics Devices and Saving Plots</a></li>
+<li class="chapter" data-level="5.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#base-r-graphics"><i class="fa fa-check"></i><b>5.1</b> Base R graphics</a></li>
+<li class="chapter" data-level="5.2" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#plotting-with-ggplot2"><i class="fa fa-check"></i><b>5.2</b> Plotting with ggplot2</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#mtcars-data"><i class="fa fa-check"></i><b>5.2.1</b> mtcars data</a></li>
+<li class="chapter" data-level="5.2.2" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#nyc-flight-data"><i class="fa fa-check"></i><b>5.2.2</b> NYC Flight data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="plotting-and-graphics.html"><a href="plotting-and-graphics.html#graphics-devices-and-saving-plots"><i class="fa fa-check"></i><b>5.3</b> Graphics Devices and Saving Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html"><i class="fa fa-check"></i><b>6</b> Control Structures, Looping, and Applying</a><ul>
+<li class="chapter" data-level="6.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-and-looping"><i class="fa fa-check"></i><b>6.1</b> Control Structures and Looping</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-in-r"><i class="fa fa-check"></i><b>6.1.1</b> Control Structures in R</a></li>
+<li class="chapter" data-level="6.1.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples"><i class="fa fa-check"></i><b>6.1.2</b> Control Structure and Looping Examples</a></li>
+<li class="chapter" data-level="6.1.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples-1"><i class="fa fa-check"></i><b>6.1.3</b> Control Structure and Looping Examples</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#applying"><i class="fa fa-check"></i><b>6.2</b> Applying</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#why-does-r-have-apply-functions"><i class="fa fa-check"></i><b>6.2.1</b> Why Does R Have Apply Functions</a></li>
+<li class="chapter" data-level="6.2.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#apply-function-exercise"><i class="fa fa-check"></i><b>6.2.2</b> Apply Function Exercise</a></li>
+<li class="chapter" data-level="6.2.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-functions"><i class="fa fa-check"></i><b>6.2.3</b> Related Apply Functions</a></li>
+<li class="chapter" data-level="6.2.4" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-function-examples"><i class="fa fa-check"></i><b>6.2.4</b> Related Apply Function Examples</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="plotting-with-ggplot2.html"><a href="plotting-with-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Plotting with ggplot2</a><ul>
-<li class="chapter" data-level="6.1" data-path="plotting-with-ggplot2.html"><a href="plotting-with-ggplot2.html#mtcars-data"><i class="fa fa-check"></i><b>6.1</b> mtcars data</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="plotting-with-ggplot2.html"><a href="plotting-with-ggplot2.html#additional-exercises"><i class="fa fa-check"></i><b>6.1.1</b> Additional exercises</a></li>
+<li class="chapter" data-level="7" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>7</b> Functions</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="functions.html"><a href="functions.html#function-overview"><i class="fa fa-check"></i><b>7.0.1</b> Function Overview</a></li>
+<li class="chapter" data-level="7.0.2" data-path="functions.html"><a href="functions.html#example-functions"><i class="fa fa-check"></i><b>7.0.2</b> Example Functions</a></li>
+<li class="chapter" data-level="7.0.3" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>7.0.3</b> Further Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="plotting-with-ggplot2.html"><a href="plotting-with-ggplot2.html#nyc-flight-data"><i class="fa fa-check"></i><b>6.2</b> NYC Flight data</a></li>
+<li class="chapter" data-level="8" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html"><i class="fa fa-check"></i><b>8</b> Data Input and Exploration</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#behavioral-risk-factor-surveillance-system"><i class="fa fa-check"></i><b>8.1</b> Behavioral Risk Factor Surveillance System</a></li>
+<li class="chapter" data-level="8.2" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#all-phenotypic-data"><i class="fa fa-check"></i><b>8.2</b> ALL Phenotypic Data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html"><i class="fa fa-check"></i><b>7</b> Control Structures, Looping, and Applying</a><ul>
-<li class="chapter" data-level="7.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-and-looping"><i class="fa fa-check"></i><b>7.1</b> Control Structures and Looping</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structures-in-r"><i class="fa fa-check"></i><b>7.1.1</b> Control Structures in R</a></li>
-<li class="chapter" data-level="7.1.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples"><i class="fa fa-check"></i><b>7.1.2</b> Control Structure and Looping Examples</a></li>
-<li class="chapter" data-level="7.1.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#control-structure-and-looping-examples-1"><i class="fa fa-check"></i><b>7.1.3</b> Control Structure and Looping Examples</a></li>
+<li class="chapter" data-level="9" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html"><i class="fa fa-check"></i><b>9</b> Exploration and simple univariate measures</a><ul>
+<li class="chapter" data-level="9.1" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#clean-data"><i class="fa fa-check"></i><b>9.1</b> Clean data</a></li>
+<li class="chapter" data-level="9.2" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-in-1990-vs.2010-females"><i class="fa fa-check"></i><b>9.2</b> Weight in 1990 vs. 2010 Females</a></li>
+<li class="chapter" data-level="9.3" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-and-height-in-2010-males"><i class="fa fa-check"></i><b>9.3</b> Weight and height in 2010 Males</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#applying"><i class="fa fa-check"></i><b>7.2</b> Applying</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#why-does-r-have-apply-functions"><i class="fa fa-check"></i><b>7.2.1</b> Why Does R Have Apply Functions</a></li>
-<li class="chapter" data-level="7.2.2" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#apply-function-exercise"><i class="fa fa-check"></i><b>7.2.2</b> Apply Function Exercise</a></li>
-<li class="chapter" data-level="7.2.3" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-functions"><i class="fa fa-check"></i><b>7.2.3</b> Related Apply Functions</a></li>
-<li class="chapter" data-level="7.2.4" data-path="control-structures-looping-and-applying.html"><a href="control-structures-looping-and-applying.html#related-apply-function-examples"><i class="fa fa-check"></i><b>7.2.4</b> Related Apply Function Examples</a></li>
+<li class="chapter" data-level="10" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html"><i class="fa fa-check"></i><b>10</b> Multivariate analysis</a><ul>
+<li class="chapter" data-level="10.1" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#input-and-setup"><i class="fa fa-check"></i><b>10.1</b> Input and setup</a></li>
+<li class="chapter" data-level="10.2" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#cleaning"><i class="fa fa-check"></i><b>10.2</b> Cleaning</a></li>
+<li class="chapter" data-level="10.3" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#unsupervised-machine-learning-multi-dimensional-scaling"><i class="fa fa-check"></i><b>10.3</b> Unsupervised machine learning – multi-dimensional scaling</a></li>
 </ul></li>
+<li class="chapter" data-level="11" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html"><i class="fa fa-check"></i><b>11</b> Using <em>R</em> in real life</a><ul>
+<li class="chapter" data-level="11.1" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#organizing-work"><i class="fa fa-check"></i><b>11.1</b> Organizing work</a></li>
+<li class="chapter" data-level="11.2" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#r-packages"><i class="fa fa-check"></i><b>11.2</b> <em>R</em> Packages</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>8</b> Functions</a><ul>
-<li class="chapter" data-level="8.0.1" data-path="functions.html"><a href="functions.html#function-overview"><i class="fa fa-check"></i><b>8.0.1</b> Function Overview</a></li>
-<li class="chapter" data-level="8.0.2" data-path="functions.html"><a href="functions.html#example-functions"><i class="fa fa-check"></i><b>8.0.2</b> Example Functions</a></li>
-<li class="chapter" data-level="8.0.3" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>8.0.3</b> Further Reading</a></li>
+<li class="chapter" data-level="12" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html"><i class="fa fa-check"></i><b>12</b> Graphics and Visualization</a><ul>
+<li class="chapter" data-level="12.1" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#base-r-graphics-1"><i class="fa fa-check"></i><b>12.1</b> Base <em>R</em> Graphics</a></li>
+<li class="chapter" data-level="12.2" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#what-makes-for-a-good-graphical-display"><i class="fa fa-check"></i><b>12.2</b> What makes for a good graphical display?</a></li>
+<li class="chapter" data-level="12.3" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#grammar-of-graphics-ggplot2"><i class="fa fa-check"></i><b>12.3</b> Grammar of Graphics: ggplot2</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html"><i class="fa fa-check"></i><b>9</b> Data Input and Exploration</a><ul>
-<li class="chapter" data-level="9.1" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#behavioral-risk-factor-surveillance-system"><i class="fa fa-check"></i><b>9.1</b> Behavioral Risk Factor Surveillance System</a></li>
-<li class="chapter" data-level="9.2" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#all-phenotypic-data"><i class="fa fa-check"></i><b>9.2</b> ALL Phenotypic Data</a></li>
+<li class="chapter" data-level="13" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html"><i class="fa fa-check"></i><b>13</b> <em>Bioconductor</em> ‘infrastructure’ for sequence analysis</a><ul>
+<li class="chapter" data-level="13.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#introduction"><i class="fa fa-check"></i><b>13.1</b> Introduction</a><ul>
+<li class="chapter" data-level="13.1.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#classes-methods-and-packages"><i class="fa fa-check"></i><b>13.1.1</b> Classes, methods, and packages</a></li>
+<li class="chapter" data-level="13.1.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#motivation"><i class="fa fa-check"></i><b>13.1.2</b> Motivation</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html"><i class="fa fa-check"></i><b>10</b> Exploration and simple univariate measures</a><ul>
-<li class="chapter" data-level="10.1" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#clean-data"><i class="fa fa-check"></i><b>10.1</b> Clean data</a></li>
-<li class="chapter" data-level="10.2" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-in-1990-vs.2010-females"><i class="fa fa-check"></i><b>10.2</b> Weight in 1990 vs. 2010 Females</a></li>
-<li class="chapter" data-level="10.3" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html#weight-and-height-in-2010-males"><i class="fa fa-check"></i><b>10.3</b> Weight and height in 2010 Males</a></li>
+<li class="chapter" data-level="13.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#core-packages"><i class="fa fa-check"></i><b>13.2</b> Core packages</a></li>
+<li class="chapter" data-level="13.3" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#iranges-and-granges"><i class="fa fa-check"></i><b>13.3</b> <em>IRanges</em> and <em>GRanges</em></a><ul>
+<li class="chapter" data-level="13.3.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#the-granges-and-grangeslist-classes"><i class="fa fa-check"></i><b>13.3.1</b> The <code>GRanges</code> and <code>GRangesList</code> classes</a></li>
+<li class="chapter" data-level="13.3.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#algebra-of-genomic-ranges"><i class="fa fa-check"></i><b>13.3.2</b> Algebra of genomic ranges</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html"><i class="fa fa-check"></i><b>11</b> Multivariate analysis</a><ul>
-<li class="chapter" data-level="11.1" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#input-and-setup"><i class="fa fa-check"></i><b>11.1</b> Input and setup</a></li>
-<li class="chapter" data-level="11.2" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#cleaning"><i class="fa fa-check"></i><b>11.2</b> Cleaning</a></li>
-<li class="chapter" data-level="11.3" data-path="multivariate-analysis.html"><a href="multivariate-analysis.html#unsupervised-machine-learning-multi-dimensional-scaling"><i class="fa fa-check"></i><b>11.3</b> Unsupervised machine learning – multi-dimensional scaling</a></li>
+<li class="chapter" data-level="13.4" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#biostrings-dna-or-amino-acid-sequences"><i class="fa fa-check"></i><b>13.4</b> <em>Biostrings</em> (DNA or amino acid sequences)</a></li>
+<li class="chapter" data-level="13.5" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#other-formats-and-packages"><i class="fa fa-check"></i><b>13.5</b> Other formats and packages</a></li>
+<li class="chapter" data-level="13.6" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#public-data-and-annotation-from-annotationhub"><i class="fa fa-check"></i><b>13.6</b> Public Data and Annotation from <em>AnnotationHub</em></a><ul>
+<li class="chapter" data-level="13.6.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#roadmap-epigenomics-project"><i class="fa fa-check"></i><b>13.6.1</b> Roadmap Epigenomics Project</a></li>
+<li class="chapter" data-level="13.6.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#ensembl-gtf-txdb-gene-models"><i class="fa fa-check"></i><b>13.6.2</b> Ensembl GTF TxDb gene models</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html"><i class="fa fa-check"></i><b>12</b> Using <em>R</em> in real life</a><ul>
-<li class="chapter" data-level="12.1" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#organizing-work"><i class="fa fa-check"></i><b>12.1</b> Organizing work</a></li>
-<li class="chapter" data-level="12.2" data-path="using-r-in-real-life.html"><a href="using-r-in-real-life.html#r-packages"><i class="fa fa-check"></i><b>12.2</b> <em>R</em> Packages</a></li>
+<li class="chapter" data-level="13.7" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#epigenomics-case-study"><i class="fa fa-check"></i><b>13.7</b> Epigenomics case study</a><ul>
+<li class="chapter" data-level="13.7.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#peak-density-across-the-genome"><i class="fa fa-check"></i><b>13.7.1</b> Peak density across the genome</a></li>
+<li class="chapter" data-level="13.7.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#compare-peak-sets"><i class="fa fa-check"></i><b>13.7.2</b> Compare peak sets</a></li>
+<li class="chapter" data-level="13.7.3" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#histone-profiles"><i class="fa fa-check"></i><b>13.7.3</b> Histone profiles</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html"><i class="fa fa-check"></i><b>13</b> Graphics and Visualization</a><ul>
-<li class="chapter" data-level="13.1" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#base-r-graphics"><i class="fa fa-check"></i><b>13.1</b> Base <em>R</em> Graphics</a></li>
-<li class="chapter" data-level="13.2" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#what-makes-for-a-good-graphical-display"><i class="fa fa-check"></i><b>13.2</b> What makes for a good graphical display?</a></li>
-<li class="chapter" data-level="13.3" data-path="graphics-and-visualization.html"><a href="graphics-and-visualization.html#grammar-of-graphics-ggplot2"><i class="fa fa-check"></i><b>13.3</b> Grammar of Graphics: ggplot2</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html"><i class="fa fa-check"></i><b>14</b> <em>Bioconductor</em> ‘infrastructure’ for sequence analysis</a><ul>
-<li class="chapter" data-level="14.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#introduction"><i class="fa fa-check"></i><b>14.1</b> Introduction</a><ul>
-<li class="chapter" data-level="14.1.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#classes-methods-and-packages"><i class="fa fa-check"></i><b>14.1.1</b> Classes, methods, and packages</a></li>
-<li class="chapter" data-level="14.1.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#motivation"><i class="fa fa-check"></i><b>14.1.2</b> Motivation</a></li>
-</ul></li>
-<li class="chapter" data-level="14.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#core-packages"><i class="fa fa-check"></i><b>14.2</b> Core packages</a></li>
-<li class="chapter" data-level="14.3" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#iranges-and-granges"><i class="fa fa-check"></i><b>14.3</b> <em>IRanges</em> and <em>GRanges</em></a><ul>
-<li class="chapter" data-level="14.3.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#the-granges-and-grangeslist-classes"><i class="fa fa-check"></i><b>14.3.1</b> The <code>GRanges</code> and <code>GRangesList</code> classes</a></li>
-<li class="chapter" data-level="14.3.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#algebra-of-genomic-ranges"><i class="fa fa-check"></i><b>14.3.2</b> Algebra of genomic ranges</a></li>
-</ul></li>
-<li class="chapter" data-level="14.4" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#biostrings-dna-or-amino-acid-sequences"><i class="fa fa-check"></i><b>14.4</b> <em>Biostrings</em> (DNA or amino acid sequences)</a></li>
-<li class="chapter" data-level="14.5" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#other-formats-and-packages"><i class="fa fa-check"></i><b>14.5</b> Other formats and packages</a></li>
-<li class="chapter" data-level="14.6" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#public-data-and-annotation-from-annotationhub"><i class="fa fa-check"></i><b>14.6</b> Public Data and Annotation from <em>AnnotationHub</em></a><ul>
-<li class="chapter" data-level="14.6.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#roadmap-epigenomics-project"><i class="fa fa-check"></i><b>14.6.1</b> Roadmap Epigenomics Project</a></li>
-<li class="chapter" data-level="14.6.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#ensembl-gtf-txdb-gene-models"><i class="fa fa-check"></i><b>14.6.2</b> Ensembl GTF TxDb gene models</a></li>
-</ul></li>
-<li class="chapter" data-level="14.7" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#epigenomics-case-study"><i class="fa fa-check"></i><b>14.7</b> Epigenomics case study</a><ul>
-<li class="chapter" data-level="14.7.1" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#peak-density-across-the-genome"><i class="fa fa-check"></i><b>14.7.1</b> Peak density across the genome</a></li>
-<li class="chapter" data-level="14.7.2" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#compare-peak-sets"><i class="fa fa-check"></i><b>14.7.2</b> Compare peak sets</a></li>
-<li class="chapter" data-level="14.7.3" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#histone-profiles"><i class="fa fa-check"></i><b>14.7.3</b> Histone profiles</a></li>
-</ul></li>
-<li class="chapter" data-level="14.8" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#sessioninfo"><i class="fa fa-check"></i><b>14.8</b> <code>sessionInfo()</code></a></li>
+<li class="chapter" data-level="13.8" data-path="bioconductor-infrastructure-for-sequence-analysis.html"><a href="bioconductor-infrastructure-for-sequence-analysis.html#sessioninfo"><i class="fa fa-check"></i><b>13.8</b> <code>sessionInfo()</code></a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="appendix-data-sets.html"><a href="appendix-data-sets.html"><i class="fa fa-check"></i><b>A</b> Appendix – Data Sets</a></li>
@@ -222,7 +218,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to the Grammar of Graphics, ggplot2</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Control structures and functions</a>
           </h1>
         </div>
 
@@ -238,12 +234,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="http://gallery.r-enthusiasts.com/" class="uri">http://gallery.r-enthusiasts.com/</a></li>
 <li><a href="http://cran.r-project.org/web/views/Graphics.html" class="uri">http://cran.r-project.org/web/views/Graphics.html</a></li>
 </ul>
-<div id="basic-plot-functions" class="section level2">
-<h2><span class="header-section-number">5.1</span> Basic Plot Functions</h2>
+<div id="base-r-graphics" class="section level2">
+<h2><span class="header-section-number">5.1</span> Base R graphics</h2>
 <p>The command <code>plot(x,y)</code> will plot vector x as the independent variable and vector y as the dependent variable. Within the command line, you can specify the title of the graph, the name of the x-axis, and the name of the y-axis. - main=’title’ - xlab=’name of x axis’ - ylab=’name of y axis’</p>
 <p>The command <code>lines(x,y)</code> adds a line segment to an existing plot. The command <code>points(x,y)</code> adds points to the plot. A legend can be created using <code>legend</code>, though getting the legend right for base graphics can be a bit challenging. To get a basic idea of what R offers, it has a build-in demo that can be run with <code>demo(graphics)</code>.</p>
-<div id="simple-plotting-example" class="section level3">
-<h3><span class="header-section-number">5.1.1</span> Simple Plotting Example</h3>
 <p>Try this yourself:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>
 y =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>,<span class="dv">3</span>,<span class="dv">1</span>) <span class="co"># 100 random normal deviates with mean=3, sd=1</span>
@@ -277,8 +271,83 @@ y =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</
      <span class="dt">sub=</span><span class="st">&quot;smaller bandwidth&quot;</span>)</code></pre></div>
 <p><img src="B5_plotting_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
 </div>
-<div id="graphics-devices-and-saving-plots" class="section level3">
-<h3><span class="header-section-number">5.1.2</span> Graphics Devices and Saving Plots</h3>
+<div id="plotting-with-ggplot2" class="section level2">
+<h2><span class="header-section-number">5.2</span> Plotting with ggplot2</h2>
+<p>The <code>ggplot2</code> package is a relatively novel approach to generating highly informative publication-quality graphics. The “gg” stands for “Grammar of Graphics”. In short, instead of thinking about a single function that produces a plot, <code>ggplot2</code> uses a “grammar” approach, akin to building more and more complex sentences to layer on more information or nuance. See the <a href="http://www.r-graph-gallery.com/portfolio/ggplot2-package/">ggplot2 graphics gallery</a> for some examples <em>with accompanying code</em>.</p>
+<p>The <code>ggplot2</code> package assumes that data are in the form of a data.frame. In some cases, the data will need to be manipulated into a form that matches assumptions that <code>ggplot2</code> uses. In particular, if one has a <em>matrix</em> of numbers associated with different subjects (samples, people, etc.), the data will usually need to be transformed into a “long” data frame.</p>
+<p>To use the <code>ggplot2</code> package, it must be installed and loaded. Assuming that installation has been done already, we can load the package directly:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<div id="mtcars-data" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> mtcars data</h3>
+<p>We are going to use the mtcars dataset, included with R, to experiment with <code>ggplot2</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)</code></pre></div>
+<ul>
+<li>Exercise: Explore the <code>mtcars</code> dataset using <code>View</code>, <code>summary</code>, <code>dim</code>, <code>class</code>, etc.</li>
+</ul>
+<p>We can also take a quick look at the relationships between the variables using the <code>pairs</code> plotting function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(mtcars)</code></pre></div>
+<p>That is a useful view of the data. We want to use <code>ggplot2</code> to make an informative plot, so let’s approach this in a piecewise fashion. We first need to decide what type of plot to produce and what our basic variables will be. In this case, we have a number of choices.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp))</code></pre></div>
+<p>First, a little explanation is necessary. The <code>ggplot</code> function takes as its first argument a <code>data.frame</code>. The second argument is the “aesthetic”, <code>aes</code>. The <code>x</code> and <code>y</code> take column names from the <code>mtcars</code> <code>data.frame</code> and will form the basis of our scatter plot.</p>
+<p>But why did we get that “Error: No layers in plot”? Remember that <em>ggplot2</em> is a “grammar of graphics”. We supplied a subject, but no verb (called a <em>layer</em> by ggplot2). So, to generate a plot, we need to supply a verb. There are many possibilities. Each “verb” or <em>layer</em> typically starts with “geom” and then a descriptor. An example is necessary.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="B5_plotting_files/figure-html/ggplotS2-1.png" width="672" /></p>
+<p>We finally produced a plot. The power of <em>ggplot2</em>, though, is the ability to make very rich plots by adding “grammar” to the “plot sentence”. We have a number of other variables in our <code>mtcars</code> <code>data.frame</code>. How can we add another value to a two-dimensional plot?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp,<span class="dt">color=</span>cyl)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="B5_plotting_files/figure-html/ggplotS3-1.png" width="672" /></p>
+<p>The color of the points is a based on the numeric variable <code>wt</code>, the weight of the car. Can we do more? We can change the size of the points, also.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp,<span class="dt">color=</span>wt,<span class="dt">size=</span>mpg)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="B5_plotting_files/figure-html/ggplotS4-1.png" width="672" /></p>
+<p>So, on our 2D plot, we are now plotting four variables. Can we do more? We can manipulate the shape of the points in addition to the color and the size.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>mpg,<span class="dt">color=</span>wt,<span class="dt">shape=</span>cyl))</code></pre></div>
+<p>Why did we get that error? Ggplot2 is trying to be helpful by telling us that a “continuous varialbe cannot be mapped to ‘shape’”. Well, in our <code>mtcars</code> <code>data.frame</code>, we can look at <code>cyl</code> in detail.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   4.000   4.000   6.000   6.188   8.000   8.000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>## 
+##  4  6  8 
+## 11  7 14</code></pre>
+<p>The <code>cyl</code> variable is “kinda” continuous in that it is numeric, but it could also be thought of as a “category” of engines. R has a specific data type for “category” data, called a <em>factor</em>. We can easily convert the <code>cyl</code> column to a factor like so:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">as.factor</span>(mtcars<span class="op">$</span>cyl)</code></pre></div>
+<p>Now, we can go ahead with our previous approach to make a 2-dimensional plot that displays the relationships between <em>five</em> variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>disp,<span class="dt">y=</span>hp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>mpg,<span class="dt">color=</span>wt,<span class="dt">shape=</span>cyl))</code></pre></div>
+<p><img src="B5_plotting_files/figure-html/ggplotS6-1.png" width="672" /></p>
+<ul>
+<li><em>Additional exercises</em>
+<ul>
+<li>Use <code>geom_text</code> to add labels to your plot.</li>
+<li>Convert all your work to <a href="https://plot.ly/ggplot2/">plotly</a> for interactive versions of the plots.</li>
+</ul></li>
+</ul>
+</div>
+<div id="nyc-flight-data" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> NYC Flight data</h3>
+<p>I leave this section open-ended for you to explore further options with the <em>ggplot2</em> package. The data represent the on-time data for all flights that departed New York City in 2013.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&#39;nycflights13&#39;)</span>
+<span class="kw">library</span>(nycflights13)
+<span class="kw">data</span>(flights)
+<span class="kw">head</span>(flights)</code></pre></div>
+<pre><code>## # A tibble: 6 x 19
+##    year month   day dep_time sched_dep_time dep_delay arr_time
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+## 1  2013     1     1      517            515         2      830
+## 2  2013     1     1      533            529         4      850
+## 3  2013     1     1      542            540         2      923
+## 4  2013     1     1      544            545        -1     1004
+## 5  2013     1     1      554            600        -6      812
+## 6  2013     1     1      554            558        -4      740
+## # ... with 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
+## #   time_hour &lt;dttm&gt;</code></pre>
+<p>Use ggplot and other plotting tools to explore the data and look for features that might contribute to airport delays. Consider using other “geoms” during your exploration.</p>
+</div>
+</div>
+<div id="graphics-devices-and-saving-plots" class="section level2">
+<h2><span class="header-section-number">5.3</span> Graphics Devices and Saving Plots</h2>
 <p>To make a plot directly to a file use: <code>png()</code>, <code>postscript()</code>, etc.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">png</span>(<span class="dt">file=</span><span class="st">&quot;myplot.png&quot;</span>,<span class="dt">width=</span><span class="dv">480</span>,<span class="dt">height=</span><span class="dv">480</span>)
 <span class="kw">plot</span>(<span class="kw">density</span>(z,<span class="dt">adjust=</span><span class="fl">2.0</span>),<span class="dt">sub=</span><span class="st">&quot;larger bandwidth&quot;</span>)
@@ -300,11 +369,6 @@ y =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</
 <li>To use device 5: <code>dev.set(5)</code></li>
 </ul>
 
-<!--
-%% \VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{02 ggplot2 Introduction}
--->
-</div>
 </div>
 </div>
     <script>
@@ -332,7 +396,7 @@ y =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</
         </div>
       </div>
 <a href="introduction-to-r-data-structures.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="plotting-with-ggplot2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="control-structures-looping-and-applying.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>

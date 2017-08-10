@@ -594,6 +594,12 @@ ah = AnnotationHub()
 ```
 
 ```
+## Warning: database may not be current
+##   database: '/Users/sdavis2//.AnnotationHub/annotationhub.sqlite3'
+##   reason: do not know how to convert 'content(GET(url, proxy))' to class "POSIXct"
+```
+
+```
 ## snapshotDate(): 2017-04-24
 ```
 
