@@ -47,6 +47,7 @@ directory listing using `dir()`
     ```r
     brfss <- read.csv(path)
     ```
+    
 
 3. Use command like `class()`, `head()`, `dim()`, `summary()` to explore
 the data.
@@ -236,6 +237,86 @@ the data.
     <img src="D2_IO_files/figure-html/brfss-hist-1.png" width="480" />
 
 [BRFSS]: http://www.cdc.gov/brfss/about/index.htm
+
+### ggplot2
+
+
+
+```r
+library(ggplot2)
+```
+
+- http://docs.ggplot2.org
+
+'Grammar of graphics'
+
+- Specify data and 'aesthetics' (`aes()`) to be plotted
+- Add layers (`geom_*()`) of information
+
+Clean it by coercing `Year` to factor. A factor is a categorical variable. In this case, our data have only two years represented, so we will treat these two years as "groups" or categories.
+
+
+```r
+brfss$Year <- factor(brfss$Year)
+```
+
+Let's make a couple of subsets of data to work with. First, let's subset to get only males in 2010.
+
+
+```r
+brfss2010Male = subset(brfss,Sex=='Male' & Year=='2010')
+```
+
+and make an "only female" subset.
+
+
+```r
+brfssFemale = subset(brfss,Sex=='Female')
+```
+
+
+    
+    ```r
+    ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
+        geom_point() +
+        geom_smooth(method="lm")
+    ```
+    
+    <img src="D2_IO_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+    
+- Capture a plot and augment it
+
+    
+    ```r
+    plt <- ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
+        geom_point() +
+        geom_smooth(method="lm")
+    plt + labs(title = "2010 Male")
+    ```
+    
+    <img src="D2_IO_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+    
+- Use `facet_*()` for layouts
+
+    
+    ```r
+    ggplot(brfssFemale, aes(x=Height, y=Weight)) +
+        geom_point() + geom_smooth(method="lm") +
+        facet_grid(. ~ Year)
+    ```
+    
+    <img src="D2_IO_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+        
+- Choose display to emphasize relevant aspects of data
+
+    
+    ```r
+    ggplot(brfssFemale, aes(Weight, fill=Year)) +
+        geom_density(alpha=.2)
+    ```
+    
+    <img src="D2_IO_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
 
 ## ALL Phenotypic Data
 

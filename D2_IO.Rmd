@@ -51,6 +51,7 @@ directory listing using `dir()`
     ```{r read.csv-A2}
     brfss <- read.csv(path)
     ```
+    
 
 3. Use command like `class()`, `head()`, `dim()`, `summary()` to explore
 the data.
@@ -126,6 +127,70 @@ the data.
     ```
 
 [BRFSS]: http://www.cdc.gov/brfss/about/index.htm
+
+### ggplot2
+
+
+```{r}
+library(ggplot2)
+```
+
+- http://docs.ggplot2.org
+
+'Grammar of graphics'
+
+- Specify data and 'aesthetics' (`aes()`) to be plotted
+- Add layers (`geom_*()`) of information
+
+Clean it by coercing `Year` to factor. A factor is a categorical variable. In this case, our data have only two years represented, so we will treat these two years as "groups" or categories.
+
+```{r}
+brfss$Year <- factor(brfss$Year)
+```
+
+Let's make a couple of subsets of data to work with. First, let's subset to get only males in 2010.
+
+```{r males2010}
+brfss2010Male = subset(brfss,Sex=='Male' & Year=='2010')
+```
+
+and make an "only female" subset.
+
+```{r femalesOnly}
+brfssFemale = subset(brfss,Sex=='Female')
+```
+
+
+    ```{r, warning=FALSE}
+    ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
+        geom_point() +
+        geom_smooth(method="lm")
+    ```
+    
+- Capture a plot and augment it
+
+    ```{r, warning=FALSE}
+    plt <- ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
+        geom_point() +
+        geom_smooth(method="lm")
+    plt + labs(title = "2010 Male")
+    ```
+    
+- Use `facet_*()` for layouts
+
+    ```{r, warning=FALSE}
+    ggplot(brfssFemale, aes(x=Height, y=Weight)) +
+        geom_point() + geom_smooth(method="lm") +
+        facet_grid(. ~ Year)
+    ```
+        
+- Choose display to emphasize relevant aspects of data
+
+    ```{r, warning=FALSE}
+    ggplot(brfssFemale, aes(Weight, fill=Year)) +
+        geom_density(alpha=.2)
+    ```
+
 
 ## ALL Phenotypic Data
 

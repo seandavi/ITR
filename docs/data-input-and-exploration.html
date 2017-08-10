@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Control structures and functions</title>
-  <meta name="description" content="Control structures and functions">
+  <title></title>
+  <meta name="description" content="">
   <meta name="generator" content="bookdown 0.4.1 and GitBook 2.6.7">
 
-  <meta property="og:title" content="Control structures and functions" />
+  <meta property="og:title" content="" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Control structures and functions" />
+  <meta name="twitter:title" content="" />
   
   
   
@@ -161,7 +161,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.3" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>7.0.3</b> Further Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html"><i class="fa fa-check"></i><b>8</b> Data Input and Exploration</a><ul>
-<li class="chapter" data-level="8.1" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#behavioral-risk-factor-surveillance-system"><i class="fa fa-check"></i><b>8.1</b> Behavioral Risk Factor Surveillance System</a></li>
+<li class="chapter" data-level="8.1" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#behavioral-risk-factor-surveillance-system"><i class="fa fa-check"></i><b>8.1</b> Behavioral Risk Factor Surveillance System</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#ggplot2"><i class="fa fa-check"></i><b>8.1.1</b> ggplot2</a></li>
+</ul></li>
 <li class="chapter" data-level="8.2" data-path="data-input-and-exploration.html"><a href="data-input-and-exploration.html#all-phenotypic-data"><i class="fa fa-check"></i><b>8.2</b> ALL Phenotypic Data</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="exploration-and-simple-univariate-measures.html"><a href="exploration-and-simple-univariate-measures.html"><i class="fa fa-check"></i><b>9</b> Exploration and simple univariate measures</a><ul>
@@ -218,7 +220,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Control structures and functions</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
           </h1>
         </div>
 
@@ -335,6 +337,48 @@ summary(brfss)</code></pre></li>
      <span class="dt">main=</span><span class="st">&quot;Females, 1990&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Weight&quot;</span> )</code></pre></div>
 <p><img src="D2_IO_files/figure-html/brfss-hist-1.png" width="480" /></p></li>
 </ol>
+<div id="ggplot2" class="section level3">
+<h3><span class="header-section-number">8.1.1</span> ggplot2</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<ul>
+<li><a href="http://docs.ggplot2.org" class="uri">http://docs.ggplot2.org</a></li>
+</ul>
+<p>‘Grammar of graphics’</p>
+<ul>
+<li>Specify data and ‘aesthetics’ (<code>aes()</code>) to be plotted</li>
+<li>Add layers (<code>geom_*()</code>) of information</li>
+</ul>
+<p>Clean it by coercing <code>Year</code> to factor. A factor is a categorical variable. In this case, our data have only two years represented, so we will treat these two years as “groups” or categories.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss<span class="op">$</span>Year &lt;-<span class="st"> </span><span class="kw">factor</span>(brfss<span class="op">$</span>Year)</code></pre></div>
+<p>Let’s make a couple of subsets of data to work with. First, let’s subset to get only males in 2010.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfss2010Male =<span class="st"> </span><span class="kw">subset</span>(brfss,Sex<span class="op">==</span><span class="st">&#39;Male&#39;</span> <span class="op">&amp;</span><span class="st"> </span>Year<span class="op">==</span><span class="st">&#39;2010&#39;</span>)</code></pre></div>
+<p>and make an “only female” subset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">brfssFemale =<span class="st"> </span><span class="kw">subset</span>(brfss,Sex<span class="op">==</span><span class="st">&#39;Female&#39;</span>)</code></pre></div>
+<pre><code>```r
+ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
+    geom_point() +
+    geom_smooth(method=&quot;lm&quot;)
+```
+
+&lt;img src=&quot;D2_IO_files/figure-html/unnamed-chunk-4-1.png&quot; width=&quot;672&quot; /&gt;</code></pre>
+<ul>
+<li><p>Capture a plot and augment it</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt &lt;-<span class="st"> </span><span class="kw">ggplot</span>(brfss2010Male, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)
+plt <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;2010 Male&quot;</span>)</code></pre></div>
+<p><img src="D2_IO_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p></li>
+<li><p>Use <code>facet_*()</code> for layouts</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(<span class="dt">x=</span>Height, <span class="dt">y=</span>Weight)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Year)</code></pre></div>
+<p><img src="D2_IO_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p></li>
+<li><p>Choose display to emphasize relevant aspects of data</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(brfssFemale, <span class="kw">aes</span>(Weight, <span class="dt">fill=</span>Year)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
+<p><img src="D2_IO_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p></li>
+</ul>
+</div>
 </div>
 <div id="all-phenotypic-data" class="section level2">
 <h2><span class="header-section-number">8.2</span> ALL Phenotypic Data</h2>
