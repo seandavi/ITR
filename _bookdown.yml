@@ -1,9 +1,21 @@
 title: "Introduction to R"
 author: "Sean Davis"
 date: "`r Sys.Date()`"
-#site: "bookdown::bookdown_site"
 output_dir: "docs"
 documentclass: book
 book_filename: ITR
 new_session: yes
 edit: https://github.com/seandavi/ITR/edit/master/%s
+
+rmd_files: [
+    "index.Rmd",
+    "B3.Rmd",
+    "B5_plotting.Rmd",
+    "C3_advanced.Rmd",
+    "D2_IO.Rmd",
+    "D3_Statistics.Rmd",
+    "D4_Graphics.Rmd",
+    "z_appendix.Rmd",
+]
+
+before_chapter_script: "_common.R"
