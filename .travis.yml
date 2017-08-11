@@ -1,0 +1,19 @@
+language: R
+cache:
+  packages: true
+  directories:
+  - _book
+
+addons:
+  apt:
+    packages:
+      - libxml2-dev
+
+script:
+  - Rscript -e 'bookdown::render_book("index.Rmd")'
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local-dir: docs
