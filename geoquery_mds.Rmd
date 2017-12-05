@@ -16,7 +16,7 @@ Use the [GEOquery] package to fetch data about [GSE103512].
 
 ```{r geoquery10, echo=TRUE, cache=TRUE, message=FALSE}
 library(GEOquery)
-gse = getGEO("GSE103512", destdir='/tmp')[[1]]
+gse = getGEO("GSE103512")[[1]]
 gse
 ```
 
