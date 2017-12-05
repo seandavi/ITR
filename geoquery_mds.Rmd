@@ -30,14 +30,10 @@ with(pData(gse),table(`cancer type:ch1`,`normal:ch1`))
 Information about features measured are also included.
 
 ```{r geoquery30,echo=FALSE,cache=TRUE,results='asis'}
-library(DT)
 cnames = c('Gene Symbol','Gene Title','ENTREZ_GENE_ID')
+# remove "multihit genes"
 df = subset(fData(gse)[,cnames],!grepl('///',`Gene Symbol`))
-DT::datatable(df[1:1000,],extensions = 'Scroller',
-              options = list(scrollX = TRUE,  
-                             deferRender = TRUE,
-                             scrollY = 350,
-                             scroller = TRUE)) 
+head(df)
 ```
 
 Filter gene expression by variance to find most informative genes.
