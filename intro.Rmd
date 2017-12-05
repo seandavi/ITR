@@ -1,6 +1,8 @@
-# Preface {-}
+# (PART) Introduction {-}
 
-## What is R? {-}
+# Why R?
+
+## What is R?
 
 R is a number of things, simultaneously. Depending on who is being asked, R is:
 
@@ -11,7 +13,7 @@ R is a number of things, simultaneously. Depending on who is being asked, R is:
 - A scripting language
 - much, much more
 
-## Why use R? {-}
+## Why use R?
 
 - R is cross-platform and runs on Windows, Mac, and Linux (as well as
     more obscure systems).
@@ -23,7 +25,12 @@ R is a number of things, simultaneously. Depending on who is being asked, R is:
     Excel.
 - R does not have a meaningfully useful graphical user interface (GUI).
 
-## Why not use R? {-}
+I can develop code for analysis on my Mac laptop. I can
+then install the *same* code on our 20k core cluster and run it in
+parallel on 100 samples, monitor the process, and then update a database (for example)
+with R when complete.
+
+## Why not use R?
 
 - R cannot do everything.
 - R is not always the “best” tool for the job.
@@ -32,10 +39,10 @@ R is a number of things, simultaneously. Depending on who is being asked, R is:
 - R can drive you crazy (on a good day) or age you prematurely (on a
     bad one).
 - Finding the right package to do the job you want to do can be
-    challenging; worse, some contributed packages are unreliable.
+    challenging; worse, some contributed packages are unreliable.]{}
 - R does not have a meaningfully useful graphical user interface (GUI).
 
-## R License and the Open Source Ideal {-}
+## R License and the Open Source Ideal
 
 R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:
 

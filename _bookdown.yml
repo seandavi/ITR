@@ -9,12 +9,14 @@ edit: https://github.com/seandavi/ITR/edit/master/%s
 
 rmd_files: [
     "index.Rmd",
+    "intro.Rmd",
     "B3.Rmd",
     "B5_plotting.Rmd",
     "C3_advanced.Rmd",
     "D2_IO.Rmd",
     "D3_Statistics.Rmd",
     "D4_Graphics.Rmd",
+    "geoquery_mds.Rmd",
     "z_appendix.Rmd",
 ]
 

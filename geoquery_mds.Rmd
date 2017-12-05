@@ -1,0 +1,72 @@
+# (PART) Bioconductor {-}
+    
+# Examples
+
+## GEOquery to multidimensional scaling
+
+Data containers--SummarizedExperiment
+
+<div style="width:80%; display: block; margin: 0 auto;">
+![](https://images.nature.com/full/nature-assets/nmeth/journal/v12/n2/images/nmeth.3252-F2.jpg)
+</div>
+
+
+Use the [GEOquery] package to fetch data about [GSE103512].
+
+
+```{r geoquery10, echo=TRUE, cache=TRUE, message=FALSE}
+library(GEOquery)
+gse = getGEO("GSE103512", destdir='/tmp')[[1]]
+gse
+```
+
+
+Examine two variables of interest, cancer type and tumor/normal status.
+
+```{r geoquery20,echo=TRUE,cache=TRUE}
+with(pData(gse),table(`cancer type:ch1`,`normal:ch1`))
+```
+
+Information about features measured are also included.
+
+```{r geoquery30,echo=FALSE,cache=TRUE,results='asis'}
+library(DT)
+cnames = c('Gene Symbol','Gene Title','ENTREZ_GENE_ID')
+df = subset(fData(gse)[,cnames],!grepl('///',`Gene Symbol`))
+DT::datatable(df[1:1000,],extensions = 'Scroller',
+              options = list(scrollX = TRUE,  
+                             deferRender = TRUE,
+                             scrollY = 350,
+                             scroller = TRUE)) 
+```
+
+Filter gene expression by variance to find most informative genes.
+
+```{r sds,cache=TRUE,echo=TRUE}
+sds = apply(exprs(gse),1,sd)
+dat = exprs(gse)[order(sds,decreasing = TRUE)[1:500],]
+```
+
+Perform [multidimensional scaling] and prepare for plotting.
+
+```{r mds,echo=TRUE,cache=TRUE}
+mdsvals = cmdscale(dist(t(dat)))
+mdsvals = as.data.frame(mdsvals)
+mdsvals$Type=factor(pData(gse)[,'cancer type:ch1'])
+mdsvals$Normal = factor(pData(gse)[,'normal:ch1'])
+```
+
+And do the plot.
+
+```{r mdsplot,echo=TRUE,fig.align='center'}
+library(ggplot2)
+ggplot(mdsvals, aes(x=V1,y=V2,shape=Normal,color=Type)) + 
+    geom_point( alpha=0.6) + theme(text=element_text(size = 18))
+```
+
+[R]: https://cran.r-project.org/
+[GEOquery]: https://bioconductor.org/packages/GEOquery
+[GSE103512]: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE103512
+[multidimensional scaling]: https://en.wikipedia.org/wiki/Multidimensional_scaling
+
+
