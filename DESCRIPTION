@@ -15,7 +15,8 @@ Imports:
   dplyr,
   ggplot2,
   RColorBrewer,
-  survival
+  survival,
+  GEOquery
 Remotes:
   rstudio/bookdown,
   rstudio/rmarkdown
