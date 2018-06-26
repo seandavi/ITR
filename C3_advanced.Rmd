@@ -119,7 +119,9 @@ In either case, the output is a vector.
 Functions
 =========
 
-### Function Overview
+
+Function Overview
+-----------------
 
 -   [Functions are objects and are assigned to names, just like data.]{}
 
@@ -137,7 +139,8 @@ Functions
     say what it does and to document functions of more than a few
     lines.]{}
 
-### Example Functions
+Example Functions
+-----------------
 
     add1 = function(x) {
         # this function adds one to the first argument and returns it
@@ -154,7 +157,8 @@ assign the result to a new function, `add2`.
 
     add2 = edit(add1)
 
-### Further Reading
+Further Reading
+---------------
 
 The amount of learning material for R is simply astonishing!
 
