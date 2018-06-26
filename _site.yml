@@ -1,0 +1,39 @@
+name: "my-website"
+navbar:
+  title: "R and Bioconductor"
+  icon: fa-home
+  type: inverse
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+      
+  right:
+    - icon: fa-book
+      menu: 
+        - text: "Why R?"
+          href: intro.html
+        - text: "Getting started: R Mechanics"
+          href: r_intro_mechanics.html
+    - icon: fa-question fa-lg
+      menu:
+        - text: "Further resources"
+          href: further_resources.html
+        - text: "Source code for this site"
+          href: https://github.com/seandavi/ITR
+output:
+  html_document:
+    theme: default
+    highlight: textmate
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+    fig_align: center
+    css:
+      - https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css
+    include:
+      after_body: google_analytics.html
+      
+exclude: ["F_epigenomic_ranges.Rmd"]
