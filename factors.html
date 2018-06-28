@@ -11,7 +11,7 @@
 
 
 
-<title>Setup</title>
+<title>Factors</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -373,63 +373,51 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Setup</h1>
+<h1 class="title toc-ignore">Factors</h1>
 
 </div>
 
 
-<div id="r" class="section level3">
-<h3>R</h3>
-<p><strong>Install R.</strong> You’ll need R version <strong>3.5</strong> or higher.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Download and install R for <a href="http://cran.r-project.org/bin/windows/base/">Windows</a> or <a href="http://cran.r-project.org/bin/macosx/">Mac</a> (download the latest R-3.x.x.pkg file for your appropriate version of Mac OS).</p>
-</div>
-<div id="rstudio" class="section level3">
-<h3>RStudio</h3>
-<p>Download and install <strong><a href="https://www.rstudio.com/products/rstudio/download/">RStudio Desktop</a></strong>.</p>
-<p>R and RStudio are separate downloads and installations. <strong>R</strong> is the underlying statistical computing environment. <strong>R</strong> is quite usable by itself, but <strong>RStudio</strong> is a graphical integrated development environment that makes using <strong>R</strong> for data analysis a bit more efficient. <em>You need R installed before you install RStudio</em>.</p>
-</div>
-<div id="cran-packages" class="section level3">
-<h3>CRAN packages</h3>
-<p>We will need to install packages throughout the course. To get started, launch <strong>RStudio</strong> (RStudio, <em>not R itself</em>). <em>Internet access is required for installing packages</em>. Copy and paste the following commands, one-at-a-time, into the <strong>Console</strong> panel (usually the lower-left panel, by default) and hit the Enter/Return key. If you receive an error message when trying to install any particular package, we can work together to determine a fix.</p>
-<pre class="r"><code>install.packages(&quot;dplyr&quot;)
-install.packages(&quot;readr&quot;)
-install.packages(&quot;tidyr&quot;)
-install.packages(&quot;ggplot2&quot;)</code></pre>
-<p><em>A few notes</em>:</p>
-<ul>
-<li>Commands are case-sensitive.</li>
-<li>You must be connected to the internet.</li>
-<li>Even if you’ve installed these packages in the past, do re-install the most recent version. Many of these packages are updated often, and we may use new features in the workshop that aren’t available in older versions.</li>
-<li>If you’re using Windows you might see errors about not having permission to modify the existing libraries – disregard these. You can avoid this by running RStudio as an administrator (right click the RStudio icon, then click “Run as Administrator”).</li>
-<li>These core packages are part of the “tidyverse” ecosystem (see <a href="https://www.tidyverse.org/">tidyverse.org</a>). There is a <a href="http://tidyverse.org/">tidyverse</a> package that’s kind of a meta-package that automatically installs/loads all of the above packages and several other commonly used packages for data analysis that all play well together.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> You could optionally install the tidyverse package instead of all these packages individually. See <a href="https://www.tidyverse.org/">tidyverse.org</a> for more.</li>
-</ul>
-</div>
-<div id="bioconductor" class="section level3">
-<h3>Bioconductor</h3>
-<p>Bioconductor uses its own installation procedure. The CRAN package, BiocManager, is the key to installing Bioconductor packages. Start by installing <code>BiocManager</code>.</p>
-<pre class="r"><code>install.packages(&quot;BiocManager&quot;)</code></pre>
-<p>To install basic Bioconductor packages (we will be installing more throughout the course), type the following:</p>
-<pre class="r"><code>BiocManager::install()</code></pre>
-<p>Installing a specific Bioconductor package works similarly to <code>install.packages</code>:</p>
-<pre class="r"><code>BiocManager::install(&quot;GEOquery&quot;)</code></pre>
-<p>Consider using the <code>BiocManager::install()</code> installation process for all other R packages. BiocManager can install from CRAN, Bioconductor, and several other repositories including GitHub.</p>
-</div>
-<div id="check-that-things-worked" class="section level3">
-<h3>Check that things worked</h3>
-<p>Check that you’ve installed everything correctly by closing and reopening RStudio and entering the following command at the console window (don’t worry about any messages that look something like <code>the following objects are masked from ...</code><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, or <code>Warning message: package ... was build under R version ...</code><a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>):</p>
-<pre class="r"><code>library(dplyr)
-library(readr)
-library(tidyr)
-library(ggplot2)</code></pre>
-<p>This may produce some notes or other output, but as long as you don’t get an error message, you’re good to go. If you get a message that says something like: <code>Error in library(somePackageName) : there is no package called 'somePackageName'</code>, then the required packages did not install correctly. Either try reinstalling or contact the instructor.</p>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>R version 3.5.0 was released April, 2018. If you have not updated your R installation since then, you should upgrade to a more recent version, since several of the required packages depend on a version at least this recent. You can check your R version by typing <code>version</code> at the R prompt.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>Installing/loading the tidyverse <strong>tidyverse</strong> will install/load the core tidyverse packages that you are likely to use in almost every analysis: <strong>ggplot2</strong> (for data visualisation), <strong>dplyr</strong> (for data manipulation), <strong>tidyr</strong> (for data tidying), <strong>readr</strong> (for data import), <strong>purrr</strong> (for functional programming), and <strong>tibble</strong> (for tibbles, a modern re-imagining of data frames). It also installs a selection of other tidyverse packages that you’re likely to use frequently, but probably not in every analysis (these are installed, but you’ll have to load them separately with <code>library(packageName)</code>). This includes: <strong>hms</strong> (for times), <strong>stringr</strong> (for strings), <strong>lubridate</strong> (for date/times), <strong>forcats</strong> (for factors), <strong>DBI</strong> (for databases), <strong>haven</strong> (for SPSS, SAS and Stata files), <strong>httr</strong> (for web apis), <strong>jsonlite</strong> (or JSON), <strong>readxl</strong> (for .xls and .xlsx files), <strong>rvest</strong> (for web scraping), <strong>xml2</strong> (for XML), <strong>modelr</strong> (for modelling within a pipeline), and <strong>broom</strong> (for turning models into tidy data). After installing tidyverse with <code>install.packages(&quot;tidyverse&quot;)</code> and loading it with <code>library(tidyverse)</code>, you can use <code>tidyverse_update()</code> to update all the tidyverse packages installed on your system at once.<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>We’ll talk about this in class. It’s not a concern.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>This means the version of R you have installed is older than the version that the package author used when they built the package you’re trying to use. 99% of the time it isn’t a problem, unless your R version is very old (you should be using 3.5.0 or later for this course).<a href="#fnref4" class="footnote-back">↩</a></p></li>
-</ol>
+<div id="factors" class="section level2">
+<h2>Factors</h2>
+<p>A factor is a special type of vector, normally used to hold a categorical variable–such as smoker/nonsmoker, state of residency, zipcode–in many statistical functions. Such vectors have class “factor”. Factors are primarily used in Analysis of Variance (ANOVA) or other situations when “categories” are needed. When a factor is used as a predictor variable, the corresponding indicator variables are created (more later).</p>
+<p>Note of caution that factors in R often <em>appear</em> to be character vectors when printed, but you will notice that they do not have double quotes around them. They are stored in R as numbers with a key name, so sometimes you will note that the factor <em>behaves</em> like a numeric vector.</p>
+<pre class="r"><code># create the character vector
+citizen&lt;-c(&quot;uk&quot;,&quot;us&quot;,&quot;no&quot;,&quot;au&quot;,&quot;uk&quot;,&quot;us&quot;,&quot;us&quot;,&quot;no&quot;,&quot;au&quot;) 
+
+# convert to factor
+citizenf&lt;-factor(citizen)                                
+citizen             </code></pre>
+<pre><code>## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;</code></pre>
+<pre class="r"><code>citizenf</code></pre>
+<pre><code>## [1] uk us no au uk us us no au
+## Levels: au no uk us</code></pre>
+<pre class="r"><code># convert factor back to character vector
+as.character(citizenf)</code></pre>
+<pre><code>## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;</code></pre>
+<pre class="r"><code># convert to numeric vector
+as.numeric(citizenf)</code></pre>
+<pre><code>## [1] 3 4 2 1 3 4 4 2 1</code></pre>
+<p>R stores many data structures as vectors with “attributes” and “class” (just so you have seen this).</p>
+<pre class="r"><code>attributes(citizenf)</code></pre>
+<pre><code>## $levels
+## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;
+## 
+## $class
+## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(citizenf)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code># note that after unclassing, we can see the 
+# underlying numeric structure again
+unclass(citizenf)</code></pre>
+<pre><code>## [1] 3 4 2 1 3 4 4 2 1
+## attr(,&quot;levels&quot;)
+## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;</code></pre>
+<p>Tabulating factors is a useful way to get a sense of the “sample” set available.</p>
+<pre class="r"><code>table(citizenf)</code></pre>
+<pre><code>## citizenf
+## au no uk us 
+##  2  2  2  3</code></pre>
 </div>
 
     <script>

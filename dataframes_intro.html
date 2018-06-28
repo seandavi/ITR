@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Data Frames</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    R and Bioconductor
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">--- Sections ---</li>
+    <li>
+      <a href="r_intro_mechanics.html">Getting started: R Mechanics</a>
+    </li>
+    <li>
+      <a href="vectors.html">Vectors</a>
+    </li>
+    <li>
+      <a href="matrices.html">Matrices</a>
+    </li>
+    <li>
+      <a href="dataframes_intro.html">Dataframes</a>
+    </li>
+    <li>
+      <a href="B5_plotting.html">Plotting and Graphics</a>
+    </li>
+    <li>
+      <a href="factors.html">Factors</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">--- Exercises ---</li>
+    <li>
+      <a href="vector_exercises.html">Vectors</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data Frames</h1>
+
+</div>
+
+
+<p>While R has many different data types, the one that is central to much of the power and popularity of R is the <code>data.frame</code>. A data.frame looks a bit like an R matrix in that it has two dimensions, rows and columns. However, data.frames are usually viewed as a set of columns representing variables and the rows representing the values of those variables. Importantly, a data.frame may contain <em>different</em> data types in each of its columns; matrices <strong>must</strong> contain only one data type. This distinction is important to remember, as there are <em>specific</em> approaches to working with R data.frames that may be different than those for working with matrices.</p>
+<div id="dataset" class="section level2">
+<h2>Dataset</h2>
+<p>The data used here are borrowed directly from the <a href="http://bioconnector.org/index.html">fantastic Bioconnector tutorials</a> and are a cleaned up version of the data from <a href="http://www.ncbi.nlm.nih.gov/pubmed/17959824">Brauer et al. Coordination of Growth Rate, Cell Cycle, Stress Response, and Metabolic Activity in Yeast (2008) Mol Biol Cell 19:352-367</a>. These data are from a gene expression microarray, and in this paper the authors examine the relationship between growth rate and gene expression in yeast cultures limited by one of six different nutrients (glucose, leucine, ammonium, sulfate, phosphate, uracil). If you give yeast a rich media loaded with nutrients except restrict the supply of a single nutrient, you can control the growth rate to any rate you choose. By starving yeast of specific nutrients you can find genes that:</p>
+<ol style="list-style-type: decimal">
+<li>Raise or lower their expression in response to growth rate. Growth-rate dependent expression patterns can tell us a lot about cell cycle control, and how the cell responds to stress. The authors found that expression of &gt;25% of all yeast genes is linearly correlated with growth rate, independent of the limiting nutrient. They also found that the subset of negatively growth-correlated genes is enriched for peroxisomal functions, and positively correlated genes mainly encode ribosomal functions.</li>
+<li>Respond differently when different nutrients are being limited. If you see particular genes that respond very differently when a nutrient is sharply restricted, these genes might be involved in the transport or metabolism of that specific nutrient.</li>
+</ol>
+<p>The dataset can be downloaded directly from:</p>
+<ul>
+<li><a href="http://bioconnector.org/data/brauer2007_tidy.csv" class="uri">http://bioconnector.org/data/brauer2007_tidy.csv</a></li>
+</ul>
+<p>We are going to read this dataset into R and then use it as a playground for learning about data.frames.</p>
+</div>
+<div id="reading-in-data" class="section level2">
+<h2>Reading in data</h2>
+<p>R has many capabilities for reading in data. Many of the functions have names that help us to understand what data format is to be expected. In this case, the filename that we want to read ends in <code>.csv</code>, meaning comma-separated-values. The <code>read.csv()</code> function reads in <code>.csv</code> files. As usual, it is worth reading <code>help('read.csv')</code> to get a better sense of the possible bells-and-whistles.</p>
+<p>The <code>read.csv()</code> function can read directly from a URL, so we do not need to download the file directly. This dataset is relatively large (about 16MB), so this may take a bit depending on your network connection speed.</p>
+<pre class="r"><code>ydat &lt;- read.csv(&#39;http://bioconnector.org/data/brauer2007_tidy.csv&#39;)</code></pre>
+<p>Our variable, <code>ydat</code>, now “contains” the downloaded and read data. We can check to see what data type read.csv gave us:</p>
+<pre class="r"><code>class(ydat)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+</div>
+<div id="inspecting-data.frames" class="section level2">
+<h2>Inspecting data.frames</h2>
+<p>Our <code>ydat</code> variable is a data.frame. As I mentioned, the dataset is fairly large, so we will not be able to look at it all at once on the screen. However, R gives us many tools to inspect a data.frame.</p>
+<ul>
+<li>Overviews of content
+<ul>
+<li><code>head()</code> to show first few rows</li>
+<li><code>tail()</code> to show last few rows</li>
+</ul></li>
+<li>Size
+<ul>
+<li><code>dim()</code> for dimensions (rows, columns)</li>
+<li><code>nrow()</code></li>
+<li><code>ncol()</code></li>
+<li><code>object.size()</code> for power users interested in the memory used to store an object</li>
+</ul></li>
+<li>Data and attribute summaries
+<ul>
+<li><code>colnames()</code> to get the names of the columns</li>
+<li><code>rownames()</code> to get the “names” of the rows–may not be present</li>
+<li><code>summary()</code> to get per-column summaries of the data in the data.frame.</li>
+</ul></li>
+</ul>
+<pre class="r"><code>head(ydat)</code></pre>
+<pre><code>##   symbol systematic_name nutrient rate expression
+## 1   SFB2         YNL049C  Glucose 0.05      -0.24
+## 2   &lt;NA&gt;         YNL095C  Glucose 0.05       0.28
+## 3   QRI7         YDL104C  Glucose 0.05      -0.02
+## 4   CFT2         YLR115W  Glucose 0.05      -0.33
+## 5   SSO2         YMR183C  Glucose 0.05       0.05
+## 6   PSP2         YML017W  Glucose 0.05      -0.69
+##                             bp                            mf
+## 1        ER to Golgi transport    molecular function unknown
+## 2   biological process unknown    molecular function unknown
+## 3 proteolysis and peptidolysis metalloendopeptidase activity
+## 4      mRNA polyadenylylation*                   RNA binding
+## 5              vesicle fusion*              t-SNARE activity
+## 6   biological process unknown    molecular function unknown</code></pre>
+<pre class="r"><code>tail(ydat)</code></pre>
+<pre><code>##        symbol systematic_name nutrient rate expression
+## 198425   DOA1         YKL213C   Uracil  0.3       0.14
+## 198426   KRE1         YNL322C   Uracil  0.3       0.28
+## 198427   MTL1         YGR023W   Uracil  0.3       0.27
+## 198428   KRE9         YJL174W   Uracil  0.3       0.43
+## 198429   UTH1         YKR042W   Uracil  0.3       0.19
+## 198430   &lt;NA&gt;         YOL111C   Uracil  0.3       0.04
+##                                                bp
+## 198425    ubiquitin-dependent protein catabolism*
+## 198426      cell wall organization and biogenesis
+## 198427      cell wall organization and biogenesis
+## 198428     cell wall organization and biogenesis*
+## 198429 mitochondrion organization and biogenesis*
+## 198430                 biological process unknown
+##                                         mf
+## 198425          molecular function unknown
+## 198426 structural constituent of cell wall
+## 198427          molecular function unknown
+## 198428          molecular function unknown
+## 198429          molecular function unknown
+## 198430          molecular function unknown</code></pre>
+<pre class="r"><code>dim(ydat)</code></pre>
+<pre><code>## [1] 198430      7</code></pre>
+<pre class="r"><code>nrow(ydat)</code></pre>
+<pre><code>## [1] 198430</code></pre>
+<pre class="r"><code>ncol(ydat)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code>colnames(ydat)</code></pre>
+<pre><code>## [1] &quot;symbol&quot;          &quot;systematic_name&quot; &quot;nutrient&quot;        &quot;rate&quot;           
+## [5] &quot;expression&quot;      &quot;bp&quot;              &quot;mf&quot;</code></pre>
+<pre class="r"><code>summary(ydat)</code></pre>
+<pre><code>##      symbol       systematic_name       nutrient          rate       
+##  AAC1   :    36   Q0017  :    36   Ammonia  :33141   Min.   :0.0500  
+##  AAD10  :    36   Q0045  :    36   Glucose  :33138   1st Qu.:0.1000  
+##  AAD14  :    36   Q0050  :    36   Leucine  :33178   Median :0.2000  
+##  AAD16  :    36   Q0055  :    36   Phosphate:33068   Mean   :0.1752  
+##  AAD4   :    36   Q0065  :    36   Sulfate  :32897   3rd Qu.:0.2500  
+##  (Other):151000   Q0070  :    36   Uracil   :33008   Max.   :0.3000  
+##  NA&#39;s   : 47250   (Other):198214                                     
+##    expression                                             bp        
+##  Min.   :-6.500000   biological process unknown            : 45139  
+##  1st Qu.:-0.290000   protein biosynthesis                  :  6654  
+##  Median : 0.000000   protein amino acid phosphorylation*   :  2792  
+##  Mean   : 0.003367   protein biosynthesis*                 :  2624  
+##  3rd Qu.: 0.290000   cell wall organization and biogenesis*:  2303  
+##  Max.   : 6.640000   (Other)                               :131255  
+##                      NA&#39;s                                  :  7663  
+##                                   mf        
+##  molecular function unknown        : 65280  
+##  structural constituent of ribosome:  6723  
+##  protein binding                   :  3981  
+##  RNA binding                       :  2442  
+##  protein binding*                  :  1903  
+##  (Other)                           :110438  
+##  NA&#39;s                              :  7663</code></pre>
+<p>In RStudio, there is an additional function, <code>View()</code> (note the capital “V”) that opens the first 1000 rows (default) in the RStudio window, akin to a spreadsheet view.</p>
+<pre class="r"><code>View(ydat)</code></pre>
+</div>
+<div id="accessing-variables-columns-and-subsetting" class="section level2">
+<h2>Accessing variables (columns) and subsetting</h2>
+<p>In R, data.frames can be subset similarly to other two-dimensional data structures. The <code>[</code> in R is used to denote subsetting of any kind. When working with two-dimensional data, we need two values inside the <code>[ ]</code> to specify the details. The specification is <code>[rows, columns]</code>. For example, to get the first three rows of <code>ydat</code>, use:</p>
+<pre class="r"><code>ydat[1:3, ]</code></pre>
+<pre><code>##   symbol systematic_name nutrient rate expression
+## 1   SFB2         YNL049C  Glucose 0.05      -0.24
+## 2   &lt;NA&gt;         YNL095C  Glucose 0.05       0.28
+## 3   QRI7         YDL104C  Glucose 0.05      -0.02
+##                             bp                            mf
+## 1        ER to Golgi transport    molecular function unknown
+## 2   biological process unknown    molecular function unknown
+## 3 proteolysis and peptidolysis metalloendopeptidase activity</code></pre>
+<p>Note how the second number, the columns, is blank. R takes that to mean “all the columns”. Similarly, we can combine rows and columns specification arbitrarily.</p>
+<pre class="r"><code>ydat[1:3, 1:3]</code></pre>
+<pre><code>##   symbol systematic_name nutrient
+## 1   SFB2         YNL049C  Glucose
+## 2   &lt;NA&gt;         YNL095C  Glucose
+## 3   QRI7         YDL104C  Glucose</code></pre>
+<p>Because selecting a single variable, or column, is such a common operation, there are two shortcuts for doing so <em>with data.frames</em>. The first, the <code>$</code> operator works like so:</p>
+<pre class="r"><code># Look at the column names, just to refresh memory
+colnames(ydat)</code></pre>
+<pre><code>## [1] &quot;symbol&quot;          &quot;systematic_name&quot; &quot;nutrient&quot;        &quot;rate&quot;           
+## [5] &quot;expression&quot;      &quot;bp&quot;              &quot;mf&quot;</code></pre>
+<pre class="r"><code># Note that I am using &quot;head&quot; here to limit the output
+head(ydat$symbol)</code></pre>
+<pre><code>## [1] SFB2 &lt;NA&gt; QRI7 CFT2 SSO2 PSP2
+## 4210 Levels: AAC1 AAC3 AAD10 AAD14 AAD16 AAD4 AAD6 AAH1 AAP1 AAP1&#39; ... ZWF1</code></pre>
+<pre class="r"><code># What is the actual length of &quot;symbol&quot;?
+length(ydat$symbol)</code></pre>
+<pre><code>## [1] 198430</code></pre>
+<p>The second is related to the fact that, in R, data.frames are also lists. We subset a list by using <code>[[]]</code> notation. To get the second column of <code>ydat</code>, we can use:</p>
+<pre class="r"><code>head(ydat[[2]])</code></pre>
+<pre><code>## [1] YNL049C YNL095C YDL104C YLR115W YMR183C YML017W
+## 5536 Levels: Q0017 Q0045 Q0050 Q0055 Q0060 Q0065 Q0070 Q0075 Q0080 ... YPR204W</code></pre>
+<p>Alternatively, we can use the column name:</p>
+<pre class="r"><code>head(ydat[[&quot;systematic_name&quot;]])</code></pre>
+<pre><code>## [1] YNL049C YNL095C YDL104C YLR115W YMR183C YML017W
+## 5536 Levels: Q0017 Q0045 Q0050 Q0055 Q0060 Q0065 Q0070 Q0075 Q0080 ... YPR204W</code></pre>
+</div>
+<div id="creating-a-data.frame-from-scratch" class="section level2">
+<h2>Creating a data.frame from scratch</h2>
+<p>Sometimes it is useful to combine related data into one object. For example, let’s simulate some data.</p>
+<pre class="r"><code>smoker = factor(rep(c(&quot;smoker&quot;, &quot;non-smoker&quot;), each=50))
+smoker_numeric = as.numeric(smoker)
+x = rnorm(100)
+risk = x + 2*smoker_numeric</code></pre>
+<p>We have two varibles, <code>risk</code> and <code>smoker</code> that are related. We can make a data.frame out of them:</p>
+<pre class="r"><code>smoker_risk = data.frame(smoker = smoker, risk = risk)
+head(smoker_risk)</code></pre>
+<pre><code>##   smoker     risk
+## 1 smoker 3.898524
+## 2 smoker 3.576775
+## 3 smoker 5.971214
+## 4 smoker 4.916932
+## 5 smoker 3.477607
+## 6 smoker 6.040769</code></pre>
+<p>R also has plotting shortcuts that work with data.frames to simplify plotting</p>
+<pre class="r"><code>plot( risk ~ smoker, data=smoker_risk)</code></pre>
+<p><img src="dataframes_intro_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="saving-a-data.frame" class="section level2">
+<h2>Saving a data.frame</h2>
+<p>Once we have a data.frame of interest, we may want to save it. The most portable way to save a data.frame is to use one of the <code>write</code> functions. In this case, let’s save the data as a <code>.csv</code> file.</p>
+<pre class="r"><code>write.csv(smoker_risk, &quot;smoker_risk.csv&quot;)</code></pre>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

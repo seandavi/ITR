@@ -11,7 +11,7 @@
 
 
 
-<title>Setup</title>
+<title>Matrices</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -373,63 +373,77 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Setup</h1>
+<h1 class="title toc-ignore">Matrices</h1>
 
 </div>
 
 
-<div id="r" class="section level3">
-<h3>R</h3>
-<p><strong>Install R.</strong> You’ll need R version <strong>3.5</strong> or higher.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Download and install R for <a href="http://cran.r-project.org/bin/windows/base/">Windows</a> or <a href="http://cran.r-project.org/bin/macosx/">Mac</a> (download the latest R-3.x.x.pkg file for your appropriate version of Mac OS).</p>
-</div>
-<div id="rstudio" class="section level3">
-<h3>RStudio</h3>
-<p>Download and install <strong><a href="https://www.rstudio.com/products/rstudio/download/">RStudio Desktop</a></strong>.</p>
-<p>R and RStudio are separate downloads and installations. <strong>R</strong> is the underlying statistical computing environment. <strong>R</strong> is quite usable by itself, but <strong>RStudio</strong> is a graphical integrated development environment that makes using <strong>R</strong> for data analysis a bit more efficient. <em>You need R installed before you install RStudio</em>.</p>
-</div>
-<div id="cran-packages" class="section level3">
-<h3>CRAN packages</h3>
-<p>We will need to install packages throughout the course. To get started, launch <strong>RStudio</strong> (RStudio, <em>not R itself</em>). <em>Internet access is required for installing packages</em>. Copy and paste the following commands, one-at-a-time, into the <strong>Console</strong> panel (usually the lower-left panel, by default) and hit the Enter/Return key. If you receive an error message when trying to install any particular package, we can work together to determine a fix.</p>
-<pre class="r"><code>install.packages(&quot;dplyr&quot;)
-install.packages(&quot;readr&quot;)
-install.packages(&quot;tidyr&quot;)
-install.packages(&quot;ggplot2&quot;)</code></pre>
-<p><em>A few notes</em>:</p>
-<ul>
-<li>Commands are case-sensitive.</li>
-<li>You must be connected to the internet.</li>
-<li>Even if you’ve installed these packages in the past, do re-install the most recent version. Many of these packages are updated often, and we may use new features in the workshop that aren’t available in older versions.</li>
-<li>If you’re using Windows you might see errors about not having permission to modify the existing libraries – disregard these. You can avoid this by running RStudio as an administrator (right click the RStudio icon, then click “Run as Administrator”).</li>
-<li>These core packages are part of the “tidyverse” ecosystem (see <a href="https://www.tidyverse.org/">tidyverse.org</a>). There is a <a href="http://tidyverse.org/">tidyverse</a> package that’s kind of a meta-package that automatically installs/loads all of the above packages and several other commonly used packages for data analysis that all play well together.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> You could optionally install the tidyverse package instead of all these packages individually. See <a href="https://www.tidyverse.org/">tidyverse.org</a> for more.</li>
-</ul>
-</div>
-<div id="bioconductor" class="section level3">
-<h3>Bioconductor</h3>
-<p>Bioconductor uses its own installation procedure. The CRAN package, BiocManager, is the key to installing Bioconductor packages. Start by installing <code>BiocManager</code>.</p>
-<pre class="r"><code>install.packages(&quot;BiocManager&quot;)</code></pre>
-<p>To install basic Bioconductor packages (we will be installing more throughout the course), type the following:</p>
-<pre class="r"><code>BiocManager::install()</code></pre>
-<p>Installing a specific Bioconductor package works similarly to <code>install.packages</code>:</p>
-<pre class="r"><code>BiocManager::install(&quot;GEOquery&quot;)</code></pre>
-<p>Consider using the <code>BiocManager::install()</code> installation process for all other R packages. BiocManager can install from CRAN, Bioconductor, and several other repositories including GitHub.</p>
-</div>
-<div id="check-that-things-worked" class="section level3">
-<h3>Check that things worked</h3>
-<p>Check that you’ve installed everything correctly by closing and reopening RStudio and entering the following command at the console window (don’t worry about any messages that look something like <code>the following objects are masked from ...</code><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, or <code>Warning message: package ... was build under R version ...</code><a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>):</p>
-<pre class="r"><code>library(dplyr)
-library(readr)
-library(tidyr)
-library(ggplot2)</code></pre>
-<p>This may produce some notes or other output, but as long as you don’t get an error message, you’re good to go. If you get a message that says something like: <code>Error in library(somePackageName) : there is no package called 'somePackageName'</code>, then the required packages did not install correctly. Either try reinstalling or contact the instructor.</p>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>R version 3.5.0 was released April, 2018. If you have not updated your R installation since then, you should upgrade to a more recent version, since several of the required packages depend on a version at least this recent. You can check your R version by typing <code>version</code> at the R prompt.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>Installing/loading the tidyverse <strong>tidyverse</strong> will install/load the core tidyverse packages that you are likely to use in almost every analysis: <strong>ggplot2</strong> (for data visualisation), <strong>dplyr</strong> (for data manipulation), <strong>tidyr</strong> (for data tidying), <strong>readr</strong> (for data import), <strong>purrr</strong> (for functional programming), and <strong>tibble</strong> (for tibbles, a modern re-imagining of data frames). It also installs a selection of other tidyverse packages that you’re likely to use frequently, but probably not in every analysis (these are installed, but you’ll have to load them separately with <code>library(packageName)</code>). This includes: <strong>hms</strong> (for times), <strong>stringr</strong> (for strings), <strong>lubridate</strong> (for date/times), <strong>forcats</strong> (for factors), <strong>DBI</strong> (for databases), <strong>haven</strong> (for SPSS, SAS and Stata files), <strong>httr</strong> (for web apis), <strong>jsonlite</strong> (or JSON), <strong>readxl</strong> (for .xls and .xlsx files), <strong>rvest</strong> (for web scraping), <strong>xml2</strong> (for XML), <strong>modelr</strong> (for modelling within a pipeline), and <strong>broom</strong> (for turning models into tidy data). After installing tidyverse with <code>install.packages(&quot;tidyverse&quot;)</code> and loading it with <code>library(tidyverse)</code>, you can use <code>tidyverse_update()</code> to update all the tidyverse packages installed on your system at once.<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>We’ll talk about this in class. It’s not a concern.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>This means the version of R you have installed is older than the version that the package author used when they built the package you’re trying to use. 99% of the time it isn’t a problem, unless your R version is very old (you should be using 3.5.0 or later for this course).<a href="#fnref4" class="footnote-back">↩</a></p></li>
-</ol>
+<p>A <em>matrix</em> is a rectangular collection of the same data type. It can be viewed as a collection of column vectors all of the same length and the same type (i.e. numeric, character or logical). A <em>data.frame</em> is <em>also</em> a rectangular array. All of the columns must be the same length, but they may be of <em>different</em> types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.</p>
+<p>In this section, we will be working with matrices. The <em>data.frame</em> will be dealt with elsewhere.</p>
+<div id="matrices" class="section level2">
+<h2>Matrices</h2>
+<p>We start by building a matrix from parts:</p>
+<pre class="r"><code>x &lt;- 1:10 
+y &lt;- rnorm(10)
+
+# make a matrix by column binding two numeric vectors
+mat&lt;-cbind(x,y)
+mat</code></pre>
+<pre><code>##        x          y
+##  [1,]  1 -0.2767766
+##  [2,]  2  0.4187068
+##  [3,]  3  0.3988590
+##  [4,]  4 -0.3575336
+##  [5,]  5 -0.7759069
+##  [6,]  6  0.1201383
+##  [7,]  7 -1.9737397
+##  [8,]  8  0.2275559
+##  [9,]  9  0.3390053
+## [10,] 10 -0.8759601</code></pre>
+<p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
+<pre class="r"><code>rownames(mat)</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>colnames(mat)</code></pre>
+<pre><code>## [1] &quot;x&quot; &quot;y&quot;</code></pre>
+<p>Matrices have dimensions.</p>
+<pre class="r"><code>dim(mat)</code></pre>
+<pre><code>## [1] 10  2</code></pre>
+<pre class="r"><code>nrow(mat)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>ncol(mat)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
+<pre class="r"><code># The 2nd element of the 1st row of mat
+mat[1,2]</code></pre>
+<pre><code>##          y 
+## -0.2767766</code></pre>
+<pre class="r"><code># The first ROW of mat
+mat[1,]</code></pre>
+<pre><code>##          x          y 
+##  1.0000000 -0.2767766</code></pre>
+<pre class="r"><code># The first COLUMN of mat
+mat[,1]</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code># and all elements of mat that are &gt; 4; note no comma
+mat[mat&gt;4]</code></pre>
+<pre><code>## [1]  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>## [1]  5  6  7  8  9 10</code></pre>
+<p>Note that in the last case, there is no “,”, so R treats the matrix as a long vector (length=20). This is convenient, sometimes, but it can also be a source of error, as some code may “work” but be doing something unexpected.</p>
+<p>In the next example, we create a matrix with 2 columns and 10 rows.</p>
+<pre class="r"><code>m = matrix(rnorm(20),nrow=10)
+# multiply all values in the matrix by 20
+m = m*20
+# and add 100 to the first column of m
+m[,1] = m[,1] + 100
+# summarize m
+summary(m)</code></pre>
+<pre><code>##        V1               V2         
+##  Min.   : 52.19   Min.   :-33.051  
+##  1st Qu.: 92.35   1st Qu.: -6.264  
+##  Median :106.97   Median : -2.420  
+##  Mean   :106.59   Mean   : -3.370  
+##  3rd Qu.:123.56   3rd Qu.:  5.594  
+##  Max.   :140.82   Max.   :  8.405</code></pre>
 </div>
 
     <script>
