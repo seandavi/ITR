@@ -3,7 +3,6 @@ title: "Setup"
 output: html_document
 ---
 
-
 ### R
 
 **Install R.** You'll need R version **3.5** or higher.[^rversion] Download and install R for [Windows](http://cran.r-project.org/bin/windows/base/) or [Mac](http://cran.r-project.org/bin/macosx/) (download the latest R-3.x.x.pkg file for your appropriate version of Mac OS).
@@ -16,7 +15,7 @@ R and RStudio are separate downloads and installations. **R** is the underlying 
 
 ### CRAN packages
 
-We will need to install several core packages needed for most lessons. Launch **RStudio** (RStudio, *not R itself*). *Internet access is required for installing packages*. Copy and paste the following commands, one-at-a-time, into the **Console** panel (usually the lower-left panel, by default) and hit the Enter/Return key. If you receive an error message when trying to install any particular package, please make note of which one you had trouble with, and [email one of the instructors](people.html) _prior to class_ with the command you typed and the error you received.
+We will need to install packages throughout the course. To get started, launch **RStudio** (RStudio, *not R itself*). *Internet access is required for installing packages*. Copy and paste the following commands, one-at-a-time, into the **Console** panel (usually the lower-left panel, by default) and hit the Enter/Return key. If you receive an error message when trying to install any particular package, we can work together to determine a fix.
 
 ```r
 install.packages("dplyr")
@@ -53,6 +52,13 @@ To install basic Bioconductor packages (we will be installing more throughout th
 ```r
 BiocManager::install()
 ```
+
+Installing a specific Bioconductor package works similarly to `install.packages`:
+
+```r
+BiocManager::install("GEOquery")
+```
+
 
 Consider using the `BiocManager::install()` installation process for all other R packages. BiocManager
 can install from CRAN, Bioconductor, and several other repositories including GitHub.

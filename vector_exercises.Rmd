@@ -1,0 +1,99 @@
+---
+title: "Vector Exercises"
+output: 
+  html_document:
+    code_folding: "hide"
+---
+
+```{r include=FALSE}
+library(knitr)
+opts_chunk$set(results='hide')
+```
+
+## Exercises
+
+- Create a numeric vector that starts at 1 and goes to 10 and assign it to the variable v10.
+
+```{r}
+v10 = 1:10
+length(v10)
+```
+
+- Read the help for the `rnorm` function. What does this function do? Use the `rnorm` function to sample 100 values from
+the normal distribution and assign it to the variable my_rn.
+
+```{r}
+my_rn = rnorm(100)
+length(rnorm)
+```
+
+- What are the mean and standard deviation of `my_rn`? Consider using the `mean` and `sd` functions. Read the 
+help for these functions as well.
+
+```{r}
+mean(my_rn)
+sd(my_rn)
+# another useful summary
+summary(my_rn)
+```
+
+- How could you change the mean of `my_rn` from its current value to its current value + five?
+
+```{r}
+# a couple of options
+# Add 5 to every value of my_rn
+my_rn2 = my_rn + 5
+mean(my_rn2)
+```
+
+- You are all going to present your work during the course. We want to do this as fairly as possible, so we want
+to use R to randomly assign an order to you all. If each of you has a number between 1 and 25, how can you produce
+a randomized ordering to see who goes first, second, etc.? See the `sample()` function for some help. Assign the ordering to a variable `speakers`.
+
+```{r}
+speakers = sample(1:25, replace = FALSE)
+# what happens if you use replace=TRUE, the default?
+```
+
+- Create two new vectors, `day1` and `day2` containing the first 13 speakers and the last 12 speakers:
+
+```{r}
+day1 = speakers[1:13]
+day2 = speakers[14:25]
+```
+
+- Referring back to your `my_rn` example, use the `<` operator to create a vector of `TRUE` and `FALSE` 
+so that you isolate values more than 1 standard deviation below the mean. 
+Finally, use the vector of `TRUE`/`FALSE` to get the 
+actual values from `my_rn` that meet these criteria. This is a multi-step problem, so 
+think about the pieces you need and about how to put them together.
+
+```{r}
+# first determine the mean
+mean(my_rn)
+# then, find the sd
+sd(my_rn)
+# What is one sd below the mean?
+mean(my_rn) - sd(my_rn)
+# Assign to a variable
+below_mean = mean(my_rn) - sd(my_rn)
+# Do the comparison
+my_rn < below_mean
+# We can even capture to a variable
+below_mean_index = my_rn < below_mean
+# Finally, we can check our answer
+my_rn[below_mean_index]
+```
+
+- Make a histogram of your `my_rn` vector (see `hist`). Add a vertical red line to the plot at 1 sd above and below the mean (see `help('abline')` and a green line at the mean.
+
+```{r}
+hist(my_rn)
+abline(v = mean(my_rn) - sd(my_rn), col = 'red')
+abline(v = mean(my_rn) + sd(my_rn), col = 'red')
+abline(v = mean(my_rn), col = 'green')
+```
+
+## Further examples
+
+If you would like further examples and interactive exercises, try the free [DataCamp vector exercises](https://campus.datacamp.com/courses/free-introduction-to-r/chapter-2-vectors-2).

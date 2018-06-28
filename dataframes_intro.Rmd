@@ -1,0 +1,112 @@
+---
+title: "Data Frames"
+output: html_document
+---
+
+```{r}
+library(knitr)
+opts_chunk$set(eval=FALSE)
+```
+
+## Matrices Versus Data Frames
+
+
+```{r}
+mat<-cbind(x,y)
+head(mat)
+class(mat[,1])          
+z = paste0('a',1:10)
+tab<-cbind(x,y,z)
+class(tab)
+mode(tab[,1])
+head(tab,4)
+```
+
+
+```{r}
+tab<-data.frame(x,y,z)
+class(tab)
+head(tab)
+mode(tab[,1])
+class(tab[,3])
+rownames(tab)           
+rownames(tab)<-paste0("row",1:10)
+rownames(tab)
+```
+
+
+
+
+Data frame columns can be refered to by name using the "dollar sign" operator.
+
+```{r}
+head(tab)
+tab$x
+tab$y
+```
+
+Column names can be set, which can be useful for referring to data
+later.
+
+```{r}
+colnames(tab)
+colnames(tab) = paste0('col',1:3)
+```
+
+Data frames have functions to report size and even `summary` functions. Try the following:
+
+```{r}
+ncol(tab)
+nrow(tab)
+dim(tab)
+summary(tab)
+```
+
+Extracting parts of a `data.frame` work as for matrices. Try to think about what each of the following will do before asking R to evaluate the result. 
+```{r}
+tab[1:3,]
+tab[,2:3]
+tab[,1]>7
+tab[tab[,1]>7,]
+tab[tab[,1]>7,3]
+tab[tab[,1]>7,2:3]
+tab[tab$x>7,3]
+tab$z[tab$x>3]
+```
+
+## Lists and Objects
+
+A list is a collection of objects that may be the same or different
+types. The objects in a list often have names, and may be indexed either by name
+(e.g. `my_list$name3`) or component number (e.g. `my_list[[3]]`). 
+As an aside, a data frame is a list of matched column vectors.
+
+We can reate a list, noting the different data types involved.
+
+```{r}
+a = list(1,"b",c(1,2,3))
+a
+length(a)
+class(a)
+a[[3]]
+```
+
+A data frame *is* a list.
+
+```{r}
+# test if our friend "tab" is a list
+is.list(tab)
+tab[[2]]
+names(tab)
+```
+
+Table (\#tab:datatypes) Summary of basic R data structures.
+
+  Data type   Stores
+  ------------ ----------------------------------------------------------
+     vector              one-dimensional data, single data type
+     matrix              two-dimensional data, single data type
+   data frame          two-dimensional data, multiple data types
+      list        list of data types, not all need to be the same type
+     object     a list with attributes and potentially slots and methods
+
