@@ -1,6 +1,6 @@
-name: "my-website"
+name: "seandavi(s12): Courses and Tutorials for Data Science, Genomics, and Big Data"
 navbar:
-  title: "R and Bioconductor"
+  title: "seandavi(s12): Courses and Tutorials"
   icon: fa-home
   type: inverse
   left:
@@ -11,17 +11,26 @@ navbar:
       
   right:
     - icon: fa-book
+      text: "R and Bioconductor"
       menu: 
         - text: "Why R?"
           href: intro.html
         - text: "Getting started: R Mechanics"
           href: r_intro_mechanics.html
+        - text: "Introduction to R Data Structures"
+          href: data_structures_intro.html
+        - text: "Plotting and Graphics"
+          href: B5_plotting.html
     - icon: fa-question fa-lg
       menu:
         - text: "Further resources"
           href: further_resources.html
         - text: "Source code for this site"
           href: https://github.com/seandavi/ITR
+    - icon: ion-easel
+      menu: 
+        - text: "slide test"
+          href: slides_test.html
 output:
   html_document:
     theme: default
