@@ -127,6 +127,28 @@ Alternatively, we can use the column name:
 head(ydat[["systematic_name"]])
 ```
 
+### More advanced indexing and subsetting
+
+```{r}
+head(ydat[ydat$symbol == 'LEU1', ])
+dim(ydat[ydat$expression > 3, ])
+```
+
+Find the high expressed genes when leucine-starved. For this task we can also use `subset` which allows 
+us to treat column names as R variables (no `$` needed).
+
+```{r}
+subset(ydat, nutrient == 'Leucine' & rate == 0.05 & expression > 3)
+```
+
+## Aggregating data
+
+```{r}
+aggregate(ydat$expression, by=list( ydat$symbol), mean)
+# or 
+aggregate(expression ~ symbol, mean, data=ydat)
+```
+
 ## Creating a data.frame from scratch
 
 Sometimes it is useful to combine related data into one object. For example, let's simulate some data.
