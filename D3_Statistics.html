@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Martin Morgan Martin.Morgan@RoswellPark.org &amp; Sean Davis seandavi@gmail.com" />
+
+
+<title>Intro to Statistics with R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    R and Bioconductor
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intro.html">Why R?</a>
+    </li>
+    <li>
+      <a href="r_intro_mechanics.html">Getting started: R Mechanics</a>
+    </li>
+    <li>
+      <a href="data_structures_intro.html">Introduction to R Data Structures</a>
+    </li>
+    <li>
+      <a href="B5_plotting.html">Plotting and Graphics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Intro to Statistics with R</h1>
+<h4 class="author"><em>Martin Morgan <a href="mailto:Martin.Morgan@RoswellPark.org">Martin.Morgan@RoswellPark.org</a> &amp; Sean Davis <a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></em></h4>
+
+</div>
+
+
+<div id="exploration-and-simple-univariate-measures" class="section level1">
+<h1>Exploration and simple univariate measures</h1>
+<!--
+
+-->
+<pre class="r"><code>path &lt;- file.choose()    # look for BRFSS-subset.csv</code></pre>
+<pre class="r"><code>stopifnot(file.exists(path))
+brfss &lt;- read.csv(path)</code></pre>
+<div id="clean-data" class="section level2">
+<h2>Clean data</h2>
+<p><em>R</em> read <code>Year</code> as an integer value, but it’s really a <code>factor</code></p>
+<pre class="r"><code>brfss$Year &lt;- factor(brfss$Year)</code></pre>
+</div>
+<div id="weight-in-1990-vs.2010-females" class="section level2">
+<h2>Weight in 1990 vs. 2010 Females</h2>
+<p>Create a subset of the data</p>
+<pre class="r"><code>brfssFemale &lt;- brfss[brfss$Sex == &quot;Female&quot;,]
+summary(brfssFemale)</code></pre>
+<pre><code>##       Age            Weight           Sex            Height     
+##  Min.   :18.00   Min.   : 36.29   Female:12039   Min.   :105.0  
+##  1st Qu.:37.00   1st Qu.: 57.61   Male  :    0   1st Qu.:157.5  
+##  Median :52.00   Median : 65.77                  Median :163.0  
+##  Mean   :51.92   Mean   : 69.05                  Mean   :163.3  
+##  3rd Qu.:67.00   3rd Qu.: 77.11                  3rd Qu.:168.0  
+##  Max.   :99.00   Max.   :272.16                  Max.   :200.7  
+##  NA&#39;s   :103     NA&#39;s   :560                     NA&#39;s   :140    
+##    Year     
+##  1990:5718  
+##  2010:6321  
+##             
+##             
+##             
+##             
+## </code></pre>
+<p>Visualize</p>
+<pre class="r"><code>plot(Weight ~ Year, brfssFemale)</code></pre>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Statistical test</p>
+<pre class="r"><code>t.test(Weight ~ Year, brfssFemale)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Year
+## t = -27.133, df = 11079, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -8.723607 -7.548102
+## sample estimates:
+## mean in group 1990 mean in group 2010 
+##           64.81838           72.95424</code></pre>
+</div>
+<div id="weight-and-height-in-2010-males" class="section level2">
+<h2>Weight and height in 2010 Males</h2>
+<p>Create a subset of the data</p>
+<pre class="r"><code>brfss2010Male &lt;- subset(brfss,  Year == 2010 &amp; Sex == &quot;Male&quot;)
+summary(brfss2010Male)</code></pre>
+<pre><code>##       Age            Weight           Sex           Height      Year     
+##  Min.   :18.00   Min.   : 36.29   Female:   0   Min.   :135   1990:   0  
+##  1st Qu.:45.00   1st Qu.: 77.11   Male  :3679   1st Qu.:173   2010:3679  
+##  Median :57.00   Median : 86.18                 Median :178              
+##  Mean   :56.25   Mean   : 88.85                 Mean   :178              
+##  3rd Qu.:68.00   3rd Qu.: 99.79                 3rd Qu.:183              
+##  Max.   :99.00   Max.   :278.96                 Max.   :218              
+##  NA&#39;s   :30      NA&#39;s   :49                     NA&#39;s   :31</code></pre>
+<p>Visualize the relationship</p>
+<pre class="r"><code>hist(brfss2010Male$Weight)</code></pre>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>hist(brfss2010Male$Height)</code></pre>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>plot(Weight ~ Height, brfss2010Male)</code></pre>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+<p>Fit a linear model (regression)</p>
+<pre class="r"><code>fit &lt;- lm(Weight ~ Height, brfss2010Male)
+fit</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Height, data = brfss2010Male)
+## 
+## Coefficients:
+## (Intercept)       Height  
+##    -86.8747       0.9873</code></pre>
+<p>Summarize as ANOVA table</p>
+<pre class="r"><code>anova(fit)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Weight
+##             Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Height       1  197664  197664   693.8 &lt; 2.2e-16 ***
+## Residuals 3617 1030484     285                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Plot points, superpose fitted regression line; where am I?</p>
+<pre class="r"><code>plot(Weight ~ Height, brfss2010Male)
+abline(fit, col=&quot;blue&quot;, lwd=2)
+points(180, 88, col=&quot;red&quot;, cex=4, pch=20)</code></pre>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Class and available ‘methods’</p>
+<pre class="r"><code>class(fit)                 # &#39;noun&#39;
+methods(class=class(fit))  # &#39;verb&#39;</code></pre>
+<p>Diagnostics</p>
+<pre class="r"><code>plot(fit)
+?plot.lm</code></pre>
+</div>
+</div>
+<div id="multivariate-analysis" class="section level1">
+<h1>Multivariate analysis</h1>
+<p>This is a classic microarray experiment. Microarrays consist of ‘probesets’ that interogate genes for their level of expression. In the experiment we’re looking at, there are 12625 probesets measured on each of the 128 samples. The raw expression levels estimated by microarray assays require considerable pre-processing, the data we’ll work with has been pre-processed.</p>
+<div id="input-and-setup" class="section level2">
+<h2>Input and setup</h2>
+<p>Start by finding the expression data file on disk.</p>
+<!--
+
+-->
+<pre class="r"><code>path &lt;- file.choose()          # look for ALL-expression.csv
+stopifnot(file.exists(path))</code></pre>
+<p>The data is stored in ‘comma-separate value’ format, with each probeset occupying a line, and the expression value for each sample in that probeset separated by a comma. Input the data using <code>read.csv()</code>. There are three challenges:</p>
+<ol style="list-style-type: decimal">
+<li>The row names are present in the first column of the data. Tell <em>R</em> this by adding the argument <code>row.names=1</code> to <code>read.csv()</code>.</li>
+<li>By default, <em>R</em> checks that column names do not look like numbers, but our column names <em>do</em> look like numbers. Use the argument <code>check.colnames=FALSE</code> to over-ride <em>R</em>’s default.</li>
+<li><code>read.csv()</code> returns a <code>data.frame</code>. We could use a <code>data.frame</code> to work with our data, but really it is a <code>matrix()</code> – the columns are of the same type and measure the same thing. Use <code>as.matrix()</code> to coerce the <code>data.frame</code> we input to a <code>matrix</code>.</li>
+</ol>
+<pre class="r"><code>exprs &lt;- read.csv(path, row.names=1, check.names=FALSE)
+exprs &lt;- as.matrix(exprs)
+class(exprs)</code></pre>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<pre class="r"><code>dim(exprs)</code></pre>
+<pre><code>## [1] 12625   128</code></pre>
+<pre class="r"><code>exprs[1:6, 1:10]</code></pre>
+<pre><code>##              01005     01010    03002    04006    04007     04008
+## 1000_at   7.597323  7.479445 7.567593 7.384684 7.905312  7.065914
+## 1001_at   5.046194  4.932537 4.799294 4.922627 4.844565  5.147762
+## 1002_f_at 3.900466  4.208155 3.886169 4.206798 3.416923  3.945869
+## 1003_s_at 5.903856  6.169024 5.860459 6.116890 5.687997  6.208061
+## 1004_at   5.925260  5.912780 5.893209 6.170245 5.615210  5.923487
+## 1005_at   8.570990 10.428299 9.616713 9.937155 9.983809 10.063484
+##               04010     04016    06002     08001
+## 1000_at    7.474537  7.536119 7.183331  7.735545
+## 1001_at    5.122518  5.016132 5.288943  4.633217
+## 1002_f_at  4.150506  3.576360 3.900935  3.630190
+## 1003_s_at  6.292713  5.665991 5.842326  5.875375
+## 1004_at    6.046607  5.738218 5.994515  5.748350
+## 1005_at   10.662059 11.269115 8.812869 10.165159</code></pre>
+<pre class="r"><code>range(exprs)</code></pre>
+<pre><code>## [1]  1.984919 14.126571</code></pre>
+<p>We’ll make use of the data describing the samples</p>
+<!--
+
+-->
+<pre class="r"><code>path &lt;- file.choose()         # look for ALL-phenoData.csv
+stopifnot(file.exists(path))</code></pre>
+<pre class="r"><code>pdata &lt;- read.csv(path, row.names=1)
+class(pdata)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>dim(pdata)</code></pre>
+<pre><code>## [1] 128  21</code></pre>
+<pre class="r"><code>head(pdata)</code></pre>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
+<p>Some of the results below involve plots, and it’s convenient to choose pretty and functional colors. We use the <a href="https://cran.r-project.org/?package=RColorBrewer">RColorBrewer</a> package; see <a href="http://colorbrewer.org">colorbrewer.org</a></p>
+<pre class="r"><code>library(RColorBrewer)  ## not available? install package via RStudio
+highlight &lt;- brewer.pal(3, &quot;Set2&quot;)[1:2]</code></pre>
+<p>`highlight’ is a vector of length 2, light and dark green.</p>
+<p>For more options see <code>?RColorBrewer</code> and to view the predefined palettes <code>display.brewer.all()</code></p>
+</div>
+<div id="cleaning" class="section level2">
+<h2>Cleaning</h2>
+<p>We’ll add a column to <code>pdata</code>, derived from the <code>BT</code> column, to indicate whether the sample is B-cell or T-cell ALL.</p>
+<pre class="r"><code>pdata$BorT &lt;- factor(substr(pdata$BT, 1, 1))</code></pre>
+<p>Microarray expression data is usually represented as a matrix of genes as rows and samples as columns. Statisticians usually think of their data as samples as rows, features as columns. So we’ll transpose the expression values</p>
+<pre class="r"><code>exprs &lt;- t(exprs)</code></pre>
+<p>Confirm that the <code>pdata</code> rows correspond to the <code>exprs</code> rows.</p>
+<pre class="r"><code>stopifnot(identical(rownames(pdata), rownames(exprs)))</code></pre>
+</div>
+<div id="unsupervised-machine-learning-multi-dimensional-scaling" class="section level2">
+<h2>Unsupervised machine learning – multi-dimensional scaling</h2>
+<p>Reduce high-dimensional data to lower dimension for visualization.</p>
+<p>Calculate distance between <em>samples</em> (requires that the expression matrix be transposed).</p>
+<pre class="r"><code>d &lt;- dist(exprs)</code></pre>
+<p>Use the <code>cmdscale()</code> function to summarize the distance matrix into two points in two dimensions.</p>
+<pre class="r"><code>cmd &lt;- cmdscale(d)</code></pre>
+<p>Visualize the result, coloring points by B- or T-cell status</p>
+<pre class="r"><code>plot(cmd, col=highlight[pdata$BorT])</code></pre>
+<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

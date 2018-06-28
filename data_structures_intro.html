@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Data Structures</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    R and Bioconductor
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intro.html">Why R?</a>
+    </li>
+    <li>
+      <a href="r_intro_mechanics.html">Getting started: R Mechanics</a>
+    </li>
+    <li>
+      <a href="data_structures_intro.html">Introduction to R Data Structures</a>
+    </li>
+    <li>
+      <a href="B5_plotting.html">Plotting and Graphics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Data Structures</h1>
+
+</div>
+
+
+<div id="introduction-to-r-data-structures" class="section level1">
+<h1>Introduction to R data structures</h1>
+<p>As in many programming languages, understanding how data are stored and manipulated is important to getting the most out of the experience. In these next few sections, we will introduce some basic R data types and structures as well as some general approaches for working with them.</p>
+<div id="vectors" class="section level2">
+<h2>Vectors</h2>
+<p>In R, even a single value is a vector with length=1.</p>
+<pre class="r"><code>z = 1
+z</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>length(z)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>In the code above, we “assigned” the value 1 to the variable named <code>z</code>. Typing <code>z</code> by itself is an “expression” that returns a result which is, in this case, the value that we just assigned. The <code>length</code> method takes an R object and returns the R length. There are numerous ways of asking R about what an object represents, and <code>length</code> is one of them.</p>
+<p>Vectors can contain numbers, strings (character data), or logical values (<code>TRUE</code> and <code>FALSE</code>) or other “atomic” data types (table @ref(tab:simpletypes)). <em>Vectors cannot contain a mix of types!</em> We will introduce another data structure, the R <code>list</code> for situations when we need to store a mix of base R data types.</p>
+<table>
+<caption>(#tab:simpletypes) Atomic (simplest) data types in R.</caption>
+<thead>
+<tr class="header">
+<th align="left">Data type</th>
+<th align="left">Stores</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">floating point numbers</td>
+</tr>
+<tr class="even">
+<td align="left">integer</td>
+<td align="left">integers</td>
+</tr>
+<tr class="odd">
+<td align="left">complex</td>
+<td align="left">complex numbers</td>
+</tr>
+<tr class="even">
+<td align="left">factor</td>
+<td align="left">categorical data</td>
+</tr>
+<tr class="odd">
+<td align="left">character</td>
+<td align="left">strings</td>
+</tr>
+<tr class="even">
+<td align="left">logical</td>
+<td align="left">TRUE or FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="left">missing</td>
+</tr>
+<tr class="even">
+<td align="left">NULL</td>
+<td align="left">empty</td>
+</tr>
+<tr class="odd">
+<td align="left">function</td>
+<td align="left">function type</td>
+</tr>
+</tbody>
+</table>
+<div id="creating-vectors" class="section level3">
+<h3>Creating vectors</h3>
+<p>Character vectors (also sometimes called “string” vectors) are entered with each value surrounded by single or double quotes; either is acceptable, but they must match. They are always displayed by R with double quotes. Here are some examples of creating vectors:</p>
+<pre class="r"><code># examples of vectors
+c(&#39;hello&#39;,&#39;world&#39;)</code></pre>
+<pre><code>## [1] &quot;hello&quot; &quot;world&quot;</code></pre>
+<pre class="r"><code>c(1,3,4,5,1,2)</code></pre>
+<pre><code>## [1] 1 3 4 5 1 2</code></pre>
+<pre class="r"><code>c(1.12341e7,78234.126)</code></pre>
+<pre><code>## [1] 11234100.00    78234.13</code></pre>
+<pre class="r"><code>c(TRUE,FALSE,TRUE,TRUE)</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE  TRUE</code></pre>
+<pre class="r"><code># note how in the next case the TRUE is converted to &quot;TRUE&quot;
+# with quotes around it.
+c(TRUE,&#39;hello&#39;)</code></pre>
+<pre><code>## [1] &quot;TRUE&quot;  &quot;hello&quot;</code></pre>
+<p>We can also create vectors as “regular sequences” of numbers. For example:</p>
+<pre class="r"><code># create a vector of integers from 1 to 10
+x = 1:10
+# and backwards
+x = 10:1</code></pre>
+<p>The <code>seq</code> function can create more flexible regular sequences.</p>
+<pre class="r"><code># create a vector of numbers from 1 to 4 skipping by 0.3
+y = seq(1,4,0.3)</code></pre>
+<p>And creating a new vector by concatenating existing vectors is possible, as well.</p>
+<pre class="r"><code># create a sequence by concatenating two other sequences
+z = c(y,x)
+z</code></pre>
+<pre><code>##  [1]  1.0  1.3  1.6  1.9  2.2  2.5  2.8  3.1  3.4  3.7  4.0 10.0  9.0  8.0
+## [15]  7.0  6.0  5.0  4.0  3.0  2.0  1.0</code></pre>
+</div>
+<div id="vector-operations" class="section level3">
+<h3>Vector Operations</h3>
+<p>Operations on a single vector are typically done element-by-element. For example, we can add <code>2</code> to a vector, <code>2</code> is added to each element of the vector and a new vector of the same length is returned.</p>
+<pre class="r"><code>x = 1:10
+x + 2</code></pre>
+<pre><code>##  [1]  3  4  5  6  7  8  9 10 11 12</code></pre>
+<p>If the operation involves two vectors, the following rules apply. If the vectors are the same length: R simply applies the operation to each pair of elements.</p>
+<pre class="r"><code>x + x</code></pre>
+<pre><code>##  [1]  2  4  6  8 10 12 14 16 18 20</code></pre>
+<p>If the vectors are different lengths, but one length a multiple of the other, R reuses the shorter vector as needed.</p>
+<pre class="r"><code>x = 1:10
+y = c(1,2)
+x * y</code></pre>
+<pre><code>##  [1]  1  4  3  8  5 12  7 16  9 20</code></pre>
+<p>If the vectors are different lengths, but one length <em>not</em> a multiple of the other, R reuses the shorter vector as needed <em>and</em> delivers a warning.</p>
+<pre class="r"><code>x = 1:10
+y = c(2,3,4)
+x * y</code></pre>
+<pre><code>## Warning in x * y: longer object length is not a multiple of shorter object
+## length</code></pre>
+<pre><code>##  [1]  2  6 12  8 15 24 14 24 36 20</code></pre>
+<p>Typical operations include multiplication (“*”), addition, subtraction, division, exponentiation (“^”), but many operations in R operate on vectors and are then called “vectorized”.</p>
+</div>
+<div id="logical-vectors" class="section level3">
+<h3>Logical Vectors</h3>
+<p>Logical vectors are vectors composed on only the values <code>TRUE</code> and <code>FALSE</code>. Note the all-upper-case and no quotation marks.</p>
+<pre class="r"><code>a = c(TRUE,FALSE,TRUE)
+
+# we can also create a logical vector from a numeric vector
+# 0 = false, everything else is 1
+b = c(1,0,217)
+d = as.logical(b)
+d</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE</code></pre>
+<pre class="r"><code># test if a and d are the same at every element
+all.equal(a,d)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code># We can also convert from logical to numeric
+as.numeric(a)</code></pre>
+<pre><code>## [1] 1 0 1</code></pre>
+</div>
+<div id="logical-operators" class="section level3">
+<h3>Logical Operators</h3>
+<p>Some operators like <code>&lt;, &gt;, ==, &gt;=, &lt;=, !=</code> can be used to create logical vectors.</p>
+<pre class="r"><code># create a numeric vector
+x = 1:10
+# testing whether x &gt; 5 creates a logical vector
+x &gt; 5</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
+<pre class="r"><code>x &lt;= 5</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>x != 5</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
+<pre class="r"><code>x == 5</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>We can also assign the results to a variable:</p>
+<pre class="r"><code>y = (x == 5)
+y</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+</div>
+<div id="indexing-vectors" class="section level3">
+<h3>Indexing Vectors</h3>
+<p>In R, an index is used to refer to a specific element or set of elements in an vector (or other data structure). [R uses <code>[</code> and <code>]</code> to perform indexing, although other approaches to getting subsets of larger data structures are common in R.</p>
+<pre class="r"><code>x = seq(0,1,0.1)
+# create a new vector from the 4th element of x
+x[4]</code></pre>
+<pre><code>## [1] 0.3</code></pre>
+<p>We can even use other vectors to perform the “indexing”.</p>
+<pre class="r"><code>x[c(3,5,6)]</code></pre>
+<pre><code>## [1] 0.2 0.4 0.5</code></pre>
+<pre class="r"><code>y = 3:6
+x[y]</code></pre>
+<pre><code>## [1] 0.2 0.3 0.4 0.5</code></pre>
+<p>Combining the concept of indexing with the concept of logical vectors results in a very power combination.</p>
+<pre class="r"><code># use help(&#39;rnorm&#39;) to figure out what is happening next
+myvec = rnorm(10)
+
+# create logical vector that is TRUE where myvec is &gt;0.25
+gt1 = (myvec &gt; 0.25)
+sum(gt1)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code># and use our logical vector to create a vector of myvec values that are &gt;0.25
+myvec[gt1]</code></pre>
+<pre><code>## [1] 0.4187068 0.3988590 0.3390053</code></pre>
+<pre class="r"><code># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;
+myvec[!gt1]</code></pre>
+<pre><code>## [1] -0.2767766 -0.3575336 -0.7759069  0.1201383 -1.9737397  0.2275559
+## [7] -0.8759601</code></pre>
+<pre class="r"><code># shorter, one line approach
+myvec[myvec &gt; 0.25]</code></pre>
+<pre><code>## [1] 0.4187068 0.3988590 0.3390053</code></pre>
+</div>
+<div id="character-vectors-a.k.a.-strings" class="section level3">
+<h3>Character Vectors, A.K.A. Strings</h3>
+<p>R uses the <code>paste</code> function to concatenate strings.</p>
+<pre class="r"><code>paste(&quot;abc&quot;,&quot;def&quot;)</code></pre>
+<pre><code>## [1] &quot;abc def&quot;</code></pre>
+<pre class="r"><code>paste(&quot;abc&quot;,&quot;def&quot;,sep=&quot;THISSEP&quot;)</code></pre>
+<pre><code>## [1] &quot;abcTHISSEPdef&quot;</code></pre>
+<pre class="r"><code>paste0(&quot;abc&quot;,&quot;def&quot;)</code></pre>
+<pre><code>## [1] &quot;abcdef&quot;</code></pre>
+<pre class="r"><code>## [1] &quot;abcdef&quot;
+paste(c(&quot;X&quot;,&quot;Y&quot;),1:10)</code></pre>
+<pre><code>##  [1] &quot;X 1&quot;  &quot;Y 2&quot;  &quot;X 3&quot;  &quot;Y 4&quot;  &quot;X 5&quot;  &quot;Y 6&quot;  &quot;X 7&quot;  &quot;Y 8&quot;  &quot;X 9&quot;  &quot;Y 10&quot;</code></pre>
+<pre class="r"><code>paste(c(&quot;X&quot;,&quot;Y&quot;),1:10,sep=&quot;_&quot;)</code></pre>
+<pre><code>##  [1] &quot;X_1&quot;  &quot;Y_2&quot;  &quot;X_3&quot;  &quot;Y_4&quot;  &quot;X_5&quot;  &quot;Y_6&quot;  &quot;X_7&quot;  &quot;Y_8&quot;  &quot;X_9&quot;  &quot;Y_10&quot;</code></pre>
+<p>We can count the number of characters in a string.</p>
+<pre class="r"><code>nchar(&#39;abc&#39;)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>nchar(c(&#39;abc&#39;,&#39;d&#39;,123456))</code></pre>
+<pre><code>## [1] 3 1 6</code></pre>
+<p>Pulling out parts of strings is also sometimes useful.</p>
+<pre class="r"><code>substr(&#39;This is a good sentence.&#39;,start=10,stop=15)</code></pre>
+<pre><code>## [1] &quot; good &quot;</code></pre>
+<p>Another common operation is to replace something in a string with something (a find-and-replace).</p>
+<pre class="r"><code>sub(&#39;This&#39;,&#39;That&#39;,&#39;This is a good sentence.&#39;)</code></pre>
+<pre><code>## [1] &quot;That is a good sentence.&quot;</code></pre>
+<p>When we want to find all strings that match some other string, we can use <code>grep</code>, or “grab regular expression”.</p>
+<pre class="r"><code>grep(&#39;bcd&#39;,c(&#39;abcdef&#39;,&#39;abcd&#39;,&#39;bcde&#39;,&#39;cdef&#39;,&#39;defg&#39;))</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code>grep(&#39;bcd&#39;,c(&#39;abcdef&#39;,&#39;abcd&#39;,&#39;bcde&#39;,&#39;cdef&#39;,&#39;defg&#39;),value=TRUE)</code></pre>
+<pre><code>## [1] &quot;abcdef&quot; &quot;abcd&quot;   &quot;bcde&quot;</code></pre>
+</div>
+<div id="missing-values-aka-na" class="section level3">
+<h3>Missing Values, AKA “NA”</h3>
+<p>R has a special value, “NA”, that represents a “missing” value, or <em>Not Available</em>, in a vector or other data structure. Here, we just create a vector to experiment.</p>
+<pre class="r"><code>x = 1:5
+x</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code>length(x)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>is.na(x)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>x[2] = NA
+x</code></pre>
+<pre><code>## [1]  1 NA  3  4  5</code></pre>
+<p>The length of <code>x</code> is unchanged, but there is one value that is marked as “missing” by virtue of being <code>NA</code>.</p>
+<pre class="r"><code>length(x)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>is.na(x)</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<p>We can remove <code>NA</code> values by using indexing. In the following, <code>is.na(x)</code> returns a logical vector the length of <code>x</code>. The <code>!</code> is the logical <em>NOT</em> operator and converts <code>TRUE</code> to <code>FALSE</code> and vice-versa.</p>
+<pre class="r"><code>x[!is.na(x)]</code></pre>
+<pre><code>## [1] 1 3 4 5</code></pre>
+</div>
+<div id="factors" class="section level3">
+<h3>Factors</h3>
+<p>A factor is a special type of vector, normally used to hold a categorical variable–such as smoker/nonsmoker, state of residency, zipcode–in many statistical functions. Such vectors have class “factor”. Factors are primarily used in Analysis of Variance (ANOVA) or other situations when “categories” are needed. When a factor is used as a predictor variable, the corresponding indicator variables are created (more later).</p>
+<p>Note of caution that factors in R often <em>appear</em> to be character vectors when printed, but you will notice that they do not have double quotes around them. They are stored in R as numbers with a key name, so sometimes you will note that the factor <em>behaves</em> like a numeric vector.</p>
+<pre class="r"><code># create the character vector
+citizen&lt;-c(&quot;uk&quot;,&quot;us&quot;,&quot;no&quot;,&quot;au&quot;,&quot;uk&quot;,&quot;us&quot;,&quot;us&quot;,&quot;no&quot;,&quot;au&quot;) 
+
+# convert to factor
+citizenf&lt;-factor(citizen)                                
+citizen             </code></pre>
+<pre><code>## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;</code></pre>
+<pre class="r"><code>citizenf</code></pre>
+<pre><code>## [1] uk us no au uk us us no au
+## Levels: au no uk us</code></pre>
+<pre class="r"><code># convert factor back to character vector
+as.character(citizenf)</code></pre>
+<pre><code>## [1] &quot;uk&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot; &quot;uk&quot; &quot;us&quot; &quot;us&quot; &quot;no&quot; &quot;au&quot;</code></pre>
+<pre class="r"><code># convert to numeric vector
+as.numeric(citizenf)</code></pre>
+<pre><code>## [1] 3 4 2 1 3 4 4 2 1</code></pre>
+<p>R stores many data structures as vectors with “attributes” and “class” (just so you have seen this).</p>
+<pre class="r"><code>attributes(citizenf)</code></pre>
+<pre><code>## $levels
+## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;
+## 
+## $class
+## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(citizenf)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code># note that after unclassing, we can see the 
+# underlying numeric structure again
+unclass(citizenf)</code></pre>
+<pre><code>## [1] 3 4 2 1 3 4 4 2 1
+## attr(,&quot;levels&quot;)
+## [1] &quot;au&quot; &quot;no&quot; &quot;uk&quot; &quot;us&quot;</code></pre>
+<p>Tabulating factors is a useful way to get a sense of the “sample” set available.</p>
+<pre class="r"><code>table(citizenf)</code></pre>
+<pre><code>## citizenf
+## au no uk us 
+##  2  2  2  3</code></pre>
+</div>
+</div>
+<div id="rectangular-data" class="section level2">
+<h2>Rectangular Data</h2>
+<p>A <em>matrix</em> is a rectangular collection of the same data type. It can be viewed as a collection of column vectors all of the same length and the same type (i.e. numeric, character or logical). A <em>data.frame</em> is <em>also</em> a rectangular array. All of the columns must be the same length, but they may be of <em>different</em> types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.</p>
+<div id="matrices" class="section level3">
+<h3>Matrices</h3>
+<p>We start by building a matrix from parts:</p>
+<pre class="r"><code>x &lt;- 1:10 
+y &lt;- rnorm(10)
+
+# make a matrix by column binding two numeric vectors
+mat&lt;-cbind(x,y)
+mat</code></pre>
+<pre><code>##        x          y
+##  [1,]  1 -0.1014763
+##  [2,]  2 -0.4232252
+##  [3,]  3  1.9712139
+##  [4,]  4  0.9169320
+##  [5,]  5 -0.5223933
+##  [6,]  6  2.0407688
+##  [7,]  7 -2.3904096
+##  [8,]  8 -0.2602420
+##  [9,]  9  1.2652053
+## [10,] 10  0.7986855</code></pre>
+<p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
+<pre class="r"><code>rownames(mat)</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>colnames(mat)</code></pre>
+<pre><code>## [1] &quot;x&quot; &quot;y&quot;</code></pre>
+<p>Matrices have dimensions.</p>
+<pre class="r"><code>dim(mat)</code></pre>
+<pre><code>## [1] 10  2</code></pre>
+<pre class="r"><code>nrow(mat)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>ncol(mat)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
+<pre class="r"><code># The 2nd element of the 1st row of mat
+mat[1,2]</code></pre>
+<pre><code>##          y 
+## -0.1014763</code></pre>
+<pre class="r"><code># The first ROW of mat
+mat[1,]</code></pre>
+<pre><code>##          x          y 
+##  1.0000000 -0.1014763</code></pre>
+<pre class="r"><code># The first COLUMN of mat
+mat[,1]</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code># and all elements of mat that are &gt; 4; note no comma
+mat[mat&gt;4]</code></pre>
+<pre><code>## [1]  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>## [1]  5  6  7  8  9 10</code></pre>
+<p>Note that in the last case, there is no “,”, so R treats the matrix as a long vector (length=20). This is convenient, sometimes, but it can also be a source of error, as some code may “work” but be doing something unexpected.</p>
+<p>In the next example, we create a matrix with 2 columns and 10 rows.</p>
+<pre class="r"><code>m = matrix(rnorm(20),nrow=10)
+# multiply all values in the matrix by 20
+m = m*20
+# and add 100 to the first column of m
+m[,1] = m[,1] + 100
+# summarize m
+summary(m)</code></pre>
+<pre><code>##        V1               V2         
+##  Min.   : 66.95   Min.   :-34.739  
+##  1st Qu.: 93.74   1st Qu.:-11.650  
+##  Median : 97.58   Median : -2.172  
+##  Mean   : 96.63   Mean   :  6.348  
+##  3rd Qu.:105.59   3rd Qu.: 31.365  
+##  Max.   :108.41   Max.   : 48.189</code></pre>
+</div>
+<div id="data-frames" class="section level3">
+<h3>Data Frames</h3>
+<div id="matrices-versus-data-frames" class="section level4">
+<h4>Matrices Versus Data Frames</h4>
+<pre class="r"><code>mat&lt;-cbind(x,y)
+head(mat)</code></pre>
+<pre><code>##      x          y
+## [1,] 1 -0.1014763
+## [2,] 2 -0.4232252
+## [3,] 3  1.9712139
+## [4,] 4  0.9169320
+## [5,] 5 -0.5223933
+## [6,] 6  2.0407688</code></pre>
+<pre class="r"><code>class(mat[,1])          </code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>z = paste0(&#39;a&#39;,1:10)
+tab&lt;-cbind(x,y,z)
+class(tab)</code></pre>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<pre class="r"><code>mode(tab[,1])</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>head(tab,4)</code></pre>
+<pre><code>##      x   y                    z   
+## [1,] &quot;1&quot; &quot;-0.101476276274677&quot; &quot;a1&quot;
+## [2,] &quot;2&quot; &quot;-0.423225187032977&quot; &quot;a2&quot;
+## [3,] &quot;3&quot; &quot;1.97121389008121&quot;   &quot;a3&quot;
+## [4,] &quot;4&quot; &quot;0.916932029714039&quot;  &quot;a4&quot;</code></pre>
+<pre class="r"><code>tab&lt;-data.frame(x,y,z)
+class(tab)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>head(tab)</code></pre>
+<pre><code>##   x          y  z
+## 1 1 -0.1014763 a1
+## 2 2 -0.4232252 a2
+## 3 3  1.9712139 a3
+## 4 4  0.9169320 a4
+## 5 5 -0.5223933 a5
+## 6 6  2.0407688 a6</code></pre>
+<pre class="r"><code>mode(tab[,1])</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(tab[,3])</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>rownames(tab)           </code></pre>
+<pre><code>##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot;</code></pre>
+<pre class="r"><code>rownames(tab)&lt;-paste0(&quot;row&quot;,1:10)
+rownames(tab)</code></pre>
+<pre><code>##  [1] &quot;row1&quot;  &quot;row2&quot;  &quot;row3&quot;  &quot;row4&quot;  &quot;row5&quot;  &quot;row6&quot;  &quot;row7&quot;  &quot;row8&quot; 
+##  [9] &quot;row9&quot;  &quot;row10&quot;</code></pre>
+<p>Data frame columns can be refered to by name using the “dollar sign” operator.</p>
+<pre class="r"><code>head(tab)</code></pre>
+<pre><code>##      x          y  z
+## row1 1 -0.1014763 a1
+## row2 2 -0.4232252 a2
+## row3 3  1.9712139 a3
+## row4 4  0.9169320 a4
+## row5 5 -0.5223933 a5
+## row6 6  2.0407688 a6</code></pre>
+<pre class="r"><code>tab$x</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>tab$y</code></pre>
+<pre><code>##  [1] -0.1014763 -0.4232252  1.9712139  0.9169320 -0.5223933  2.0407688
+##  [7] -2.3904096 -0.2602420  1.2652053  0.7986855</code></pre>
+<p>Column names can be set, which can be useful for referring to data later.</p>
+<pre class="r"><code>colnames(tab)</code></pre>
+<pre><code>## [1] &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
+<pre class="r"><code>colnames(tab) = paste0(&#39;col&#39;,1:3)</code></pre>
+<p>Data frames have functions to report size and even <code>summary</code> functions. Try the following:</p>
+<pre class="r"><code>ncol(tab)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>nrow(tab)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>dim(tab)</code></pre>
+<pre><code>## [1] 10  3</code></pre>
+<pre class="r"><code>summary(tab)</code></pre>
+<pre><code>##       col1            col2              col3  
+##  Min.   : 1.00   Min.   :-2.3904   a1     :1  
+##  1st Qu.: 3.25   1st Qu.:-0.3825   a10    :1  
+##  Median : 5.50   Median : 0.3486   a2     :1  
+##  Mean   : 5.50   Mean   : 0.3295   a3     :1  
+##  3rd Qu.: 7.75   3rd Qu.: 1.1781   a4     :1  
+##  Max.   :10.00   Max.   : 2.0408   a5     :1  
+##                                    (Other):4</code></pre>
+<p>Extracting parts of a <code>data.frame</code> work as for matrices. Try to think about what each of the following will do before asking R to evaluate the result.</p>
+<pre class="r"><code>tab[1:3,]</code></pre>
+<pre><code>##      col1       col2 col3
+## row1    1 -0.1014763   a1
+## row2    2 -0.4232252   a2
+## row3    3  1.9712139   a3</code></pre>
+<pre class="r"><code>tab[,2:3]</code></pre>
+<pre><code>##             col2 col3
+## row1  -0.1014763   a1
+## row2  -0.4232252   a2
+## row3   1.9712139   a3
+## row4   0.9169320   a4
+## row5  -0.5223933   a5
+## row6   2.0407688   a6
+## row7  -2.3904096   a7
+## row8  -0.2602420   a8
+## row9   1.2652053   a9
+## row10  0.7986855  a10</code></pre>
+<pre class="r"><code>tab[,1]&gt;7</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
+<pre class="r"><code>tab[tab[,1]&gt;7,]</code></pre>
+<pre><code>##       col1       col2 col3
+## row8     8 -0.2602420   a8
+## row9     9  1.2652053   a9
+## row10   10  0.7986855  a10</code></pre>
+<pre class="r"><code>tab[tab[,1]&gt;7,3]</code></pre>
+<pre><code>## [1] a8  a9  a10
+## Levels: a1 a10 a2 a3 a4 a5 a6 a7 a8 a9</code></pre>
+<pre class="r"><code>tab[tab[,1]&gt;7,2:3]</code></pre>
+<pre><code>##             col2 col3
+## row8  -0.2602420   a8
+## row9   1.2652053   a9
+## row10  0.7986855  a10</code></pre>
+<pre class="r"><code>tab[tab$x&gt;7,3]</code></pre>
+<pre><code>## factor(0)
+## Levels: a1 a10 a2 a3 a4 a5 a6 a7 a8 a9</code></pre>
+<pre class="r"><code>tab$z[tab$x&gt;3]</code></pre>
+<pre><code>## NULL</code></pre>
+</div>
+</div>
+</div>
+<div id="lists-and-objects" class="section level2">
+<h2>Lists and Objects</h2>
+<p>A list is a collection of objects that may be the same or different types. The objects in a list often have names, and may be indexed either by name (e.g. <code>my_list$name3</code>) or component number (e.g. <code>my_list[[3]]</code>). As an aside, a data frame is a list of matched column vectors.</p>
+<p>We can reate a list, noting the different data types involved.</p>
+<pre class="r"><code>a = list(1,&quot;b&quot;,c(1,2,3))
+a</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] &quot;b&quot;
+## 
+## [[3]]
+## [1] 1 2 3</code></pre>
+<pre class="r"><code>length(a)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>class(a)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>a[[3]]</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>A data frame <em>is</em> a list.</p>
+<pre class="r"><code># test if our friend &quot;tab&quot; is a list
+is.list(tab)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>tab[[2]]</code></pre>
+<pre><code>##  [1] -0.1014763 -0.4232252  1.9712139  0.9169320 -0.5223933  2.0407688
+##  [7] -2.3904096 -0.2602420  1.2652053  0.7986855</code></pre>
+<pre class="r"><code>names(tab)</code></pre>
+<pre><code>## [1] &quot;col1&quot; &quot;col2&quot; &quot;col3&quot;</code></pre>
+<p>Table (#tab:datatypes) Summary of basic R data structures.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Data type S</th>
+<th align="left">tores</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vector</td>
+<td align="left">one-dimensional data, single data type</td>
+</tr>
+<tr class="even">
+<td>matrix</td>
+<td align="left">two-dimensional data, single data type</td>
+</tr>
+<tr class="odd">
+<td>data frame</td>
+<td align="left">two-dimensional data, multiple data types</td>
+</tr>
+<tr class="even">
+<td>list</td>
+<td align="left">list of data types, not all need to be the same type</td>
+</tr>
+<tr class="odd">
+<td>object</td>
+<td align="left">a list with attributes and potentially slots and methods</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
