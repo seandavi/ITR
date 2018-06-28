@@ -10,6 +10,9 @@ navbar:
       href: about.html
       
   right:
+    - icon: fa-cogs
+      text: setup
+      href: setup.html
     - icon: fa-book
       text: "R and Bioconductor"
       menu: 
@@ -28,9 +31,10 @@ navbar:
         - text: "Source code for this site"
           href: https://github.com/seandavi/ITR
     - icon: ion-easel
+      text: Slides
       menu: 
-        - text: "slide test"
-          href: slides_test.html
+        - text: "Motivation for using R"
+          href: motivation_for_R_slides.html
 output:
   html_document:
     theme: default

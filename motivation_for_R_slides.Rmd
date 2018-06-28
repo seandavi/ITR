@@ -1,17 +1,21 @@
 ---
 title: "Motivation for R"
+output:
+  ioslides_presentation:
+    widescreen: true
 ---
 
 ## What is R?
 
-R is a number of things, simultaneously. Depending on who is being asked, R is:
+R is a number of things, simultaneously. Depending on who you ask, R is:
 
 - A software package
 - A programming language
 - A toolkit for developing statistical and analytical tools
 - An extensive library of statistical and mathematical software and algorithms
 - A scripting language
-- much, much more
+- A complete data science environment
+- ...
 
 ## Why use R?
 
@@ -25,11 +29,6 @@ R is a number of things, simultaneously. Depending on who is being asked, R is:
     Excel.
 - R does not have a meaningfully useful graphical user interface (GUI).
 
-I can develop code for analysis on my Mac laptop. I can
-then install the *same* code on our 20k core cluster and run it in
-parallel on 100 samples, monitor the process, and then update a database (for example)
-with R when complete.
-
 ## Why not use R?
 
 - R cannot do everything.
@@ -39,7 +38,7 @@ with R when complete.
 - R can drive you crazy (on a good day) or age you prematurely (on a
     bad one).
 - Finding the right package to do the job you want to do can be
-    challenging; worse, some contributed packages are unreliable.]{}
+    challenging; worse, some contributed packages are unreliable.
 - R does not have a meaningfully useful graphical user interface (GUI).
 
 ## R License and the Open Source Ideal
@@ -55,3 +54,13 @@ R is free (yes, totally free!) and distributed under GNU license. In particular,
 This license means that R will always be
 available, will always be open source, and can grow organically without
 constraint.
+
+## R and Data Science
+
+Data Science is both a field of study and a process. All of us practice data science when using R.
+
+<div class="centered">
+![The data science process.](images/data-science-explore.png)
+</div>
+
+R has capabilities and shines in all aspects of the data science process. 
