@@ -27,6 +27,8 @@ navbar:
           href: dataframes_intro.html
         - text: "Plotting and Graphics"
           href: B5_plotting.html
+        - text: "Factors"
+          href: factors.html
         - text: "---"
         - text: "--- Exercises ---"
         - text: "Vectors"

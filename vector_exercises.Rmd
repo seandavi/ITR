@@ -62,6 +62,20 @@ day1 = speakers[1:13]
 day2 = speakers[14:25]
 ```
 
+- Use the `rep()` function to create a vector of length 10 with just "A" repeating. Do the same, but with "A" and "B" repeating. 
+
+```{r}
+# This will work
+rep("A", 10)
+# What is wrong with this one?
+rep(c("A", "B"), 10)
+# And how is this different?
+# How would you know that you need to include
+#   "each"? Read the help, of course. (or trial and error)
+rep(c("A", "B"), each=5)
+```
+
+
 - Referring back to your `my_rn` example, use the `<` operator to create a vector of `TRUE` and `FALSE` 
 so that you isolate values more than 1 standard deviation below the mean. 
 Finally, use the vector of `TRUE`/`FALSE` to get the 
