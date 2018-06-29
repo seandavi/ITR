@@ -1,5 +1,8 @@
 ---
 title: "Teaching and Learning Materials"
+output:
+    html_document:
+        toc: false
 ---
 
 Right now, this page serves as the home for my materials for the CSHL Statistical Methods for Functional Genomics.
