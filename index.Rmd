@@ -2,6 +2,9 @@
 title: "Teaching and Learning Materials"
 ---
 
-## R  
+Right now, this page serves as the home for my materials for the CSHL Statistical Methods for Functional Genomics.
 
-## Bioconductor
+The materials are located in the "R and Bioconductor" tab at the top right, mainly. Links to slides are under the "slides"
+tab above. Finally, there are some additional and miscellaneous materials in the "Misc." tab.
+
+Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https://creativecommons.org/licenses/by-nc-sa/4.0/)
