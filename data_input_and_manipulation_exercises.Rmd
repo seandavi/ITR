@@ -1,9 +1,8 @@
 ---
-title: "Data Input and Manipulation"
-author: "Martin Morgan <Martin.Morgan@RoswellPark.org> & Sean Davis <seandavi@gmail.com>"
-vignette: >
-  % \VignetteIndexEntry{A.2 -- Data Input and Manipulation}
-  % \VignetteEngine{knitr::rmarkdown}
+title: "Data Input and Manipulation Exercises"
+output: 
+  html_document:
+    code_folding: "hide"
 ---
 
 ```{r style-A2, echo = FALSE, results = 'asis'}
@@ -11,8 +10,6 @@ knitr::opts_chunk$set(
     eval=as.logical(Sys.getenv("KNITR_EVAL", "TRUE")),
     cache=as.logical(Sys.getenv("KNITR_CACHE", "TRUE")))
 ```
-
-# Data Input and Exploration
 
 ## Behavioral Risk Factor Surveillance System
 
@@ -34,7 +31,8 @@ download.file('https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subse
 You can check to see the file using the Rstudio file panel or get a
 directory listing using `dir()`
 
-1. Use `file.choose()` to find the path to the file 'BRFSS-subset.csv'
+1. Use `file.choose()` to find the path to the file 'BRFSS-subset.csv'. This is a quick-and-dirty to 
+find a file on the computer. Store the file location into a variable called `path`. 
 
     ```{r file.choose-A2, eval=FALSE}
     path <- file.choose()
@@ -46,7 +44,8 @@ directory listing using `dir()`
     ```
 -->
 
-2. Read the data into R using `read.csv()`, assigning to a variable `brfss`.
+2. Read the data into R using `read.csv()`, assigning to a variable `brfss`. Note that you can use the `path` 
+variable in read.csv().
 
     ```{r read.csv-A2}
     brfss <- read.csv(path)
@@ -67,9 +66,9 @@ the data.
     summary(brfss)
     ```
 
-4. Use the `$` operator to extract the 'Sex' column, and summarize the
-   number of males and females in the survey using `table()`. Do the
-   same for 'Year', and for both `Sex` and `Year`
+4. Use the `$` operator to extract the `Sex` column, and summarize the
+   number of males and females in the survey using `table(brfss$Sex)`. Do the
+   same for `Year`, and for both `Sex` and `Year`. 
 
     ```{r brfss-sex-A2}
     table(brfss$Sex)
@@ -128,7 +127,7 @@ the data.
 
 [BRFSS]: http://www.cdc.gov/brfss/about/index.htm
 
-### ggplot2
+### *BONUS*: ggplot2
 
 
 ```{r}
@@ -192,141 +191,3 @@ brfssFemale = subset(brfss,Sex=='Female')
     ```
 
 
-## ALL Phenotypic Data
-
-This data comes from an (old) Acute Lymphoid Leukemia microarray data
-set. The actual data are available at [THIS LINK](https://raw.githubusercontent.com/seandavi/ITR/master/ALL-phenoData.csv) or by downloading 
-using R.
-
-```{r}
-download.file('https://raw.githubusercontent.com/seandavi/ITR/master/ALL-phenoData.csv',
-              destfile = 'ALL-phenoData.csv')
-```
-
-Choose the file that contains ALL (acute lymphoblastic leukemia)
-patient information and input the date using `read.csv()`; for
-`read.csv()`, use `row.names=1` to indicate that the first column
-contains row names.
-
-```{r ALL-choose, eval=FALSE}
-path <- file.choose()    # look for ALL-phenoData.csv
-```
-
-<!--
-```{r echo=FALSE}
-path <- "ALL-phenoData.csv"
-```
--->
-
-```{r ALL-input}
-stopifnot(file.exists(path))
-pdata <- read.csv(path, row.names=1)
-```
-
-Check out the help page `?read.delim` for input options. The exercises
-use `?read.csv`; Can you guess why? Explore basic properties of the
-object you've created, for instance...
-
-```{r ALL-properties}
-class(pdata)
-colnames(pdata)
-dim(pdata)
-head(pdata)
-summary(pdata$sex)
-summary(pdata$cyto.normal)
-```
-
-Remind yourselves about various ways to subset and access columns of a
-data.frame
-
-```{r ALL-subset}
-pdata[1:5, 3:4]
-pdata[1:5, ]
-head(pdata[, 3:5])
-tail(pdata[, 3:5], 3)
-head(pdata$age)
-head(pdata$sex)
-head(pdata[pdata$age > 21,])
-```
-
-It seems from below that there are 17 females over 40 in the data
-set. However, some individuals have `NA` for the age and / or sex, and
-these `NA` values propagate through some computations. Use `table()`
-to summarize the number of females over 40, and the number of samples
-for which this classification cannot be determined. When _R_
-encounters an `NA` value in a subscript index, it introduces an `NA`
-into the result. Observe this (rows of `NA` values introduced into the
-result) when subsetting using `[` versus using the `subset()`
-function.
-
-```{r ALL-subset-NA}
-idx <- pdata$sex == "F" & pdata$age > 40
-table(idx, useNA="ifany")
-dim(pdata[idx,])           # WARNING: 'NA' rows introduced
-tail(pdata[idx,])
-dim(subset(pdata, idx))    # BETTER: no NA rows
-dim(subset(pdata, (sex == "F") & (age > 40)))  # alternative
-tail(subset(pdata,idx))
-
-## robust `[`: exclude NA values
-dim(pdata[idx & !is.na(idx),])
-```
-
-Use the `mol.biol` column to subset the data to contain just
-individuals with 'BCR/ABL' or 'NEG', e.g.,
-
-```{r ALL-BCR/ABL-subset}
-bcrabl <- subset(pdata, mol.biol %in% c("BCR/ABL", "NEG"))
-```
-
-The `mol.biol` column is a factor, and retains all levels even after
-subsetting. It is sometimes convenient to retain factor levels, but in
-our case we use `droplevels()` to removed unused levels
-
-```{r ALL-BCR/ABL-drop-unused}
-bcrabl$mol.biol <- droplevels(bcrabl$mol.biol)
-```
-
-The `BT` column is a factor describing B- and T-cell subtypes
-
-```{r ALL-BT}
-levels(bcrabl$BT)
-```
-
-How might one collapse B1, B2, ... to a single type B, and likewise
-for T1, T2, ..., so there are only two subtypes, B and T? One strategy
-is to replace two-letter level (e.g., `B1`) with the single-letter
-level (e.g., `B`). Do this using `substring()` to select the first
-letter of level, and update the previous levels with the new value
-using `levels<-`.
-
-```{r ALL-BT-recode}
-table(bcrabl$BT)
-levels(bcrabl$BT) <- substring(levels(bcrabl$BT), 1, 1)
-table(bcrabl$BT)
-```
-
-Use `aggregate()` to count the number of samples with B- and T-cell
-types in each of the BCR/ABL and NEG groups
-
-```{r ALL-BCR/ABL-BT}
-aggregate(rownames(bcrabl) ~ BT + mol.biol, bcrabl, length)
-```
-
-Use `aggregate()` to calculate the average age of males and females in
-the BCR/ABL and NEG treatment groups.
-
-```{r ALL-aggregate}
-aggregate(age ~ mol.biol + sex, bcrabl, mean)
-```
-
-Use `t.test()` to compare the age of individuals in the BCR/ABL versus
-NEG groups; visualize the results using `boxplot()`. In both cases,
-use the `formula` interface. Consult the help page `?t.test` and re-do
-the test assuming that variance of ages in the two groups is
-identical. What parts of the test output change?
-
-```{r ALL-age}
-t.test(age ~ mol.biol, bcrabl)
-boxplot(age ~ mol.biol, bcrabl)
-```

@@ -144,9 +144,9 @@ subset(ydat, nutrient == 'Leucine' & rate == 0.05 & expression > 3)
 ## Aggregating data
 
 ```{r}
-aggregate(ydat$expression, by=list( ydat$symbol), mean)
+head(aggregate(ydat$expression, by=list( ydat$symbol), mean))
 # or 
-aggregate(expression ~ symbol, mean, data=ydat)
+head(aggregate(expression ~ symbol, mean, data=ydat))
 ```
 
 ## Creating a data.frame from scratch

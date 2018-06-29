@@ -1,0 +1,126 @@
+---
+title: "Data exploration and univariate statistics"
+---
+
+<!-- Thanks to Martin Morgan for much of this material! -->
+
+```{r style-A3, echo = FALSE, results = 'asis'}
+knitr::opts_chunk$set(
+    eval=as.logical(Sys.getenv("KNITR_EVAL", "TRUE")),
+    cache=as.logical(Sys.getenv("KNITR_CACHE", "TRUE")))
+```
+
+## Behavioral Risk Factor Surveillance System
+
+We will explore a subset of data collected by the CDC through its
+extensive Behavioral Risk Factor Surveillance System ([BRFSS][])
+telephone survey. Check out the link for more information. We'll look
+at a subset of the data.
+
+First, we need to get the data. Either download the data
+from [THIS LINK](BRFSS-subset.csv) or have R do it directly from the
+command-line (preferred):
+
+```{r}
+download.file('https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv',
+              destfile = 'BRFSS-subset.csv')
+
+```
+
+
+<!--
+```{r echo=FALSE}
+path <- "BRFSS-subset.csv"
+```
+-->
+```{r ALL-choose-A3, eval=FALSE}
+path <- file.choose()    # look for BRFSS-subset.csv
+```
+
+```{r ALL-input-A3}
+stopifnot(file.exists(path))
+brfss <- read.csv(path)
+```
+
+## Clean data
+
+_R_ read `Year` as an integer value, but it's really a `factor`
+
+```{r}
+brfss$Year <- factor(brfss$Year)
+```
+
+## Weight in 1990 vs. 2010 Females
+
+- Create a subset of the data
+
+```{r}
+brfssFemale <- brfss[brfss$Sex == "Female",]
+summary(brfssFemale)
+```
+
+- Visualize
+
+```{r}
+plot(Weight ~ Year, brfssFemale)
+```
+
+- Statistical test
+
+```{r}
+t.test(Weight ~ Year, brfssFemale)
+```
+
+## Weight and height in 2010 Males
+
+- Create a subset of the data
+
+```{r}
+brfss2010Male <- subset(brfss,  Year == 2010 & Sex == "Male")
+summary(brfss2010Male)
+```
+
+- Visualize the relationship
+
+```{r}
+hist(brfss2010Male$Weight)
+hist(brfss2010Male$Height)
+plot(Weight ~ Height, brfss2010Male)
+```
+
+- Fit a linear model (regression)
+
+```{r}
+fit <- lm(Weight ~ Height, brfss2010Male)
+fit
+```
+
+Summarize as ANOVA table
+
+```{r}
+anova(fit)
+```
+
+- Plot points, superpose fitted regression line; where am I?
+
+```{r}
+plot(Weight ~ Height, brfss2010Male)
+abline(fit, col="blue", lwd=2)
+# Substitute your own weight and height...
+points(73 * 2.54, 178 / 2.2, col="red", cex=4, pch=20)
+```
+
+- Class and available 'methods'
+
+```{r, eval=FALSE}
+class(fit)                 # 'noun'
+methods(class=class(fit))  # 'verb'
+```
+
+- Diagnostics
+
+```{r, eval=FALSE}
+plot(fit)
+?plot.lm
+```
+
