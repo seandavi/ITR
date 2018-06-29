@@ -50,6 +50,8 @@ navbar:
           href: further_resources.html
         - text: "Source code for this site"
           href: https://github.com/seandavi/ITR
+        - text: "Download materials"
+          href: https://github.com/seandavi/ITR/archive/master.zip
 output:
   html_document:
     theme: default
