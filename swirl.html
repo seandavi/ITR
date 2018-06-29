@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Martin Morgan Martin.Morgan@RoswellPark.org &amp; Sean Davis seandavi@gmail.com" />
 
 
-<title>R Work Flows and Data Visualization</title>
+<title>Swirl</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -384,131 +383,32 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R Work Flows and Data Visualization</h1>
-<h4 class="author"><em>Martin Morgan <a href="mailto:Martin.Morgan@RoswellPark.org">Martin.Morgan@RoswellPark.org</a> &amp; Sean Davis <a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></em></h4>
+<h1 class="title toc-ignore">Swirl</h1>
 
 </div>
 
 
-<div id="using-r-in-real-life" class="section level1">
-<h1>Using <em>R</em> in real life</h1>
-<div id="organizing-work" class="section level2">
-<h2>Organizing work</h2>
-<p>Usually, work is organized into a directory with:</p>
-<ul>
-<li>A folder containing <em>R</em> scripts (<code>scripts/BRFSS-visualize.R</code>)</li>
-<li>‘External’ data like the csv files that we’ve been working with, usually in a separate folder (<code>extdata/BRFSS-subset.csv</code>)</li>
-<li>(sometimes) <em>R</em> objects written to disk using <code>saveRDS()</code> (<code>.rds</code> files) that represent final results or intermediate ‘checkpoints’ (<code>extdata/ALL-cleaned.rds</code>). Read the data into an <em>R</em> session using <code>readRDS()</code>.</li>
-<li>Use <code>setwd()</code> to navigate to folder containing scripts/, extdata/ folder</li>
-<li>Source an entire script with <code>source(&quot;scripts/BRFSS-visualization.R&quot;)</code>.</li>
-</ul>
-<p><em>R</em> can also save the state of the current session (prompt when choosing to <code>quit()</code> <em>R</em>), and to view and save the <code>history()</code> of the the current session; I do not find these to be helpful in my own work flows.</p>
+<p>The following is from the <a href="http://swirlstats.com/students.html">swirl website</a>.</p>
+<blockquote>
+<p>The swirl R package makes it fun and easy to learn R programming and data science. If you are new to R, have no fear.</p>
+</blockquote>
+<p>Swirl is an interactive system for learning <em>R</em>, written and used in <em>R</em>.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>To get started, we need to install a new package into R.</p>
+<pre class="r"><code>install.packages(&#39;swirl&#39;)</code></pre>
 </div>
-<div id="r-packages" class="section level2">
-<h2><em>R</em> Packages</h2>
-<p>All the functionality we have been using comes from <em>packages</em> that are automatically <em>loaded</em> when <em>R</em> starts. Loaded packages are on the <code>search()</code> path.</p>
-<pre class="r"><code>search()</code></pre>
-<pre><code>##  [1] &quot;.GlobalEnv&quot;           &quot;package:RColorBrewer&quot; &quot;package:knitr&quot;       
-##  [4] &quot;package:nycflights13&quot; &quot;package:ggplot2&quot;      &quot;tools:rstudio&quot;       
-##  [7] &quot;package:stats&quot;        &quot;package:graphics&quot;     &quot;package:grDevices&quot;   
-## [10] &quot;package:utils&quot;        &quot;package:datasets&quot;     &quot;package:methods&quot;     
-## [13] &quot;Autoloads&quot;            &quot;package:base&quot;</code></pre>
-<p>Additional packages may be <em>installed</em> in <em>R</em>’s libraries. Use `installed.packages() or the <em>RStudio</em> interface to see installed packages. To use these packages, it is necessary to attach them to the search path, e.g., for survival analysis</p>
-<pre class="r"><code>library(&quot;survival&quot;)</code></pre>
-<p>There are many thousands of <em>R</em> packages, and not all of them are installed in a single installation. Important repositories are</p>
-<ul>
-<li>CRAN: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></li>
-<li>Bioconductor: <a href="https://bioconductor.org/packages" class="uri">https://bioconductor.org/packages</a></li>
-</ul>
-<p>Packages can be discovered in various ways, including <a href="https://cran.r-project.org/web/views/">CRAN Task Views</a> and the <a href="https://bioconductor.org"><em>Bioconductor</em> web</a> and <a href="https://support.bioconductor.org"><em>Bioconductor</em> support</a> sites.</p>
-<p>To install a package, use <code>install.packages()</code> or, for <em>Bioconductor</em> packages, instructions on the package landing page, e.g., for <a href="https://bioconductor.org/packages/GenomicRanges">GenomicRanges</a>. Here we install the <a href="https://cran.r-project.org/package=ggplot2">ggplot2</a> package.</p>
-<pre class="r"><code>install.packages(&quot;ggplot2&quot;, repos=&quot;https://cran.r-project.org&quot;)</code></pre>
-<p>A package needs to be installed once, and then can be used in any <em>R</em> session.</p>
+<div id="use" class="section level2">
+<h2>Use</h2>
+<p>Once installed, we want to load it into the R workspace so we can use it.</p>
+<pre class="r"><code>library(&#39;swirl&#39;)</code></pre>
+<p>Finally, to get going, start swirl and follow the instructions.</p>
+<pre class="r"><code>swirl()</code></pre>
 </div>
-</div>
-<div id="graphics-and-visualization" class="section level1">
-<h1>Graphics and Visualization</h1>
-<p>Load the BRFSS-subset.csv data</p>
-<!--
-
-```r
-path <- "BRFSS-subset.csv"
-brfss <- read.csv(path)
-```
--->
-<pre class="r"><code>path &lt;- &quot;BRFSS-subset.csv&quot;   # or file.choose()
-brfss &lt;- read.csv(path)</code></pre>
-<p>Clean it by coercing <code>Year</code> to factor</p>
-<pre class="r"><code>brfss$Year &lt;- factor(brfss$Year)</code></pre>
-<div id="base-r-graphics" class="section level2">
-<h2>Base <em>R</em> Graphics</h2>
-<p>Useful for quick exploration during a normal work flow.</p>
-<ul>
-<li>Main functions: <code>plot()</code>, <code>hist()</code>, <code>boxplot()</code>, …</li>
-<li>Graphical parameters – see <code>?par</code>, but often provided as arguments to <code>plot()</code>, etc.</li>
-<li><p>Construct complicated plots by layering information, e.g., points, regression line, annotation.</p>
-<pre class="r"><code>brfss2010Male &lt;- subset(brfss, (Year == 2010) &amp; (Sex == &quot;Male&quot;))
-fit &lt;- lm(Weight ~ Height, brfss2010Male)
-
-plot(Weight ~ Height, brfss2010Male, main=&quot;2010, Males&quot;)
-abline(fit, lwd=2, col=&quot;blue&quot;)
-points(180, 90, pch=20, cex=3, col=&quot;red&quot;)</code></pre>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p></li>
-<li><p>Approach to complicated graphics: create a grid of panels (e.g., <code>par(mfrows=c(1, 2))</code>, populate with plots, restore original layout.</p>
-<pre class="r"><code>brfssFemale &lt;- subset(brfss, Sex==&quot;Female&quot;)
-
-opar = par(mfrow=c(2, 1))     # layout: 2 &#39;rows&#39; and 1 &#39;column&#39;
-hist(                         # first panel -- 1990
-    brfssFemale[ brfssFemale$Year == 1990, &quot;Weight&quot; ],
-    main = &quot;Female, 1990&quot;)
-hist(                         # second panel -- 2010
-    brfssFemale[ brfssFemale$Year == 2010, &quot;Weight&quot; ],
-    main = &quot;Female, 2010&quot;)</code></pre>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>par(opar)                      # restore original layout</code></pre></li>
-</ul>
-</div>
-<div id="what-makes-for-a-good-graphical-display" class="section level2">
-<h2>What makes for a good graphical display?</h2>
-<ul>
-<li>Common scales for comparison</li>
-<li>Efficient use of space</li>
-<li>Careful color choice – qualitative, gradient, divergent schemes; color blind aware; …</li>
-<li>Emphasis on data rather than labels</li>
-<li>Convey statistical uncertainty</li>
-</ul>
-</div>
-<div id="grammar-of-graphics-ggplot2" class="section level2">
-<h2>Grammar of Graphics: ggplot2</h2>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<ul>
-<li><a href="http://docs.ggplot2.org" class="uri">http://docs.ggplot2.org</a></li>
-</ul>
-<p>‘Grammar of graphics’</p>
-<ul>
-<li>Specify data and ‘aesthetics’ (<code>aes()</code>) to be plotted</li>
-<li><p>Add layers (<code>geom_*()</code>) of information</p>
-<pre class="r"><code>ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
-    geom_point() +
-    geom_smooth(method=&quot;lm&quot;)</code></pre>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p></li>
-<li><p>Capture a plot and augment it</p>
-<pre class="r"><code>plt &lt;- ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
-    geom_point() +
-    geom_smooth(method=&quot;lm&quot;)
-plt + labs(title = &quot;2010 Male&quot;)</code></pre>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p></li>
-<li><p>Use <code>facet_*()</code> for layouts</p>
-<pre class="r"><code>ggplot(brfssFemale, aes(x=Height, y=Weight)) +
-    geom_point() + geom_smooth(method=&quot;lm&quot;) +
-    facet_grid(. ~ Year)</code></pre>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p></li>
-<li><p>Choose display to emphasize relevant aspects of data</p>
-<pre class="r"><code>ggplot(brfssFemale, aes(Weight, fill=Year)) +
-    geom_density(alpha=.2)</code></pre>
-<p><img src="D4_Graphics_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p></li>
-</ul>
-</div>
+<div id="installing-courses" class="section level2">
+<h2>Installing courses</h2>
+<p>The first time you start swirl, you’ll be prompted to install a course. You can either install one of the recommended courses or visit the <a href="https://github.com/swirldev/swirl_courses#swirl-courses">course repository</a> for more options. There are even more courses available from the Swirl Course Network.</p>
+<p>If you’d like to install a course that is not part of our course repository, type <code>?InstallCourses</code> at the R prompt for a list of functions that will help you do so.</p>
 </div>
 
     <script>

@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Martin Morgan Martin.Morgan@RoswellPark.org &amp; Sean Davis seandavi@gmail.com" />
 
 
-<title>Data Input and Manipulation</title>
+<title>Multivariate data analysis: Acute Leukemia</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -288,9 +287,6 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="about.html">About</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -323,6 +319,9 @@ div.tocify {
       <a href="dataframes_intro.html">Dataframes</a>
     </li>
     <li>
+      <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
+    </li>
+    <li>
       <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
     </li>
     <li>
@@ -336,21 +335,11 @@ div.tocify {
     <li>
       <a href="vector_exercises.html">Vectors</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-question fa-lg"></span>
-     
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="further_resources.html">Further resources</a>
+      <a href="data_input_and_manipulation_exercises.html">Data input and manipulation exercises</a>
     </li>
     <li>
-      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+      <a href="swirl.html">Swirl</a>
     </li>
   </ul>
 </li>
@@ -368,6 +357,23 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+  </ul>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -377,164 +383,11 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Input and Manipulation</h1>
-<h4 class="author"><em>Martin Morgan <a href="mailto:Martin.Morgan@RoswellPark.org">Martin.Morgan@RoswellPark.org</a> &amp; Sean Davis <a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></em></h4>
+<h1 class="title toc-ignore">Multivariate data analysis: Acute Leukemia</h1>
 
 </div>
 
 
-<div id="data-input-and-exploration" class="section level1">
-<h1>Data Input and Exploration</h1>
-<div id="behavioral-risk-factor-surveillance-system" class="section level2">
-<h2>Behavioral Risk Factor Surveillance System</h2>
-<p>We will explore a subset of data collected by the CDC through its extensive Behavioral Risk Factor Surveillance System (<a href="http://www.cdc.gov/brfss/about/index.htm">BRFSS</a>) telephone survey. Check out the link for more information. We’ll look at a subset of the data.</p>
-<p>First, we need to get the data. Either download the data from <a href="BRFSS-subset.csv">THIS LINK</a> or have R do it directly from the command-line (preferred):</p>
-<pre class="r"><code>download.file(&#39;https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv&#39;,
-              destfile = &#39;BRFSS-subset.csv&#39;)</code></pre>
-<p>You can check to see the file using the Rstudio file panel or get a directory listing using <code>dir()</code></p>
-<ol style="list-style-type: decimal">
-<li><p>Use <code>file.choose()</code> to find the path to the file ‘BRFSS-subset.csv’</p>
-<pre class="r"><code>path &lt;- file.choose()</code></pre></li>
-</ol>
-<!--
-    
--->
-<ol start="2" style="list-style-type: decimal">
-<li><p>Read the data into R using <code>read.csv()</code>, assigning to a variable <code>brfss</code>.</p>
-<pre class="r"><code>brfss &lt;- read.csv(path)</code></pre></li>
-<li><p>Use command like <code>class()</code>, <code>head()</code>, <code>dim()</code>, <code>summary()</code> to explore the data.</p>
-<ul>
-<li><p>What variables have been measured?</p></li>
-<li><p>Can you guess at the units used for, e.g., Weight and Height?</p></li>
-</ul>
-<pre><code>class(brfss)
-head(brfss)
-dim(brfss)
-summary(brfss)</code></pre></li>
-<li><p>Use the <code>$</code> operator to extract the ‘Sex’ column, and summarize the number of males and females in the survey using <code>table()</code>. Do the same for ‘Year’, and for both <code>Sex</code> and <code>Year</code></p>
-<pre class="r"><code>table(brfss$Sex)</code></pre>
-<pre><code>## 
-## Female   Male 
-##  12039   7961</code></pre>
-<pre class="r"><code>table(brfss$Year)</code></pre>
-<pre><code>## 
-##  1990  2010 
-## 10000 10000</code></pre>
-<pre class="r"><code>table(brfss$Sex, brfss$Year)</code></pre>
-<pre><code>##         
-##          1990 2010
-##   Female 5718 6321
-##   Male   4282 3679</code></pre>
-<pre class="r"><code>with(brfss, table(Sex, Year))                # same, but easier</code></pre>
-<pre><code>##         Year
-## Sex      1990 2010
-##   Female 5718 6321
-##   Male   4282 3679</code></pre></li>
-<li><p>Use <code>aggregate()</code> to summarize the mean weight of each group. What about the median weight of each group? What about the <em>number</em> of observations in each group?</p>
-<pre class="r"><code>with(brfss, aggregate(Weight, list(Year, Sex), mean, na.rm=TRUE))</code></pre>
-<pre><code>##   Group.1 Group.2        x
-## 1    1990  Female 64.81838
-## 2    2010  Female 72.95424
-## 3    1990    Male 81.17999
-## 4    2010    Male 88.84657</code></pre>
-<pre class="r"><code>with(brfss, aggregate(Weight, list(Year=Year, Sex=Sex), mean, na.rm=TRUE))</code></pre>
-<pre><code>##   Year    Sex        x
-## 1 1990 Female 64.81838
-## 2 2010 Female 72.95424
-## 3 1990   Male 81.17999
-## 4 2010   Male 88.84657</code></pre></li>
-<li><p>Use a <code>formula</code> and the <code>aggregate()</code> function to describe the relationship between Year, Sex, and Weight</p>
-<pre class="r"><code>aggregate(Weight ~ Year + Sex, brfss, mean)  # same, but more informative</code></pre>
-<pre><code>##   Year    Sex   Weight
-## 1 1990 Female 64.81838
-## 2 2010 Female 72.95424
-## 3 1990   Male 81.17999
-## 4 2010   Male 88.84657</code></pre>
-<pre class="r"><code>aggregate(. ~ Year + Sex, brfss, mean)       # all variables</code></pre>
-<pre><code>##   Year    Sex      Age   Weight   Height
-## 1 1990 Female 46.09153 64.84333 163.2914
-## 2 2010 Female 57.07807 73.03178 163.2469
-## 3 1990   Male 43.87574 81.19496 178.2242
-## 4 2010   Male 56.25465 88.91136 178.0139</code></pre></li>
-<li><p>Create a subset of the data consisting of only the 1990 observations. Perform a t-test comparing the weight of males and females (“‘Weight’ as a function of ‘Sex’”, <code>Weight ~ Sex</code>)</p>
-<pre class="r"><code>brfss_1990 = brfss[brfss$Year == 1990,]
-t.test(Weight ~ Sex, brfss_1990)</code></pre>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  Weight by Sex
-## t = -58.734, df = 9214, p-value &lt; 2.2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -16.90767 -15.81554
-## sample estimates:
-## mean in group Female   mean in group Male 
-##             64.81838             81.17999</code></pre>
-<pre class="r"><code>t.test(Weight ~ Sex, brfss, subset = Year == 1990)</code></pre>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  Weight by Sex
-## t = -58.734, df = 9214, p-value &lt; 2.2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -16.90767 -15.81554
-## sample estimates:
-## mean in group Female   mean in group Male 
-##             64.81838             81.17999</code></pre>
-<p>What about differences between weights of males (or females) in 1990 versus 2010? Check out the help page <code>?t.test.formula</code>. Is there a way of performing a t-test on <code>brfss</code> without explicitly creating the object <code>brfss_1990</code>?</p></li>
-<li><p>Use <code>boxplot()</code> to plot the weights of the Male individuals. Can you transform weight, e.g., <code>sqrt(Weight) ~ Year</code>? Interpret the results. Do similar boxplots for the t-tests of the previous question.</p>
-<pre class="r"><code>boxplot(Weight ~ Year, brfss, subset = Sex == &quot;Male&quot;,
-        main=&quot;Males&quot;)</code></pre>
-<p><img src="D2_IO_files/figure-html/brfss-boxplot-1.png" width="480" /></p></li>
-<li><p>Use <code>hist()</code> to plot a histogram of weights of the 1990 Female individuals.</p>
-<pre class="r"><code>hist(brfss_1990[brfss_1990$Sex == &quot;Female&quot;, &quot;Weight&quot;],
-     main=&quot;Females, 1990&quot;, xlab=&quot;Weight&quot; )</code></pre>
-<p><img src="D2_IO_files/figure-html/brfss-hist-1.png" width="480" /></p></li>
-</ol>
-<div id="ggplot2" class="section level3">
-<h3>ggplot2</h3>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<ul>
-<li><a href="http://docs.ggplot2.org" class="uri">http://docs.ggplot2.org</a></li>
-</ul>
-<p>‘Grammar of graphics’</p>
-<ul>
-<li>Specify data and ‘aesthetics’ (<code>aes()</code>) to be plotted</li>
-<li>Add layers (<code>geom_*()</code>) of information</li>
-</ul>
-<p>Clean it by coercing <code>Year</code> to factor. A factor is a categorical variable. In this case, our data have only two years represented, so we will treat these two years as “groups” or categories.</p>
-<pre class="r"><code>brfss$Year &lt;- factor(brfss$Year)</code></pre>
-<p>Let’s make a couple of subsets of data to work with. First, let’s subset to get only males in 2010.</p>
-<pre class="r"><code>brfss2010Male = subset(brfss,Sex==&#39;Male&#39; &amp; Year==&#39;2010&#39;)</code></pre>
-<p>and make an “only female” subset.</p>
-<pre class="r"><code>brfssFemale = subset(brfss,Sex==&#39;Female&#39;)</code></pre>
-<pre><code>```r
-ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
-    geom_point() +
-    geom_smooth(method=&quot;lm&quot;)
-```
-
-&lt;img src=&quot;D2_IO_files/figure-html/unnamed-chunk-4-1.png&quot; width=&quot;672&quot; /&gt;</code></pre>
-<ul>
-<li><p>Capture a plot and augment it</p>
-<pre class="r"><code>plt &lt;- ggplot(brfss2010Male, aes(x=Height, y=Weight)) +
-    geom_point() +
-    geom_smooth(method=&quot;lm&quot;)
-plt + labs(title = &quot;2010 Male&quot;)</code></pre>
-<p><img src="D2_IO_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p></li>
-<li><p>Use <code>facet_*()</code> for layouts</p>
-<pre class="r"><code>ggplot(brfssFemale, aes(x=Height, y=Weight)) +
-    geom_point() + geom_smooth(method=&quot;lm&quot;) +
-    facet_grid(. ~ Year)</code></pre>
-<p><img src="D2_IO_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p></li>
-<li><p>Choose display to emphasize relevant aspects of data</p>
-<pre class="r"><code>ggplot(brfssFemale, aes(Weight, fill=Year)) +
-    geom_density(alpha=.2)</code></pre>
-<p><img src="D2_IO_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p></li>
-</ul>
-</div>
-</div>
 <div id="all-phenotypic-data" class="section level2">
 <h2>ALL Phenotypic Data</h2>
 <p>This data comes from an (old) Acute Lymphoid Leukemia microarray data set. The actual data are available at <a href="https://raw.githubusercontent.com/seandavi/ITR/master/ALL-phenoData.csv">THIS LINK</a> or by downloading using R.</p>
@@ -745,26 +598,118 @@ table(bcrabl$BT)</code></pre>
 ## 3  T      NEG               32</code></pre>
 <p>Use <code>aggregate()</code> to calculate the average age of males and females in the BCR/ABL and NEG treatment groups.</p>
 <pre class="r"><code>aggregate(age ~ mol.biol + sex, bcrabl, mean)</code></pre>
-<pre><code>##   mol.biol sex      age
-## 1  BCR/ABL   F 39.93750
-## 2      NEG   F 30.42105
-## 3  BCR/ABL   M 40.50000
-## 4      NEG   M 27.21154</code></pre>
+<pre><code>##   mol.biol sex  age
+## 1  BCR/ABL   F 39.9
+## 2      NEG   F 30.4
+## 3  BCR/ABL   M 40.5
+## 4      NEG   M 27.2</code></pre>
 <p>Use <code>t.test()</code> to compare the age of individuals in the BCR/ABL versus NEG groups; visualize the results using <code>boxplot()</code>. In both cases, use the <code>formula</code> interface. Consult the help page <code>?t.test</code> and re-do the test assuming that variance of ages in the two groups is identical. What parts of the test output change?</p>
 <pre class="r"><code>t.test(age ~ mol.biol, bcrabl)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
 ## data:  age by mol.biol
-## t = 4.8172, df = 68.529, p-value = 8.401e-06
+## t = 5, df = 70, p-value = 8e-06
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##   7.13507 17.22408
+##   7.14 17.22
 ## sample estimates:
 ## mean in group BCR/ABL     mean in group NEG 
-##              40.25000              28.07042</code></pre>
+##                  40.2                  28.1</code></pre>
 <pre class="r"><code>boxplot(age ~ mol.biol, bcrabl)</code></pre>
-<p><img src="D2_IO_files/figure-html/ALL-age-1.png" width="672" /></p>
+<p><img src="multivariate_leukemia_phenotype_files/figure-html/ALL-age-1.png" width="672" /></p>
+</div>
+<div id="multivariate-analysis" class="section level1">
+<h1>Multivariate analysis</h1>
+<p>This is a classic microarray experiment. Microarrays consist of ‘probesets’ that interogate genes for their level of expression. In the experiment we’re looking at, there are 12625 probesets measured on each of the 128 samples. The raw expression levels estimated by microarray assays require considerable pre-processing, the data we’ll work with has been pre-processed.</p>
+<div id="input-and-setup" class="section level2">
+<h2>Input and setup</h2>
+<p>Start by finding the expression data file on disk.</p>
+<!--
+
+-->
+<pre class="r"><code>path &lt;- file.choose()          # look for ALL-expression.csv
+stopifnot(file.exists(path))</code></pre>
+<p>The data is stored in ‘comma-separate value’ format, with each probeset occupying a line, and the expression value for each sample in that probeset separated by a comma. Input the data using <code>read.csv()</code>. There are three challenges:</p>
+<ol style="list-style-type: decimal">
+<li>The row names are present in the first column of the data. Tell <em>R</em> this by adding the argument <code>row.names=1</code> to <code>read.csv()</code>.</li>
+<li>By default, <em>R</em> checks that column names do not look like numbers, but our column names <em>do</em> look like numbers. Use the argument <code>check.colnames=FALSE</code> to over-ride <em>R</em>’s default.</li>
+<li><code>read.csv()</code> returns a <code>data.frame</code>. We could use a <code>data.frame</code> to work with our data, but really it is a <code>matrix()</code> – the columns are of the same type and measure the same thing. Use <code>as.matrix()</code> to coerce the <code>data.frame</code> we input to a <code>matrix</code>.</li>
+</ol>
+<pre class="r"><code>exprs &lt;- read.csv(path, row.names=1, check.names=FALSE)
+exprs &lt;- as.matrix(exprs)
+class(exprs)</code></pre>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<pre class="r"><code>dim(exprs)</code></pre>
+<pre><code>## [1] 12625   128</code></pre>
+<pre class="r"><code>exprs[1:6, 1:10]</code></pre>
+<pre><code>##           01005 01010 03002 04006 04007 04008 04010 04016 06002 08001
+## 1000_at    7.60  7.48  7.57  7.38  7.91  7.07  7.47  7.54  7.18  7.74
+## 1001_at    5.05  4.93  4.80  4.92  4.84  5.15  5.12  5.02  5.29  4.63
+## 1002_f_at  3.90  4.21  3.89  4.21  3.42  3.95  4.15  3.58  3.90  3.63
+## 1003_s_at  5.90  6.17  5.86  6.12  5.69  6.21  6.29  5.67  5.84  5.88
+## 1004_at    5.93  5.91  5.89  6.17  5.62  5.92  6.05  5.74  5.99  5.75
+## 1005_at    8.57 10.43  9.62  9.94  9.98 10.06 10.66 11.27  8.81 10.17</code></pre>
+<pre class="r"><code>range(exprs)</code></pre>
+<pre><code>## [1]  1.98 14.13</code></pre>
+<p>We’ll make use of the data describing the samples</p>
+<!--
+
+-->
+<pre class="r"><code>path &lt;- file.choose()         # look for ALL-phenoData.csv
+stopifnot(file.exists(path))</code></pre>
+<pre class="r"><code>pdata &lt;- read.csv(path, row.names=1)
+class(pdata)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>dim(pdata)</code></pre>
+<pre><code>## [1] 128  21</code></pre>
+<pre class="r"><code>head(pdata)</code></pre>
+<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
+## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
+## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
+## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
+## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
+## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
+## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
+##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
+## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
+## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
+## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
+## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
+## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
+## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
+##       relapse transplant               f.u date.last.seen
+## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
+## 01010    TRUE      FALSE               REL      8/28/2000
+## 03002    TRUE      FALSE               REL     10/15/1999
+## 04006    TRUE      FALSE               REL      1/23/1998
+## 04007    TRUE      FALSE               REL      11/4/1997
+## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
+<p>Some of the results below involve plots, and it’s convenient to choose pretty and functional colors. We use the <a href="https://cran.r-project.org/?package=RColorBrewer">RColorBrewer</a> package; see <a href="http://colorbrewer.org">colorbrewer.org</a></p>
+<pre class="r"><code>library(RColorBrewer)  ## not available? install package via RStudio
+highlight &lt;- brewer.pal(3, &quot;Set2&quot;)[1:2]</code></pre>
+<p>`highlight’ is a vector of length 2, light and dark green.</p>
+<p>For more options see <code>?RColorBrewer</code> and to view the predefined palettes <code>display.brewer.all()</code></p>
+</div>
+<div id="cleaning" class="section level2">
+<h2>Cleaning</h2>
+<p>We’ll add a column to <code>pdata</code>, derived from the <code>BT</code> column, to indicate whether the sample is B-cell or T-cell ALL.</p>
+<pre class="r"><code>pdata$BorT &lt;- factor(substr(pdata$BT, 1, 1))</code></pre>
+<p>Microarray expression data is usually represented as a matrix of genes as rows and samples as columns. Statisticians usually think of their data as samples as rows, features as columns. So we’ll transpose the expression values</p>
+<pre class="r"><code>exprs &lt;- t(exprs)</code></pre>
+<p>Confirm that the <code>pdata</code> rows correspond to the <code>exprs</code> rows.</p>
+<pre class="r"><code>stopifnot(identical(rownames(pdata), rownames(exprs)))</code></pre>
+</div>
+<div id="unsupervised-machine-learning-multi-dimensional-scaling" class="section level2">
+<h2>Unsupervised machine learning – multi-dimensional scaling</h2>
+<p>Reduce high-dimensional data to lower dimension for visualization.</p>
+<p>Calculate distance between <em>samples</em> (requires that the expression matrix be transposed).</p>
+<pre class="r"><code>d &lt;- dist(exprs)</code></pre>
+<p>Use the <code>cmdscale()</code> function to summarize the distance matrix into two points in two dimensions.</p>
+<pre class="r"><code>cmd &lt;- cmdscale(d)</code></pre>
+<p>Visualize the result, coloring points by B- or T-cell status</p>
+<pre class="r"><code>plot(cmd, col=highlight[pdata$BorT])</code></pre>
+<p><img src="multivariate_leukemia_phenotype_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 </div>
 

@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Martin Morgan Martin.Morgan@RoswellPark.org &amp; Sean Davis seandavi@gmail.com" />
 
 
-<title>Intro to Statistics with R</title>
+<title>Data exploration and univariate statistics</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -288,9 +287,6 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="about.html">About</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -323,6 +319,9 @@ div.tocify {
       <a href="dataframes_intro.html">Dataframes</a>
     </li>
     <li>
+      <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
+    </li>
+    <li>
       <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
     </li>
     <li>
@@ -336,21 +335,11 @@ div.tocify {
     <li>
       <a href="vector_exercises.html">Vectors</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-question fa-lg"></span>
-     
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="further_resources.html">Further resources</a>
+      <a href="data_input_and_manipulation_exercises.html">Data input and manipulation exercises</a>
     </li>
     <li>
-      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+      <a href="swirl.html">Swirl</a>
     </li>
   </ul>
 </li>
@@ -368,6 +357,23 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+  </ul>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -377,20 +383,25 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Intro to Statistics with R</h1>
-<h4 class="author"><em>Martin Morgan <a href="mailto:Martin.Morgan@RoswellPark.org">Martin.Morgan@RoswellPark.org</a> &amp; Sean Davis <a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></em></h4>
+<h1 class="title toc-ignore">Data exploration and univariate statistics</h1>
 
 </div>
 
 
-<div id="exploration-and-simple-univariate-measures" class="section level1">
-<h1>Exploration and simple univariate measures</h1>
+<!-- Thanks to Martin Morgan for much of this material! -->
+<div id="behavioral-risk-factor-surveillance-system" class="section level2">
+<h2>Behavioral Risk Factor Surveillance System</h2>
+<p>We will explore a subset of data collected by the CDC through its extensive Behavioral Risk Factor Surveillance System ([BRFSS][]) telephone survey. Check out the link for more information. We’ll look at a subset of the data.</p>
+<p>First, we need to get the data. Either download the data from <a href="BRFSS-subset.csv">THIS LINK</a> or have R do it directly from the command-line (preferred):</p>
+<pre class="r"><code>download.file(&#39;https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv&#39;,
+              destfile = &#39;BRFSS-subset.csv&#39;)</code></pre>
 <!--
 
 -->
 <pre class="r"><code>path &lt;- file.choose()    # look for BRFSS-subset.csv</code></pre>
 <pre class="r"><code>stopifnot(file.exists(path))
 brfss &lt;- read.csv(path)</code></pre>
+</div>
 <div id="clean-data" class="section level2">
 <h2>Clean data</h2>
 <p><em>R</em> read <code>Year</code> as an integer value, but it’s really a <code>factor</code></p>
@@ -398,63 +409,67 @@ brfss &lt;- read.csv(path)</code></pre>
 </div>
 <div id="weight-in-1990-vs.2010-females" class="section level2">
 <h2>Weight in 1990 vs. 2010 Females</h2>
-<p>Create a subset of the data</p>
+<ul>
+<li>Create a subset of the data</li>
+</ul>
 <pre class="r"><code>brfssFemale &lt;- brfss[brfss$Sex == &quot;Female&quot;,]
 summary(brfssFemale)</code></pre>
-<pre><code>##       Age            Weight           Sex            Height     
-##  Min.   :18.00   Min.   : 36.29   Female:12039   Min.   :105.0  
-##  1st Qu.:37.00   1st Qu.: 57.61   Male  :    0   1st Qu.:157.5  
-##  Median :52.00   Median : 65.77                  Median :163.0  
-##  Mean   :51.92   Mean   : 69.05                  Mean   :163.3  
-##  3rd Qu.:67.00   3rd Qu.: 77.11                  3rd Qu.:168.0  
-##  Max.   :99.00   Max.   :272.16                  Max.   :200.7  
-##  NA&#39;s   :103     NA&#39;s   :560                     NA&#39;s   :140    
-##    Year     
-##  1990:5718  
-##  2010:6321  
-##             
-##             
-##             
-##             
-## </code></pre>
-<p>Visualize</p>
+<pre><code>##       Age           Weight        Sex            Height      Year     
+##  Min.   :18.0   Min.   : 36   Female:12039   Min.   :105   1990:5718  
+##  1st Qu.:37.0   1st Qu.: 58   Male  :    0   1st Qu.:158   2010:6321  
+##  Median :52.0   Median : 66                  Median :163              
+##  Mean   :51.9   Mean   : 69                  Mean   :163              
+##  3rd Qu.:67.0   3rd Qu.: 77                  3rd Qu.:168              
+##  Max.   :99.0   Max.   :272                  Max.   :201              
+##  NA&#39;s   :103    NA&#39;s   :560                  NA&#39;s   :140</code></pre>
+<ul>
+<li>Visualize</li>
+</ul>
 <pre class="r"><code>plot(Weight ~ Year, brfssFemale)</code></pre>
-<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Statistical test</p>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>Statistical test</li>
+</ul>
 <pre class="r"><code>t.test(Weight ~ Year, brfssFemale)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
 ## data:  Weight by Year
-## t = -27.133, df = 11079, p-value &lt; 2.2e-16
+## t = -30, df = 10000, p-value &lt;2e-16
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -8.723607 -7.548102
+##  -8.72 -7.55
 ## sample estimates:
 ## mean in group 1990 mean in group 2010 
-##           64.81838           72.95424</code></pre>
+##               64.8               73.0</code></pre>
 </div>
 <div id="weight-and-height-in-2010-males" class="section level2">
 <h2>Weight and height in 2010 Males</h2>
-<p>Create a subset of the data</p>
+<ul>
+<li>Create a subset of the data</li>
+</ul>
 <pre class="r"><code>brfss2010Male &lt;- subset(brfss,  Year == 2010 &amp; Sex == &quot;Male&quot;)
 summary(brfss2010Male)</code></pre>
-<pre><code>##       Age            Weight           Sex           Height      Year     
-##  Min.   :18.00   Min.   : 36.29   Female:   0   Min.   :135   1990:   0  
-##  1st Qu.:45.00   1st Qu.: 77.11   Male  :3679   1st Qu.:173   2010:3679  
-##  Median :57.00   Median : 86.18                 Median :178              
-##  Mean   :56.25   Mean   : 88.85                 Mean   :178              
-##  3rd Qu.:68.00   3rd Qu.: 99.79                 3rd Qu.:183              
-##  Max.   :99.00   Max.   :278.96                 Max.   :218              
-##  NA&#39;s   :30      NA&#39;s   :49                     NA&#39;s   :31</code></pre>
-<p>Visualize the relationship</p>
+<pre><code>##       Age           Weight          Sex           Height      Year     
+##  Min.   :18.0   Min.   : 36.3   Female:   0   Min.   :135   1990:   0  
+##  1st Qu.:45.0   1st Qu.: 77.1   Male  :3679   1st Qu.:173   2010:3679  
+##  Median :57.0   Median : 86.2                 Median :178              
+##  Mean   :56.2   Mean   : 88.8                 Mean   :178              
+##  3rd Qu.:68.0   3rd Qu.: 99.8                 3rd Qu.:183              
+##  Max.   :99.0   Max.   :279.0                 Max.   :218              
+##  NA&#39;s   :30     NA&#39;s   :49                    NA&#39;s   :31</code></pre>
+<ul>
+<li>Visualize the relationship</li>
+</ul>
 <pre class="r"><code>hist(brfss2010Male$Weight)</code></pre>
-<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>hist(brfss2010Male$Height)</code></pre>
-<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <pre class="r"><code>plot(Weight ~ Height, brfss2010Male)</code></pre>
-<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
-<p>Fit a linear model (regression)</p>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<ul>
+<li>Fit a linear model (regression)</li>
+</ul>
 <pre class="r"><code>fit &lt;- lm(Weight ~ Height, brfss2010Male)
 fit</code></pre>
 <pre><code>## 
@@ -463,129 +478,35 @@ fit</code></pre>
 ## 
 ## Coefficients:
 ## (Intercept)       Height  
-##    -86.8747       0.9873</code></pre>
+##     -86.875        0.987</code></pre>
 <p>Summarize as ANOVA table</p>
 <pre class="r"><code>anova(fit)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: Weight
-##             Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## Height       1  197664  197664   693.8 &lt; 2.2e-16 ***
-## Residuals 3617 1030484     285                      
+##             Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## Height       1  197664  197664     694 &lt;2e-16 ***
+## Residuals 3617 1030484     285                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Plot points, superpose fitted regression line; where am I?</p>
+<ul>
+<li>Plot points, superpose fitted regression line; where am I?</li>
+</ul>
 <pre class="r"><code>plot(Weight ~ Height, brfss2010Male)
 abline(fit, col=&quot;blue&quot;, lwd=2)
-points(180, 88, col=&quot;red&quot;, cex=4, pch=20)</code></pre>
-<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Class and available ‘methods’</p>
+# Substitute your own weight and height...
+points(73 * 2.54, 178 / 2.2, col=&quot;red&quot;, cex=4, pch=20)</code></pre>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>Class and available ‘methods’</li>
+</ul>
 <pre class="r"><code>class(fit)                 # &#39;noun&#39;
 methods(class=class(fit))  # &#39;verb&#39;</code></pre>
-<p>Diagnostics</p>
+<ul>
+<li>Diagnostics</li>
+</ul>
 <pre class="r"><code>plot(fit)
 ?plot.lm</code></pre>
-</div>
-</div>
-<div id="multivariate-analysis" class="section level1">
-<h1>Multivariate analysis</h1>
-<p>This is a classic microarray experiment. Microarrays consist of ‘probesets’ that interogate genes for their level of expression. In the experiment we’re looking at, there are 12625 probesets measured on each of the 128 samples. The raw expression levels estimated by microarray assays require considerable pre-processing, the data we’ll work with has been pre-processed.</p>
-<div id="input-and-setup" class="section level2">
-<h2>Input and setup</h2>
-<p>Start by finding the expression data file on disk.</p>
-<!--
-
--->
-<pre class="r"><code>path &lt;- file.choose()          # look for ALL-expression.csv
-stopifnot(file.exists(path))</code></pre>
-<p>The data is stored in ‘comma-separate value’ format, with each probeset occupying a line, and the expression value for each sample in that probeset separated by a comma. Input the data using <code>read.csv()</code>. There are three challenges:</p>
-<ol style="list-style-type: decimal">
-<li>The row names are present in the first column of the data. Tell <em>R</em> this by adding the argument <code>row.names=1</code> to <code>read.csv()</code>.</li>
-<li>By default, <em>R</em> checks that column names do not look like numbers, but our column names <em>do</em> look like numbers. Use the argument <code>check.colnames=FALSE</code> to over-ride <em>R</em>’s default.</li>
-<li><code>read.csv()</code> returns a <code>data.frame</code>. We could use a <code>data.frame</code> to work with our data, but really it is a <code>matrix()</code> – the columns are of the same type and measure the same thing. Use <code>as.matrix()</code> to coerce the <code>data.frame</code> we input to a <code>matrix</code>.</li>
-</ol>
-<pre class="r"><code>exprs &lt;- read.csv(path, row.names=1, check.names=FALSE)
-exprs &lt;- as.matrix(exprs)
-class(exprs)</code></pre>
-<pre><code>## [1] &quot;matrix&quot;</code></pre>
-<pre class="r"><code>dim(exprs)</code></pre>
-<pre><code>## [1] 12625   128</code></pre>
-<pre class="r"><code>exprs[1:6, 1:10]</code></pre>
-<pre><code>##              01005     01010    03002    04006    04007     04008
-## 1000_at   7.597323  7.479445 7.567593 7.384684 7.905312  7.065914
-## 1001_at   5.046194  4.932537 4.799294 4.922627 4.844565  5.147762
-## 1002_f_at 3.900466  4.208155 3.886169 4.206798 3.416923  3.945869
-## 1003_s_at 5.903856  6.169024 5.860459 6.116890 5.687997  6.208061
-## 1004_at   5.925260  5.912780 5.893209 6.170245 5.615210  5.923487
-## 1005_at   8.570990 10.428299 9.616713 9.937155 9.983809 10.063484
-##               04010     04016    06002     08001
-## 1000_at    7.474537  7.536119 7.183331  7.735545
-## 1001_at    5.122518  5.016132 5.288943  4.633217
-## 1002_f_at  4.150506  3.576360 3.900935  3.630190
-## 1003_s_at  6.292713  5.665991 5.842326  5.875375
-## 1004_at    6.046607  5.738218 5.994515  5.748350
-## 1005_at   10.662059 11.269115 8.812869 10.165159</code></pre>
-<pre class="r"><code>range(exprs)</code></pre>
-<pre><code>## [1]  1.984919 14.126571</code></pre>
-<p>We’ll make use of the data describing the samples</p>
-<!--
-
--->
-<pre class="r"><code>path &lt;- file.choose()         # look for ALL-phenoData.csv
-stopifnot(file.exists(path))</code></pre>
-<pre class="r"><code>pdata &lt;- read.csv(path, row.names=1)
-class(pdata)</code></pre>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<pre class="r"><code>dim(pdata)</code></pre>
-<pre><code>## [1] 128  21</code></pre>
-<pre class="r"><code>head(pdata)</code></pre>
-<pre><code>##        cod diagnosis sex age BT remission CR   date.cr t.4.11. t.9.22.
-## 01005 1005 5/21/1997   M  53 B2        CR CR  8/6/1997   FALSE    TRUE
-## 01010 1010 3/29/2000   M  19 B2        CR CR 6/27/2000   FALSE   FALSE
-## 03002 3002 6/24/1998   F  52 B4        CR CR 8/17/1998      NA      NA
-## 04006 4006 7/17/1997   M  38 B1        CR CR  9/8/1997    TRUE   FALSE
-## 04007 4007 7/22/1997   M  57 B2        CR CR 9/17/1997   FALSE   FALSE
-## 04008 4008 7/30/1997   M  17 B1        CR CR 9/27/1997   FALSE   FALSE
-##       cyto.normal        citog mol.biol fusion.protein mdr   kinet   ccr
-## 01005       FALSE      t(9;22)  BCR/ABL           p210 NEG dyploid FALSE
-## 01010       FALSE  simple alt.      NEG           &lt;NA&gt; POS dyploid FALSE
-## 03002          NA         &lt;NA&gt;  BCR/ABL           p190 NEG dyploid FALSE
-## 04006       FALSE      t(4;11) ALL1/AF4           &lt;NA&gt; NEG dyploid FALSE
-## 04007       FALSE      del(6q)      NEG           &lt;NA&gt; NEG dyploid FALSE
-## 04008       FALSE complex alt.      NEG           &lt;NA&gt; NEG hyperd. FALSE
-##       relapse transplant               f.u date.last.seen
-## 01005   FALSE       TRUE BMT / DEATH IN CR           &lt;NA&gt;
-## 01010    TRUE      FALSE               REL      8/28/2000
-## 03002    TRUE      FALSE               REL     10/15/1999
-## 04006    TRUE      FALSE               REL      1/23/1998
-## 04007    TRUE      FALSE               REL      11/4/1997
-## 04008    TRUE      FALSE               REL     12/15/1997</code></pre>
-<p>Some of the results below involve plots, and it’s convenient to choose pretty and functional colors. We use the <a href="https://cran.r-project.org/?package=RColorBrewer">RColorBrewer</a> package; see <a href="http://colorbrewer.org">colorbrewer.org</a></p>
-<pre class="r"><code>library(RColorBrewer)  ## not available? install package via RStudio
-highlight &lt;- brewer.pal(3, &quot;Set2&quot;)[1:2]</code></pre>
-<p>`highlight’ is a vector of length 2, light and dark green.</p>
-<p>For more options see <code>?RColorBrewer</code> and to view the predefined palettes <code>display.brewer.all()</code></p>
-</div>
-<div id="cleaning" class="section level2">
-<h2>Cleaning</h2>
-<p>We’ll add a column to <code>pdata</code>, derived from the <code>BT</code> column, to indicate whether the sample is B-cell or T-cell ALL.</p>
-<pre class="r"><code>pdata$BorT &lt;- factor(substr(pdata$BT, 1, 1))</code></pre>
-<p>Microarray expression data is usually represented as a matrix of genes as rows and samples as columns. Statisticians usually think of their data as samples as rows, features as columns. So we’ll transpose the expression values</p>
-<pre class="r"><code>exprs &lt;- t(exprs)</code></pre>
-<p>Confirm that the <code>pdata</code> rows correspond to the <code>exprs</code> rows.</p>
-<pre class="r"><code>stopifnot(identical(rownames(pdata), rownames(exprs)))</code></pre>
-</div>
-<div id="unsupervised-machine-learning-multi-dimensional-scaling" class="section level2">
-<h2>Unsupervised machine learning – multi-dimensional scaling</h2>
-<p>Reduce high-dimensional data to lower dimension for visualization.</p>
-<p>Calculate distance between <em>samples</em> (requires that the expression matrix be transposed).</p>
-<pre class="r"><code>d &lt;- dist(exprs)</code></pre>
-<p>Use the <code>cmdscale()</code> function to summarize the distance matrix into two points in two dimensions.</p>
-<pre class="r"><code>cmd &lt;- cmdscale(d)</code></pre>
-<p>Visualize the result, coloring points by B- or T-cell status</p>
-<pre class="r"><code>plot(cmd, col=highlight[pdata$BorT])</code></pre>
-<p><img src="D3_Statistics_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-</div>
 </div>
 
     <script>
