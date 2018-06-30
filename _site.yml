@@ -6,6 +6,8 @@ navbar:
   left:
   - text: Home
     href: index.html
+  - text: About
+    href: about.html
   right:
   - icon: fa-cogs
     text: setup
