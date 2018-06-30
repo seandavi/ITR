@@ -319,16 +319,13 @@ div.tocify {
       <a href="dataframes_intro.html">Dataframes</a>
     </li>
     <li>
+      <a href="dplyr_intro_msleep.html">Introduction to dplyr</a>
+    </li>
+    <li>
       <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
     </li>
     <li>
-      <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
-    </li>
-    <li>
       <a href="B5_plotting.html">Plotting and Graphics</a>
-    </li>
-    <li>
-      <a href="factors.html">Factors</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">--- Exercises ---</li>
@@ -337,6 +334,9 @@ div.tocify {
     </li>
     <li>
       <a href="data_input_and_manipulation_exercises.html">Data input and manipulation exercises</a>
+    </li>
+    <li>
+      <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
     </li>
     <li>
       <a href="swirl.html">Swirl</a>
@@ -559,6 +559,55 @@ length(ydat$symbol)</code></pre>
 ## NA.3   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
 ## NA.4   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
 ## NA.5   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;</code></pre>
+<p>What is the problem with this approach? It appears that there are a bunch of <code>NA</code> values. Taking a quick look at the <code>symbol</code> column, we see what the problem.</p>
+<pre class="r"><code>summary(ydat$symbol)</code></pre>
+<pre><code>##      AAC1     AAD10     AAD14     AAD16      AAD4      AAD6      AAH1 
+##        36        36        36        36        36        36        36 
+##      AAP1     AAP1&#39;      AAT1      AAT2      ABC1      ABD1      ABF1 
+##        36        36        36        36        36        36        36 
+##      ABF2      ABP1    ABP140      ABZ1      ACA1      ACB1      ACC1 
+##        36        36        36        36        36        36        36 
+##      ACE2      ACF2      ACF4      ACH1      ACN9      ACO1      ACP1 
+##        36        36        36        36        36        36        36 
+##      ACS1      ACS2      ACT1      ADA2      ADE1     ADE12     ADE13 
+##        36        36        36        36        36        36        36 
+##     ADE16     ADE17      ADE2      ADE3      ADE4    ADE5,7      ADE6 
+##        36        36        36        36        36        36        36 
+##      ADE8      ADH1      ADH2      ADH3      ADH4      ADH5      ADH6 
+##        36        36        36        36        36        36        36 
+##      ADK1      ADO1      ADP1      ADR1      ADY3      ADY4      AEP1 
+##        36        36        36        36        36        36        36 
+##      AEP2      AEP3      AFG1      AFG2      AFG3      AFR1      AGA1 
+##        36        36        36        36        36        36        36 
+##      AGC1      AGE1      AGE2      AGP1      AGP3      AGX1      AHA1 
+##        36        36        36        36        36        36        36 
+##      AHC1      AHP1       AI1       AI2       AI4 AI5_ALPHA  AI5_BETA 
+##        36        36        36        36        36        36        36 
+##      AIP1      AIR1      AIR2      AKL1      AKR1      AKR2      ALA1 
+##        36        36        36        36        36        36        36 
+##      ALD2      ALD3      ALD4      ALD5      ALD6      ALF1      ALG1 
+##        36        36        36        36        36        36        36 
+##     ALG11     ALG12     ALG13     ALG14      ALG2      ALG3      ALG5 
+##        36        36        36        36        36        36        36 
+##   (Other)      NA&#39;s 
+##    147652     47250</code></pre>
+<p>Using the <code>is.na()</code> function, we can make filter further to get down to values of interest.</p>
+<pre class="r"><code>head(ydat[ydat$symbol == &#39;LEU1&#39; &amp; !is.na(ydat$symbol), ])</code></pre>
+<pre><code>##       symbol systematic_name nutrient rate expression                   bp
+## 1526    LEU1         YGL009C  Glucose 0.05      -1.12 leucine biosynthesis
+## 7043    LEU1         YGL009C  Glucose 0.10      -0.77 leucine biosynthesis
+## 12555   LEU1         YGL009C  Glucose 0.15      -0.67 leucine biosynthesis
+## 18071   LEU1         YGL009C  Glucose 0.20      -0.59 leucine biosynthesis
+## 23603   LEU1         YGL009C  Glucose 0.25      -0.20 leucine biosynthesis
+## 29136   LEU1         YGL009C  Glucose 0.30       0.03 leucine biosynthesis
+##                                           mf
+## 1526  3-isopropylmalate dehydratase activity
+## 7043  3-isopropylmalate dehydratase activity
+## 12555 3-isopropylmalate dehydratase activity
+## 18071 3-isopropylmalate dehydratase activity
+## 23603 3-isopropylmalate dehydratase activity
+## 29136 3-isopropylmalate dehydratase activity</code></pre>
+<p>Sometimes, looking at the data themselves is not that important. Using <code>dim()</code> is one possibility to look at the number of rows and columns after subsetting.</p>
 <pre class="r"><code>dim(ydat[ydat$expression &gt; 3, ])</code></pre>
 <pre><code>## [1] 714   7</code></pre>
 <p>Find the high expressed genes when leucine-starved. For this task we can also use <code>subset</code> which allows us to treat column names as R variables (no <code>$</code> needed).</p>
@@ -673,7 +722,7 @@ head(smoker_risk)</code></pre>
 ## 6 smoker 6.040769</code></pre>
 <p>R also has plotting shortcuts that work with data.frames to simplify plotting</p>
 <pre class="r"><code>plot( risk ~ smoker, data=smoker_risk)</code></pre>
-<p><img src="dataframes_intro_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="dataframes_intro_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="saving-a-data.frame" class="section level2">
 <h2>Saving a data.frame</h2>
