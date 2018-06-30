@@ -322,6 +322,9 @@ div.tocify {
       <a href="dplyr_intro_msleep.html">Introduction to dplyr</a>
     </li>
     <li>
+      <a href="control_looping_functions.html">Control structures, looping, and functions</a>
+    </li>
+    <li>
       <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
     </li>
     <li>
@@ -391,12 +394,8 @@ div.tocify {
 </div>
 
 
-<div id="control-structures-looping-and-applying" class="section level1">
-<h1>Control Structures, Looping, and Applying</h1>
-<div id="control-structures-and-looping" class="section level2">
-<h2>Control Structures and Looping</h2>
-<div id="control-structures-in-r" class="section level3">
-<h3>Control Structures in R</h3>
+<div id="control-structures-in-r" class="section level2">
+<h2>Control Structures in R</h2>
 <ul>
 <li><p><span>R has multiple types of control structures that allows for sequential evaluation of statements.</span></p></li>
 <li><p><span>For loops</span></p>
@@ -408,35 +407,62 @@ div.tocify {
 some operations 
  } else { other operations }</code></pre></li>
 </ul>
-</div>
 <div id="control-structure-and-looping-examples" class="section level3">
 <h3>Control Structure and Looping Examples</h3>
-<pre><code>x&lt;-1:9
-length(x)
-# a simple conditional then two expressions
-if (length(x)&lt;=10) {
-   x&lt;-c(x,10:20);print(x)}
-# more complex 
-if (length(x)&lt;5) {
-    print(x)
-} else {
-    print(x[5:20])
-}           
-# print the values of x, one at a time
-for (i in x) print(i) 
-for(i in x) i   # note R will not echo in a loop</code></pre>
-</div>
-<div id="control-structure-and-looping-examples-1" class="section level3">
-<h3>Control Structure and Looping Examples</h3>
-<pre><code># loop over a character vector
-y&lt;-c(&#39;a&#39;,&#39;b&#39;,&#39;hi there&#39;)            
-for (i in y) print(i)
+<pre class="r"><code>    x&lt;-1:9
+    length(x)</code></pre>
+<pre><code>## [1] 9</code></pre>
+<pre class="r"><code>    # a simple conditional then two expressions
+    if (length(x)&lt;=10) {
+       x&lt;-c(x,10:20);print(x)}</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code>    # more complex 
+    if (length(x)&lt;5) {
+        print(x)
+    } else {
+        print(x[5:20])
+    }           </code></pre>
+<pre><code>##  [1]  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code>    # print the values of x, one at a time
+    for (i in x) print(i) </code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10
+## [1] 11
+## [1] 12
+## [1] 13
+## [1] 14
+## [1] 15
+## [1] 16
+## [1] 17
+## [1] 18
+## [1] 19
+## [1] 20</code></pre>
+<pre class="r"><code>    for(i in x) i   # note R will not echo in a loop
 
-# and a while loop
-j&lt;-1                
-while(j&lt;10) { # do this while j&lt;10      
-  print(j)
-  j&lt;-j+2} # at each iteration, increase j by 2</code></pre>
+    # loop over a character vector
+    y&lt;-c(&#39;a&#39;,&#39;b&#39;,&#39;hi there&#39;)            
+    for (i in y) print(i)</code></pre>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;hi there&quot;</code></pre>
+<pre class="r"><code>    # and a while loop
+    j&lt;-1                
+    while(j&lt;10) { # do this while j&lt;10      
+      print(j)
+      j&lt;-j+2} # at each iteration, increase j by 2</code></pre>
+<pre><code>## [1] 1
+## [1] 3
+## [1] 5
+## [1] 7
+## [1] 9</code></pre>
 </div>
 </div>
 <div id="applying" class="section level2">
@@ -468,30 +494,47 @@ apply(mat,2,fun) # over columns--second argument is 2</code></pre>
 <li><p><span><code>sapply(list or vector, function)</code> applies the function to every element of list or vector, and returns a vector, when possible (easier to process)</span></p></li>
 <li><p><span><code>tapply(x, factor, fun)</code> uses the factor to split vector x into groups, and then applies fun to each group</span></p></li>
 </ul>
+<pre class="r"><code>    # create a list
+    my.list &lt;- list(a=1:3,b=5:10,c=11:20)
+    my.list</code></pre>
+<pre><code>## $a
+## [1] 1 2 3
+## 
+## $b
+## [1]  5  6  7  8  9 10
+## 
+## $c
+##  [1] 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code>    # Get the mean for each member of the list
+    # return a vector
+    sapply( my.list, mean)</code></pre>
+<pre><code>##    a    b    c 
+##  2.0  7.5 15.5</code></pre>
+<pre class="r"><code>    # Get the full summary for each member of
+    # the list, returned as a list
+    lapply( my.list, summary)</code></pre>
+<pre><code>## $a
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     1.0     1.5     2.0     2.0     2.5     3.0 
+## 
+## $b
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    5.00    6.25    7.50    7.50    8.75   10.00 
+## 
+## $c
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   11.00   13.25   15.50   15.50   17.75   20.00</code></pre>
+<pre class="r"><code>    # Find the mean for each group defined by a factor
+    my.vector &lt;- 1:10
+    my.factor &lt;- factor(
+      c(1,1,1,2,2,2,3,3,3,3))
+    tapply(my.vector, my.factor, mean)</code></pre>
+<pre><code>##   1   2   3 
+## 2.0 5.0 8.5</code></pre>
 </div>
-<div id="related-apply-function-examples" class="section level3">
-<h3>Related Apply Function Examples</h3>
-<pre><code># create a list
-my.list &lt;- list(a=1:3,b=5:10,c=11:20)
-my.list
-# Get the mean for each member of the list
-# return a vector
-sapply( my.list, mean)
-# Get the full summary for each member of
-# the list, returned as a list
-lapply( my.list, summary)
-# Find the mean for each group defined by a factor
-my.vector &lt;- 1:10
-my.factor &lt;- factor(
-  c(1,1,1,2,2,2,3,3,3,3))
-tapply(my.vector, my.factor, mean)</code></pre>
 </div>
-</div>
-</div>
-<div id="functions" class="section level1">
-<h1>Functions</h1>
-<div id="function-overview" class="section level2">
-<h2>Function Overview</h2>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
 <ul>
 <li><p><span>Functions are objects and are assigned to names, just like data.</span></p>
 <pre><code>myFunction = function(argument1,argument2) {
@@ -502,9 +545,8 @@ tapply(my.vector, my.factor, mean)</code></pre>
 <li><p><span>You may test your commands interactively at first, and then use the <code>history()</code> feature and an editor to create the function.</span></p></li>
 <li><p><span>It is wise to include a comment at the start of each function to say what it does and to document functions of more than a few lines.</span></p></li>
 </ul>
-</div>
-<div id="example-functions" class="section level2">
-<h2>Example Functions</h2>
+<div id="example-functions" class="section level3">
+<h3>Example Functions</h3>
 <pre><code>add1 = function(x) {
     # this function adds one to the first argument and returns it
     x + 1
@@ -515,17 +557,6 @@ add1(c(17,18,19,20))
 ## [1] 18 19 20 21</code></pre>
 <p>You can use the <code>edit()</code> function to make changes to a function. The following command will open a window, allow you to make changes, and assign the result to a new function, <code>add2</code>.</p>
 <pre><code>add2 = edit(add1)</code></pre>
-</div>
-<div id="further-reading" class="section level2">
-<h2>Further Reading</h2>
-<p>The amount of learning material for R is simply astonishing!</p>
-<ul>
-<li><p><span><a href="http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual">Thomas Girke’s R and Bioconductor Manual</a></span></p></li>
-<li><p><span><a href="http://cran.r-project.org/other-docs.html">A HUGE collection of contributed R documentation and tutorials</a></span></p></li>
-<li><p><span><a href="http://www.bioconductor.org/help/course-materials/">Bioconductor course materials</a></span></p></li>
-<li><p><span><a href="http://watson.nci.nih.gov/~sdavis/">Sean Davis’ website</a></span></p></li>
-<li><p><span><a href="http://cran.r-project.org/manuals.html">The Official R Manuals</a></span></p></li>
-</ul>
 </div>
 </div>
 
