@@ -11,7 +11,7 @@
 
 
 
-<title>Data exploration and univariate statistics</title>
+<title>About the site</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -392,147 +392,22 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data exploration and univariate statistics</h1>
+<h1 class="title toc-ignore">About the site</h1>
 
 </div>
 
 
-<!-- Thanks to Martin Morgan for much of this material! -->
-<div id="behavioral-risk-factor-surveillance-system" class="section level2">
-<h2>Behavioral Risk Factor Surveillance System</h2>
-<p>We will explore a subset of data collected by the CDC through its extensive Behavioral Risk Factor Surveillance System ([BRFSS][]) telephone survey. Check out the link for more information. We’ll look at a subset of the data.</p>
-<p>First, we need to get the data. Either download the data from <a href="BRFSS-subset.csv">THIS LINK</a> or have R do it directly from the command-line (preferred):</p>
-<pre class="r"><code>download.file(&#39;https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv&#39;,
-              destfile = &#39;BRFSS-subset.csv&#39;)</code></pre>
-<!--
-
--->
-<pre class="r"><code>path &lt;- file.choose()    # look for BRFSS-subset.csv</code></pre>
-<pre class="r"><code>stopifnot(file.exists(path))
-brfss &lt;- read.csv(path)</code></pre>
-</div>
-<div id="learn-about-the-data" class="section level2">
-<h2>Learn about the data</h2>
-<p>Using the data exploration techniques you have seen to explore the brfss dataset.</p>
+<p>The materials here were originally written to support the course <em>Statistical Methods in Functional Genomics</em> offered at the Cold Spring Harbor Laboratory. I have borrowed heavily from previous instructors and from others generous enough to create and share their teaching materials online.</p>
+<p>Thanks to (at least):</p>
 <ul>
-<li>summary()</li>
-<li>dim()</li>
-<li>colnames()</li>
-<li>head()</li>
-<li>tail()</li>
-<li>class()</li>
-<li>View()</li>
+<li>Mark Reimers</li>
+<li>Martin Morgan</li>
+<li>Vince Carey</li>
+<li>Stephen Turner</li>
+<li>Rafa Irizarry</li>
+<li>Naomi Altman</li>
+<li>Hadley Wickham</li>
 </ul>
-<p>You may want to investigate individual columns visually using plotting like <code>hist()</code>. For categorical data, consider using something like <code>table()</code>.</p>
-</div>
-<div id="clean-data" class="section level2">
-<h2>Clean data</h2>
-<p><em>R</em> read <code>Year</code> as an integer value, but it’s really a <code>factor</code></p>
-<pre class="r"><code>brfss$Year &lt;- factor(brfss$Year)</code></pre>
-</div>
-<div id="weight-in-1990-vs.2010-females" class="section level2">
-<h2>Weight in 1990 vs. 2010 Females</h2>
-<ul>
-<li>Create a subset of the data</li>
-</ul>
-<pre class="r"><code>brfssFemale &lt;- brfss[brfss$Sex == &quot;Female&quot;,]
-summary(brfssFemale)</code></pre>
-<pre><code>##       Age           Weight        Sex            Height      Year     
-##  Min.   :18.0   Min.   : 36   Female:12039   Min.   :105   1990:5718  
-##  1st Qu.:37.0   1st Qu.: 58   Male  :    0   1st Qu.:158   2010:6321  
-##  Median :52.0   Median : 66                  Median :163              
-##  Mean   :51.9   Mean   : 69                  Mean   :163              
-##  3rd Qu.:67.0   3rd Qu.: 77                  3rd Qu.:168              
-##  Max.   :99.0   Max.   :272                  Max.   :201              
-##  NA&#39;s   :103    NA&#39;s   :560                  NA&#39;s   :140</code></pre>
-<ul>
-<li>Visualize</li>
-</ul>
-<pre class="r"><code>plot(Weight ~ Year, brfssFemale)</code></pre>
-<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<ul>
-<li>Statistical test</li>
-</ul>
-<pre class="r"><code>t.test(Weight ~ Year, brfssFemale)</code></pre>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  Weight by Year
-## t = -30, df = 10000, p-value &lt;2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -8.72 -7.55
-## sample estimates:
-## mean in group 1990 mean in group 2010 
-##               64.8               73.0</code></pre>
-</div>
-<div id="weight-and-height-in-2010-males" class="section level2">
-<h2>Weight and height in 2010 Males</h2>
-<ul>
-<li>Create a subset of the data</li>
-</ul>
-<pre class="r"><code>brfss2010Male &lt;- subset(brfss,  Year == 2010 &amp; Sex == &quot;Male&quot;)
-summary(brfss2010Male)</code></pre>
-<pre><code>##       Age           Weight          Sex           Height      Year     
-##  Min.   :18.0   Min.   : 36.3   Female:   0   Min.   :135   1990:   0  
-##  1st Qu.:45.0   1st Qu.: 77.1   Male  :3679   1st Qu.:173   2010:3679  
-##  Median :57.0   Median : 86.2                 Median :178              
-##  Mean   :56.2   Mean   : 88.8                 Mean   :178              
-##  3rd Qu.:68.0   3rd Qu.: 99.8                 3rd Qu.:183              
-##  Max.   :99.0   Max.   :279.0                 Max.   :218              
-##  NA&#39;s   :30     NA&#39;s   :49                    NA&#39;s   :31</code></pre>
-<ul>
-<li>Visualize the relationship</li>
-</ul>
-<pre class="r"><code>hist(brfss2010Male$Weight)</code></pre>
-<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>hist(brfss2010Male$Height)</code></pre>
-<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<pre class="r"><code>plot(Weight ~ Height, brfss2010Male)</code></pre>
-<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
-<ul>
-<li>Fit a linear model (regression)</li>
-</ul>
-<pre class="r"><code>fit &lt;- lm(Weight ~ Height, brfss2010Male)
-fit</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Weight ~ Height, data = brfss2010Male)
-## 
-## Coefficients:
-## (Intercept)       Height  
-##     -86.875        0.987</code></pre>
-<p>Summarize as ANOVA table</p>
-<pre class="r"><code>anova(fit)</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: Weight
-##             Df  Sum Sq Mean Sq F value Pr(&gt;F)    
-## Height       1  197664  197664     694 &lt;2e-16 ***
-## Residuals 3617 1030484     285                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<ul>
-<li>Plot points, superpose fitted regression line; where am I?</li>
-</ul>
-<pre class="r"><code>plot(Weight ~ Height, brfss2010Male)
-abline(fit, col=&quot;blue&quot;, lwd=2)
-# Substitute your own weight and height...
-points(73 * 2.54, 178 / 2.2, col=&quot;red&quot;, cex=4, pch=20)</code></pre>
-<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<ul>
-<li>Class and available ‘methods’</li>
-</ul>
-<pre class="r"><code>class(fit)                 # &#39;noun&#39;
-methods(class=class(fit))  # &#39;verb&#39;</code></pre>
-<ul>
-<li>Diagnostics</li>
-</ul>
-<pre class="r"><code>plot(fit)
-# Note that the &quot;plot&quot; above does not have a &quot;.lm&quot;
-# However, R will use &quot;plot.lm&quot;. Why?
-?plot.lm</code></pre>
-</div>
 
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
