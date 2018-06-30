@@ -1,69 +1,73 @@
-name: "seandavi(s12): Courses and Tutorials for Data Science, Genomics, and Big Data"
+name: 'seandavi(s12): Courses and Tutorials for Data Science, Genomics, and Big Data'
 navbar:
-  title: "seandavi(s12): Courses and Tutorials"
+  title: 'seandavi(s12): Courses and Tutorials'
   icon: fa-home
   type: inverse
   left:
-    - text: "Home"
-      href: index.html
+  - text: Home
+    href: index.html
   right:
-    - icon: fa-cogs
-      text: setup
-      href: setup.html
-    - icon: fa-book
-      text: "R and Bioconductor"
-      menu: 
-        - text: "--- Sections ---"
-        - text: "Getting started: R Mechanics"
-          href: r_intro_mechanics.html
-        - text: "Vectors"
-          href: vectors.html
-        - text: "Matrices"
-          href: matrices.html
-        - text: "Dataframes"
-          href: dataframes_intro.html
-        - text: "Intro to univariate statistics"
-          href: eda_and_univariate_brfss.html
-        - text: "Dataframes with dplyr"
-          href: dplyr_dataframes.html
-        - text: "Plotting and Graphics"
-          href: B5_plotting.html
-        - text: "Factors"
-          href: factors.html
-        - text: "---"
-        - text: "--- Exercises ---"
-        - text: "Vectors"
-          href: vector_exercises.html
-        - text: "Data input and manipulation exercises"
-          href: data_input_and_manipulation_exercises.html
-        - text: "Swirl"
-          href: swirl.html
-    - icon: ion-easel
-      text: Slides
-      menu: 
-        - text: "Motivation for using R"
-          href: motivation_for_R_slides.html
-    - icon: fa-question fa-lg
-      text: Misc.
-      menu:
-        - text: "Further resources"
-          href: further_resources.html
-        - text: "Source code for this site"
-          href: https://github.com/seandavi/ITR
-        - text: "Download materials"
-          href: https://github.com/seandavi/ITR/archive/master.zip
+  - icon: fa-cogs
+    text: setup
+    href: setup.html
+  - icon: fa-book
+    text: R and Bioconductor
+    menu:
+    - text: '--- Sections ---'
+    - text: 'Getting started: R Mechanics'
+      href: r_intro_mechanics.html
+    - text: Vectors
+      href: vectors.html
+    - text: Matrices
+      href: matrices.html
+    - text: Dataframes
+      href: dataframes_intro.html
+    - text: Introduction to dplyr
+      href: dplyr_intro_msleep.html
+    - text: Control structures, looping, and functions
+      href: control_looping_functions.html
+    - text: Intro to univariate statistics
+      href: eda_and_univariate_brfss.html
+    - text: Plotting and Graphics
+      href: B5_plotting.html
+    - text: '---'
+    - text: '--- Exercises ---'
+    - text: Vectors
+      href: vector_exercises.html
+    - text: Data input and manipulation exercises
+      href: data_input_and_manipulation_exercises.html
+    - text: Dataframes with dplyr
+      href: dplyr_dataframes.html
+    - text: Swirl
+      href: swirl.html
+  - icon: ion-easel
+    text: Slides
+    menu:
+    - text: Motivation for using R
+      href: motivation_for_R_slides.html
+  - icon: fa-question fa-lg
+    text: Misc.
+    menu:
+    - text: Further resources
+      href: further_resources.html
+    - text: Source code for this site
+      href: https://github.com/seandavi/ITR
+    - text: Download materials
+      href: https://github.com/seandavi/ITR/archive/master.zip
 output:
   html_document:
     theme: default
     highlight: textmate
-    toc: true
+    toc: yes
     toc_depth: 3
     toc_float:
-      collapsed: false
+      collapsed: no
     fig_align: center
-    css:
-      - https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css
+    css: https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css
     include:
       after_body: google_analytics.html
-      
-exclude: ["F_epigenomic_ranges.Rmd"]
+    lib_dir: site_libs
+    self_contained: no
+exclude: F_epigenomic_ranges.Rmd
+output_dir: _site
+

@@ -42,6 +42,21 @@ stopifnot(file.exists(path))
 brfss <- read.csv(path)
 ```
 
+## Learn about the data
+
+Using the data exploration techniques you have seen to explore the brfss dataset.
+
+- summary()
+- dim()
+- colnames()
+- head()
+- tail()
+- class()
+- View()
+
+You may want to investigate individual columns visually using plotting like `hist()`. For categorical 
+data, consider using something like `table()`. 
+
 ## Clean data
 
 _R_ read `Year` as an integer value, but it's really a `factor`
@@ -121,6 +136,8 @@ methods(class=class(fit))  # 'verb'
 
 ```{r, eval=FALSE}
 plot(fit)
+# Note that the "plot" above does not have a ".lm"
+# However, R will use "plot.lm". Why?
 ?plot.lm
 ```
 

@@ -131,6 +131,25 @@ head(ydat[["systematic_name"]])
 
 ```{r}
 head(ydat[ydat$symbol == 'LEU1', ])
+```
+
+What is the problem with this approach? It appears that there are a bunch of `NA` values. Taking a quick look at the 
+`symbol` column, we see what the problem. 
+
+```{r}
+summary(ydat$symbol)
+```
+
+Using the `is.na()` function, we can make filter further to get down to values of interest.
+
+```{r}
+head(ydat[ydat$symbol == 'LEU1' & !is.na(ydat$symbol), ])
+```
+
+Sometimes, looking at the data themselves is not that important. Using `dim()` is one possibility to look at the
+number of rows and columns after subsetting.
+
+```{r}
 dim(ydat[ydat$expression > 3, ])
 ```
 
