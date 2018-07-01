@@ -320,6 +320,9 @@ div.tocify {
     <li>
       <a href="motivation_for_R_slides.html">Motivation for using R</a>
     </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2018">Introduction to Bioconductor</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -445,6 +448,14 @@ plot(dat)</code></pre>
 <pre class="r"><code>dextrt = colData(airway)$dex
 plot(dat, col=dextrt)</code></pre>
 <p><img src="bioc_summarizedExperiment_exercises_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<ul>
+<li><em>Bonus</em>: Load the logratios, gene and ORF information, and sample information from the “DeRisi” data into a <code>SummarizedExperiment</code> object. You will need to construct:
+<ol style="list-style-type: decimal">
+<li>A matrix of logratios as assay data.</li>
+<li>A data.frame of matching size and matching rows that contains the symbol and ORF idendifiers.</li>
+<li>A data.frame with 7 rows, corresponding to the 7 columns of the logratios.</li>
+</ol></li>
+</ul>
 </div>
 <div id="sessioninfo" class="section level1">
 <h1>sessionInfo()</h1>
