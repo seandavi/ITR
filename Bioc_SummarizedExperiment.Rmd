@@ -258,26 +258,6 @@ a `DataFrame` for the _rowData_ argument:
 SummarizedExperiment(assays=list(counts=counts), colData=colData)
 ```
 
-# Exercises
-
-- What is the `class()` of `airway`? What does the class tell you about the information 
-stored about the features (genes) in the dataset?
-- How many features are in the data?
-- How many samples are present?
-- The assay information in the airway object contains the RNA-seq counts. Access the count data for the 
-56th gene. 
-- What are the `rownames()` of airway? What do these represent? What gene is represented by the first row
-of data? 
-- What metadata is available about the samples? 
-- How many samples were treated with dex? Untreated? 
-- How many different cell types were used?
-- What does `rowRanges(airway)` give you? What is the length of the object? What does each element of
-`rowRanges(airway)` contain? 
-- From the [PubMed abstract](https://www.ncbi.nlm.nih.gov/pubmed/24926665), we can see that the authors
-suggest that the DUSP1 gene is upregulated by Dexamethasone treatment. The [GeneCards website](https://www.genecards.org/cgi-bin/carddisp.pl?gene=DUSP1&keywords=DUSP1) tells us that the 
-Ensembl gene id for DUSP1 is 'ENSG00000120129'. Get the count data for this gene.
-- Make a plot of the gene counts in the previous exercise. Color the points based on the dexamethasone treatment.
-
 # sessionInfo()
 
 ```{r}

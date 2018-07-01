@@ -14,9 +14,21 @@ Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https
 
 *To get the materials downloaded to your computer, [click here](https://github.com/seandavi/ITR/archive/master.zip).* 
 
+## R
+- [Getting started: R Mechanics](r_intro_mechanics.html) [[Rmd](r_intro_mechanics.Rmd)]
+- [Vectors](vectors.html) [[Rmd](vectors.Rmd)] [[Exercises](vector_exercises.html)]
+- [Matrices](matrices.html) [[Rmd](matrices.Rmd)]
+- [Dataframes](dataframes_intro.html) [[Rmd](dataframes_intro.Rmd)]
+- [Introduction to dplyr](dplyr_intro_msleep.html) [[Rmd](dplyr_intro_msleep.Rmd)] [[Exercises](dplyr_dataframes.html)]
+- [Control structures, looping, and functions](control_looping_functions.html) [[Rmd](control_looping_functions.Rmd)]
+- [Intro to univariate statistics](eda_and_univariate_brfss.html) [[Rmd](control_looping_functions.Rmd)]
+- [Introduction to plotting](B5_plotting.html) [[Rmd](B5_plotting.Rmd)]
+- [Data input and manipulation exercises](data_input_and_manipulation_exercises.html)
+- [Swirl](swirl.html)
+
 ## Bioconductor
 
 - [Getting Started with Bioconductor](bioc_installation.html) [[Rmd](bioc_installation.Rmd)]
-- [SummarizedExperiment](Bioc_SummarizedExperiment.html) [[Rmd](Bioc_SummarizedExperiment.Rmd)]
+- [SummarizedExperiment](Bioc_SummarizedExperiment.html) [[Rmd](Bioc_SummarizedExperiment.Rmd)] [[Exercises](bioc_summarizedExperiment_exercises.html)]
 - [AnnotationHub](AnnotationHub.html) [[Rmd](AnnotationHub.Rmd)]
 

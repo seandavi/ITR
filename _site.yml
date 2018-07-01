@@ -12,36 +12,6 @@ navbar:
   - icon: fa-cogs
     text: setup
     href: setup.html
-  - icon: fa-book
-    text: R and Bioconductor
-    menu:
-    - text: '--- Sections ---'
-    - text: 'Getting started: R Mechanics'
-      href: r_intro_mechanics.html
-    - text: Vectors
-      href: vectors.html
-    - text: Matrices
-      href: matrices.html
-    - text: Dataframes
-      href: dataframes_intro.html
-    - text: Introduction to dplyr
-      href: dplyr_intro_msleep.html
-    - text: Control structures, looping, and functions
-      href: control_looping_functions.html
-    - text: Intro to univariate statistics
-      href: eda_and_univariate_brfss.html
-    - text: Plotting and Graphics
-      href: B5_plotting.html
-    - text: '---'
-    - text: '--- Exercises ---'
-    - text: Vectors
-      href: vector_exercises.html
-    - text: Data input and manipulation exercises
-      href: data_input_and_manipulation_exercises.html
-    - text: Dataframes with dplyr
-      href: dplyr_dataframes.html
-    - text: Swirl
-      href: swirl.html
   - icon: ion-easel
     text: Slides
     menu:
