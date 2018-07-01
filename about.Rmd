@@ -1,6 +1,8 @@
 ---
 title: "About the site"
-output: html_document
+output: 
+  html_document:
+    toc: false
 ---
 
 The materials here were originally written to support the course _Statistical Methods in Functional

@@ -13,3 +13,10 @@ tab above. Finally, there are some additional and miscellaneous materials in the
 Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 *To get the materials downloaded to your computer, [click here](https://github.com/seandavi/ITR/archive/master.zip).* 
+
+## Bioconductor
+
+- [Getting Started with Bioconductor](bioc_installation.html) [[Rmd](bioc_installation.Rmd)]
+- [SummarizedExperiment](Bioc_SummarizedExperiment.html) [[Rmd](Bioc_SummarizedExperiment.Rmd)]
+- [AnnotationHub](AnnotationHub.html) [[Rmd](AnnotationHub.Rmd)]
+

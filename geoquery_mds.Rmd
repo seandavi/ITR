@@ -7,7 +7,7 @@
 Data containers--SummarizedExperiment
 
 <div style="width:80%; display: block; margin: 0 auto;">
-![](https://images.nature.com/full/nature-assets/nmeth/journal/v12/n2/images/nmeth.3252-F2.jpg)
+![](images/nmeth.3252-F2.jpg)
 </div>
 
 
