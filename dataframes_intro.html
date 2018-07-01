@@ -301,56 +301,6 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-book"></span>
-     
-    R and Bioconductor
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">--- Sections ---</li>
-    <li>
-      <a href="r_intro_mechanics.html">Getting started: R Mechanics</a>
-    </li>
-    <li>
-      <a href="vectors.html">Vectors</a>
-    </li>
-    <li>
-      <a href="matrices.html">Matrices</a>
-    </li>
-    <li>
-      <a href="dataframes_intro.html">Dataframes</a>
-    </li>
-    <li>
-      <a href="dplyr_intro_msleep.html">Introduction to dplyr</a>
-    </li>
-    <li>
-      <a href="control_looping_functions.html">Control structures, looping, and functions</a>
-    </li>
-    <li>
-      <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
-    </li>
-    <li>
-      <a href="B5_plotting.html">Plotting and Graphics</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">--- Exercises ---</li>
-    <li>
-      <a href="vector_exercises.html">Vectors</a>
-    </li>
-    <li>
-      <a href="data_input_and_manipulation_exercises.html">Data input and manipulation exercises</a>
-    </li>
-    <li>
-      <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
-    </li>
-    <li>
-      <a href="swirl.html">Swirl</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="ion ion-easel"></span>
      
     Slides
@@ -720,12 +670,12 @@ risk = x + 2*smoker_numeric</code></pre>
 <pre class="r"><code>smoker_risk = data.frame(smoker = smoker, risk = risk)
 head(smoker_risk)</code></pre>
 <pre><code>##   smoker     risk
-## 1 smoker 3.898524
-## 2 smoker 3.576775
-## 3 smoker 5.971214
-## 4 smoker 4.916932
-## 5 smoker 3.477607
-## 6 smoker 6.040769</code></pre>
+## 1 smoker 4.170846
+## 2 smoker 4.422220
+## 3 smoker 4.789967
+## 4 smoker 3.241715
+## 5 smoker 4.719079
+## 6 smoker 3.850761</code></pre>
 <p>R also has plotting shortcuts that work with data.frames to simplify plotting</p>
 <pre class="r"><code>plot( risk ~ smoker, data=smoker_risk)</code></pre>
 <p><img src="dataframes_intro_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>

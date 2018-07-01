@@ -302,56 +302,6 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-book"></span>
-     
-    R and Bioconductor
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">--- Sections ---</li>
-    <li>
-      <a href="r_intro_mechanics.html">Getting started: R Mechanics</a>
-    </li>
-    <li>
-      <a href="vectors.html">Vectors</a>
-    </li>
-    <li>
-      <a href="matrices.html">Matrices</a>
-    </li>
-    <li>
-      <a href="dataframes_intro.html">Dataframes</a>
-    </li>
-    <li>
-      <a href="dplyr_intro_msleep.html">Introduction to dplyr</a>
-    </li>
-    <li>
-      <a href="control_looping_functions.html">Control structures, looping, and functions</a>
-    </li>
-    <li>
-      <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
-    </li>
-    <li>
-      <a href="B5_plotting.html">Plotting and Graphics</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">--- Exercises ---</li>
-    <li>
-      <a href="vector_exercises.html">Vectors</a>
-    </li>
-    <li>
-      <a href="data_input_and_manipulation_exercises.html">Data input and manipulation exercises</a>
-    </li>
-    <li>
-      <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
-    </li>
-    <li>
-      <a href="swirl.html">Swirl</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="ion ion-easel"></span>
      
     Slides
@@ -417,11 +367,19 @@ div.tocify {
 <h2><em>R</em> Packages</h2>
 <p>All the functionality we have been using comes from <em>packages</em> that are automatically <em>loaded</em> when <em>R</em> starts. Loaded packages are on the <code>search()</code> path.</p>
 <pre class="r"><code>search()</code></pre>
-<pre><code>##  [1] &quot;.GlobalEnv&quot;           &quot;package:RColorBrewer&quot; &quot;package:knitr&quot;       
-##  [4] &quot;package:nycflights13&quot; &quot;package:ggplot2&quot;      &quot;tools:rstudio&quot;       
-##  [7] &quot;package:stats&quot;        &quot;package:graphics&quot;     &quot;package:grDevices&quot;   
-## [10] &quot;package:utils&quot;        &quot;package:datasets&quot;     &quot;package:methods&quot;     
-## [13] &quot;Autoloads&quot;            &quot;package:base&quot;</code></pre>
+<pre><code>##  [1] &quot;.GlobalEnv&quot;                   &quot;package:airway&quot;              
+##  [3] &quot;package:SummarizedExperiment&quot; &quot;package:DelayedArray&quot;        
+##  [5] &quot;package:BiocParallel&quot;         &quot;package:matrixStats&quot;         
+##  [7] &quot;package:Biobase&quot;              &quot;package:GenomicRanges&quot;       
+##  [9] &quot;package:GenomeInfoDb&quot;         &quot;package:IRanges&quot;             
+## [11] &quot;package:S4Vectors&quot;            &quot;package:BiocGenerics&quot;        
+## [13] &quot;package:parallel&quot;             &quot;package:stats4&quot;              
+## [15] &quot;package:knitr&quot;                &quot;package:nycflights13&quot;        
+## [17] &quot;package:ggplot2&quot;              &quot;package:stats&quot;               
+## [19] &quot;package:graphics&quot;             &quot;package:grDevices&quot;           
+## [21] &quot;package:utils&quot;                &quot;package:datasets&quot;            
+## [23] &quot;package:methods&quot;              &quot;Autoloads&quot;                   
+## [25] &quot;package:base&quot;</code></pre>
 <p>Additional packages may be <em>installed</em> in <em>R</em>’s libraries. Use `installed.packages() or the <em>RStudio</em> interface to see installed packages. To use these packages, it is necessary to attach them to the search path, e.g., for survival analysis</p>
 <pre class="r"><code>library(&quot;survival&quot;)</code></pre>
 <p>There are many thousands of <em>R</em> packages, and not all of them are installed in a single installation. Important repositories are</p>

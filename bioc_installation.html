@@ -11,7 +11,7 @@
 
 
 
-<title>Motivation for R</title>
+<title>Getting started with Bioconductor</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -342,56 +342,128 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Motivation for R</h1>
+<h1 class="title toc-ignore">Getting started with Bioconductor</h1>
 
 </div>
 
 
-<div id="what-is-r" class="section level2">
-<h2>What is R?</h2>
-<p>R is a number of things, simultaneously. Depending on who is being asked, R is:</p>
+<div id="install-bioconductor-packages" class="section level1">
+<h1>Install Bioconductor Packages</h1>
+<p>For full details on getting started with Bioconductor, see the <a href="https://bioconductor.org">Bioconductor Website</a>. This material is just a “quick start”.</p>
+<p>Use the <code>biocLite.R</code> script to install Bioconductor packages. To install core packages, type the following in an R command window:</p>
+<pre class="r"><code>## try http:// if https:// URLs are not supported
+source(&quot;https://bioconductor.org/biocLite.R&quot;)
+biocLite()</code></pre>
+<p>Install specific packages, e.g., “GenomicFeatures” and “AnnotationDbi”, with</p>
+<pre class="r"><code>biocLite(c(&quot;GenomicFeatures&quot;, &quot;AnnotationDbi&quot;))</code></pre>
+<p>The <code>biocLite()</code> function (in the <code>BiocInstaller</code> package installed by the biocLite.R script) has arguments that change its default behavior; type <code>?biocLite</code> for further help.</p>
+</div>
+<div id="find-bioconductor-packages" class="section level1">
+<h1>Find Bioconductor Packages</h1>
+<p>Visit the <a href="https://www.bioconductor.org/packages/release/BiocViews.html#___Software">software package list</a> to discover available packages.</p>
+</div>
+<div id="update-installed-bioconductor-packages" class="section level1">
+<h1>Update Installed Bioconductor Packages</h1>
+<p>Bioconductor packages, especially those in the development branch, are updated fairly regularly. To identify packages requiring update within your version of Bioconductor, start a new session of R and enter</p>
+<pre class="r"><code>## try http:// if https:// URLs are not supported
+source(&quot;https://bioconductor.org/biocLite.R&quot;)
+biocLite()                  ## R version 3.0 or later</code></pre>
+<p>Use the argument <code>ask=FALSE</code> to update old packages without being prompted. For older versions of R, use the command biocLite(NULL). Read the help page for <code>?biocLite</code> for additional details.</p>
+</div>
+<div id="upgrading-installed-bioconductor-packages" class="section level1">
+<h1>Upgrading installed Bioconductor packages</h1>
+<p>Some versions of R support more than one version of Bioconductor. To use the latest version of Bioconductor for your version of R, enter</p>
+<pre class="r"><code>## try http:// if https:// URLs are not supported
+source(&quot;https://bioconductor.org/biocLite.R&quot;)
+biocLite(&quot;BiocUpgrade&quot;)     ## R version 2.15 or later</code></pre>
+<p>Read the help page for <code>?BiocUpgrade</code> for additional details. Remember that more recent versions of Bioconductor may be available if your version of R is out-of-date.</p>
+<p>For more detail on Bioconductor approaches to versioning, see the newsletter and version numbering developer reference.</p>
+</div>
+<div id="troubleshoot-package-installations" class="section level1">
+<h1>Troubleshoot Package Installations</h1>
+<p>Use the commands:</p>
+<pre class="r"><code>library(BiocInstaller)
+biocValid()             ## R version 3.0 or later</code></pre>
+<p>to flag packages that are either out-of-date or too new for your version of Bioconductor. The output suggests ways to solve identified problems, and the help page ?biocValid lists arguments influencing the behavior of the function.</p>
+</div>
+<div id="troubleshoot-biocinstaller" class="section level1">
+<h1>Troubleshoot BiocInstaller</h1>
+<p>If you see a message like this:</p>
+<p>BiocInstaller version 3.2 is too old for R version 3.3 …do the following:</p>
 <ul>
-<li>A software package</li>
-<li>A programming language</li>
-<li>A toolkit for developing statistical and analytical tools</li>
-<li>An extensive library of statistical and mathematical software and algorithms</li>
-<li>A scripting language</li>
-<li>much, much more</li>
+<li>Quit your R session</li>
+<li>Start a new session with <code>R --vanilla</code></li>
+<li>Run the command <code>remove.packages(&quot;BiocInstaller&quot;, lib=.libPaths())</code>
+<ul>
+<li>Repeat that command until R says there is no such package.</li>
+</ul></li>
+<li>Run the command <code>source(&quot;https://bioconductor.org/biocLite.R&quot;)</code></li>
+<li>Run <code>biocValid()</code> to ensure your installed packages are valid for the current version of Bioconductor, and follow the instructions it gives you.</li>
 </ul>
 </div>
-<div id="why-use-r" class="section level2">
-<h2>Why use R?</h2>
-<ul>
-<li>R is cross-platform and runs on Windows, Mac, and Linux (as well as more obscure systems).</li>
-<li>R provides a vast number of useful statistical tools, many of which have been painstakingly tested.</li>
-<li>R produces publication-quality graphics in a variety of formats.</li>
-<li>R plays well with FORTRAN, C, and scripts in many languages.</li>
-<li>R scales, making it useful for small and large projects. It is NOT Excel.</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-<p>I can develop code for analysis on my Mac laptop. I can then install the <em>same</em> code on our 20k core cluster and run it in parallel on 100 samples, monitor the process, and then update a database (for example) with R when complete.</p>
-</div>
-<div id="why-not-use-r" class="section level2">
-<h2>Why not use R?</h2>
-<ul>
-<li>R cannot do everything.</li>
-<li>R is not always the “best” tool for the job.</li>
-<li>R will <em>not</em> hold your hand. Often, it will <em>slap</em> your hand instead.</li>
-<li>The documentation can be opaque (but there is documentation).</li>
-<li>R can drive you crazy (on a good day) or age you prematurely (on a bad one).</li>
-<li>Finding the right package to do the job you want to do can be challenging; worse, some contributed packages are unreliable.]{}</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-</div>
-<div id="r-license-and-the-open-source-ideal" class="section level2">
-<h2>R License and the Open Source Ideal</h2>
-<p>R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:</p>
-<ul>
-<li>Download the source code</li>
-<li>Modify the source code to your heart’s content</li>
-<li>Distribute the modified source code and even charge money for it, but you must distribute the modified source code under the original GNU license]{}</li>
-</ul>
-<p>This license means that R will always be available, will always be open source, and can grow organically without constraint.</p>
+<div id="sessioninfo" class="section level1">
+<h1>sessionInfo</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS Sierra 10.12.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+## 
+## other attached packages:
+##  [1] knitr_1.20                        nycflights13_0.2.2               
+##  [3] ggplot2_2.2.1                     BSgenome.Hsapiens.UCSC.hg19_1.4.0
+##  [5] BSgenome_1.47.5                   rtracklayer_1.39.13              
+##  [7] BiocStyle_2.7.9                   VariantAnnotation_1.25.13        
+##  [9] SummarizedExperiment_1.9.18       DelayedArray_0.5.35              
+## [11] BiocParallel_1.13.3               matrixStats_0.53.1               
+## [13] Rsamtools_1.31.3                  Biostrings_2.47.12               
+## [15] XVector_0.19.9                    GenomicFeatures_1.31.10          
+## [17] AnnotationDbi_1.41.6              Biobase_2.39.2                   
+## [19] GenomicRanges_1.31.23             GenomeInfoDb_1.15.5              
+## [21] IRanges_2.13.29                   S4Vectors_0.17.43                
+## [23] AnnotationHub_2.12.0              BiocGenerics_0.25.3              
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.3.1                    bit64_0.9-7                  
+##  [3] shiny_1.0.5                   assertthat_0.2.0             
+##  [5] interactiveDisplayBase_1.18.0 blob_1.1.1                   
+##  [7] GenomeInfoDbData_1.1.0        yaml_2.1.19                  
+##  [9] progress_1.1.2                pillar_1.2.2                 
+## [11] RSQLite_2.1.0                 backports_1.1.2              
+## [13] lattice_0.20-35               digest_0.6.15                
+## [15] promises_1.0.1                colorspace_1.3-2             
+## [17] htmltools_0.3.6               httpuv_1.4.3                 
+## [19] Matrix_1.2-14                 plyr_1.8.4                   
+## [21] XML_3.98-1.11                 pkgconfig_2.0.1              
+## [23] biomaRt_2.35.13               bookdown_0.7                 
+## [25] zlibbioc_1.25.0               xtable_1.8-2                 
+## [27] scales_0.5.0                  later_0.7.2                  
+## [29] tibble_1.4.2                  lazyeval_0.2.1               
+## [31] cli_1.0.0                     magrittr_1.5                 
+## [33] crayon_1.3.4                  mime_0.5                     
+## [35] memoise_1.1.0                 evaluate_0.10.1              
+## [37] BiocInstaller_1.30.0          tools_3.5.0                  
+## [39] prettyunits_1.0.2             stringr_1.3.1                
+## [41] munsell_0.4.3                 compiler_3.5.0               
+## [43] rlang_0.2.0                   grid_3.5.0                   
+## [45] RCurl_1.95-4.10               bitops_1.0-6                 
+## [47] labeling_0.3                  rmarkdown_1.9                
+## [49] gtable_0.2.0                  DBI_0.8                      
+## [51] curl_3.2                      R6_2.2.2                     
+## [53] GenomicAlignments_1.15.14     utf8_1.1.3                   
+## [55] bit_1.1-12                    rprojroot_1.3-2              
+## [57] stringi_1.2.2                 Rcpp_0.12.16                 
+## [59] xfun_0.1</code></pre>
 </div>
 
     <script>

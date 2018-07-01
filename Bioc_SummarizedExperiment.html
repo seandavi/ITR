@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Bioc_SummarizedExperiment.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<!-- This is taken from the summarizedExperiment package vignette -->
+<p>The <code>SummarizedExperiment</code> class is used to store rectangular matrices of experimental results, which are commonly produced by sequencing and microarray experiments. Each object stores observations of one or more samples, along with additional meta-data describing both the observations (features) and samples (phenotypes).</p>
+<p>A key aspect of the <code>SummarizedExperiment</code> class is the coordination of the meta-data and assays when subsetting. For example, if you want to exclude a given sample you can do for both the meta-data and assay in one operation, which ensures the meta-data and observed data will remain in sync. Improperly accounting for meta and observational data has resulted in a number of incorrect results and retractions so this is a very desirable property.</p>
+<p><code>SummarizedExperiment</code> is in many ways similar to the historical <code>ExpressionSet</code>, the main distinction being that <code>SummarizedExperiment</code> is more flexible in it’s row information, allowing both <code>GRanges</code> based as well as those described by arbitrary <code>DataFrame</code>s. This makes it ideally suited to a variety of experiments, particularly sequencing based experiments such as RNA-Seq and ChIp-Seq.</p>
+<pre class="r"><code>library(BiocInstaller)
+biocLite(&#39;airway&#39;)
+biocLite(&#39;SummarizedExperiment&#39;)</code></pre>
+</div>
+<div id="anatomy-of-a-summarizedexperiment" class="section level1">
+<h1>Anatomy of a <code>SummarizedExperiment</code></h1>
+<p>The <em>SummarizedExperiment</em> package contains two classes: <code>SummarizedExperiment</code> and <code>RangedSummarizedExperiment</code>.</p>
+<p><code>SummarizedExperiment</code> is a matrix-like container where rows represent features of interest (e.g. genes, transcripts, exons, etc.) and columns represent samples. The objects contain one or more assays, each represented by a matrix-like object of numeric or other mode. The rows of a <code>SummarizedExperiment</code> object represent features of interest. Information about these features is stored in a <code>DataFrame</code> object, accessible using the function <code>rowData()</code>. Each row of the <code>DataFrame</code> provides information on the feature in the corresponding row of the <code>SummarizedExperiment</code> object. Columns of the DataFrame represent different attributes of the features of interest, e.g., gene or transcript IDs, etc.</p>
+<p><code>RangedSummarizedExperiment</code> is the “child”&quot; of the <code>SummarizedExperiment</code> class which means that all the methods on <code>SummarizedExperiment</code> also work on a <code>RangedSummarizedExperiment</code>.</p>
+<p>The fundamental difference between the two classes is that the rows of a <code>RangedSummarizedExperiment</code> object represent genomic ranges of interest instead of a <code>DataFrame</code> of features. The <code>RangedSummarizedExperiment</code> ranges are described by a <code>GRanges</code> or a <code>GRangesList</code> object, accessible using the <code>rowRanges()</code> function.</p>
+<p>The following graphic displays the class geometry and highlights the vertical (column) and horizontal (row) relationships.</p>
+<div class="figure">
+<img src="SE.svg" alt="Summarized Experiment" />
+<p class="caption">Summarized Experiment</p>
+</div>
+<div id="assays" class="section level2">
+<h2>Assays</h2>
+<p>The <code>airway</code> package contains an example dataset from an RNA-Seq experiment of read counts per gene for airway smooth muscles. These data are stored in a <code>RangedSummarizedExperiment</code> object which contains 8 different experimental and assays 64,102 gene transcripts.</p>
+<pre class="r"><code>library(SummarizedExperiment)
+data(airway, package=&quot;airway&quot;)
+se &lt;- airway
+se</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 64102 8 
+## metadata(1): &#39;&#39;
+## assays(1): counts
+## rownames(64102): ENSG00000000003 ENSG00000000005 ... LRG_98 LRG_99
+## rowData names(0):
+## colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521
+## colData names(9): SampleName cell ... Sample BioSample</code></pre>
+<p>To retrieve the experiment data from a <code>SummarizedExperiment</code> object one can use the <code>assays()</code> accessor. An object can have multiple assay datasets each of which can be accessed using the <code>$</code> operator. The <code>airway</code> dataset contains only one assay (<code>counts</code>). Here each row represents a gene transcript and each column one of the samples.</p>
+<pre class="r"><code>assays(se)$counts</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">SRR1039508</th>
+<th align="right">SRR1039509</th>
+<th align="right">SRR1039512</th>
+<th align="right">SRR1039513</th>
+<th align="right">SRR1039516</th>
+<th align="right">SRR1039517</th>
+<th align="right">SRR1039520</th>
+<th align="right">SRR1039521</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ENSG00000000003</td>
+<td align="right">679</td>
+<td align="right">448</td>
+<td align="right">873</td>
+<td align="right">408</td>
+<td align="right">1138</td>
+<td align="right">1047</td>
+<td align="right">770</td>
+<td align="right">572</td>
+</tr>
+<tr class="even">
+<td>ENSG00000000005</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>ENSG00000000419</td>
+<td align="right">467</td>
+<td align="right">515</td>
+<td align="right">621</td>
+<td align="right">365</td>
+<td align="right">587</td>
+<td align="right">799</td>
+<td align="right">417</td>
+<td align="right">508</td>
+</tr>
+<tr class="even">
+<td>ENSG00000000457</td>
+<td align="right">260</td>
+<td align="right">211</td>
+<td align="right">263</td>
+<td align="right">164</td>
+<td align="right">245</td>
+<td align="right">331</td>
+<td align="right">233</td>
+<td align="right">229</td>
+</tr>
+<tr class="odd">
+<td>ENSG00000000460</td>
+<td align="right">60</td>
+<td align="right">55</td>
+<td align="right">40</td>
+<td align="right">35</td>
+<td align="right">78</td>
+<td align="right">63</td>
+<td align="right">76</td>
+<td align="right">60</td>
+</tr>
+<tr class="even">
+<td>ENSG00000000938</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>ENSG00000000971</td>
+<td align="right">3251</td>
+<td align="right">3679</td>
+<td align="right">6177</td>
+<td align="right">4252</td>
+<td align="right">6721</td>
+<td align="right">11027</td>
+<td align="right">5176</td>
+<td align="right">7995</td>
+</tr>
+<tr class="even">
+<td>ENSG00000001036</td>
+<td align="right">1433</td>
+<td align="right">1062</td>
+<td align="right">1733</td>
+<td align="right">881</td>
+<td align="right">1424</td>
+<td align="right">1439</td>
+<td align="right">1359</td>
+<td align="right">1109</td>
+</tr>
+<tr class="odd">
+<td>ENSG00000001084</td>
+<td align="right">519</td>
+<td align="right">380</td>
+<td align="right">595</td>
+<td align="right">493</td>
+<td align="right">820</td>
+<td align="right">714</td>
+<td align="right">696</td>
+<td align="right">704</td>
+</tr>
+<tr class="even">
+<td>ENSG00000001167</td>
+<td align="right">394</td>
+<td align="right">236</td>
+<td align="right">464</td>
+<td align="right">175</td>
+<td align="right">658</td>
+<td align="right">584</td>
+<td align="right">360</td>
+<td align="right">269</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="row-regions-of-interest-data" class="section level2">
+<h2>‘Row’ (regions-of-interest) data</h2>
+<p>The <code>rowRanges()</code> accessor is used to view the range information for a <code>RangedSummarizedExperiment</code>. (Note if this were the parent <code>SummarizedExperiment</code> class we’d use <code>rowData()</code>). The data are stored in a <code>GRangesList</code> object, where each list element corresponds to one gene transcript and the ranges in each <code>GRanges</code> correspond to the exons in the transcript.</p>
+<pre class="r"><code>rowRanges(se)</code></pre>
+<pre><code>## GRangesList object of length 64102:
+## $ENSG00000000003 
+## GRanges object with 17 ranges and 2 metadata columns:
+##        seqnames            ranges strand |   exon_id       exon_name
+##           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;     &lt;character&gt;
+##    [1]        X 99883667-99884983      - |    667145 ENSE00001459322
+##    [2]        X 99885756-99885863      - |    667146 ENSE00000868868
+##    [3]        X 99887482-99887565      - |    667147 ENSE00000401072
+##    [4]        X 99887538-99887565      - |    667148 ENSE00001849132
+##    [5]        X 99888402-99888536      - |    667149 ENSE00003554016
+##    ...      ...               ...    ... .       ...             ...
+##   [13]        X 99890555-99890743      - |    667156 ENSE00003512331
+##   [14]        X 99891188-99891686      - |    667158 ENSE00001886883
+##   [15]        X 99891605-99891803      - |    667159 ENSE00001855382
+##   [16]        X 99891790-99892101      - |    667160 ENSE00001863395
+##   [17]        X 99894942-99894988      - |    667161 ENSE00001828996
+## 
+## ...
+## &lt;64101 more elements&gt;
+## -------
+## seqinfo: 722 sequences (1 circular) from an unspecified genome</code></pre>
+</div>
+<div id="column-sample-data" class="section level2">
+<h2>‘Column’ (sample) data</h2>
+<p>Sample meta-data describing the samples can be accessed using <code>colData()</code>, and is a <code>DataFrame</code> that can store any number of descriptive columns for each sample row.</p>
+<pre class="r"><code>colData(se)</code></pre>
+<pre><code>## DataFrame with 8 rows and 9 columns
+##            SampleName     cell      dex    albut        Run avgLength
+##              &lt;factor&gt; &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;   &lt;factor&gt; &lt;integer&gt;
+## SRR1039508 GSM1275862   N61311    untrt    untrt SRR1039508       126
+## SRR1039509 GSM1275863   N61311      trt    untrt SRR1039509       126
+## SRR1039512 GSM1275866  N052611    untrt    untrt SRR1039512       126
+## SRR1039513 GSM1275867  N052611      trt    untrt SRR1039513        87
+## SRR1039516 GSM1275870  N080611    untrt    untrt SRR1039516       120
+## SRR1039517 GSM1275871  N080611      trt    untrt SRR1039517       126
+## SRR1039520 GSM1275874  N061011    untrt    untrt SRR1039520       101
+## SRR1039521 GSM1275875  N061011      trt    untrt SRR1039521        98
+##            Experiment    Sample    BioSample
+##              &lt;factor&gt;  &lt;factor&gt;     &lt;factor&gt;
+## SRR1039508  SRX384345 SRS508568 SAMN02422669
+## SRR1039509  SRX384346 SRS508567 SAMN02422675
+## SRR1039512  SRX384349 SRS508571 SAMN02422678
+## SRR1039513  SRX384350 SRS508572 SAMN02422670
+## SRR1039516  SRX384353 SRS508575 SAMN02422682
+## SRR1039517  SRX384354 SRS508576 SAMN02422673
+## SRR1039520  SRX384357 SRS508579 SAMN02422683
+## SRR1039521  SRX384358 SRS508580 SAMN02422677</code></pre>
+<p>This sample metadata can be accessed using the <code>$</code> accessor which makes it easy to subset the entire object by a given phenotype.</p>
+<pre class="r"><code># subset for only those samples treated with dexamethasone
+se[, se$dex == &quot;trt&quot;]</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 64102 4 
+## metadata(1): &#39;&#39;
+## assays(1): counts
+## rownames(64102): ENSG00000000003 ENSG00000000005 ... LRG_98 LRG_99
+## rowData names(0):
+## colnames(4): SRR1039509 SRR1039513 SRR1039517 SRR1039521
+## colData names(9): SampleName cell ... Sample BioSample</code></pre>
+</div>
+<div id="experiment-wide-metadata" class="section level2">
+<h2>Experiment-wide metadata</h2>
+<p>Meta-data describing the experimental methods and publication references can be accessed using <code>metadata()</code>.</p>
+<pre class="r"><code>metadata(se)</code></pre>
+<pre><code>## [[1]]
+## Experiment data
+##   Experimenter name: Himes BE 
+##   Laboratory: NA 
+##   Contact information:  
+##   Title: RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. 
+##   URL: http://www.ncbi.nlm.nih.gov/pubmed/24926665 
+##   PMIDs: 24926665 
+## 
+##   Abstract: A 226 word abstract is available. Use &#39;abstract&#39; method.</code></pre>
+<p>Note that <code>metadata()</code> is just a simple list, so it is appropriate for <em>any</em> experiment wide metadata the user wishes to save, such as storing model formulas.</p>
+<pre class="r"><code>metadata(se)$formula &lt;- counts ~ dex + albut
+
+metadata(se)</code></pre>
+<pre><code>## [[1]]
+## Experiment data
+##   Experimenter name: Himes BE 
+##   Laboratory: NA 
+##   Contact information:  
+##   Title: RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. 
+##   URL: http://www.ncbi.nlm.nih.gov/pubmed/24926665 
+##   PMIDs: 24926665 
+## 
+##   Abstract: A 226 word abstract is available. Use &#39;abstract&#39; method.
+## 
+## $formula
+## counts ~ dex + albut</code></pre>
+</div>
+</div>
+<div id="common-operations-on-summarizedexperiment" class="section level1">
+<h1>Common operations on <code>SummarizedExperiment</code></h1>
+<div id="subsetting" class="section level2">
+<h2>Subsetting</h2>
+<ul>
+<li><code>[</code> Performs two dimensional subsetting, just like subsetting a matrix or data frame.</li>
+</ul>
+<pre class="r"><code># subset the first five transcripts and first three samples
+se[1:5, 1:3]</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 5 3 
+## metadata(2): &#39;&#39; formula
+## assays(1): counts
+## rownames(5): ENSG00000000003 ENSG00000000005 ENSG00000000419
+##   ENSG00000000457 ENSG00000000460
+## rowData names(0):
+## colnames(3): SRR1039508 SRR1039509 SRR1039512
+## colData names(9): SampleName cell ... Sample BioSample</code></pre>
+<ul>
+<li><code>$</code> operates on <code>colData()</code> columns, for easy sample extraction.</li>
+</ul>
+<pre class="r"><code>se[, se$cell == &quot;N61311&quot;]</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 64102 2 
+## metadata(2): &#39;&#39; formula
+## assays(1): counts
+## rownames(64102): ENSG00000000003 ENSG00000000005 ... LRG_98 LRG_99
+## rowData names(0):
+## colnames(2): SRR1039508 SRR1039509
+## colData names(9): SampleName cell ... Sample BioSample</code></pre>
+</div>
+<div id="getters-and-setters" class="section level2">
+<h2>Getters and setters</h2>
+<ul>
+<li><code>rowRanges()</code> / (<code>rowData()</code>), <code>colData()</code>, <code>metadata()</code></li>
+</ul>
+<pre class="r"><code>counts &lt;- matrix(1:15, 5, 3, dimnames=list(LETTERS[1:5], LETTERS[1:3]))
+
+dates &lt;- SummarizedExperiment(assays=list(counts=counts),
+                              rowData=DataFrame(month=month.name[1:5], day=1:5))
+
+# Subset all January assays
+dates[rowData(dates)$month == &quot;January&quot;, ]</code></pre>
+<pre><code>## class: SummarizedExperiment 
+## dim: 1 3 
+## metadata(0):
+## assays(1): counts
+## rownames(1): A
+## rowData names(2): month day
+## colnames(3): A B C
+## colData names(0):</code></pre>
+<ul>
+<li><code>assay()</code> versus <code>assays()</code> There are two accessor functions for extracting the assay data from a <code>SummarizedExperiment</code> object. <code>assays()</code> operates on the entire list of assay data as a whole, while <code>assay()</code> operates on only one assay at a time. <code>assay(x, i)</code> is simply a convenience function which is equivalent to <code>assays(x)[[i]]</code>.</li>
+</ul>
+<pre class="r"><code>assays(se)</code></pre>
+<pre><code>## List of length 1
+## names(1): counts</code></pre>
+<pre class="r"><code>assays(se)[[1]][1:5, 1:5]</code></pre>
+<pre><code>##                 SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516
+## ENSG00000000003        679        448        873        408       1138
+## ENSG00000000005          0          0          0          0          0
+## ENSG00000000419        467        515        621        365        587
+## ENSG00000000457        260        211        263        164        245
+## ENSG00000000460         60         55         40         35         78</code></pre>
+<pre class="r"><code># assay defaults to the first assay if no i is given
+assay(se)[1:5, 1:5]</code></pre>
+<pre><code>##                 SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516
+## ENSG00000000003        679        448        873        408       1138
+## ENSG00000000005          0          0          0          0          0
+## ENSG00000000419        467        515        621        365        587
+## ENSG00000000457        260        211        263        164        245
+## ENSG00000000460         60         55         40         35         78</code></pre>
+<pre class="r"><code>assay(se, 1)[1:5, 1:5]</code></pre>
+<pre><code>##                 SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516
+## ENSG00000000003        679        448        873        408       1138
+## ENSG00000000005          0          0          0          0          0
+## ENSG00000000419        467        515        621        365        587
+## ENSG00000000457        260        211        263        164        245
+## ENSG00000000460         60         55         40         35         78</code></pre>
+</div>
+<div id="range-based-operations" class="section level2">
+<h2>Range-based operations</h2>
+<ul>
+<li><code>subsetByOverlaps()</code> <code>SummarizedExperiment</code> objects support all of the <code>findOverlaps()</code> methods and associated functions. This includes <code>subsetByOverlaps()</code>, which makes it easy to subset a <code>SummarizedExperiment</code> object by an interval.</li>
+</ul>
+<p>In tne next code block, we define a region of interest (or many regions of interest) and then subset our <code>SummarizedExperiment</code> by overlaps with this region.</p>
+<pre class="r"><code># Subset for only rows which are in the interval 100,000 to 110,000 of
+# chromosome 1
+roi &lt;- GRanges(seqnames=&quot;1&quot;, ranges=100000:1100000)
+sub_se = subsetByOverlaps(se, roi)
+sub_se</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 74 8 
+## metadata(2): &#39;&#39; formula
+## assays(1): counts
+## rownames(74): ENSG00000131591 ENSG00000177757 ... ENSG00000272512
+##   ENSG00000273443
+## rowData names(0):
+## colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521
+## colData names(9): SampleName cell ... Sample BioSample</code></pre>
+<pre class="r"><code>dim(sub_se)</code></pre>
+<pre><code>## [1] 74  8</code></pre>
+</div>
+</div>
+<div id="constructing-a-summarizedexperiment" class="section level1">
+<h1>Constructing a <code>SummarizedExperiment</code></h1>
+<p>Often, <code>SummarizedExperiment</code> or <code>RangedSummarizedExperiment</code> objects are returned by functions written by other packages. However it is possible to create them by hand with a call to the <code>SummarizedExperiment()</code> constructor. The code below is simply to illustrate the mechanics of creating an object from scratch. In practice, you will probably have the pieces of the object from other sources such as Excel files or csv files.</p>
+<p>Constructing a <code>RangedSummarizedExperiment</code> with a <code>GRanges</code> as the <em>rowRanges</em> argument:</p>
+<pre class="r"><code>nrows &lt;- 200
+ncols &lt;- 6
+counts &lt;- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+rowRanges &lt;- GRanges(rep(c(&quot;chr1&quot;, &quot;chr2&quot;), c(50, 150)),
+                     IRanges(floor(runif(200, 1e5, 1e6)), width=100),
+                     strand=sample(c(&quot;+&quot;, &quot;-&quot;), 200, TRUE),
+                     feature_id=sprintf(&quot;ID%03d&quot;, 1:200))
+colData &lt;- DataFrame(Treatment=rep(c(&quot;ChIP&quot;, &quot;Input&quot;), 3),
+                     row.names=LETTERS[1:6])
+
+SummarizedExperiment(assays=list(counts=counts),
+                     rowRanges=rowRanges, colData=colData)</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 200 6 
+## metadata(0):
+## assays(1): counts
+## rownames: NULL
+## rowData names(1): feature_id
+## colnames(6): A B ... E F
+## colData names(1): Treatment</code></pre>
+<p>A <code>SummarizedExperiment</code> can be constructed with or without supplying a <code>DataFrame</code> for the <em>rowData</em> argument:</p>
+<pre class="r"><code>SummarizedExperiment(assays=list(counts=counts), colData=colData)</code></pre>
+<pre><code>## class: SummarizedExperiment 
+## dim: 200 6 
+## metadata(0):
+## assays(1): counts
+## rownames: NULL
+## rowData names(0):
+## colnames(6): A B ... E F
+## colData names(1): Treatment</code></pre>
+</div>
+<div id="sessioninfo" class="section level1">
+<h1>sessionInfo()</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS Sierra 10.12.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+## 
+## other attached packages:
+##  [1] airway_0.114.0                    knitr_1.20                       
+##  [3] nycflights13_0.2.2                ggplot2_2.2.1                    
+##  [5] BSgenome.Hsapiens.UCSC.hg19_1.4.0 BSgenome_1.47.5                  
+##  [7] rtracklayer_1.39.13               BiocStyle_2.7.9                  
+##  [9] VariantAnnotation_1.25.13         SummarizedExperiment_1.9.18      
+## [11] DelayedArray_0.5.35               BiocParallel_1.13.3              
+## [13] matrixStats_0.53.1                Rsamtools_1.31.3                 
+## [15] Biostrings_2.47.12                XVector_0.19.9                   
+## [17] GenomicFeatures_1.31.10           AnnotationDbi_1.41.6             
+## [19] Biobase_2.39.2                    GenomicRanges_1.31.23            
+## [21] GenomeInfoDb_1.15.5               IRanges_2.13.29                  
+## [23] S4Vectors_0.17.43                 AnnotationHub_2.12.0             
+## [25] BiocGenerics_0.25.3              
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.3.1                    bit64_0.9-7                  
+##  [3] shiny_1.0.5                   assertthat_0.2.0             
+##  [5] interactiveDisplayBase_1.18.0 highr_0.6                    
+##  [7] blob_1.1.1                    GenomeInfoDbData_1.1.0       
+##  [9] yaml_2.1.19                   progress_1.1.2               
+## [11] pillar_1.2.2                  RSQLite_2.1.0                
+## [13] backports_1.1.2               lattice_0.20-35              
+## [15] digest_0.6.15                 promises_1.0.1               
+## [17] colorspace_1.3-2              htmltools_0.3.6              
+## [19] httpuv_1.4.3                  Matrix_1.2-14                
+## [21] plyr_1.8.4                    XML_3.98-1.11                
+## [23] pkgconfig_2.0.1               biomaRt_2.35.13              
+## [25] bookdown_0.7                  zlibbioc_1.25.0              
+## [27] xtable_1.8-2                  scales_0.5.0                 
+## [29] later_0.7.2                   tibble_1.4.2                 
+## [31] lazyeval_0.2.1                cli_1.0.0                    
+## [33] magrittr_1.5                  crayon_1.3.4                 
+## [35] mime_0.5                      memoise_1.1.0                
+## [37] evaluate_0.10.1               BiocInstaller_1.30.0         
+## [39] tools_3.5.0                   prettyunits_1.0.2            
+## [41] stringr_1.3.1                 munsell_0.4.3                
+## [43] compiler_3.5.0                rlang_0.2.0                  
+## [45] grid_3.5.0                    RCurl_1.95-4.10              
+## [47] bitops_1.0-6                  labeling_0.3                 
+## [49] rmarkdown_1.9                 gtable_0.2.0                 
+## [51] DBI_0.8                       curl_3.2                     
+## [53] R6_2.2.2                      GenomicAlignments_1.15.14    
+## [55] utf8_1.1.3                    bit_1.1-12                   
+## [57] rprojroot_1.3-2               stringi_1.2.2                
+## [59] Rcpp_0.12.16                  xfun_0.1</code></pre>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

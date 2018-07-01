@@ -11,7 +11,7 @@
 
 
 
-<title>Motivation for R</title>
+<title>bioc_summarizedExperiment_exercises.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,6 +23,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -165,6 +166,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -340,58 +349,167 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Motivation for R</h1>
+
 
 </div>
 
 
-<div id="what-is-r" class="section level2">
-<h2>What is R?</h2>
-<p>R is a number of things, simultaneously. Depending on who is being asked, R is:</p>
-<ul>
-<li>A software package</li>
-<li>A programming language</li>
-<li>A toolkit for developing statistical and analytical tools</li>
-<li>An extensive library of statistical and mathematical software and algorithms</li>
-<li>A scripting language</li>
-<li>much, much more</li>
-</ul>
+<div id="getting-started" class="section level1">
+<h1>Getting started</h1>
+<pre><code>## Loading required package: airway</code></pre>
+<pre class="r"><code>library(SummarizedExperiment)
+data(airway, package=&quot;airway&quot;)
+airway</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 64102 8 
+## metadata(1): &#39;&#39;
+## assays(1): counts
+## rownames(64102): ENSG00000000003 ENSG00000000005 ... LRG_98 LRG_99
+## rowData names(0):
+## colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521
+## colData names(9): SampleName cell ... Sample BioSample</code></pre>
 </div>
-<div id="why-use-r" class="section level2">
-<h2>Why use R?</h2>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
 <ul>
-<li>R is cross-platform and runs on Windows, Mac, and Linux (as well as more obscure systems).</li>
-<li>R provides a vast number of useful statistical tools, many of which have been painstakingly tested.</li>
-<li>R produces publication-quality graphics in a variety of formats.</li>
-<li>R plays well with FORTRAN, C, and scripts in many languages.</li>
-<li>R scales, making it useful for small and large projects. It is NOT Excel.</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
+<li>What is the <code>class()</code> of <code>airway</code>? What does the class tell you about the information stored about the features (genes) in the dataset?</li>
 </ul>
-<p>I can develop code for analysis on my Mac laptop. I can then install the <em>same</em> code on our 20k core cluster and run it in parallel on 100 samples, monitor the process, and then update a database (for example) with R when complete.</p>
+<pre class="r"><code>class(airway)</code></pre>
+<ul>
+<li>How many features are in the data?</li>
+</ul>
+<pre class="r"><code>airway # it tells you
+# but to get the result as a number:
+nrow(airway)</code></pre>
+<ul>
+<li>How many samples are present?</li>
+</ul>
+<pre class="r"><code>airway # it tells you
+# but to get the result as a number:
+ncol(airway)</code></pre>
+<ul>
+<li>The assay information in the airway object contains the RNA-seq counts. Access the count data for the 56th gene.</li>
+</ul>
+<pre class="r"><code># check the names of the available assays
+assayNames(airway)
+# Both below are identical
+assay(airway, &quot;counts&quot;)[56, ]
+assays(airway)[[1]][56, ]</code></pre>
+<ul>
+<li>What are the <code>rownames()</code> of airway? What do these represent? What gene is represented by the first row of data?</li>
+</ul>
+<pre class="r"><code>head(rownames(airway))
+# These are Ensembl gene identifiers
+# ENSG00000000003 is the identifier of the &quot;TSPAN6&quot; gene</code></pre>
+<ul>
+<li>What information is available about the samples?</li>
+</ul>
+<pre class="r"><code>colData(airway)</code></pre>
+<ul>
+<li>How many samples were treated with dex? Untreated?</li>
+</ul>
+<pre class="r"><code>colData(airway) # and count
+colData(airway)$dex # and count
+table(colData(airway)$dex)</code></pre>
+<ul>
+<li>How many different cell types were used?</li>
+</ul>
+<pre class="r"><code>table(colData(airway)$cell)
+length(unique(colData(airway)$cell))</code></pre>
+<ul>
+<li>What does <code>rowRanges(airway)</code> give you? What is the length of the object? What does each element of <code>rowRanges(airway)</code> contain?</li>
+</ul>
+<pre class="r"><code>rowRanges(airway)
+length(rowRanges(airway))
+rowRanges(airway)[[1]]</code></pre>
+<ul>
+<li>From the <a href="https://www.ncbi.nlm.nih.gov/pubmed/24926665">PubMed abstract</a>, we can see that the authors suggest that the DUSP1 gene is upregulated by Dexamethasone treatment. The <a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene=DUSP1&amp;keywords=DUSP1">GeneCards website</a> tells us that the Ensembl gene id for DUSP1 is ‘ENSG00000120129’. Get the count data for this gene.</li>
+</ul>
+<pre class="r"><code># get the assay data for DUSP1
+dat = assay(airway, &quot;counts&quot;)[&quot;ENSG00000120129&quot;, ]</code></pre>
+<ul>
+<li>Make a plot of the gene counts in the previous exercise. Color the points based on the dexamethasone treatment.</li>
+</ul>
+<pre class="r"><code># get the assay data for DUSP1
+plot(dat)</code></pre>
+<p><img src="bioc_summarizedExperiment_exercises_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>dextrt = colData(airway)$dex
+plot(dat, col=dextrt)</code></pre>
+<p><img src="bioc_summarizedExperiment_exercises_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 </div>
-<div id="why-not-use-r" class="section level2">
-<h2>Why not use R?</h2>
-<ul>
-<li>R cannot do everything.</li>
-<li>R is not always the “best” tool for the job.</li>
-<li>R will <em>not</em> hold your hand. Often, it will <em>slap</em> your hand instead.</li>
-<li>The documentation can be opaque (but there is documentation).</li>
-<li>R can drive you crazy (on a good day) or age you prematurely (on a bad one).</li>
-<li>Finding the right package to do the job you want to do can be challenging; worse, some contributed packages are unreliable.]{}</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-</div>
-<div id="r-license-and-the-open-source-ideal" class="section level2">
-<h2>R License and the Open Source Ideal</h2>
-<p>R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:</p>
-<ul>
-<li>Download the source code</li>
-<li>Modify the source code to your heart’s content</li>
-<li>Distribute the modified source code and even charge money for it, but you must distribute the modified source code under the original GNU license]{}</li>
-</ul>
-<p>This license means that R will always be available, will always be open source, and can grow organically without constraint.</p>
+<div id="sessioninfo" class="section level1">
+<h1>sessionInfo()</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS Sierra 10.12.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+## 
+## other attached packages:
+##  [1] airway_0.114.0                    knitr_1.20                       
+##  [3] nycflights13_0.2.2                ggplot2_2.2.1                    
+##  [5] BSgenome.Hsapiens.UCSC.hg19_1.4.0 BSgenome_1.47.5                  
+##  [7] rtracklayer_1.39.13               BiocStyle_2.7.9                  
+##  [9] VariantAnnotation_1.25.13         SummarizedExperiment_1.9.18      
+## [11] DelayedArray_0.5.35               BiocParallel_1.13.3              
+## [13] matrixStats_0.53.1                Rsamtools_1.31.3                 
+## [15] Biostrings_2.47.12                XVector_0.19.9                   
+## [17] GenomicFeatures_1.31.10           AnnotationDbi_1.41.6             
+## [19] Biobase_2.39.2                    GenomicRanges_1.31.23            
+## [21] GenomeInfoDb_1.15.5               IRanges_2.13.29                  
+## [23] S4Vectors_0.17.43                 AnnotationHub_2.12.0             
+## [25] BiocGenerics_0.25.3              
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.3.1                    bit64_0.9-7                  
+##  [3] shiny_1.0.5                   assertthat_0.2.0             
+##  [5] interactiveDisplayBase_1.18.0 blob_1.1.1                   
+##  [7] GenomeInfoDbData_1.1.0        yaml_2.1.19                  
+##  [9] progress_1.1.2                pillar_1.2.2                 
+## [11] RSQLite_2.1.0                 backports_1.1.2              
+## [13] lattice_0.20-35               digest_0.6.15                
+## [15] promises_1.0.1                colorspace_1.3-2             
+## [17] htmltools_0.3.6               httpuv_1.4.3                 
+## [19] Matrix_1.2-14                 plyr_1.8.4                   
+## [21] XML_3.98-1.11                 pkgconfig_2.0.1              
+## [23] biomaRt_2.35.13               bookdown_0.7                 
+## [25] zlibbioc_1.25.0               xtable_1.8-2                 
+## [27] scales_0.5.0                  later_0.7.2                  
+## [29] tibble_1.4.2                  lazyeval_0.2.1               
+## [31] cli_1.0.0                     magrittr_1.5                 
+## [33] crayon_1.3.4                  mime_0.5                     
+## [35] memoise_1.1.0                 evaluate_0.10.1              
+## [37] BiocInstaller_1.30.0          tools_3.5.0                  
+## [39] prettyunits_1.0.2             stringr_1.3.1                
+## [41] munsell_0.4.3                 compiler_3.5.0               
+## [43] rlang_0.2.0                   grid_3.5.0                   
+## [45] RCurl_1.95-4.10               bitops_1.0-6                 
+## [47] labeling_0.3                  rmarkdown_1.9                
+## [49] gtable_0.2.0                  DBI_0.8                      
+## [51] curl_3.2                      R6_2.2.2                     
+## [53] GenomicAlignments_1.15.14     utf8_1.1.3                   
+## [55] bit_1.1-12                    rprojroot_1.3-2              
+## [57] stringi_1.2.2                 Rcpp_0.12.16                 
+## [59] xfun_0.1</code></pre>
 </div>
 
     <script>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>AnnotationHub: Access the AnnotationHub Web Service</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">AnnotationHub: Access the AnnotationHub Web Service</h1>
+
+</div>
+
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector("h1").className = "title";
+});
+</script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var links = document.links;  
+  for (var i = 0, linksLength = links.length; i < linksLength; i++)
+    if (links[i].hostname != window.location.hostname)
+      links[i].target = '_blank';
+});
+</script>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Finding and using public genomics data such as browser or chip-seq tracks; annotation for genes, exons, transcripts; gene ontology and functional gene information; etc. often requires quite a bit of work. Bioconductor has done some of this work already by</p>
+<ol style="list-style-type: decimal">
+<li>Finding and curating popular genomic resources</li>
+<li>Using “recipes” to create R object versions of these resources</li>
+<li>Make those resources available as a web service that is accessible from R</li>
+</ol>
+<p>The <code>AnnotationHub</code> server provides easy <em>R / Bioconductor</em> access to large collections of publicly available whole genome resources, e.g,. ENSEMBL genome fasta or gtf files, UCSC chain resources, ENCODE data tracks at UCSC, etc.</p>
+<p>To get started, make sure that you have the <code>AnnotationHub</code> package installed:</p>
+<pre class="r"><code>source(&#39;https://bioconductor.org/biocLite.R&#39;)
+biocLite(&#39;AnnotationHub&#39;)</code></pre>
+</div>
+<div id="annotationhub-objects" class="section level1">
+<h1>AnnotationHub objects</h1>
+<p>The <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> package provides a client interface to resources stored at the AnnotationHub web service.</p>
+<pre class="r"><code>library(AnnotationHub)</code></pre>
+<p>The <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> package is straightforward to use. Create an <code>AnnotationHub</code> object</p>
+<pre class="r"><code>ah = AnnotationHub()</code></pre>
+<pre><code>## snapshotDate(): 2018-04-30</code></pre>
+<p>Now at this point you have already done everything you need in order to start retrieving annotations. For most operations, using the <code>AnnotationHub</code> object should feel a lot like working with a familiar <code>list</code> or <code>data.frame</code>.</p>
+<p>Lets take a minute to look at the show method for the hub object ah</p>
+<pre class="r"><code>ah</code></pre>
+<pre><code>## AnnotationHub with 44923 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih....
+## # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos ta...
+## # $rdataclass: GRanges, BigWigFile, FaFile, TwoBitFile, Rle, OrgDb, Cha...
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH2&quot;]]&#39; 
+## 
+##             title                                                   
+##   AH2     | Ailuropoda_melanoleuca.ailMel1.69.dna.toplevel.fa       
+##   AH3     | Ailuropoda_melanoleuca.ailMel1.69.dna_rm.toplevel.fa    
+##   AH4     | Ailuropoda_melanoleuca.ailMel1.69.dna_sm.toplevel.fa    
+##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa              
+##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa            
+##   ...       ...                                                     
+##   AH63653 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000248.rds     
+##   AH63654 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000249.rds     
+##   AH63655 | phastCons46wayPrimates.UCSC.hg19.chrX.rds               
+##   AH63656 | phastCons46wayPrimates.UCSC.hg19.chrY.rds               
+##   AH63657 | Alternative Splicing Annotation for Homo sapiens (Human)</code></pre>
+<p>You can see that it gives you an idea about the different types of data that are present inside the hub. You can see where the data is coming from (dataprovider), as well as what species have samples present (species), what kinds of R data objects could be returned (rdataclass). We can take a closer look at all the kinds of data providers that are available by simply looking at the contents of dataprovider as if it were the column of a data.frame object like this:</p>
+<pre class="r"><code>unique(ah$dataprovider)</code></pre>
+<pre><code>##  [1] &quot;Ensembl&quot;                              
+##  [2] &quot;UCSC&quot;                                 
+##  [3] &quot;RefNet&quot;                               
+##  [4] &quot;Inparanoid8&quot;                          
+##  [5] &quot;NHLBI&quot;                                
+##  [6] &quot;ChEA&quot;                                 
+##  [7] &quot;Pazar&quot;                                
+##  [8] &quot;NIH Pathway Interaction Database&quot;     
+##  [9] &quot;Haemcode&quot;                             
+## [10] &quot;BroadInstitute&quot;                       
+## [11] &quot;PRIDE&quot;                                
+## [12] &quot;Gencode&quot;                              
+## [13] &quot;CRIBI&quot;                                
+## [14] &quot;Genoscope&quot;                            
+## [15] &quot;MISO, VAST-TOOLS, UCSC&quot;               
+## [16] &quot;UWashington&quot;                          
+## [17] &quot;Stanford&quot;                             
+## [18] &quot;dbSNP&quot;                                
+## [19] &quot;BioMart&quot;                              
+## [20] &quot;GeneOntology&quot;                         
+## [21] &quot;KEGG&quot;                                 
+## [22] &quot;URGI&quot;                                 
+## [23] &quot;ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/&quot;</code></pre>
+<p>In the same way, you can also see data from different species inside the hub by looking at the contents of species like this:</p>
+<pre class="r"><code>head(unique(ah$species))</code></pre>
+<pre><code>## [1] &quot;Ailuropoda melanoleuca&quot; &quot;Anolis carolinensis&quot;   
+## [3] &quot;Bos taurus&quot;             &quot;Caenorhabditis elegans&quot;
+## [5] &quot;Callithrix jacchus&quot;     &quot;Canis familiaris&quot;</code></pre>
+<p>And this will also work for any of the other types of metadata present. You can learn which kinds of metadata are available by simply hitting the tab key after you type ‘ah$’. In this way you can explore for yourself what kinds of data are present in the hub right from the command line. This interface also allows you to access the hub programatically to extract data that matches a particular set of criteria.</p>
+<p>Another valuable types of metadata to pay attention to is the rdataclass.</p>
+<pre class="r"><code>head(unique(ah$rdataclass))</code></pre>
+<pre><code>## [1] &quot;FaFile&quot;        &quot;GRanges&quot;       &quot;data.frame&quot;    &quot;Inparanoid8Db&quot;
+## [5] &quot;TwoBitFile&quot;    &quot;ChainFile&quot;</code></pre>
+<p>The rdataclass allows you to see which kinds of R objects the hub will return to you. This kind of information is valuable both as a means to filter results and also as a means to explore and learn about some of the kinds of annotation objects that are widely available for the project. Right now this is a pretty short list, but over time it should grow as we support more of the different kinds of annotation objects via the hub.</p>
+<p>Now lets try getting the Chain Files from UCSC using the query and subset methods to selectively pare down the hub based on specific criteria. The query method lets you search rows for specific strings, returning an <code>AnnotationHub</code> instance with just the rows matching the query.</p>
+<p>From the show method, one can easily see that one of the dataprovider is UCSC and there is a rdataclass for ChainFile</p>
+<p>One can get chain files for Drosophila melanogaster from UCSC with:</p>
+<pre class="r"><code>dm &lt;- query(ah, c(&quot;ChainFile&quot;, &quot;UCSC&quot;, &quot;Drosophila melanogaster&quot;))
+dm</code></pre>
+<pre><code>## AnnotationHub with 45 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: UCSC
+## # $species: Drosophila melanogaster
+## # $rdataclass: ChainFile
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH15102&quot;]]&#39; 
+## 
+##             title                     
+##   AH15102 | dm3ToAnoGam1.over.chain.gz
+##   AH15103 | dm3ToApiMel3.over.chain.gz
+##   AH15104 | dm3ToDm2.over.chain.gz    
+##   AH15105 | dm3ToDm6.over.chain.gz    
+##   AH15106 | dm3ToDp3.over.chain.gz    
+##   ...       ...                       
+##   AH15142 | dm2ToDroVir3.over.chain.gz
+##   AH15143 | dm2ToDroWil1.over.chain.gz
+##   AH15144 | dm2ToDroYak1.over.chain.gz
+##   AH15145 | dm2ToDroYak2.over.chain.gz
+##   AH15146 | dm1ToDm2.over.chain.gz</code></pre>
+<p>Query has worked and you can now see that the only species present is Drosophila melanogaster.</p>
+<p>The metadata underlying this hub object can be retrieved by you</p>
+<pre class="r"><code>df &lt;- mcols(dm)</code></pre>
+<p>By default the show method will only display the first 5 and last 5 rows. There are already thousands of records present in the hub.</p>
+<pre class="r"><code>length(ah)</code></pre>
+<pre><code>## [1] 44923</code></pre>
+<p>Lets look at another example, where we pull down only Inparanoid8 data from the hub and use subset to return a smaller base object (here we are finding cases where the genome column is set to panda).</p>
+<pre class="r"><code>ahs &lt;- query(ah, c(&#39;inparanoid8&#39;, &#39;ailuropoda&#39;))
+ahs</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2018-04-30 
+## # names(): AH10451
+## # $dataprovider: Inparanoid8
+## # $species: Ailuropoda melanoleuca
+## # $rdataclass: Inparanoid8Db
+## # $rdatadateadded: 2014-03-31
+## # $title: hom.Ailuropoda_melanoleuca.inp8.sqlite
+## # $description: Inparanoid 8 annotations about Ailuropoda melanoleuca
+## # $taxonomyid: 9646
+## # $genome: inparanoid8 genomes
+## # $sourcetype: Inparanoid
+## # $sourceurl: http://inparanoid.sbc.su.se/download/current/Orthologs/A....
+## # $sourcesize: NA
+## # $tags: c(&quot;Inparanoid&quot;, &quot;Gene&quot;, &quot;Homology&quot;, &quot;Annotation&quot;) 
+## # retrieve record with &#39;object[[&quot;AH10451&quot;]]&#39;</code></pre>
+<p>We can also look at the <code>AnnotationHub</code> object in a browser using the <code>display()</code> function. We can then filter the <code>AnnotationHub</code> object for _chainFile__ by either using the Global search field on the top right corner of the page or the in-column search field for `rdataclass’.</p>
+<pre class="r"><code>d &lt;- display(ah)</code></pre>
+<p><img src="images/annotationHub.png" /> Displaying and filtering the Annotation Hub object in a browser</p>
+<p>By default 1000 entries are displayed per page, we can change this using the filter on the top of the page or navigate through different pages using the page scrolling feature at the bottom of the page.</p>
+<p>We can also select the rows of interest to us and send them back to the R session using ‘Return rows to R session’ button ; this sets a filter internally which filters the <code>AnnotationHub</code> object. The names of the selected AnnotationHub elements displayed at the top of the page.</p>
+</div>
+<div id="using-annotationhub-to-retrieve-data" class="section level1">
+<h1>Using <code>AnnotationHub</code> to retrieve data</h1>
+<p>Looking back at our chain file example, if we are interested in the file dm1ToDm2.over.chain.gz, we can gets its metadata using</p>
+<pre class="r"><code>dm</code></pre>
+<pre><code>## AnnotationHub with 45 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: UCSC
+## # $species: Drosophila melanogaster
+## # $rdataclass: ChainFile
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH15102&quot;]]&#39; 
+## 
+##             title                     
+##   AH15102 | dm3ToAnoGam1.over.chain.gz
+##   AH15103 | dm3ToApiMel3.over.chain.gz
+##   AH15104 | dm3ToDm2.over.chain.gz    
+##   AH15105 | dm3ToDm6.over.chain.gz    
+##   AH15106 | dm3ToDp3.over.chain.gz    
+##   ...       ...                       
+##   AH15142 | dm2ToDroVir3.over.chain.gz
+##   AH15143 | dm2ToDroWil1.over.chain.gz
+##   AH15144 | dm2ToDroYak1.over.chain.gz
+##   AH15145 | dm2ToDroYak2.over.chain.gz
+##   AH15146 | dm1ToDm2.over.chain.gz</code></pre>
+<pre class="r"><code>dm[&quot;AH15146&quot;]</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2018-04-30 
+## # names(): AH15146
+## # $dataprovider: UCSC
+## # $species: Drosophila melanogaster
+## # $rdataclass: ChainFile
+## # $rdatadateadded: 2014-12-15
+## # $title: dm1ToDm2.over.chain.gz
+## # $description: UCSC liftOver chain file from dm1 to dm2
+## # $taxonomyid: 7227
+## # $genome: dm1
+## # $sourcetype: Chain
+## # $sourceurl: http://hgdownload.cse.ucsc.edu/goldenpath/dm1/liftOver/dm...
+## # $sourcesize: NA
+## # $tags: c(&quot;liftOver&quot;, &quot;chain&quot;, &quot;UCSC&quot;, &quot;genome&quot;, &quot;homology&quot;) 
+## # retrieve record with &#39;object[[&quot;AH15146&quot;]]&#39;</code></pre>
+<p>We can download the file using</p>
+<pre class="r"><code>dm[[&quot;AH15146&quot;]]</code></pre>
+<pre><code>## downloading 0 resources</code></pre>
+<pre><code>## loading from cache 
+##     &#39;/Users/sdavis2//.AnnotationHub/19241&#39;</code></pre>
+<pre><code>## Chain of length 11
+## names(11): chr2L chr2R chr3L chr3R chr4 chrX chrU chr2h chr3h chrXh chrYh</code></pre>
+<p>Each file is retrieved from the AnnotationHub server and the file is also cache locally, so that the next time you need to retrieve it, it should download much more quickly.</p>
+</div>
+<div id="configuring-annotationhub-objects" class="section level1">
+<h1>Configuring <code>AnnotationHub</code> objects</h1>
+<p>When you create the <code>AnnotationHub</code> object, it will set up the object for you with some default settings. See <code>?AnnotationHub</code> for ways to customize the hub source, the local cache, and other instance-specific options, and <code>?getAnnotationHubOption</code> to get or set package-global options for use across sessions.</p>
+<p>If you look at the object you will see some helpful information about it such as where the data is cached and where online the hub server is set to.</p>
+<pre class="r"><code>ah</code></pre>
+<pre><code>## AnnotationHub with 44923 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih....
+## # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos ta...
+## # $rdataclass: GRanges, BigWigFile, FaFile, TwoBitFile, Rle, OrgDb, Cha...
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH2&quot;]]&#39; 
+## 
+##             title                                                   
+##   AH2     | Ailuropoda_melanoleuca.ailMel1.69.dna.toplevel.fa       
+##   AH3     | Ailuropoda_melanoleuca.ailMel1.69.dna_rm.toplevel.fa    
+##   AH4     | Ailuropoda_melanoleuca.ailMel1.69.dna_sm.toplevel.fa    
+##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa              
+##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa            
+##   ...       ...                                                     
+##   AH63653 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000248.rds     
+##   AH63654 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000249.rds     
+##   AH63655 | phastCons46wayPrimates.UCSC.hg19.chrX.rds               
+##   AH63656 | phastCons46wayPrimates.UCSC.hg19.chrY.rds               
+##   AH63657 | Alternative Splicing Annotation for Homo sapiens (Human)</code></pre>
+<p>By default the <code>AnnotationHub</code> object is set to the latest <code>snapshotData</code> and a snapshot version that matches the version of <em>Bioconductor</em> that you are using. You can also learn about these data with the appropriate methods.</p>
+<pre class="r"><code>snapshotDate(ah)</code></pre>
+<pre><code>## [1] &quot;2018-04-30&quot;</code></pre>
+<p>If you are interested in using an older version of a snapshot, you can list previous versions with the <code>possibleDates()</code> like this:</p>
+<pre class="r"><code>pd &lt;- possibleDates(ah)
+pd</code></pre>
+<pre><code>##   [1] &quot;2013-03-19&quot; &quot;2013-03-21&quot; &quot;2013-03-26&quot; &quot;2013-04-04&quot; &quot;2013-04-29&quot;
+##   [6] &quot;2013-06-24&quot; &quot;2013-06-25&quot; &quot;2013-06-26&quot; &quot;2013-06-27&quot; &quot;2013-10-29&quot;
+##  [11] &quot;2013-11-20&quot; &quot;2013-12-19&quot; &quot;2014-02-12&quot; &quot;2014-02-13&quot; &quot;2014-03-31&quot;
+##  [16] &quot;2014-04-27&quot; &quot;2014-05-11&quot; &quot;2014-05-13&quot; &quot;2014-05-14&quot; &quot;2014-05-22&quot;
+##  [21] &quot;2014-07-02&quot; &quot;2014-07-09&quot; &quot;2014-12-15&quot; &quot;2014-12-24&quot; &quot;2015-01-08&quot;
+##  [26] &quot;2015-01-14&quot; &quot;2015-03-09&quot; &quot;2015-03-11&quot; &quot;2015-03-12&quot; &quot;2015-03-25&quot;
+##  [31] &quot;2015-03-26&quot; &quot;2015-05-06&quot; &quot;2015-05-07&quot; &quot;2015-05-08&quot; &quot;2015-05-11&quot;
+##  [36] &quot;2015-05-14&quot; &quot;2015-05-21&quot; &quot;2015-05-22&quot; &quot;2015-05-26&quot; &quot;2015-07-17&quot;
+##  [41] &quot;2015-07-27&quot; &quot;2015-07-31&quot; &quot;2015-08-10&quot; &quot;2015-08-13&quot; &quot;2015-08-14&quot;
+##  [46] &quot;2015-08-17&quot; &quot;2015-08-26&quot; &quot;2015-12-28&quot; &quot;2015-12-29&quot; &quot;2016-01-25&quot;
+##  [51] &quot;2016-03-07&quot; &quot;2016-05-03&quot; &quot;2016-05-25&quot; &quot;2016-06-06&quot; &quot;2016-07-20&quot;
+##  [56] &quot;2016-08-15&quot; &quot;2016-10-11&quot; &quot;2016-11-03&quot; &quot;2016-11-08&quot; &quot;2016-11-09&quot;
+##  [61] &quot;2016-11-13&quot; &quot;2016-11-14&quot; &quot;2016-12-22&quot; &quot;2016-12-28&quot; &quot;2017-01-05&quot;
+##  [66] &quot;2017-02-07&quot; &quot;2017-04-03&quot; &quot;2017-04-04&quot; &quot;2017-04-05&quot; &quot;2017-04-10&quot;
+##  [71] &quot;2017-04-11&quot; &quot;2017-04-13&quot; &quot;2017-04-24&quot; &quot;2017-04-25&quot; &quot;2017-05-31&quot;
+##  [76] &quot;2017-06-06&quot; &quot;2017-06-07&quot; &quot;2017-06-08&quot; &quot;2017-06-29&quot; &quot;2017-07-11&quot;
+##  [81] &quot;2017-08-28&quot; &quot;2017-08-31&quot; &quot;2017-09-07&quot; &quot;2017-10-18&quot; &quot;2017-10-23&quot;
+##  [86] &quot;2017-10-24&quot; &quot;2017-10-27&quot; &quot;2017-11-24&quot; &quot;2017-10-26&quot; &quot;2017-10-20&quot;
+##  [91] &quot;2017-12-21&quot; &quot;2018-01-18&quot; &quot;2018-02-20&quot; &quot;2018-04-11&quot; &quot;2018-04-13&quot;
+##  [96] &quot;2018-04-16&quot; &quot;2018-04-19&quot; &quot;2018-04-20&quot; &quot;2018-04-23&quot; &quot;2018-04-30&quot;</code></pre>
+<p>Set the dates like this:</p>
+<pre class="r"><code>snapshotDate(ah) &lt;- pd[1]</code></pre>
+</div>
+<div id="session-info" class="section level1">
+<h1>Session info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS Sierra 10.12.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+## 
+## other attached packages:
+##  [1] BSgenome.Hsapiens.UCSC.hg19_1.4.0 BSgenome_1.47.5                  
+##  [3] rtracklayer_1.39.13               BiocStyle_2.7.9                  
+##  [5] VariantAnnotation_1.25.13         SummarizedExperiment_1.9.18      
+##  [7] DelayedArray_0.5.35               BiocParallel_1.13.3              
+##  [9] matrixStats_0.53.1                Rsamtools_1.31.3                 
+## [11] Biostrings_2.47.12                XVector_0.19.9                   
+## [13] GenomicFeatures_1.31.10           AnnotationDbi_1.41.6             
+## [15] Biobase_2.39.2                    GenomicRanges_1.31.23            
+## [17] GenomeInfoDb_1.15.5               IRanges_2.13.29                  
+## [19] S4Vectors_0.17.43                 AnnotationHub_2.12.0             
+## [21] BiocGenerics_0.25.3              
+## 
+## loaded via a namespace (and not attached):
+##  [1] progress_1.1.2                xfun_0.1                     
+##  [3] lattice_0.20-35               htmltools_0.3.6              
+##  [5] yaml_2.1.19                   interactiveDisplayBase_1.18.0
+##  [7] blob_1.1.1                    XML_3.98-1.11                
+##  [9] later_0.7.2                   DBI_0.8                      
+## [11] bit64_0.9-7                   GenomeInfoDbData_1.1.0       
+## [13] stringr_1.3.1                 zlibbioc_1.25.0              
+## [15] memoise_1.1.0                 evaluate_0.10.1              
+## [17] knitr_1.20                    biomaRt_2.35.13              
+## [19] httpuv_1.4.3                  BiocInstaller_1.30.0         
+## [21] curl_3.2                      Rcpp_0.12.16                 
+## [23] xtable_1.8-2                  promises_1.0.1               
+## [25] backports_1.1.2               mime_0.5                     
+## [27] bit_1.1-12                    digest_0.6.15                
+## [29] stringi_1.2.2                 bookdown_0.7                 
+## [31] shiny_1.0.5                   rprojroot_1.3-2              
+## [33] grid_3.5.0                    tools_3.5.0                  
+## [35] bitops_1.0-6                  magrittr_1.5                 
+## [37] RCurl_1.95-4.10               RSQLite_2.1.0                
+## [39] pkgconfig_2.0.1               Matrix_1.2-14                
+## [41] prettyunits_1.0.2             assertthat_0.2.0             
+## [43] rmarkdown_1.9                 httr_1.3.1                   
+## [45] R6_2.2.2                      GenomicAlignments_1.15.14    
+## [47] compiler_3.5.0</code></pre>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

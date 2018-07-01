@@ -8,7 +8,7 @@
 Data containers--SummarizedExperiment
 
 <div style="width:80%; display: block; margin: 0 auto;">
-![](https://images.nature.com/full/nature-assets/nmeth/journal/v12/n2/images/nmeth.3252-F2.jpg)
+![](images/nmeth.3252-F2.jpg)
 </div>
 
 
@@ -96,7 +96,9 @@ ggplot(mdsvals, aes(x=V1,y=V2,shape=Normal,color=Type)) +
     geom_point( alpha=0.6) + theme(text=element_text(size = 18))
 ```
 
-<img src="geoquery_mds_files/figure-html/mdsplot-1.png" width="70%" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics[width=0.7\linewidth]{geoquery_mds_files/figure-latex/mdsplot-1} \end{center}
 
 [R]: https://cran.r-project.org/
 [GEOquery]: https://bioconductor.org/packages/GEOquery

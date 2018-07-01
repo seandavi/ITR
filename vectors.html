@@ -301,56 +301,6 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-book"></span>
-     
-    R and Bioconductor
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">--- Sections ---</li>
-    <li>
-      <a href="r_intro_mechanics.html">Getting started: R Mechanics</a>
-    </li>
-    <li>
-      <a href="vectors.html">Vectors</a>
-    </li>
-    <li>
-      <a href="matrices.html">Matrices</a>
-    </li>
-    <li>
-      <a href="dataframes_intro.html">Dataframes</a>
-    </li>
-    <li>
-      <a href="dplyr_intro_msleep.html">Introduction to dplyr</a>
-    </li>
-    <li>
-      <a href="control_looping_functions.html">Control structures, looping, and functions</a>
-    </li>
-    <li>
-      <a href="eda_and_univariate_brfss.html">Intro to univariate statistics</a>
-    </li>
-    <li>
-      <a href="B5_plotting.html">Plotting and Graphics</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">--- Exercises ---</li>
-    <li>
-      <a href="vector_exercises.html">Vectors</a>
-    </li>
-    <li>
-      <a href="data_input_and_manipulation_exercises.html">Data input and manipulation exercises</a>
-    </li>
-    <li>
-      <a href="dplyr_dataframes.html">Dataframes with dplyr</a>
-    </li>
-    <li>
-      <a href="swirl.html">Swirl</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="ion ion-easel"></span>
      
     Slides
@@ -566,16 +516,16 @@ myvec = rnorm(10)
 # create logical vector that is TRUE where myvec is &gt;0.25
 gt1 = (myvec &gt; 0.25)
 sum(gt1)</code></pre>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 3</code></pre>
 <pre class="r"><code># and use our logical vector to create a vector of myvec values that are &gt;0.25
 myvec[gt1]</code></pre>
-<pre><code>## [1] 0.972 1.729 0.996 2.131 1.257 2.083</code></pre>
+<pre><code>## [1] 0.652 0.493 1.330</code></pre>
 <pre class="r"><code># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;
 myvec[!gt1]</code></pre>
-<pre><code>## [1] -0.232  0.032 -0.493  0.219</code></pre>
+<pre><code>## [1] -2.0572 -0.1115 -1.2203 -1.0572 -0.0225 -1.9160 -0.1628</code></pre>
 <pre class="r"><code># shorter, one line approach
 myvec[myvec &gt; 0.25]</code></pre>
-<pre><code>## [1] 0.972 1.729 0.996 2.131 1.257 2.083</code></pre>
+<pre><code>## [1] 0.652 0.493 1.330</code></pre>
 </div>
 <div id="character-vectors-a.k.a.-strings" class="section level2">
 <h2>Character Vectors, A.K.A. Strings</h2>

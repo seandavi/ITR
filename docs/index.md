@@ -1,10 +1,16 @@
 
-# Preface {-}
+---
+title: "Teaching and Learning Materials"
+output:
+    html_document:
+        toc: false
+---
 
+Right now, this page serves as the home for my materials for the CSHL Statistical Methods for Functional Genomics.
 
-Presented here is a collection of materials meant to provide a self-directed set
-of experiments and exercises to learn the basics of the R language for data science.
-These materials are neither complete or comprehensive. Also, the order of topics makes
-some logical sense, but they have not been designed as a single cohesive "curriculum".
-As such, the various chapters may be treated somewhat independently. 
+The materials are located in the "R and Bioconductor" tab at the top right, mainly. Links to slides are under the "slides"
+tab above. Finally, there are some additional and miscellaneous materials in the "Misc." tab.
 
+Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+*To get the materials downloaded to your computer, [click here](https://github.com/seandavi/ITR/archive/master.zip).* 
