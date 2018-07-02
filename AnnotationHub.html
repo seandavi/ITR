@@ -554,6 +554,280 @@ ahs</code></pre>
 ## names(11): chr2L chr2R chr3L chr3R chr4 chrX chrU chr2h chr3h chrXh chrYh</code></pre>
 <p>Each file is retrieved from the AnnotationHub server and the file is also cache locally, so that the next time you need to retrieve it, it should download much more quickly.</p>
 </div>
+<div id="accessing-genome-scale-data" class="section level1">
+<h1>Accessing Genome-Scale Data</h1>
+<div id="non-model-organism-gene-annotations" class="section level2">
+<h2>Non-model organism gene annotations</h2>
+<p><em>Bioconductor</em> offers pre-built <code>org.*</code> annotation packages for model organisms, with their use described in the <a href="http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb">OrgDb</a> section of the Annotation work flow. Here we discover available <code>OrgDb</code> objects for less-model organisms</p>
+<pre class="r"><code>library(AnnotationHub)
+ah &lt;- AnnotationHub()</code></pre>
+<pre><code>## snapshotDate(): 2018-04-30</code></pre>
+<pre class="r"><code>query(ah, &quot;OrgDb&quot;)</code></pre>
+<pre><code>## AnnotationHub with 1691 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/
+## # $species: Escherichia coli, &#39;Caballeronia concitans&#39;, &#39;Chlorella vulg...
+## # $rdataclass: OrgDb
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH61768&quot;]]&#39; 
+## 
+##             title                                      
+##   AH61768 | org.Ag.eg.db.sqlite                        
+##   AH61769 | org.At.tair.db.sqlite                      
+##   AH61770 | org.Bt.eg.db.sqlite                        
+##   AH61771 | org.Cf.eg.db.sqlite                        
+##   AH61772 | org.Gg.eg.db.sqlite                        
+##   ...       ...                                        
+##   AH63468 | org.Salmonella_typhimurium_LT2.eg.sqlite   
+##   AH63469 | org.Acinetobacter_baumannii.eg.sqlite      
+##   AH63470 | org.Acinetobacter_genomosp._2.eg.sqlite    
+##   AH63471 | org.Acinetobacter_genomospecies_2.eg.sqlite
+##   AH63472 | org.Bacterium_anitratum.eg.sqlite</code></pre>
+<pre class="r"><code>orgdb &lt;- query(ah, &quot;OrgDb&quot;)[[1]] </code></pre>
+<pre><code>## downloading 0 resources</code></pre>
+<pre><code>## loading from cache 
+##     &#39;/Users/sdavis2//.AnnotationHub/68514&#39;</code></pre>
+<p>The object returned by AnnotationHub is directly usable with the <code>select()</code> interface, e.g., to discover the available keytypes for querying the object, the columns that these keytypes can map to, and finally selecting the SYMBOL and GENENAME corresponding to the first 6 ENTREZIDs</p>
+<pre class="r"><code>keytypes(orgdb)</code></pre>
+<pre><code>##  [1] &quot;ACCNUM&quot;       &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot;
+##  [5] &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
+##  [9] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;ONTOLOGY&quot;    
+## [13] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PMID&quot;         &quot;REFSEQ&quot;      
+## [17] &quot;SYMBOL&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</code></pre>
+<pre class="r"><code>columns(orgdb)</code></pre>
+<pre><code>##  [1] &quot;ACCNUM&quot;       &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot;
+##  [5] &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
+##  [9] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;ONTOLOGY&quot;    
+## [13] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PMID&quot;         &quot;REFSEQ&quot;      
+## [17] &quot;SYMBOL&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</code></pre>
+<pre class="r"><code>egid &lt;- head(keys(orgdb, &quot;ENTREZID&quot;))
+select(orgdb, egid, c(&quot;SYMBOL&quot;, &quot;GENENAME&quot;), &quot;ENTREZID&quot;)</code></pre>
+<pre><code>## &#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>##   ENTREZID          SYMBOL      GENENAME
+## 1  1267437 AgaP_AGAP012606 AGAP012606-PA
+## 2  1267439 AgaP_AGAP012559 AGAP012559-PA
+## 3  1267440 AgaP_AGAP012558 AGAP012558-PA
+## 4  1267447 AgaP_AGAP012586 AGAP012586-PA
+## 5  1267450 AgaP_AGAP012834 AGAP012834-PA
+## 6  1267459 AgaP_AGAP012589 AGAP012589-PA</code></pre>
+</div>
+<div id="roadmap-epigenomics-project" class="section level2">
+<h2>Roadmap Epigenomics Project</h2>
+<p>All Roadmap Epigenomics files are hosted <a href="http://egg2.wustl.edu/roadmap/data/byFileType/">here</a>. If one had to download these files on their own, one would navigate through the web interface to find useful files, then use something like the following <em>R</em> code.</p>
+<pre class="r"><code>url &lt;- &quot;http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E001-H3K4me1.broadPeak.gz&quot;
+filename &lt;-  basename(url)
+download.file(url, destfile=filename)
+if (file.exists(filename))
+   data &lt;- import(filename, format=&quot;bed&quot;)</code></pre>
+<p>This would have to be repeated for all files, and the onus would lie on the user to identify, download, import, and manage the local disk location of these files.</p>
+<p><em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> reduces this task to just a few lines of <em>R</em> code</p>
+<pre class="r"><code>library(AnnotationHub)
+ah = AnnotationHub()</code></pre>
+<pre><code>## snapshotDate(): 2018-04-30</code></pre>
+<pre class="r"><code>epiFiles &lt;- query(ah, &quot;EpigenomeRoadMap&quot;)</code></pre>
+<p>A look at the value returned by <code>epiFiles</code> shows us that 18248 roadmap resources are available via <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em>. Additional information about the files is also available, e.g., where the files came from (dataprovider), genome, species, sourceurl, sourcetypes.</p>
+<pre class="r"><code>epiFiles</code></pre>
+<pre><code>## AnnotationHub with 18248 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: BigWigFile, GRanges, data.frame
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH28856&quot;]]&#39; 
+## 
+##             title                                 
+##   AH28856 | E001-H3K4me1.broadPeak.gz             
+##   AH28857 | E001-H3K4me3.broadPeak.gz             
+##   AH28858 | E001-H3K9ac.broadPeak.gz              
+##   AH28859 | E001-H3K9me3.broadPeak.gz             
+##   AH28860 | E001-H3K27me3.broadPeak.gz            
+##   ...       ...                                   
+##   AH49540 | E058_mCRF_FractionalMethylation.bigwig
+##   AH49541 | E059_mCRF_FractionalMethylation.bigwig
+##   AH49542 | E061_mCRF_FractionalMethylation.bigwig
+##   AH49543 | E081_mCRF_FractionalMethylation.bigwig
+##   AH49544 | E082_mCRF_FractionalMethylation.bigwig</code></pre>
+<p>A good sanity check to ensure that we have files only from the Roadmap Epigenomics project is to check that all the files in the returned smaller hub object come from <em>Homo sapiens</em> and the hg19 genome</p>
+<pre class="r"><code>unique(epiFiles$species)</code></pre>
+<pre><code>## [1] &quot;Homo sapiens&quot;</code></pre>
+<pre class="r"><code>unique(epiFiles$genome)</code></pre>
+<pre><code>## [1] &quot;hg19&quot;</code></pre>
+<p>Broadly, one can get an idea of the different files from this project looking at the sourcetype</p>
+<pre class="r"><code>table(epiFiles$sourcetype)</code></pre>
+<pre><code>## 
+##    BED BigWig    GTF    tab    Zip 
+##   8298   9932      3      1     14</code></pre>
+<p>To get a more descriptive idea of these different files one can use:</p>
+<pre class="r"><code>sort(table(epiFiles$description), decreasing=TRUE)</code></pre>
+<pre><code>## 
+##                       Bigwig File containing -log10(p-value) signal tracks from EpigenomeRoadMap Project 
+##                                                                                                     6881 
+##                       Bigwig File containing fold enrichment signal tracks from EpigenomeRoadMap Project 
+##                                                                                                     2947 
+##                          Narrow ChIP-seq peaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                     2894 
+##                           Broad ChIP-seq peaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                     2534 
+##                          Gapped ChIP-seq peaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                     2534 
+##                              Narrow DNasePeaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                      131 
+##                                           15 state chromatin segmentations from EpigenomeRoadMap Project 
+##                                                                                                      127 
+##      Broad domains on enrichment for DNase-seq for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                       78 
+##                                         RRBS fractional methylation calls from EpigenomeRoadMap Project  
+##                                                                                                       51 
+##                       Whole genome bisulphite fractional methylation calls from EpigenomeRoadMap Project 
+##                                                                                                       37 
+##                               MeDIP/MRE(mCRF) fractional methylation calls from EpigenomeRoadMap Project 
+##                                                                                                       16 
+## GencodeV10 gene/transcript coordinates and annotations corresponding to hg19 version of the human genome 
+##                                                                                                        3 
+##                                       RNA-seq read count matrix for intronic protein-coding RNA elements 
+##                                                                                                        2 
+##                                                      RNA-seq read counts matrix for ribosomal gene exons 
+##                                                                                                        2 
+##                                                          RPKM expression matrix for ribosomal gene exons 
+##                                                                                                        2 
+##                                                                    Metadata for EpigenomeRoadMap Project 
+##                                                                                                        1 
+##                                                           RNA-seq read counts matrix for non-coding RNAs 
+##                                                                                                        1 
+##                                                      RNA-seq read counts matrix for protein coding exons 
+##                                                                                                        1 
+##                                                      RNA-seq read counts matrix for protein coding genes 
+##                                                                                                        1 
+##                                                           RNA-seq read counts matrix for ribosomal genes 
+##                                                                                                        1 
+##                                                               RPKM expression matrix for non-coding RNAs 
+##                                                                                                        1 
+##                                                          RPKM expression matrix for protein coding exons 
+##                                                                                                        1 
+##                                                          RPKM expression matrix for protein coding genes 
+##                                                                                                        1 
+##                                                                RPKM expression matrix for ribosomal RNAs 
+##                                                                                                        1</code></pre>
+<p>The ‘metadata’ provided by the Roadmap Epigenomics Project is also available. Note that the information displayed about a hub with a single resource is quite different from the information displayed when the hub references more than one resource.</p>
+<pre class="r"><code>metadata.tab &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;Metadata&quot;))
+metadata.tab</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2018-04-30 
+## # names(): AH41830
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: data.frame
+## # $rdatadateadded: 2015-05-11
+## # $title: EID_metadata.tab
+## # $description: Metadata for EpigenomeRoadMap Project
+## # $taxonomyid: 9606
+## # $genome: hg19
+## # $sourcetype: tab
+## # $sourceurl: http://egg2.wustl.edu/roadmap/data/byFileType/metadata/EI...
+## # $sourcesize: 18035
+## # $tags: c(&quot;EpigenomeRoadMap&quot;, &quot;Metadata&quot;) 
+## # retrieve record with &#39;object[[&quot;AH41830&quot;]]&#39;</code></pre>
+<p>So far we have been exploring information about resources, without downloading the resource to a local cache and importing it into R. One can retrieve the resource using <code>[[</code> as indicated at the end of the show method</p>
+<pre><code>## downloading 0 resources</code></pre>
+<pre><code>## loading from cache 
+##     &#39;/Users/sdavis2//.AnnotationHub/47270&#39;</code></pre>
+<pre class="r"><code>metadata.tab &lt;- ah[[&quot;AH41830&quot;]]</code></pre>
+<pre><code>## downloading 0 resources</code></pre>
+<pre><code>## loading from cache 
+##     &#39;/Users/sdavis2//.AnnotationHub/47270&#39;</code></pre>
+<p>The metadata.tab file is returned as a <em>data.frame</em>. The first 6 rows of the first 5 columns are shown here:</p>
+<pre class="r"><code>metadata.tab[1:6, 1:5]</code></pre>
+<pre><code>##    EID    GROUP   COLOR          MNEMONIC
+## 1 E001      ESC #924965            ESC.I3
+## 2 E002      ESC #924965           ESC.WA7
+## 3 E003      ESC #924965            ESC.H1
+## 4 E004 ES-deriv #4178AE ESDR.H1.BMP4.MESO
+## 5 E005 ES-deriv #4178AE ESDR.H1.BMP4.TROP
+## 6 E006 ES-deriv #4178AE       ESDR.H1.MSC
+##                                     STD_NAME
+## 1                                ES-I3 Cells
+## 2                               ES-WA7 Cells
+## 3                                   H1 Cells
+## 4 H1 BMP4 Derived Mesendoderm Cultured Cells
+## 5 H1 BMP4 Derived Trophoblast Cultured Cells
+## 6          H1 Derived Mesenchymal Stem Cells</code></pre>
+<p>One can keep constructing different queries using multiple arguments to trim down these 18248 to get the files one wants. For example, to get the ChIP-Seq files for consolidated epigenomes, one could use</p>
+<pre class="r"><code>bpChipEpi &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;broadPeak&quot;, &quot;chip&quot;, &quot;consolidated&quot;))</code></pre>
+<p>To get all the bigWig signal files, one can query the hub using</p>
+<pre class="r"><code>allBigWigFiles &lt;- query(ah, c(&quot;EpigenomeRoadMap&quot;, &quot;BigWig&quot;))</code></pre>
+<p>To access the 15 state chromatin segmentations, one can use</p>
+<pre class="r"><code>seg &lt;- query(ah, c(&quot;EpigenomeRoadMap&quot;, &quot;segmentations&quot;))</code></pre>
+<p>If one is interested in getting all the files related to one sample</p>
+<pre class="r"><code>E126 &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;E126&quot;, &quot;H3K4ME2&quot;))
+E126</code></pre>
+<pre><code>## AnnotationHub with 6 records
+## # snapshotDate(): 2018-04-30 
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: BigWigFile, GRanges
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH29817&quot;]]&#39; 
+## 
+##             title                                  
+##   AH29817 | E126-H3K4me2.broadPeak.gz              
+##   AH30868 | E126-H3K4me2.narrowPeak.gz             
+##   AH31801 | E126-H3K4me2.gappedPeak.gz             
+##   AH32990 | E126-H3K4me2.fc.signal.bigwig          
+##   AH34022 | E126-H3K4me2.pval.signal.bigwig        
+##   AH40177 | E126-H3K4me2.imputed.pval.signal.bigwig</code></pre>
+<p>Hub resources can also be selected using <code>$</code>, <code>subset()</code>, and <code>display()</code>; see the main <a href="AnnotationHub.html"><em>AnnotationHub</em> vignette</a> for additional detail.</p>
+<p>Hub resources are imported as the appropriate <em>Bioconductor</em> object for use in further analysis. For example, peak files are returned as <em>GRanges</em> objects.</p>
+<pre><code>## downloading 0 resources</code></pre>
+<pre><code>## loading from cache 
+##     &#39;/Users/sdavis2//.AnnotationHub/35257&#39;</code></pre>
+<pre class="r"><code>peaks &lt;- E126[[&#39;AH29817&#39;]]</code></pre>
+<pre><code>## downloading 0 resources</code></pre>
+<pre><code>## loading from cache 
+##     &#39;/Users/sdavis2//.AnnotationHub/35257&#39;</code></pre>
+<pre class="r"><code>seqinfo(peaks)</code></pre>
+<pre><code>## Seqinfo object with 93 sequences (1 circular) from hg19 genome:
+##   seqnames       seqlengths isCircular genome
+##   chr1            249250621      FALSE   hg19
+##   chr2            243199373      FALSE   hg19
+##   chr3            198022430      FALSE   hg19
+##   chr4            191154276      FALSE   hg19
+##   chr5            180915260      FALSE   hg19
+##   ...                   ...        ...    ...
+##   chrUn_gl000245      36651      FALSE   hg19
+##   chrUn_gl000246      38154      FALSE   hg19
+##   chrUn_gl000247      36422      FALSE   hg19
+##   chrUn_gl000248      39786      FALSE   hg19
+##   chrUn_gl000249      38502      FALSE   hg19</code></pre>
+<p>BigWig files are returned as <em>BigWigFile</em> objects. A <em>BigWigFile</em> is a reference to a file on disk; the data in the file can be read in using <code>rtracklayer::import()</code>, perhaps querying these large files for particular genomic regions of interest as described on the help page <code>?import.bw</code>.</p>
+<p>Each record inside <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> is associated with a unique identifier. Most <em>GRanges</em> objects returned by <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> contain the unique AnnotationHub identifier of the resource from which the <em>GRanges</em> is derived. This can come handy when working with the <em>GRanges</em> object for a while, and additional information about the object (e.g., the name of the file in the cache, or the original sourceurl for the data underlying the resource) that is being worked with.</p>
+<pre class="r"><code>metadata(peaks)</code></pre>
+<pre><code>## $AnnotationHubName
+## [1] &quot;AH29817&quot;
+## 
+## $`File Name`
+## [1] &quot;E126-H3K4me2.broadPeak.gz&quot;
+## 
+## $`Data Source`
+## [1] &quot;http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E126-H3K4me2.broadPeak.gz&quot;
+## 
+## $Provider
+## [1] &quot;BroadInstitute&quot;
+## 
+## $Organism
+## [1] &quot;Homo sapiens&quot;
+## 
+## $`Taxonomy ID`
+## [1] 9606</code></pre>
+<pre class="r"><code>ah[metadata(peaks)$AnnotationHubName]$sourceurl</code></pre>
+<pre><code>## [1] &quot;http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E126-H3K4me2.broadPeak.gz&quot;</code></pre>
+</div>
+</div>
 <div id="configuring-annotationhub-objects" class="section level1">
 <h1>Configuring <code>AnnotationHub</code> objects</h1>
 <p>When you create the <code>AnnotationHub</code> object, it will set up the object for you with some default settings. See <code>?AnnotationHub</code> for ways to customize the hub source, the local cache, and other instance-specific options, and <code>?getAnnotationHubOption</code> to get or set package-global options for use across sessions.</p>

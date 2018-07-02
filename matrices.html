@@ -361,17 +361,17 @@ y &lt;- rnorm(10)
 # make a matrix by column binding two numeric vectors
 mat&lt;-cbind(x,y)
 mat</code></pre>
-<pre><code>##        x      y
-##  [1,]  1  1.788
-##  [2,]  2 -0.209
-##  [3,]  3  2.459
-##  [4,]  4 -0.813
-##  [5,]  5 -0.236
-##  [6,]  6  1.401
-##  [7,]  7  0.428
-##  [8,]  8  0.360
-##  [9,]  9  0.335
-## [10,] 10 -0.111</code></pre>
+<pre><code>##        x        y
+##  [1,]  1 -1.42401
+##  [2,]  2  0.18094
+##  [3,]  3 -0.00769
+##  [4,]  4  0.60702
+##  [5,]  5  1.24286
+##  [6,]  6  0.03315
+##  [7,]  7 -0.55469
+##  [8,]  8 -0.53462
+##  [9,]  9 -1.22678
+## [10,] 10  2.40130</code></pre>
 <p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
 <pre class="r"><code>rownames(mat)</code></pre>
 <pre><code>## NULL</code></pre>
@@ -387,12 +387,12 @@ mat</code></pre>
 <p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
 <pre class="r"><code># The 2nd element of the 1st row of mat
 mat[1,2]</code></pre>
-<pre><code>##    y 
-## 1.79</code></pre>
+<pre><code>##     y 
+## -1.42</code></pre>
 <pre class="r"><code># The first ROW of mat
 mat[1,]</code></pre>
-<pre><code>##    x    y 
-## 1.00 1.79</code></pre>
+<pre><code>##     x     y 
+##  1.00 -1.42</code></pre>
 <pre class="r"><code># The first COLUMN of mat
 mat[,1]</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -410,12 +410,12 @@ m[,1] = m[,1] + 100
 # summarize m
 summary(m)</code></pre>
 <pre><code>##        V1              V2        
-##  Min.   : 79.0   Min.   :-16.46  
-##  1st Qu.: 98.1   1st Qu.: -8.19  
-##  Median :108.3   Median :  4.38  
-##  Mean   :108.2   Mean   :  3.48  
-##  3rd Qu.:116.5   3rd Qu.: 13.19  
-##  Max.   :142.1   Max.   : 22.30</code></pre>
+##  Min.   : 75.7   Min.   :-22.14  
+##  1st Qu.: 87.6   1st Qu.:  0.35  
+##  Median :106.0   Median : 12.25  
+##  Mean   :103.1   Mean   :  7.07  
+##  3rd Qu.:114.8   3rd Qu.: 19.66  
+##  Max.   :127.4   Max.   : 27.78</code></pre>
 </div>
 
     <script>

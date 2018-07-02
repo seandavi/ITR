@@ -11,7 +11,7 @@
 
 
 
-<title>geoquery_mds.utf8</title>
+<title>Accessing and working with public omics data</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -345,60 +345,47 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Accessing and working with public omics data</h1>
 
 </div>
 
 
-<div id="part-bioconductor" class="section level1 unnumbered">
-<h1>(PART) Bioconductor</h1>
-</div>
-<div id="examples" class="section level1">
-<h1>Examples</h1>
+<div id="the-data" class="section level1">
+<h1>The data</h1>
+<p>The data we are going to access are from <a href="https://doi.org/10.1158/1055-9965.EPI-17-0461">this paper</a>.</p>
+<blockquote>
+<p>Background: The tumor microenvironment is an important factor in cancer immunotherapy response. To further understand how a tumor affects the local immune system, we analyzed immune gene expression differences between matching normal and tumor tissue.Methods: We analyzed public and new gene expression data from solid cancers and isolated immune cell populations. We also determined the correlation between CD8, FoxP3 IHC, and our gene signatures.Results: We observed that regulatory T cells (Tregs) were one of the main drivers of immune gene expression differences between normal and tumor tissue. A tumor-specific CD8 signature was slightly lower in tumor tissue compared with normal of most (12 of 16) cancers, whereas a Treg signature was higher in tumor tissue of all cancers except liver. Clustering by Treg signature found two groups in colorectal cancer datasets. The high Treg cluster had more samples that were consensus molecular subtype 1/4, right-sided, and microsatellite-instable, compared with the low Treg cluster. Finally, we found that the correlation between signature and IHC was low in our small dataset, but samples in the high Treg cluster had significantly more CD8+ and FoxP3+ cells compared with the low Treg cluster.Conclusions: Treg gene expression is highly indicative of the overall tumor immune environment.Impact: In comparison with the consensus molecular subtype and microsatellite status, the Treg signature identifies more colorectal tumors with high immune activation that may benefit from cancer immunotherapy.</p>
+</blockquote>
+<p>In this little exercise, we will:</p>
+<ol style="list-style-type: decimal">
+<li>Access public omics data using the GEOquery package</li>
+<li>Get an opportunity to work with another SummarizedExperiment object.</li>
+<li>Perform a simple unsupervised analysis to visualize these public data.</li>
+</ol>
 <div id="geoquery-to-multidimensional-scaling" class="section level2">
 <h2>GEOquery to multidimensional scaling</h2>
-<p>Data containers–SummarizedExperiment</p>
-<div style="width:80%; display: block; margin: 0 auto;">
-<p><img src="images/nmeth.3252-F2.jpg" /></p>
-</div>
 <p>Use the <a href="https://bioconductor.org/packages/GEOquery">GEOquery</a> package to fetch data about <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE103512">GSE103512</a>.</p>
 <pre class="r"><code>library(GEOquery)
-gse = getGEO(&quot;GSE103512&quot;)[[1]]
-gse</code></pre>
-<pre><code>## ExpressionSet (storageMode: lockedEnvironment)
-## assayData: 54715 features, 280 samples 
-##   element names: exprs 
-## protocolData: none
-## phenoData
-##   sampleNames: GSM2772660 GSM2772661 ... GSM2772939 (280 total)
-##   varLabels: title geo_accession ... weight:ch1 (72 total)
-##   varMetadata: labelDescription
-## featureData
-##   featureNames: 1007_PM_s_at 1053_PM_at ... AFFX-TrpnX-M_at (54715
-##     total)
-##   fvarLabels: ID GB_ACC ... Gene Ontology Molecular Function (16
-##     total)
-##   fvarMetadata: Column Description labelDescription
-## experimentData: use &#39;experimentData(object)&#39;
-## Annotation: GPL13158</code></pre>
+gse = getGEO(&quot;GSE103512&quot;)[[1]]</code></pre>
+<p>The first step, a detail, is to convert from the older Bioconductor data structure (GEOquery was written in 2007), the <code>ExpressionSet</code>, to the newer <code>SummarizedExperiment</code>.</p>
+<pre class="r"><code>library(SummarizedExperiment)
+se = as(gse, &quot;SummarizedExperiment&quot;)</code></pre>
 <p>Examine two variables of interest, cancer type and tumor/normal status.</p>
-<pre class="r"><code>with(pData(gse),table(`cancer type:ch1`,`normal:ch1`))</code></pre>
-<pre><code>##                normal:ch1
-## cancer type:ch1 no yes
+<pre class="r"><code>with(colData(se),table(`cancer.type.ch1`,`normal.ch1`))</code></pre>
+<pre><code>##                normal.ch1
+## cancer.type.ch1 no yes
 ##           BC    65  10
 ##           CRC   57  12
 ##           NSCLC 60   9
 ##           PCA   60   7</code></pre>
-<p>Information about features measured are also included.</p>
-<pre><code>         Gene Symbol                                  Gene Title</code></pre>
-<p>1007_PM_s_at DDR1 discoidin domain receptor tyrosine kinase 1 1053_PM_at RFC2 replication factor C (activator 1) 2, 40kDa 117_PM_at HSPA6 heat shock 70kDa protein 6 (HSP70B’) 121_PM_at PAX8 paired box 8 1255_PM_g_at GUCA1A guanylate cyclase activator 1A (retina) 1294_PM_at UBA7 ubiquitin-like modifier activating enzyme 7 ENTREZ_GENE_ID 1007_PM_s_at 780 1053_PM_at 5982 117_PM_at 3310 121_PM_at 7849 1255_PM_g_at 2978 1294_PM_at 7318</p>
 <p>Filter gene expression by variance to find most informative genes.</p>
-<pre class="r"><code>sds = apply(exprs(gse),1,sd)
-dat = exprs(gse)[order(sds,decreasing = TRUE)[1:500],]</code></pre>
-<p>Perform <a href="https://en.wikipedia.org/wiki/Multidimensional_scaling">multidimensional scaling</a> and prepare for plotting.</p>
+<pre class="r"><code>sds = apply(assay(se, &#39;exprs&#39;),1,sd)
+dat = assay(se, &#39;exprs&#39;)[order(sds,decreasing = TRUE)[1:500],]</code></pre>
+<p>Perform <a href="https://en.wikipedia.org/wiki/Multidimensional_scaling">multidimensional scaling</a> and prepare for plotting. We will be using ggplot2, so we need to make a data.frame before plotting.</p>
 <pre class="r"><code>mdsvals = cmdscale(dist(t(dat)))
 mdsvals = as.data.frame(mdsvals)
-mdsvals$Type=factor(pData(gse)[,&#39;cancer type:ch1&#39;])
-mdsvals$Normal = factor(pData(gse)[,&#39;normal:ch1&#39;])</code></pre>
+mdsvals$Type=factor(colData(se)[,&#39;cancer.type.ch1&#39;])
+mdsvals$Normal = factor(colData(se)[,&#39;normal.ch1&#39;])</code></pre>
 <p>And do the plot.</p>
 <pre class="r"><code>library(ggplot2)
 ggplot(mdsvals, aes(x=V1,y=V2,shape=Normal,color=Type)) + 
