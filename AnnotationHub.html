@@ -25,7 +25,9 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -95,6 +97,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -590,7 +595,8 @@ ah &lt;- AnnotationHub()</code></pre>
 <pre><code>## loading from cache 
 ##     &#39;/Users/sdavis2//.AnnotationHub/68514&#39;</code></pre>
 <p>The object returned by AnnotationHub is directly usable with the <code>select()</code> interface, e.g., to discover the available keytypes for querying the object, the columns that these keytypes can map to, and finally selecting the SYMBOL and GENENAME corresponding to the first 6 ENTREZIDs</p>
-<pre class="r"><code>keytypes(orgdb)</code></pre>
+<pre class="r"><code>library(AnnotationDbi)
+keytypes(orgdb)</code></pre>
 <pre><code>##  [1] &quot;ACCNUM&quot;       &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot;
 ##  [5] &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
 ##  [9] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;ONTOLOGY&quot;    
@@ -603,7 +609,7 @@ ah &lt;- AnnotationHub()</code></pre>
 ## [13] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PMID&quot;         &quot;REFSEQ&quot;      
 ## [17] &quot;SYMBOL&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</code></pre>
 <pre class="r"><code>egid &lt;- head(keys(orgdb, &quot;ENTREZID&quot;))
-select(orgdb, egid, c(&quot;SYMBOL&quot;, &quot;GENENAME&quot;), &quot;ENTREZID&quot;)</code></pre>
+AnnotationDbi::select(orgdb, egid, c(&quot;SYMBOL&quot;, &quot;GENENAME&quot;), &quot;ENTREZID&quot;)</code></pre>
 <pre><code>## &#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
 <pre><code>##   ENTREZID          SYMBOL      GENENAME
 ## 1  1267437 AgaP_AGAP012606 AGAP012606-PA
@@ -926,7 +932,7 @@ pd</code></pre>
 ## [15] memoise_1.1.0                 evaluate_0.10.1              
 ## [17] knitr_1.20                    biomaRt_2.35.13              
 ## [19] httpuv_1.4.3                  BiocInstaller_1.30.0         
-## [21] curl_3.2                      Rcpp_0.12.16                 
+## [21] curl_3.2                      Rcpp_0.12.17                 
 ## [23] xtable_1.8-2                  promises_1.0.1               
 ## [25] backports_1.1.2               mime_0.5                     
 ## [27] bit_1.1-12                    digest_0.6.15                
@@ -937,7 +943,7 @@ pd</code></pre>
 ## [37] RCurl_1.95-4.10               RSQLite_2.1.0                
 ## [39] pkgconfig_2.0.1               Matrix_1.2-14                
 ## [41] prettyunits_1.0.2             assertthat_0.2.0             
-## [43] rmarkdown_1.9                 httr_1.3.1                   
+## [43] rmarkdown_1.10                httr_1.3.1                   
 ## [45] R6_2.2.2                      GenomicAlignments_1.15.14    
 ## [47] compiler_3.5.0</code></pre>
 </div>

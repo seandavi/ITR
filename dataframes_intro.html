@@ -25,7 +25,9 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -95,6 +97,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -673,12 +678,12 @@ risk = x + 2*smoker_numeric</code></pre>
 <pre class="r"><code>smoker_risk = data.frame(smoker = smoker, risk = risk)
 head(smoker_risk)</code></pre>
 <pre><code>##   smoker     risk
-## 1 smoker 4.170846
-## 2 smoker 4.422220
-## 3 smoker 4.789967
-## 4 smoker 3.241715
-## 5 smoker 4.719079
-## 6 smoker 3.850761</code></pre>
+## 1 smoker 4.544930
+## 2 smoker 2.273005
+## 3 smoker 2.789269
+## 4 smoker 3.372951
+## 5 smoker 4.844180
+## 6 smoker 5.479335</code></pre>
 <p>R also has plotting shortcuts that work with data.frames to simplify plotting</p>
 <pre class="r"><code>plot( risk ~ smoker, data=smoker_risk)</code></pre>
 <p><img src="dataframes_intro_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>

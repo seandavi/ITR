@@ -25,7 +25,9 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -95,6 +97,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -362,16 +367,16 @@ y &lt;- rnorm(10)
 mat&lt;-cbind(x,y)
 mat</code></pre>
 <pre><code>##        x        y
-##  [1,]  1 -1.42401
-##  [2,]  2  0.18094
-##  [3,]  3 -0.00769
-##  [4,]  4  0.60702
-##  [5,]  5  1.24286
-##  [6,]  6  0.03315
-##  [7,]  7 -0.55469
-##  [8,]  8 -0.53462
-##  [9,]  9 -1.22678
-## [10,] 10  2.40130</code></pre>
+##  [1,]  1 -1.49489
+##  [2,]  2  0.00754
+##  [3,]  3  0.30126
+##  [4,]  4 -1.34089
+##  [5,]  5 -0.03366
+##  [6,]  6 -1.20457
+##  [7,]  7  1.18207
+##  [8,]  8  1.59362
+##  [9,]  9 -0.35698
+## [10,] 10  1.45554</code></pre>
 <p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
 <pre class="r"><code>rownames(mat)</code></pre>
 <pre><code>## NULL</code></pre>
@@ -388,11 +393,11 @@ mat</code></pre>
 <pre class="r"><code># The 2nd element of the 1st row of mat
 mat[1,2]</code></pre>
 <pre><code>##     y 
-## -1.42</code></pre>
+## -1.49</code></pre>
 <pre class="r"><code># The first ROW of mat
 mat[1,]</code></pre>
 <pre><code>##     x     y 
-##  1.00 -1.42</code></pre>
+##  1.00 -1.49</code></pre>
 <pre class="r"><code># The first COLUMN of mat
 mat[,1]</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -409,13 +414,13 @@ m = m*20
 m[,1] = m[,1] + 100
 # summarize m
 summary(m)</code></pre>
-<pre><code>##        V1              V2        
-##  Min.   : 75.7   Min.   :-22.14  
-##  1st Qu.: 87.6   1st Qu.:  0.35  
-##  Median :106.0   Median : 12.25  
-##  Mean   :103.1   Mean   :  7.07  
-##  3rd Qu.:114.8   3rd Qu.: 19.66  
-##  Max.   :127.4   Max.   : 27.78</code></pre>
+<pre><code>##        V1              V2       
+##  Min.   : 49.6   Min.   :-42.1  
+##  1st Qu.: 79.2   1st Qu.:-16.8  
+##  Median : 98.1   Median : 14.1  
+##  Mean   : 94.7   Mean   :  3.8  
+##  3rd Qu.:109.3   3rd Qu.: 23.3  
+##  Max.   :136.3   Max.   : 32.9</code></pre>
 </div>
 
     <script>

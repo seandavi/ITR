@@ -26,7 +26,9 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -96,6 +98,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -370,19 +375,42 @@ div.tocify {
 <h2><em>R</em> Packages</h2>
 <p>All the functionality we have been using comes from <em>packages</em> that are automatically <em>loaded</em> when <em>R</em> starts. Loaded packages are on the <code>search()</code> path.</p>
 <pre class="r"><code>search()</code></pre>
-<pre><code>##  [1] &quot;.GlobalEnv&quot;                   &quot;package:airway&quot;              
-##  [3] &quot;package:SummarizedExperiment&quot; &quot;package:DelayedArray&quot;        
-##  [5] &quot;package:BiocParallel&quot;         &quot;package:matrixStats&quot;         
-##  [7] &quot;package:Biobase&quot;              &quot;package:GenomicRanges&quot;       
-##  [9] &quot;package:GenomeInfoDb&quot;         &quot;package:IRanges&quot;             
-## [11] &quot;package:S4Vectors&quot;            &quot;package:BiocGenerics&quot;        
-## [13] &quot;package:parallel&quot;             &quot;package:stats4&quot;              
-## [15] &quot;package:knitr&quot;                &quot;package:nycflights13&quot;        
-## [17] &quot;package:ggplot2&quot;              &quot;package:stats&quot;               
-## [19] &quot;package:graphics&quot;             &quot;package:grDevices&quot;           
-## [21] &quot;package:utils&quot;                &quot;package:datasets&quot;            
-## [23] &quot;package:methods&quot;              &quot;Autoloads&quot;                   
-## [25] &quot;package:base&quot;</code></pre>
+<pre><code>##  [1] &quot;.GlobalEnv&quot;                         
+##  [2] &quot;package:airway&quot;                     
+##  [3] &quot;package:nycflights13&quot;               
+##  [4] &quot;package:ggplot2&quot;                    
+##  [5] &quot;package:knitr&quot;                      
+##  [6] &quot;package:BSgenome.Hsapiens.UCSC.hg19&quot;
+##  [7] &quot;package:BSgenome&quot;                   
+##  [8] &quot;package:rtracklayer&quot;                
+##  [9] &quot;package:BiocStyle&quot;                  
+## [10] &quot;package:VariantAnnotation&quot;          
+## [11] &quot;package:SummarizedExperiment&quot;       
+## [12] &quot;package:DelayedArray&quot;               
+## [13] &quot;package:BiocParallel&quot;               
+## [14] &quot;package:matrixStats&quot;                
+## [15] &quot;package:Rsamtools&quot;                  
+## [16] &quot;package:Biostrings&quot;                 
+## [17] &quot;package:XVector&quot;                    
+## [18] &quot;package:GenomicFeatures&quot;            
+## [19] &quot;package:AnnotationDbi&quot;              
+## [20] &quot;package:Biobase&quot;                    
+## [21] &quot;package:GenomicRanges&quot;              
+## [22] &quot;package:GenomeInfoDb&quot;               
+## [23] &quot;package:IRanges&quot;                    
+## [24] &quot;package:S4Vectors&quot;                  
+## [25] &quot;package:stats4&quot;                     
+## [26] &quot;package:AnnotationHub&quot;              
+## [27] &quot;package:BiocGenerics&quot;               
+## [28] &quot;package:parallel&quot;                   
+## [29] &quot;package:stats&quot;                      
+## [30] &quot;package:graphics&quot;                   
+## [31] &quot;package:grDevices&quot;                  
+## [32] &quot;package:utils&quot;                      
+## [33] &quot;package:datasets&quot;                   
+## [34] &quot;package:methods&quot;                    
+## [35] &quot;Autoloads&quot;                          
+## [36] &quot;package:base&quot;</code></pre>
 <p>Additional packages may be <em>installed</em> in <em>R</em>’s libraries. Use `installed.packages() or the <em>RStudio</em> interface to see installed packages. To use these packages, it is necessary to attach them to the search path, e.g., for survival analysis</p>
 <pre class="r"><code>library(&quot;survival&quot;)</code></pre>
 <p>There are many thousands of <em>R</em> packages, and not all of them are installed in a single installation. Important repositories are</p>

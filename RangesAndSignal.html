@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="date" content="2018-07-07" />
+
+<title>Working with Genomic Ranges and Signals</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/Library/Frameworks/R.framework/Versions/3.5/Resources/library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2018">Introduction to Bioconductor</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Working with Genomic Ranges and Signals</h1>
+<p class="author-name">Sean Davis<span class="affil-mark">1*</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>Center for Cancer Research, National Cancer Institute, NIH</p>
+<p class="author-email"><span class="affil-mark">*</span><a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></p>
+<h4 class="date"><em>7 July 2018</em></h4>
+<h4 class="package">Package</h4>
+<p>GenomicDataIntegration 0.1.0</p>
+
+</div>
+
+<h1>Contents</h1>
+<div id="TOC">
+<ul>
+<li><a href="#getting-started"><span class="toc-section-number">1</span> Getting started</a><ul>
+<li><a href="#example-granges"><span class="toc-section-number">1.1</span> Example GRanges</a></li>
+<li><a href="#subsetting-granges-objects"><span class="toc-section-number">1.2</span> Subsetting GRanges objects</a></li>
+<li><a href="#interval-operations-on-one-granges-object"><span class="toc-section-number">1.3</span> Interval operations on one GRanges object</a><ul>
+<li><a href="#intra-range-methods"><span class="toc-section-number">1.3.1</span> Intra-range methods</a></li>
+<li><a href="#inter-range-methods"><span class="toc-section-number">1.3.2</span> Inter-range methods</a></li>
+</ul></li>
+<li><a href="#set-operations-for-granges-objects"><span class="toc-section-number">1.4</span> Set operations for GRanges objects</a></li>
+</ul></li>
+<li><a href="#grangeslist"><span class="toc-section-number">2</span> GRangesList</a><ul>
+<li><a href="#basic-grangeslist-accessors"><span class="toc-section-number">2.1</span> Basic <em>GRangesList</em> accessors</a></li>
+</ul></li>
+<li><a href="#relationships-between-region-sets"><span class="toc-section-number">3</span> Relationships between region sets</a><ul>
+<li><a href="#overlaps"><span class="toc-section-number">3.1</span> Overlaps</a></li>
+<li><a href="#nearest-feature"><span class="toc-section-number">3.2</span> Nearest feature</a></li>
+</ul></li>
+<li><a href="#session-info"><span class="toc-section-number">4</span> Session Info</a></li>
+</ul>
+</div>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector("h1").className = "title";
+});
+</script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var links = document.links;  
+  for (var i = 0, linksLength = links.length; i < linksLength; i++)
+    if (links[i].hostname != window.location.hostname)
+      links[i].target = '_blank';
+});
+</script>
+<div id="getting-started" class="section level1">
+<h1><span class="header-section-number">1</span> Getting started</h1>
+<p>Genomic ranges are a way of describing regions on the genome (or any other
+linear object, such as a transcript, or even a protein). This functionality
+is typically found in the <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> package.</p>
+<pre class="r"><code>library(GenomicRanges)</code></pre>
+<div id="example-granges" class="section level2">
+<h2><span class="header-section-number">1.1</span> Example GRanges</h2>
+<p>To get going, we can construct a <code>GRanges</code> object by hand as an example.</p>
+<pre class="r"><code>gr &lt;- GRanges(
+    seqnames = Rle(c(&quot;chr1&quot;, &quot;chr2&quot;, &quot;chr1&quot;, &quot;chr3&quot;), c(1, 3, 2, 4)),
+    ranges = IRanges(101:110, end = 111:120, names = head(letters, 10)),
+    strand = Rle(strand(c(&quot;-&quot;, &quot;+&quot;, &quot;*&quot;, &quot;+&quot;, &quot;-&quot;)), c(1, 2, 2, 3, 2)),
+    score = 1:10,
+    GC = seq(1, 0, length=10))
+gr</code></pre>
+<pre><code>## GRanges object with 10 ranges and 2 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##   d     chr2   104-114      * |         4 0.666666666666667
+##   e     chr1   105-115      * |         5 0.555555555555556
+##   f     chr1   106-116      + |         6 0.444444444444444
+##   g     chr3   107-117      + |         7 0.333333333333333
+##   h     chr3   108-118      + |         8 0.222222222222222
+##   i     chr3   109-119      - |         9 0.111111111111111
+##   j     chr3   110-120      - |        10                 0
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The <code>GRanges</code> class represents a collection of genomic ranges that each have a single start
+and end location on the genome. It can be used to store the location of genomic features
+such as contiguous binding sites, transcripts, and exons. These objects can be created by
+using the GRanges constructor function. The following code just creates a <code>GRanges</code> object
+from scratch.</p>
+<p>This creates a <code>GRanges</code> object with 10 genomic ranges. The output of the <code>GRanges</code> <code>show()</code> method
+separates the information into a left and right hand region that are separated by <code>|</code> symbols.
+The genomic coordinates (seqnames, ranges, and strand) are located on the left-hand side
+and the metadata columns are located on the right. For this example, the
+metadata is comprised of score and GC information, but almost anything can be stored in
+the metadata portion of a GRanges object.</p>
+<p>The components of the genomic coordinates within a GRanges object can be extracted using
+the seqnames, ranges, and strand accessor functions.</p>
+<pre class="r"><code>seqnames(gr)</code></pre>
+<pre><code>## factor-Rle of length 10 with 4 runs
+##   Lengths:    1    3    2    4
+##   Values : chr1 chr2 chr1 chr3
+## Levels(3): chr1 chr2 chr3</code></pre>
+<pre class="r"><code>ranges(gr)</code></pre>
+<pre><code>## IRanges object with 10 ranges and 0 metadata columns:
+##         start       end     width
+##     &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   a       101       111        11
+##   b       102       112        11
+##   c       103       113        11
+##   d       104       114        11
+##   e       105       115        11
+##   f       106       116        11
+##   g       107       117        11
+##   h       108       118        11
+##   i       109       119        11
+##   j       110       120        11</code></pre>
+<pre class="r"><code>strand(gr)</code></pre>
+<pre><code>## factor-Rle of length 10 with 5 runs
+##   Lengths: 1 2 2 3 2
+##   Values : - + * + -
+## Levels(3): + - *</code></pre>
+<p>Note that the <code>GRanges</code> object has information to the “left” side of the <code>|</code> that has special
+accessors. The information to the right side of the <code>|</code>, when it is present, is the metadata
+and is accessed using <code>mcols()</code>, for “metadata columns”.</p>
+<pre class="r"><code>class(mcols(gr))</code></pre>
+<pre><code>## [1] &quot;DataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;S4Vectors&quot;</code></pre>
+<pre class="r"><code>mcols(gr)</code></pre>
+<pre><code>## DataFrame with 10 rows and 2 columns
+##        score                GC
+##    &lt;integer&gt;         &lt;numeric&gt;
+## 1          1                 1
+## 2          2 0.888888888888889
+## 3          3 0.777777777777778
+## 4          4 0.666666666666667
+## 5          5 0.555555555555556
+## 6          6 0.444444444444444
+## 7          7 0.333333333333333
+## 8          8 0.222222222222222
+## 9          9 0.111111111111111
+## 10        10                 0</code></pre>
+<p>Since the <code>class</code> of <code>mcols(gr)</code> is DataFrame, we can use our <code>DataFrame</code> approaches to
+work with the data.</p>
+<pre class="r"><code>mcols(gr)$score</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>We can even assign a new column.</p>
+<pre class="r"><code>mcols(gr)$AT = 1-mcols(gr)$GC
+gr</code></pre>
+<pre><code>## GRanges object with 10 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##   d     chr2   104-114      * |         4 0.666666666666667
+##   e     chr1   105-115      * |         5 0.555555555555556
+##   f     chr1   106-116      + |         6 0.444444444444444
+##   g     chr3   107-117      + |         7 0.333333333333333
+##   h     chr3   108-118      + |         8 0.222222222222222
+##   i     chr3   109-119      - |         9 0.111111111111111
+##   j     chr3   110-120      - |        10                 0
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   d 0.333333333333333
+##   e 0.444444444444444
+##   f 0.555555555555556
+##   g 0.666666666666667
+##   h 0.777777777777778
+##   i 0.888888888888889
+##   j                 1
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>Another common way to create a <code>GRanges</code> object is to start with a <code>data.frame</code>, perhaps created
+by hand like below or read in using <code>read.csv</code> or <code>read.table</code>. We can convert from a
+<code>data.frame</code>, when columns are named appropriately, to a <code>GRanges</code> object.</p>
+<pre class="r"><code>df_regions = data.frame(chromosome = rep(&quot;chr1&quot;,10),
+                        start=seq(1000,10000,1000),
+                        end=seq(1100, 10100, 1000))
+as(df_regions,&#39;GRanges&#39;) # note that names have to match with GRanges slots</code></pre>
+<pre><code>## GRanges object with 10 ranges and 0 metadata columns:
+##        seqnames      ranges strand
+##           &lt;Rle&gt;   &lt;IRanges&gt;  &lt;Rle&gt;
+##    [1]     chr1   1000-1100      *
+##    [2]     chr1   2000-2100      *
+##    [3]     chr1   3000-3100      *
+##    [4]     chr1   4000-4100      *
+##    [5]     chr1   5000-5100      *
+##    [6]     chr1   6000-6100      *
+##    [7]     chr1   7000-7100      *
+##    [8]     chr1   8000-8100      *
+##    [9]     chr1   9000-9100      *
+##   [10]     chr1 10000-10100      *
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</code></pre>
+<pre class="r"><code># fix column name
+colnames(df_regions)[1] = &#39;seqnames&#39;
+gr2 = as(df_regions,&#39;GRanges&#39;)
+gr2</code></pre>
+<pre><code>## GRanges object with 10 ranges and 0 metadata columns:
+##        seqnames      ranges strand
+##           &lt;Rle&gt;   &lt;IRanges&gt;  &lt;Rle&gt;
+##    [1]     chr1   1000-1100      *
+##    [2]     chr1   2000-2100      *
+##    [3]     chr1   3000-3100      *
+##    [4]     chr1   4000-4100      *
+##    [5]     chr1   5000-5100      *
+##    [6]     chr1   6000-6100      *
+##    [7]     chr1   7000-7100      *
+##    [8]     chr1   8000-8100      *
+##    [9]     chr1   9000-9100      *
+##   [10]     chr1 10000-10100      *
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</code></pre>
+<p><code>GRanges</code> have one-dimensional-like behavior. For instance, we can check the <code>length</code> and
+even give <code>GRanges</code> names.</p>
+<pre class="r"><code>names(gr)</code></pre>
+<pre><code>##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot;</code></pre>
+<pre class="r"><code>length(gr)</code></pre>
+<pre><code>## [1] 10</code></pre>
+</div>
+<div id="subsetting-granges-objects" class="section level2">
+<h2><span class="header-section-number">1.2</span> Subsetting GRanges objects</h2>
+<p>While <code>GRanges</code> objects look a bit like a <code>data.frame</code>, they can be thought of
+as vectors with associated ranges. Subsetting, then, works very similarly to
+vectors. To subset a <code>GRanges</code> object to include only second and third regions:</p>
+<pre class="r"><code>gr[2:3]</code></pre>
+<pre><code>## GRanges object with 2 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>That said, if the <code>GRanges</code> object has metadata columns, we can also treat
+it like a two-dimensional object kind of like a data.frame. Note that
+the information to the left of the <code>|</code> is not like a <code>data.frame</code>, so
+we <em>cannot</em> do something like <code>gr$seqnames</code>. Here is an example of subsetting
+with the subset of one metadata column.</p>
+<pre class="r"><code>gr[2:3, &quot;GC&quot;]</code></pre>
+<pre><code>## GRanges object with 2 ranges and 1 metadata column:
+##     seqnames    ranges strand |                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |         &lt;numeric&gt;
+##   b     chr2   102-112      + | 0.888888888888889
+##   c     chr2   103-113      + | 0.777777777777778
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The usual <code>head()</code> and <code>tail()</code> also work just fine.</p>
+<pre class="r"><code>head(gr,n=2)</code></pre>
+<pre><code>## GRanges object with 2 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<pre class="r"><code>tail(gr,n=2)</code></pre>
+<pre><code>## GRanges object with 2 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   i     chr3   109-119      - |         9 0.111111111111111
+##   j     chr3   110-120      - |        10                 0
+##                    AT
+##             &lt;numeric&gt;
+##   i 0.888888888888889
+##   j                 1
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+</div>
+<div id="interval-operations-on-one-granges-object" class="section level2">
+<h2><span class="header-section-number">1.3</span> Interval operations on one GRanges object</h2>
+<div id="intra-range-methods" class="section level3">
+<h3><span class="header-section-number">1.3.1</span> Intra-range methods</h3>
+<p>The methods described in this section work <em>one-region-at-a-time</em> and are, therefore, called
+“intra-region” methods. Methods that work across all regions are described below
+in the <a href="#inter-range-methods">Inter-range methods</a> section.</p>
+<p>The <code>GRanges</code> class has accessors for the “ranges” part of the data. For example:</p>
+<pre class="r"><code># Make a smaller GRanges subset
+g &lt;- gr[1:3]
+start(g) # to get start locations</code></pre>
+<pre><code>## [1] 101 102 103</code></pre>
+<pre class="r"><code>end(g)   # to get end locations</code></pre>
+<pre><code>## [1] 111 112 113</code></pre>
+<pre class="r"><code>width(g) # to get the &quot;widths&quot; of each range</code></pre>
+<pre><code>## [1] 11 11 11</code></pre>
+<pre class="r"><code>range(g) # to get the &quot;range&quot; for each sequence (min(start) through max(end))</code></pre>
+<pre><code>## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1   101-111      -
+##   [2]     chr2   102-113      +
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The GRanges class also has many methods for manipulating the ranges. The methods can
+be classified as intra-range methods, inter-range methods, and between-range methods.
+Intra-range methods operate on each element of a GRanges object independent of the other
+ranges in the object. For example, the flank method can be used to recover regions flanking
+the set of ranges represented by the GRanges object. So to get a GRanges object containing
+the ranges that include the 10 bases <em>upstream</em> of the ranges:</p>
+<pre class="r"><code>flank(g, 10)</code></pre>
+<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   112-121      - |         1                 1
+##   b     chr2    92-101      + |         2 0.888888888888889
+##   c     chr2    93-102      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>Note how <code>flank</code> pays attention to “strand”.
+To get the flanking regions <em>downstream</em> of the ranges, we can do:</p>
+<pre class="r"><code>flank(g, 10, start=FALSE)</code></pre>
+<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1    91-100      - |         1                 1
+##   b     chr2   113-122      + |         2 0.888888888888889
+##   c     chr2   114-123      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>Other examples of intra-range methods include <code>resize</code> and <code>shift</code>. The shift method will
+move the ranges by a specific number of base pairs, and the resize method will extend the
+ranges by a specified width.</p>
+<pre class="r"><code>shift(g, 5)</code></pre>
+<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   106-116      - |         1                 1
+##   b     chr2   107-117      + |         2 0.888888888888889
+##   c     chr2   108-118      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<pre class="r"><code>resize(g, 30)</code></pre>
+<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1    82-111      - |         1                 1
+##   b     chr2   102-131      + |         2 0.888888888888889
+##   c     chr2   103-132      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> help page <code>?&quot;intra-range-methods&quot;</code> summarizes these methods.</p>
+</div>
+<div id="inter-range-methods" class="section level3">
+<h3><span class="header-section-number">1.3.2</span> Inter-range methods</h3>
+<p>Inter-range methods involve comparisons between ranges in a single GRanges object. For
+instance, the reduce method will align the ranges and merge overlapping ranges to produce
+a simplified set.</p>
+<pre class="r"><code>reduce(g)</code></pre>
+<pre><code>## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1   101-111      -
+##   [2]     chr2   102-113      +
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The reduce method could, for example, be used to collapse individual overlapping coding
+exons into a single set of coding regions.</p>
+<p>Sometimes one is interested in the gaps or the qualities of the gaps between the ranges
+represented by your GRanges object. The gaps method provides this information:</p>
+<pre class="r"><code>gaps(g)</code></pre>
+<pre><code>## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1     1-100      -
+##   [2]     chr2     1-101      +
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>In this case, we have not specified the lengths of the chromosomes, so Bioconductor is
+making the assumption (incorrectly) that the chromosomes end at the largest location
+on each chromosome. We can correct this by setting the <code>seqlengths</code> correctly, but
+we can ignore that detail for now.</p>
+<p>The disjoin method represents a GRanges object as a collection of non-overlapping ranges:</p>
+<pre class="r"><code>disjoin(g)</code></pre>
+<pre><code>## GRanges object with 4 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1   101-111      -
+##   [2]     chr2       102      +
+##   [3]     chr2   103-112      +
+##   [4]     chr2       113      +
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The <code>coverage</code> method quantifies the degree of overlap for all the ranges in a GRanges object.</p>
+<pre class="r"><code>coverage(g)</code></pre>
+<pre><code>## RleList of length 3
+## $chr1
+## integer-Rle of length 111 with 2 runs
+##   Lengths: 100  11
+##   Values :   0   1
+## 
+## $chr2
+## integer-Rle of length 113 with 4 runs
+##   Lengths: 101   1  10   1
+##   Values :   0   1   2   1
+## 
+## $chr3
+## integer-Rle of length 0 with 0 runs
+##   Lengths: 
+##   Values :</code></pre>
+<p>The coverage is summarized as a <code>list</code> of coverages, one for each chromosome.
+The <code>Rle</code> class is used to store the values. Sometimes, one must convert these
+values to <code>numeric</code> using <code>as.numeric</code>. In many cases, this will happen automatically,
+though.</p>
+<pre class="r"><code>covg = coverage(g)
+covg_chr2 = covg[[&#39;chr2&#39;]]
+plot(covg_chr2, type=&#39;l&#39;)</code></pre>
+<p><img src="RangesAndSignal_files/figure-html/coveragegr2-1.png" width="100%" /></p>
+<p>See the <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> help page <code>?&quot;intra-range-methods&quot;</code> for more details.</p>
+</div>
+</div>
+<div id="set-operations-for-granges-objects" class="section level2">
+<h2><span class="header-section-number">1.4</span> Set operations for GRanges objects</h2>
+<p>Between-range methods calculate relationships between different GRanges objects. Of central
+importance are findOverlaps and related operations; these are discussed below. Additional
+operations treat GRanges as mathematical sets of coordinates; union(g, g2) is the union of
+the coordinates in g and g2. Here are examples for calculating the union, the intersect and
+the asymmetric difference (using setdiff).</p>
+<pre class="r"><code>g2 &lt;- head(gr, n=2)
+union(g, g2)</code></pre>
+<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<pre class="r"><code>intersect(g, g2)</code></pre>
+<pre><code>## GRanges object with 2 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<pre class="r"><code>setdiff(g, g2)</code></pre>
+<pre><code>## GRanges object with 1 range and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   c     chr2   103-113      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>There is extensive additional help available or by looking at the vignettes
+in at the <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> pages.</p>
+<pre class="r"><code>?GRanges</code></pre>
+<p>There are also many possible <code>methods</code> that work with <code>GRanges</code> objects. To
+see a complete list (long), try:</p>
+<pre class="r"><code>methods(class=&quot;GRanges&quot;)</code></pre>
+</div>
+</div>
+<div id="grangeslist" class="section level1">
+<h1><span class="header-section-number">2</span> GRangesList</h1>
+<p>Some important genomic features, such as spliced transcripts that are are comprised of exons,
+are inherently compound structures. Such a feature makes much more sense when expressed
+as a compound object such as a GRangesList. If we thing of each transcript as a set of exons,
+each transcript would be summarized as a <code>GRanges</code> object. However, if we have multiple transcripts,
+we want to somehow keep them separate, with each transcript having its own exons. The <code>GRangesList</code>
+is then a list of <code>GRanges</code> objects that. Continuing with the transcripts thought, a <code>GRangesList</code>
+can contain all the transcripts and their exons; each transcript is an element in the list.</p>
+<p>Whenever genomic features consist of multiple
+ranges that are grouped by a parent feature, they can be represented as a GRangesList
+object. Consider the simple example of the two transcript GRangesList below created using
+the GRangesList constructor.</p>
+<pre class="r"><code>gr1 &lt;- GRanges(
+    seqnames = &quot;chr2&quot;, 
+    ranges = IRanges(103, 106),
+    strand = &quot;+&quot;, 
+    score = 5L, GC = 0.45)
+gr2 &lt;- GRanges(
+    seqnames = c(&quot;chr1&quot;, &quot;chr1&quot;),
+    ranges = IRanges(c(107, 113), width = 3),
+    strand = c(&quot;+&quot;, &quot;-&quot;), 
+    score = 3:4, GC = c(0.3, 0.5))</code></pre>
+<p>The <code>gr1</code> and <code>gr2</code> are each <code>GRanges</code> objects. We can combine them into a “named”
+<code>GRangesList</code> like so:</p>
+<pre class="r"><code>grl &lt;- GRangesList(&quot;txA&quot; = gr1, &quot;txB&quot; = gr2)
+grl</code></pre>
+<pre><code>## GRangesList object of length 2:
+## $txA 
+## GRanges object with 1 range and 2 metadata columns:
+##       seqnames    ranges strand |     score        GC
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;numeric&gt;
+##   [1]     chr2   103-106      + |         5      0.45
+## 
+## $txB 
+## GRanges object with 2 ranges and 2 metadata columns:
+##       seqnames  ranges strand | score  GC
+##   [1]     chr1 107-109      + |     3 0.3
+##   [2]     chr1 113-115      - |     4 0.5
+## 
+## -------
+## seqinfo: 2 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>The <code>show</code> method for a <code>GRangesList</code> object displays it as a named list of <code>GRanges</code> objects,
+where the names of this list are considered to be the names of the grouping feature. In the
+example above, the groups of individual exon ranges are represented as separate <code>GRanges</code>
+objects which are further organized into a list structure where each element name is a transcript
+name. Many other combinations of grouped and labeled <code>GRanges</code> objects are possible
+of course, but this example is a common arrangement.</p>
+<p>In some cases, <code>GRangesList</code>s behave quite similarly to <code>GRanges</code> objects.</p>
+<div id="basic-grangeslist-accessors" class="section level2">
+<h2><span class="header-section-number">2.1</span> Basic <em>GRangesList</em> accessors</h2>
+<p>Just as with GRanges object, the components of the genomic coordinates within a GRangesList
+object can be extracted using simple accessor methods. Not surprisingly, the GRangesList
+objects have many of the same accessors as GRanges objects. The difference is that many
+of these methods return a list since the input is now essentially a list of GRanges objects.
+Here are a few examples:</p>
+<pre class="r"><code>seqnames(grl)</code></pre>
+<pre><code>## RleList of length 2
+## $txA
+## factor-Rle of length 1 with 1 run
+##   Lengths:    1
+##   Values : chr2
+## Levels(2): chr2 chr1
+## 
+## $txB
+## factor-Rle of length 2 with 1 run
+##   Lengths:    2
+##   Values : chr1
+## Levels(2): chr2 chr1</code></pre>
+<pre class="r"><code>ranges(grl)</code></pre>
+<pre><code>## IRangesList of length 2
+## $txA
+## IRanges object with 1 range and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]       103       106         4
+## 
+## $txB
+## IRanges object with 2 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]       107       109         3
+##   [2]       113       115         3</code></pre>
+<pre class="r"><code>strand(grl)</code></pre>
+<pre><code>## RleList of length 2
+## $txA
+## factor-Rle of length 1 with 1 run
+##   Lengths: 1
+##   Values : +
+## Levels(3): + - *
+## 
+## $txB
+## factor-Rle of length 2 with 2 runs
+##   Lengths: 1 1
+##   Values : + -
+## Levels(3): + - *</code></pre>
+<p>The length and names methods will return the length or names of the list and the seqlengths
+method will return the set of sequence lengths.</p>
+<pre class="r"><code>length(grl)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>names(grl)</code></pre>
+<pre><code>## [1] &quot;txA&quot; &quot;txB&quot;</code></pre>
+<pre class="r"><code>seqlengths(grl)</code></pre>
+<pre><code>## chr2 chr1 
+##   NA   NA</code></pre>
+</div>
+</div>
+<div id="relationships-between-region-sets" class="section level1">
+<h1><span class="header-section-number">3</span> Relationships between region sets</h1>
+<p>One of the more powerful approaches to genomic data integration is to ask
+about the relationship between sets of genomic ranges. The key features of
+this process are to look at overlaps and distances to the nearest feature.
+These functionalities, combined with the operations like <code>flank</code> and <code>resize</code>,
+for instance, allow pretty useful analyses with relatively little code.
+In general, these operations are <em>very</em> fast, even on thousands to millions
+of regions.</p>
+<div id="overlaps" class="section level2">
+<h2><span class="header-section-number">3.1</span> Overlaps</h2>
+<pre class="r"><code>mtch &lt;- findOverlaps(gr, g)
+as.matrix(mtch)</code></pre>
+<pre><code>##      queryHits subjectHits
+## [1,]         1           1
+## [2,]         2           2
+## [3,]         2           3
+## [4,]         3           2
+## [5,]         3           3
+## [6,]         4           2
+## [7,]         4           3
+## [8,]         5           1</code></pre>
+<p>If you are interested in only the <code>queryHits</code> or the <code>subjectHits</code>, there are
+accessors for those (ie., <code>queryHits(match)</code>).</p>
+<p>As you might expect, the <code>countOverlaps</code> method counts the regions in the
+second <code>GRanges</code> that overlap with those that overlap
+with each element of the first.</p>
+<pre class="r"><code>countOverlaps(gr, g)</code></pre>
+<pre><code>## a b c d e f g h i j 
+## 1 2 2 2 1 0 0 0 0 0</code></pre>
+<p>The <code>subsetByOverlaps</code> method simply subsets the first <code>GRanges</code> object to include
+<em>only</em> those that overlap the second.</p>
+<pre class="r"><code>subsetByOverlaps(gr, g)</code></pre>
+<pre><code>## GRanges object with 5 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##   d     chr2   104-114      * |         4 0.666666666666667
+##   e     chr1   105-115      * |         5 0.555555555555556
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   d 0.333333333333333
+##   e 0.444444444444444
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<p>In some cases, you may be interested in only one hit when doing
+overlaps. Note the <code>select</code> parameter. See the help for <code>findOverlaps</code></p>
+<pre class="r"><code>findOverlaps(gr, g, select=&quot;first&quot;)</code></pre>
+<pre><code>##  [1]  1  2  2  2  1 NA NA NA NA NA</code></pre>
+<pre class="r"><code>findOverlaps(g, gr, select=&quot;first&quot;)</code></pre>
+<pre><code>## [1] 1 2 2</code></pre>
+<p>The <code>%over%</code> logical operator allows us to do similar things to
+<code>findOverlaps</code> and <code>subsetByOverlaps</code>.</p>
+<pre class="r"><code>gr %over% g</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>gr[gr %over% g]</code></pre>
+<pre><code>## GRanges object with 5 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##   d     chr2   104-114      * |         4 0.666666666666667
+##   e     chr1   105-115      * |         5 0.555555555555556
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   d 0.333333333333333
+##   e 0.444444444444444
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+</div>
+<div id="nearest-feature" class="section level2">
+<h2><span class="header-section-number">3.2</span> Nearest feature</h2>
+<p>There are a number of useful methods that find the nearest feature (region) in a second set
+for each element in the first set.</p>
+<p>We can review our two <code>GRanges</code> toy objects:</p>
+<pre class="r"><code>g</code></pre>
+<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<pre class="r"><code>gr</code></pre>
+<pre><code>## GRanges object with 10 ranges and 3 metadata columns:
+##     seqnames    ranges strand |     score                GC
+##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
+##   a     chr1   101-111      - |         1                 1
+##   b     chr2   102-112      + |         2 0.888888888888889
+##   c     chr2   103-113      + |         3 0.777777777777778
+##   d     chr2   104-114      * |         4 0.666666666666667
+##   e     chr1   105-115      * |         5 0.555555555555556
+##   f     chr1   106-116      + |         6 0.444444444444444
+##   g     chr3   107-117      + |         7 0.333333333333333
+##   h     chr3   108-118      + |         8 0.222222222222222
+##   i     chr3   109-119      - |         9 0.111111111111111
+##   j     chr3   110-120      - |        10                 0
+##                    AT
+##             &lt;numeric&gt;
+##   a                 0
+##   b 0.111111111111111
+##   c 0.222222222222222
+##   d 0.333333333333333
+##   e 0.444444444444444
+##   f 0.555555555555556
+##   g 0.666666666666667
+##   h 0.777777777777778
+##   i 0.888888888888889
+##   j                 1
+##   -------
+##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
+<ul>
+<li><p>nearest: Performs conventional nearest neighbor finding. Returns an integer vector containing the index of the nearest neighbor range in subject for each range in x. If there is no nearest neighbor NA is returned. For details of the algorithm see the man page in the IRanges package (?nearest).</p></li>
+<li><p>precede: For each range in x, precede returns the index of the range in subject that is directly preceded by the range in x. Overlapping ranges are excluded. NA is returned when there are no qualifying ranges in subject.</p></li>
+<li><p>follow: The opposite of precede, follow returns the index of the range in subject that is directly followed by the range in x. Overlapping ranges are excluded. NA is returned when there are no qualifying ranges in subject.</p></li>
+</ul>
+<p>Orientation and strand for precede and follow: Orientation is 5’ to 3’, consistent with the direction of translation. Because positional numbering along a chromosome is from left to right and transcription takes place from 5’ to 3’, precede and follow can appear to have ‘opposite’ behavior on the + and - strand. Using positions 5 and 6 as an example, 5 precedes 6 on the + strand but follows 6 on the - strand.</p>
+<p>The table below outlines the orientation when ranges on different strands are compared. In general, a feature on * is considered to belong to both strands. The single exception is when both x and subject are * in which case both are treated as +.</p>
+<pre><code>       x  |  subject  |  orientation 
+     -----+-----------+----------------
+a)     +  |  +        |  ---&gt; 
+b)     +  |  -        |  NA
+c)     +  |  *        |  ---&gt;
+d)     -  |  +        |  NA
+e)     -  |  -        |  &lt;---
+f)     -  |  *        |  &lt;---
+g)     *  |  +        |  ---&gt;
+h)     *  |  -        |  &lt;---
+i)     *  |  *        |  ---&gt;  (the only situation where * arbitrarily means +)</code></pre>
+<pre class="r"><code>res = nearest(g, gr)
+res</code></pre>
+<pre><code>## [1] 5 4 4</code></pre>
+<p>While <code>nearest</code> and friends give the index of the nearest feature, the distance
+to the nearest is sometimes also useful to have. The <code>distanceToNearest</code>
+method calculates the nearest feature as well as reporting the distance.</p>
+<pre class="r"><code>res = distanceToNearest(g, gr)
+res</code></pre>
+<pre><code>## Hits object with 3 hits and 1 metadata column:
+##       queryHits subjectHits |  distance
+##       &lt;integer&gt;   &lt;integer&gt; | &lt;integer&gt;
+##   [1]         1           5 |         0
+##   [2]         2           4 |         0
+##   [3]         3           4 |         0
+##   -------
+##   queryLength: 3 / subjectLength: 10</code></pre>
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1><span class="header-section-number">4</span> Session Info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS Sierra 10.12.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+## [8] methods   base     
+## 
+## other attached packages:
+##  [1] RColorBrewer_1.1-2                bindrcpp_0.2.2                   
+##  [3] dplyr_0.7.4                       airway_0.114.0                   
+##  [5] nycflights13_0.2.2                ggplot2_2.2.1                    
+##  [7] knitr_1.20                        BSgenome.Hsapiens.UCSC.hg19_1.4.0
+##  [9] BSgenome_1.47.5                   rtracklayer_1.39.13              
+## [11] BiocStyle_2.7.9                   VariantAnnotation_1.25.13        
+## [13] SummarizedExperiment_1.9.18       DelayedArray_0.5.35              
+## [15] BiocParallel_1.13.3               matrixStats_0.53.1               
+## [17] Rsamtools_1.31.3                  Biostrings_2.47.12               
+## [19] XVector_0.19.9                    GenomicFeatures_1.31.10          
+## [21] AnnotationDbi_1.41.6              Biobase_2.39.2                   
+## [23] GenomicRanges_1.31.23             GenomeInfoDb_1.15.5              
+## [25] IRanges_2.13.29                   S4Vectors_0.17.43                
+## [27] AnnotationHub_2.12.0              BiocGenerics_0.25.3              
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.3.1                    bit64_0.9-7                  
+##  [3] shiny_1.0.5                   assertthat_0.2.0             
+##  [5] interactiveDisplayBase_1.18.0 highr_0.6                    
+##  [7] blob_1.1.1                    GenomeInfoDbData_1.1.0       
+##  [9] yaml_2.1.19                   progress_1.1.2               
+## [11] pillar_1.2.2                  RSQLite_2.1.0                
+## [13] backports_1.1.2               lattice_0.20-35              
+## [15] glue_1.2.0.9000               digest_0.6.15                
+## [17] promises_1.0.1                colorspace_1.3-2             
+## [19] htmltools_0.3.6               httpuv_1.4.3                 
+## [21] Matrix_1.2-14                 plyr_1.8.4                   
+## [23] XML_3.98-1.11                 pkgconfig_2.0.1              
+## [25] biomaRt_2.35.13               bookdown_0.7                 
+## [27] zlibbioc_1.25.0               xtable_1.8-2                 
+## [29] scales_0.5.0                  later_0.7.2                  
+## [31] tibble_1.4.2                  lazyeval_0.2.1               
+## [33] cli_1.0.0                     magrittr_1.5                 
+## [35] crayon_1.3.4                  mime_0.5                     
+## [37] memoise_1.1.0                 evaluate_0.10.1              
+## [39] BiocInstaller_1.30.0          tools_3.5.0                  
+## [41] prettyunits_1.0.2             stringr_1.3.1                
+## [43] munsell_0.4.3                 compiler_3.5.0               
+## [45] rlang_0.2.1                   grid_3.5.0                   
+## [47] RCurl_1.95-4.10               bitops_1.0-6                 
+## [49] labeling_0.3                  rmarkdown_1.10               
+## [51] gtable_0.2.0                  DBI_0.8                      
+## [53] curl_3.2                      R6_2.2.2                     
+## [55] GenomicAlignments_1.15.14     utf8_1.1.3                   
+## [57] bit_1.1-12                    bindr_0.1.1                  
+## [59] rprojroot_1.3-2               stringi_1.2.2                
+## [61] Rcpp_0.12.17                  xfun_0.1</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

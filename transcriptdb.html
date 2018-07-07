@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="date" content="2018-07-07" />
+
+<title>TxDb: Genes, Transcripts, and Genomic Locations</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/Library/Frameworks/R.framework/Versions/3.5/Resources/library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2018">Introduction to Bioconductor</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">TxDb: Genes, Transcripts, and Genomic Locations</h1>
+<p class="author-name">Sean Davis<span class="affil-mark">1*</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>Center for Cancer Research, National Cancer Institute, NIH</p>
+<p class="author-email"><span class="affil-mark">*</span><a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></p>
+<h4 class="date"><em>7 July 2018</em></h4>
+<h4 class="package">Package</h4>
+<p>GenomicDataIntegration 0.1.0</p>
+
+</div>
+
+<h1>Contents</h1>
+<div id="TOC">
+<ul>
+<li><a href="#gene-annotation"><span class="toc-section-number">1</span> Gene annotation</a><ul>
+<li><a href="#the-gtf-format"><span class="toc-section-number">1.1</span> The GTF format</a></li>
+</ul></li>
+<li><a href="#expression-data"><span class="toc-section-number">2</span> Expression Data</a></li>
+</ul>
+</div>
+
+<p>The <em><a href="http://bioconductor.org/packages/GenomicFeatures">GenomicFeatures</a></em> package retrieves and manages transcript-related features from
+the UCSC Genome Bioinformatics<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+and BioMart<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> data resources. The package is
+useful for ChIP-chip, ChIP-seq, and RNA-seq analyses.</p>
+<pre class="r"><code>library(&#39;GenomicFeatures&#39;)</code></pre>
+<div id="gene-annotation" class="section level1">
+<h1><span class="header-section-number">1</span> Gene annotation</h1>
+<p>Gene annotation resources in Bioconductor are extensive. Here is an overview and an example of how to build
+resources from text files. The first section is background on the GTF format and then we build a TxDb object
+from an appropriate GTF file.</p>
+<p>Note that matching up the GTF file, the genome build, and the transcript sequences is really important
+to getting an analysis right.</p>
+<div id="the-gtf-format" class="section level2">
+<h2><span class="header-section-number">1.1</span> The GTF format</h2>
+<p>GTF stands for Gene transfer format<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. It borrows from GFF, but has additional structure that warrants a separate definition and format name. Structure is as GFF, so the fields are:</p>
+<pre><code>&lt;seqname&gt; &lt;source&gt; &lt;feature&gt; &lt;start&gt; &lt;end&gt; &lt;score&gt; &lt;strand&gt; &lt;frame&gt; [attributes] [comments]</code></pre>
+<p>Here is a simple example with 3 translated exons. Order of rows is not important.</p>
+<pre><code>381 Twinscan  CDS          380   401   .   +   0  gene_id &quot;001&quot;; transcript_id &quot;001.1&quot;;
+381 Twinscan  CDS          501   650   .   +   2  gene_id &quot;001&quot;; transcript_id &quot;001.1&quot;;
+381 Twinscan  CDS          700   707   .   +   2  gene_id &quot;001&quot;; transcript_id &quot;001.1&quot;;
+381 Twinscan  start_codon  380   382   .   +   0  gene_id &quot;001&quot;; transcript_id &quot;001.1&quot;;
+381 Twinscan  stop_codon   708   710   .   +   0  gene_id &quot;001&quot;; transcript_id &quot;001.1&quot;;</code></pre>
+<p>The whitespace in this example is provided only for readability. In GTF, fields must be separated by a single TAB and no white space.</p>
+<p>GTF fields definitions are here:</p>
+<ul>
+<li><p><em><seqname></em>: The name of the sequence. Commonly, this is the chromosome ID or contig ID. Note that the coordinates used must be unique within each sequence name in all GTFs for an annotation set.</p></li>
+<li><p><em><source></em>: The source column should be a unique label indicating where the annotations came from — typically the name of either a prediction program or a public database.</p></li>
+<li><p><em><feature></em>: The following feature types are required: “CDS”, “start_codon”, “stop_codon”. The features “5UTR”, “3UTR”, “inter”, “inter_CNS”, “intron_CNS” and “exon” are optional. All other features will be ignored. The types must have the correct capitalization shown here. CDS represents the coding sequence starting with the first translated codon and proceeding to the last translated codon. Unlike Genbank annotation, the stop codon is not included in the CDS for the terminal exon. The optional feature “5UTR” represents regions from the transcription start site or beginning of the known 5’ UTR to the base before the start codon of the transcript. If this region is interrupted by introns then each exon or partial exon is annotated as a separate 5UTR feature. Similarly, “3UTR” represents regions after the stop codon and before the polyadenylation site or end of the known 3’ untranslated region. Note that the UTR features can only be used to annotate portions of mRNA genes, not non-coding RNA genes. The feature “exon” more generically describes any transcribed exon. Therefore, exon boundaries will be the transcription start site, splice donor, splice acceptor and poly-adenylation site. The start or stop codon will not necessarily lie on an exon boundary. The “start_codon” feature is up to 3bp long in total and is included in the coordinates for the “CDS” features. The “stop_codon” feature similarly is up to 3bp long and is excluded from the coordinates for the “3UTR” features, if used. The “start_codon” and “stop_codon” features are not required to be atomic; they may be interrupted by valid splice sites. A split start or stop codon appears as two distinct features. All “start_codon” and “stop_codon” features must have a 0,1,2 in the <frame> field indicating which part of the codon is represented by this feature. Contiguous start and stop codons will always have frame 0. The “inter” feature describes an intergenic region, one which is by almost all accounts not transcribed. The “inter_CNS” feature describes an intergenic conserved noncoding sequence region. All of these should have an empty transcript_id attribute, since they are not transcribed and do not belong to any transcript. The “intron_CNS” feature describes a conserved noncoding sequence region within an intron of a transcript, and should have a transcript_id associated with it.</p></li>
+<li><p><em><start> and <end></em>: Integer start and end coordinates of the feature relative to the beginning of the sequence named in <seqname>. <start> must be less than or equal to <end>. Sequence numbering starts at 1. Values of <start> and <end> that extend outside the reference sequence are technically acceptable, but they are discouraged.</p></li>
+<li><p><em><score></em>: The score field indicates a degree of confidence in the feature’s existence and coordinates. The value of this field has no global scale but may have relative significance when the <source> field indicates the prediction program used to create this annotation. It may be a floating point number or integer, and not necessary and may be replaced with a dot.</p></li>
+<li><p><em><frame></em>: 0 indicates that the feature begins with a whole codon at the 5’ most base. 1 means that there is one extra base (the third base of a codon) before the first whole codon and 2 means that there are two extra bases (the second and third bases of the codon) before the first codon. Note that for reverse strand features, the 5’ most base is the <end> coordinate.</p></li>
+<li><em>[attributes]</em>: All nine features have the same two mandatory attributes at the end of the record. These attributes are designed for handling multiple transcripts from the same genomic region. Any other attributes or comments must appear after these two and may be ignored. Attributes must end in a semicolon which must then be separated from the start of any subsequent attribute by exactly one space character (NOT a tab character). Textual attributes should be surrounded by doublequotes. These two attributes are required even for non-mRNA transcribed regions such as “inter” and “inter_CNS” features.
+<ul>
+<li>gene_id value; A globally unique identifier for the genomic locus of the transcript. If empty, no gene is associated with this feature.</li>
+<li>transcript_id value; A globally unique identifier for the predicted transcript. If empty, no transcript is associated with this feature.</li>
+</ul></li>
+<li><p><em>[comments]</em>: Comments begin with a hash (‘#’) and continue to the end of the line. Nothing beyond a hash will be parsed. These may occur anywhere in the file, including at the end of a feature line.</p></li>
+</ul>
+<pre class="r"><code>download.file(&quot;https://www.encodeproject.org/files/gencode.v24.primary_assembly.annotation/@@download/gencode.v24.primary_assembly.annotation.gtf.gz&quot;, &quot;gencode.v24.primary_assembly.annotation.gtf.gz&quot;)</code></pre>
+<pre class="r"><code>library(GenomicFeatures)
+txdb = makeTxDbFromGFF(&#39;gencode.v24.primary_assembly.annotation.gtf.gz&#39;)</code></pre>
+<p>To save the <code>txdb</code> database for later and avoid having to recreate it
+every time we use it, we can use <code>saveDb()</code> and, later, <code>loadDb()</code></p>
+<pre class="r"><code>library(AnnotationDbi)
+saveDb(txdb, &#39;txdb.gencode24.sqlite&#39;)</code></pre>
+<p>Once the database is stored to disk, it can be reloaded later, almost instantly.</p>
+<pre class="r"><code>library(AnnotationDbi)
+txdb = loadDb(file = &#39;txdb.gencode24.sqlite&#39;)
+genes(txdb)</code></pre>
+</div>
+</div>
+<div id="expression-data" class="section level1">
+<h1><span class="header-section-number">2</span> Expression Data</h1>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
