@@ -258,7 +258,8 @@ $(document).ready(function () {
 <li><a href="#gene-annotation"><span class="toc-section-number">1</span> Gene annotation</a><ul>
 <li><a href="#the-gtf-format"><span class="toc-section-number">1.1</span> The GTF format</a></li>
 </ul></li>
-<li><a href="#expression-data"><span class="toc-section-number">2</span> Expression Data</a></li>
+<li><a href="#making-a-txdb-object"><span class="toc-section-number">2</span> Making a TxDb object</a></li>
+<li><a href="#exercises"><span class="toc-section-number">3</span> Exercises</a></li>
 </ul>
 </div>
 
@@ -300,7 +301,14 @@ to getting an analysis right.</p>
 </ul></li>
 <li><p><em>[comments]</em>: Comments begin with a hash (‘#’) and continue to the end of the line. Nothing beyond a hash will be parsed. These may occur anywhere in the file, including at the end of a feature line.</p></li>
 </ul>
+</div>
+</div>
+<div id="making-a-txdb-object" class="section level1">
+<h1><span class="header-section-number">2</span> Making a TxDb object</h1>
+<p>Using the GTF file from ENCODE for gencode v24, we will be building a TxDb object. First, download the
+GTF file.</p>
 <pre class="r"><code>download.file(&quot;https://www.encodeproject.org/files/gencode.v24.primary_assembly.annotation/@@download/gencode.v24.primary_assembly.annotation.gtf.gz&quot;, &quot;gencode.v24.primary_assembly.annotation.gtf.gz&quot;)</code></pre>
+<p>Then, in one line, build the TxDb object.</p>
 <pre class="r"><code>library(GenomicFeatures)
 txdb = makeTxDbFromGFF(&#39;gencode.v24.primary_assembly.annotation.gtf.gz&#39;)</code></pre>
 <p>To save the <code>txdb</code> database for later and avoid having to recreate it
@@ -312,9 +320,22 @@ saveDb(txdb, &#39;txdb.gencode24.sqlite&#39;)</code></pre>
 txdb = loadDb(file = &#39;txdb.gencode24.sqlite&#39;)
 genes(txdb)</code></pre>
 </div>
-</div>
-<div id="expression-data" class="section level1">
-<h1><span class="header-section-number">2</span> Expression Data</h1>
+<div id="exercises" class="section level1">
+<h1><span class="header-section-number">3</span> Exercises</h1>
+<ul>
+<li><p>Use the <code>genes</code> accessor to extract a <code>GRanges</code> object of the genes. How many genes are there? Make a histogram
+of the lengths of the genes (see ?width from the GenomicRanges package). You may have to transform the data
+to make the plot useful.</p></li>
+<li><p>Use the <code>transcripts</code> accessor to extract the transcripts as <code>GRanges</code> object. How many
+transcripts are present? Make a table of the number of transcripts per chromosome. For each
+transcript, find out how many other transcripts overlap it.</p></li>
+<li><p>Use the <code>transcriptsBy</code> accessor to get a <code>GRangesList</code> of transcripts, grouped by gene.
+What is the length of the result? What are the names of the result? Make a histogram of the
+number of transcripts per gene (see <code>elementNROWS</code>).</p></li>
+<li><p>The AnnotationHub record, “AH57956”, contains clinically annotated snps. Get this record
+from the AnnotationHub and then read it into R with <code>readVcf</code> from the VariantAnnotation
+package. How many of these SNPs overlap genes (you should double-check the seqlevels)?</p></li>
+</ul>
 </div>
 
 
