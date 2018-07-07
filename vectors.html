@@ -524,16 +524,16 @@ myvec = rnorm(10)
 # create logical vector that is TRUE where myvec is &gt;0.25
 gt1 = (myvec &gt; 0.25)
 sum(gt1)</code></pre>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 4</code></pre>
 <pre class="r"><code># and use our logical vector to create a vector of myvec values that are &gt;0.25
 myvec[gt1]</code></pre>
-<pre><code>## [1] 1.087 1.164 0.373 1.567 0.925 0.312</code></pre>
+<pre><code>## [1] 0.741 0.817 0.560 0.769</code></pre>
 <pre class="r"><code># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;
 myvec[!gt1]</code></pre>
-<pre><code>## [1] -0.618 -0.594 -0.637 -0.289</code></pre>
+<pre><code>## [1] -1.790  0.128  0.126 -0.920  0.243 -0.399</code></pre>
 <pre class="r"><code># shorter, one line approach
 myvec[myvec &gt; 0.25]</code></pre>
-<pre><code>## [1] 1.087 1.164 0.373 1.567 0.925 0.312</code></pre>
+<pre><code>## [1] 0.741 0.817 0.560 0.769</code></pre>
 </div>
 <div id="character-vectors-a.k.a.-strings" class="section level2">
 <h2>Character Vectors, A.K.A. Strings</h2>
