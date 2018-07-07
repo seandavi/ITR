@@ -17,6 +17,8 @@ navbar:
     menu:
     - text: Motivation for using R
       href: motivation_for_R_slides.html
+    - text: Introduction to Bioconductor
+      href: http://bit.ly/bioc_cshl_2018
   - icon: fa-question fa-lg
     text: Misc.
     menu:

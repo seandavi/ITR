@@ -30,5 +30,9 @@ Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https
 
 - [Getting Started with Bioconductor](bioc_installation.html) [[Rmd](bioc_installation.Rmd)]
 - [SummarizedExperiment](Bioc_SummarizedExperiment.html) [[Rmd](Bioc_SummarizedExperiment.Rmd)] [[Exercises](bioc_summarizedExperiment_exercises.html)]
-- [AnnotationHub](AnnotationHub.html) [[Rmd](AnnotationHub.Rmd)]
+- [AnnotationHub](AnnotationHub.html) [[Rmd](AnnotationHub.Rmd)] [[Exercises](AnnotationHubExercises.html)]
+- [GEOquery and Multidimensional Scaling Exercise](geoquery_mds.html) [[Rmd](geoquery_mds.Rmd)]
+- [Ranges](RangesAndSignal.html) [[Rmd](RangesAndSignal.Rmd)] [[slides](https://bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GRanges_and_GRangesList_slides.pdf)] 
+- [TxDb](transcriptdb.html) [[Rmd](transcriptdb.Rmd)]
+- [Ranges Exercises](ranges_exercises.html) [[Rmd](ranges_exercises.Rmd)]
 
