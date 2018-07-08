@@ -1,0 +1,213 @@
+---
+title: "Expression Prediction"
+author: "Anshul Kundaje, Oana Ursu, and Sean Davis"
+date: "7/8/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, message=FALSE)
+```
+
+# Install packages
+
+Do this at the beginning of the lab
+
+```{r eval=FALSE}
+install.packages("caret", dependencies=T)
+install.packages(c("randomForest", "glmnet"), dependencies=T)
+```
+
+```{r}
+require(caret)
+require(randomForest)
+require(glmnet)
+```
+
+# Load the preprocessed data
+
+```{r}
+fullFeatureSet <- read.table("https://seandavi.github.io/ITR/expression-prediction/features.txt");
+target <- scan("https://seandavi.github.io/ITR/expression-prediction/target.txt")
+```
+
+You can see the full list of features in fullFeatureSet using:
+```{r}
+colnames(fullFeatureSet)
+```
+
+# Machine Learning
+
+## Lasso
+
+In this section, we will run the lasso procedure.
+
+```{r}
+features <- fullFeatureSet
+```
+
+```{r}
+library(caret)
+#how to split into train/validation using cross-validation
+fitControl <- trainControl( 
+    method="repeatedcv",
+    number=10,
+    ## repeated once
+    repeats=1,
+    verboseIter=T)
+```
+
+We are going to try a number of different models, so
+here, we create a range of parameters to investigate.
+
+- alpha -  is the elasticnet mixing parameter: $$(1-α)/2||β||_2^2+α||β||_1$$
+- lambda - is the regularization parameter governing the relative importance of minimizing error vs keeping betas small
+
+```{r}
+lassoGrid <- expand.grid(alpha=1, lambda=10^seq(-6, 0, 1))
+```
+
+Now, we train the model using cross-validation to find the "best"
+parameters.
+
+```{r}
+lassoFit <- train(features, target, method="glmnet",
+                  trControl=fitControl, tuneGrid=lassoGrid)
+lassoModel <- lassoFit$finalModel
+```
+
+What metric is being used? Hint: print `names(lassoFit)` and get the metric used.
+
+Printing the `lassoFit` variable gives the overall performance.
+
+```{r}
+names(lassoFit)
+print(lassoFit)
+```
+
+- Accuracy per CV-fold (for best model)
+
+```{r}
+print(lassoFit$resample)
+```
+
+We can inspect the coefficients for different values of the
+L1 penalty lambda - play around and see what happens.
+
+```{r}
+print(coef(lassoModel, s=1e-4))
+print(coef(lassoModel, s=1))
+```
+
+We can also plot the entire regularization path
+The numbers shown are the feature (column) ids - to get the name of the
+feature, you can do colnames(features)[10], for instance.
+the numbers at the top are the numbers of nonzero coefficients.
+
+```{r}
+plot(lassoModel, "lambda", label=T)
+```
+
+
+The final, trained model is in `lassoFit`.
+We can plot the predictions vs original targets.
+
+```{r}
+lassoPreds <- predict(lassoFit, newdata=features)
+plot(target, lassoPreds)
+```
+
+## Random Forests
+
+```{r}
+library(caret)
+```
+
+```{r}
+rfGrid <- expand.grid(mtry=floor(ncol(features)/3))
+```
+
+```{r}
+randomforestFit <- train(features, target, method="rf", 
+                         trControl=fitControl, tuneGrid=rfGrid,
+                         ntree=100)
+rfModel <- randomforestFit$finalModel
+```
+
+The overall accuracy is:
+
+```{r}
+print(randomforestFit)
+```
+
+We can also look at the accuracy per cross-validation fold.
+
+```{r}
+print(randomforestFit$resample)
+```
+
+The variable importance gives a measure of the relative contributions of each of the variables 
+(histone marks) to the expression prediction. Larger values reflect greater feature importance.
+
+```{r}
+print(rfModel$importance[order(rfModel$importance, decreasing=T),])
+```
+
+The final trained model is in randomforestFit. Again, we can plot the predictions vs original targets.
+
+```{r}
+randomforestPreds <- predict(randomforestFit, newdata=features)
+plot(target, randomforestPreds)
+```
+
+
+# Further exploration
+
+- How does the performance of random forests compare to the lasso?
+  (you can look at the output of print(lassoFit) and print(randomforestFit))
+- How do other models perform? You can try other models by changing the
+  "method" parameter in the "train" call. Some suggestions for models:
+  linear regression, "lm"  and regression trees, "rpart2".
+
+- Construct a proper test set and re-run the analyses 
+
+- How do the individual histone marks contribute to the accuracy of the
+  predictions? You can formulate hypotheses about which marks are important
+  and only include those in the feature matrix when learning your model to
+  see how they do. We provide some code below to help you with this.
+
+We can experiment with the weights that lasso regression produces when given
+a subset of the features. First, create a column vector specifying the names
+of a subset of the features with:
+
+```{r}
+featureSubset <- c("Control", "H3k4me1", "H3k4me2", "H2az", "H3k27me3",
+                   "H3k36me3", "H3k9me1", "H3k9me3", "H4k20me1")
+```
+
+Now create the variable “features” which contains this subset of features:
+
+```{r}
+features <- fullFeatureSet[featureSubset]
+```
+
+Now, rerun the lasso regression with the subset.
+
+
+```{r}
+lassoFit <- train(features, target, method="glmnet",
+                  trControl=fitControl, tuneGrid=lassoGrid)
+lassoModel <- lassoFit$finalModel
+```
+
+We now generate a plot where the y axis is the coefficient of the
+weights assigned to the various features by lasso, the bottom x-axis is the
+log of the regularisation parameter lambda, and the top x-axis is the number
+of non-zero weights for that particular value of the regularisation parameter.
+The numbers on the lines correspond to the indices of the features in
+“featureSubset”. The numbers at the top are the numbers of nonzero betas.
+
+```{r}
+plot(lassoModel, "lambda", label=T)
+```
+

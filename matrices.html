@@ -319,6 +319,9 @@ div.tocify {
     <li>
       <a href="http://bit.ly/bioc_cshl_2018">Introduction to Bioconductor</a>
     </li>
+    <li>
+      <a href="MachineLearningSlides.html">Machine Learning hands-on</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -367,16 +370,16 @@ y &lt;- rnorm(10)
 mat&lt;-cbind(x,y)
 mat</code></pre>
 <pre><code>##        x       y
-##  [1,]  1  0.3013
-##  [2,]  2 -1.3409
-##  [3,]  3 -0.0337
-##  [4,]  4 -1.2046
-##  [5,]  5  1.1821
-##  [6,]  6  1.5936
-##  [7,]  7 -0.3570
-##  [8,]  8  1.4555
-##  [9,]  9 -1.2566
-## [10,] 10 -0.0816</code></pre>
+##  [1,]  1 -0.7223
+##  [2,]  2  0.0839
+##  [3,]  3  0.4913
+##  [4,]  4 -0.5551
+##  [5,]  5 -0.3993
+##  [6,]  6 -0.2114
+##  [7,]  7 -0.1697
+##  [8,]  8 -1.2792
+##  [9,]  9 -0.8283
+## [10,] 10 -0.1275</code></pre>
 <p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
 <pre class="r"><code>rownames(mat)</code></pre>
 <pre><code>## NULL</code></pre>
@@ -392,12 +395,12 @@ mat</code></pre>
 <p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
 <pre class="r"><code># The 2nd element of the 1st row of mat
 mat[1,2]</code></pre>
-<pre><code>##     y 
-## 0.301</code></pre>
+<pre><code>##      y 
+## -0.722</code></pre>
 <pre class="r"><code># The first ROW of mat
 mat[1,]</code></pre>
-<pre><code>##     x     y 
-## 1.000 0.301</code></pre>
+<pre><code>##      x      y 
+##  1.000 -0.722</code></pre>
 <pre class="r"><code># The first COLUMN of mat
 mat[,1]</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -415,12 +418,12 @@ m[,1] = m[,1] + 100
 # summarize m
 summary(m)</code></pre>
 <pre><code>##        V1              V2       
-##  Min.   : 49.6   Min.   :-42.1  
-##  1st Qu.: 93.7   1st Qu.:-16.8  
-##  Median :105.8   Median : 13.9  
-##  Mean   :101.1   Mean   :  2.9  
-##  3rd Qu.:117.9   3rd Qu.: 22.0  
-##  Max.   :136.3   Max.   : 32.9</code></pre>
+##  Min.   : 70.3   Min.   :-31.0  
+##  1st Qu.: 78.6   1st Qu.: -0.3  
+##  Median :103.6   Median :  3.1  
+##  Mean   : 99.9   Mean   :  6.4  
+##  3rd Qu.:110.1   3rd Qu.: 22.4  
+##  Max.   :142.1   Max.   : 34.4</code></pre>
 </div>
 
     <script>

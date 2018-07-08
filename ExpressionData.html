@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="date" content="2018-07-07" />
+
+<title>Prepare Gene Expression Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/Library/Frameworks/R.framework/Versions/3.5/Resources/library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2018">Introduction to Bioconductor</a>
+    </li>
+    <li>
+      <a href="MachineLearningSlides.html">Machine Learning hands-on</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Prepare Gene Expression Data</h1>
+<p class="author-name">Sean Davis<span class="affil-mark">1*</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>Center for Cancer Research, National Cancer Institute, NIH</p>
+<p class="author-email"><span class="affil-mark">*</span><a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></p>
+<h4 class="date"><em>7 July 2018</em></h4>
+<h4 class="package">Package</h4>
+<p>GenomicDataIntegration 0.1.0</p>
+
+</div>
+
+<h1>Contents</h1>
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a><ul>
+<li><a href="#k-562"><span class="toc-section-number">1.1</span> K-562</a></li>
+</ul></li>
+<li><a href="#gene-expression-data"><span class="toc-section-number">2</span> Gene Expression Data</a><ul>
+<li><a href="#annotation-data"><span class="toc-section-number">2.1</span> Annotation data</a></li>
+<li><a href="#building-a-summarizedexperiment"><span class="toc-section-number">2.2</span> Building a SummarizedExperiment</a></li>
+</ul></li>
+<li><a href="#tximport"><span class="toc-section-number">3</span> tximport</a></li>
+<li><a href="#dnase-data"><span class="toc-section-number">4</span> DNAse data</a></li>
+</ul>
+</div>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector("h1").className = "title";
+});
+</script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var links = document.links;  
+  for (var i = 0, linksLength = links.length; i < linksLength; i++)
+    if (links[i].hostname != window.location.hostname)
+      links[i].target = '_blank';
+});
+</script>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<div id="k-562" class="section level2">
+<h2><span class="header-section-number">1.1</span> K-562</h2>
+<p>From Wikipedia:</p>
+<blockquote>
+<p>K562 cells were the first human immortalised myelogenous leukemia cell line to be established. K562 cells are of the erythroleukemia type, and the cell line is derived from a 53-year-old female chronic myelogenous leukemia patient in blast crisis. The cells are non-adherent and rounded, are positive for the bcr:abl fusion gene, and bear some proteomic resemblance to both undifferentiated granulocytes and erythrocytes. In culture they exhibit much less clumping than many other suspension lines, presumably due to the downregulation of surface adhesion molecules by bcr:abl. However, another study suggests that bcr:abl over-expression may actually increase cell adherence to cell culture plastic. K562 cells can spontaneously develop characteristics similar to early-stage erythrocytes, granulocytes and monocytes and are easily killed by natural killer cells[8] as they lack the MHC complex required to inhibit NK activity. They also lack any trace of Epstein-Barr virus and other herpesviruses. In addition to the Philadelphia chromosome they also exhibit a second reciprocal translocation between the long arm of chromosome 15 with chromosome 17.</p>
+</blockquote>
+<p><a href="https://web.expasy.org/cellosaurus/CVCL_0004">Cellosaurus</a> is a great resource for
+finding resources related to cell lines, including derivative lines with specific
+induced mutations.</p>
+</div>
+</div>
+<div id="gene-expression-data" class="section level1">
+<h1><span class="header-section-number">2</span> Gene Expression Data</h1>
+<div id="annotation-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Annotation data</h2>
+<pre class="r"><code>download.file(&quot;https://www.encodeproject.org/files/gencode.v24.primary_assembly.annotation/@@download/gencode.v24.primary_assembly.annotation.gtf.gz&quot;, &quot;gencode.v24.primary_assembly.annotation.gtf.gz&quot;)</code></pre>
+<pre class="r"><code>library(GenomicFeatures)
+txdb = makeTxDbFromGFF(&#39;gencode.v24.primary_assembly.annotation.gtf.gz&#39;)</code></pre>
+<pre><code>## Warning in .get_cds_IDX(type, phase): The &quot;phase&quot; metadata column contains non-NA values for features of
+##   type stop_codon. This information was ignored.</code></pre>
+</div>
+<div id="building-a-summarizedexperiment" class="section level2">
+<h2><span class="header-section-number">2.2</span> Building a SummarizedExperiment</h2>
+<p>The ENCODE data portal contains links to both raw and processed data. We are going to be working
+with relatively standard polyA-selected RNA-seq values.</p>
+<p><a href="https://www.encodeproject.org/documents/6354169f-86f6-4b59-8322-141005ea44eb/@@download/attachment/Long%20RNA-seq%20pipeline%20overview.pdf">Protocol</a></p>
+<pre class="r"><code>download.file(&quot;https://www.encodeproject.org/files/ENCFF172GIN/@@download/ENCFF172GIN.tsv&quot;, &quot;ENCFF172GIN.tsv&quot;)
+download.file(&quot;https://www.encodeproject.org/files/ENCFF768TKT/@@download/ENCFF768TKT.tsv&quot;, &quot;ENCFF768TKT.tsv&quot;)</code></pre>
+</div>
+</div>
+<div id="tximport" class="section level1">
+<h1><span class="header-section-number">3</span> tximport</h1>
+<pre class="r"><code>library(tximport)
+fnames = c(&quot;ENCFF172GIN.tsv&quot;, &quot;ENCFF768TKT.tsv&quot;)
+txi = tximport(fnames, txIn = FALSE, txOut = FALSE, type = &#39;rsem&#39;)</code></pre>
+<pre class="r"><code>library(SummarizedExperiment)
+colnames(txi$abundance) = c(&#39;rep1&#39;,&#39;rep2&#39;)
+colnames(txi$counts)    = c(&#39;rep1&#39;,&#39;rep2&#39;)
+coldata = DataFrame(cell=&#39;K562&#39;,rep=c(&quot;rep1&quot;, &quot;rep2&quot;),row.names = c(&#39;rep1&#39;, &#39;rep2&#39;))
+se = SummarizedExperiment(list(counts = txi$counts, abundance = txi$abundance), colData = coldata)</code></pre>
+<p>Now, we limit the gene quantifications to those in our <code>txdb</code> object. There are
+data for tRNAs and for ERCC control spikeins, but we will simply drop those here.</p>
+<pre class="r"><code>library(GenomicFeatures)
+genes_gr = genes(txdb)
+common_genes = intersect(names(genes_gr), rownames(se))
+se = se[common_genes,]
+rowRanges(se) = genes_gr[rownames(se)]</code></pre>
+</div>
+<div id="dnase-data" class="section level1">
+<h1><span class="header-section-number">4</span> DNAse data</h1>
+<pre class="r"><code>library(AnnotationHub)
+ah = AnnotationHub()
+query(ah, c(&#39;E123&#39;,&#39;dnase&#39;,&#39;narrowpeak&#39;))</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2018-04-30 
+## # names(): AH30828
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: GRanges
+## # $rdatadateadded: 2015-05-06
+## # $title: E123-DNase.macs2.narrowPeak.gz
+## # $description: Narrow DNasePeaks for consolidated epigenomes from Epigen...
+## # $taxonomyid: 9606
+## # $genome: hg19
+## # $sourcetype: BED
+## # $sourceurl: http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consoli...
+## # $sourcesize: 4976461
+## # $tags: c(&quot;EpigenomeRoadMap&quot;, &quot;peaks&quot;, &quot;consolidated&quot;,
+## #   &quot;narrowPeak&quot;, &quot;E123&quot;, &quot;ENCODE2012&quot;, &quot;BLD.K562.CNCR&quot;, &quot;K562
+## #   Leukemia Cells&quot;) 
+## # retrieve record with &#39;object[[&quot;AH30828&quot;]]&#39;</code></pre>
+<pre class="r"><code>k562_dnase = ah[[&#39;AH30828&#39;]]</code></pre>
+<p><a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format12">narrowPeak format</a></p>
+<pre class="r"><code>common_seqlevels = intersect(seqlevels(k562_dnase), seqlevels(se))
+keepSeqlevels(se, common_seqlevels, pruning.mode = &quot;coarse&quot;)</code></pre>
+<pre><code>## class: RangedSummarizedExperiment 
+## dim: 60554 2 
+## metadata(0):
+## assays(2): counts abundance
+## rownames(60554): ENSG00000000003.14 ENSG00000000005.5 ...
+##   ENSGR0000280767.3 ENSGR0000281849.3
+## rowData names(1): gene_id
+## colnames(2): rep1 rep2
+## colData names(2): cell rep</code></pre>
+<pre class="r"><code>keepSeqlevels(k562_dnase, common_seqlevels, pruning.mode = &quot;coarse&quot;)</code></pre>
+<pre><code>## GRanges object with 341918 ranges and 6 metadata columns:
+##            seqnames              ranges strand |        name     score
+##               &lt;Rle&gt;           &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;numeric&gt;
+##        [1]     chrM              1-1097      * |      Rank_1      3043
+##        [2]     chrM           1209-4182      * |      Rank_2      3043
+##        [3]     chrM          8867-16537      * |      Rank_3      3043
+##        [4]     chrM           4660-5576      * |      Rank_4      3020
+##        [5]     chrM           6152-6767      * |      Rank_5      2904
+##        ...      ...                 ...    ... .         ...       ...
+##   [341914]     chr6 131218806-131218885      * | Rank_341914        20
+##   [341915]     chr6   14397529-14397640      * | Rank_341915        20
+##   [341916]     chr6   40014582-40014661      * | Rank_341916        20
+##   [341917]     chr6   43784239-43784362      * | Rank_341917        20
+##   [341918]     chr6   57006249-57006328      * | Rank_341918        20
+##            signalValue    pValue    qValue      peak
+##              &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;
+##        [1]    90.29462 304.31799 294.83575       142
+##        [2]    90.29462 304.31799 294.83575      2275
+##        [3]    90.29462 304.31799 294.83575      5089
+##        [4]    89.73379 302.00494 294.83575       289
+##        [5]    86.92961 290.48062 284.41489       259
+##        ...         ...       ...       ...       ...
+##   [341914]     2.19711   2.00458   0.47536        25
+##   [341915]     2.19711   2.00458   0.47536        68
+##   [341916]     2.19711   2.00458   0.47536        53
+##   [341917]     2.19711   2.00458   0.47536       109
+##   [341918]     2.19711   2.00458   0.47536        29
+##   -------
+##   seqinfo: 25 sequences (1 circular) from hg19 genome</code></pre>
+<pre class="r"><code>ne = distanceToNearest(se, k562_dnase[1:20000])</code></pre>
+<pre><code>## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in &#39;x&#39;: chr1_KI270706v1_random, chr1_KI270707v1_random, chr1_KI270708v1_random, chr1_KI270711v1_random, chr1_KI270713v1_random, chr1_KI270714v1_random, chr4_GL000008v2_random, chr11_KI270721v1_random, chr14_GL000009v2_random, chr14_GL000194v1_random, chr14_GL000225v1_random, chr14_KI270722v1_random, chr14_KI270723v1_random, chr14_KI270724v1_random, chr14_KI270726v1_random, chr15_KI270727v1_random, chr16_KI270728v1_random, chr17_GL000205v2_random, chr22_KI270731v1_random, chr22_KI270733v1_random, chr22_KI270734v1_random, chrUn_GL000195v1, chrUn_GL000213v1, chrUn_GL000216v2, chrUn_GL000218v1, chrUn_GL000219v1, chrUn_GL000220v1, chrUn_GL000224v1, chrUn_KI270442v1, chrUn_KI270741v1, chrUn_KI270743v1, chrUn_KI270744v1, chrUn_KI270750v1, chrUn_KI270752v1
+##   - in &#39;y&#39;: chr1_gl000191_random, chr1_gl000192_random, chr4_ctg9_hap1, chr4_gl000193_random, chr4_gl000194_random, chr6_apd_hap1, chr6_cox_hap2, chr6_dbb_hap3, chr6_mann_hap4, chr6_mcf_hap5, chr6_qbl_hap6, chr6_ssto_hap7, chr7_gl000195_random, chr8_gl000196_random, chr8_gl000197_random, chr9_gl000198_random, chr9_gl000199_random, chr9_gl000200_random, chr9_gl000201_random, chr11_gl000202_random, chr17_ctg5_hap1, chr17_gl000203_random, chr17_gl000204_random, chr17_gl000205_random, chr17_gl000206_random, chr18_gl000207_random, chr19_gl000208_random, chr19_gl000209_random, chr21_gl000210_random, chrUn_gl000211, chrUn_gl000212, chrUn_gl000213, chrUn_gl000214, chrUn_gl000215, chrUn_gl000216, chrUn_gl000217, chrUn_gl000218, chrUn_gl000219, chrUn_gl000220, chrUn_gl000221, chrUn_gl000222, chrUn_gl000223, chrUn_gl000224, chrUn_gl000225, chrUn_gl000226, chrUn_gl000227, chrUn_gl000228, chrUn_gl000229, chrUn_gl000230, chrUn_gl000231, chrUn_gl000232, chrUn_gl000233, chrUn_gl000234, chrUn_gl000235, chrUn_gl000236, chrUn_gl000237, chrUn_gl000238, chrUn_gl000239, chrUn_gl000240, chrUn_gl000241, chrUn_gl000242, chrUn_gl000243, chrUn_gl000244, chrUn_gl000245, chrUn_gl000246, chrUn_gl000247, chrUn_gl000248, chrUn_gl000249
+##   Make sure to always combine/compare objects based on the same reference
+##   genome (use suppressWarnings() to suppress this warning).</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
