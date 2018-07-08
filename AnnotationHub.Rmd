@@ -1,0 +1,374 @@
+---
+title: "AnnotationHub: Access the AnnotationHub Web Service"
+output:
+  html_document:
+    toc: true
+---
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+Finding and using public genomics data such as browser or chip-seq tracks; annotation for
+genes, exons, transcripts; gene ontology and functional gene information; etc. often 
+requires quite a bit of work. Bioconductor has done some of this work already by
+
+1. Finding and curating popular genomic resources
+2. Using "recipes" to create R object versions of these resources
+3. Make those resources available as a web service that is accessible from R
+
+The `AnnotationHub` server provides easy _R / Bioconductor_ access to
+large collections of publicly available whole genome resources,
+e.g,. ENSEMBL genome fasta or gtf files, UCSC chain resources, ENCODE
+data tracks at UCSC, etc.
+
+To get started, make sure that you have the `AnnotationHub` package installed:
+
+```{r eval=FALSE}
+source('https://bioconductor.org/biocLite.R')
+biocLite('AnnotationHub')
+```
+
+# AnnotationHub objects
+
+The `r Biocpkg("AnnotationHub")` package provides a client interface
+to resources stored at the AnnotationHub web service.
+
+```{r library, message=FALSE}
+library(AnnotationHub)
+```
+
+The `r Biocpkg("AnnotationHub")` package is straightforward to use.
+Create an `AnnotationHub` object
+
+```{r AnnotationHub}
+ah = AnnotationHub()
+```
+
+Now at this point you have already done everything you need in order
+to start retrieving annotations.  For most operations, using the
+`AnnotationHub` object should feel a lot like working with a familiar
+`list` or `data.frame`. 
+
+Lets take a minute to look at the show method for the hub object ah 
+
+```{r show}
+ah
+```
+
+You can see that it gives you an idea about the different types of data that are present inside the hub. You can see where the data is coming from (dataprovider), as well as what species have samples present (species), what kinds of R data objects could be returned (rdataclass).  We can take a closer look at all the kinds of data providers that are available by simply looking at the contents of dataprovider as if it were the column of a data.frame object like this:
+
+```{r dataprovider}
+unique(ah$dataprovider)
+```
+
+In the same way, you can also see data from different species inside the hub by looking at the contents of species like this: 
+
+```{r species}
+head(unique(ah$species))
+```
+
+And this will also work for any of the other types of metadata present.  You can learn which kinds of metadata are available by simply hitting the tab key after you type 'ah$'.  In this way you can explore for yourself what kinds of data are present in the hub right from the command line. This interface also allows you to access the hub programatically to extract data that matches a particular set of criteria.
+
+Another valuable types of metadata to pay attention to is the rdataclass.
+
+```{r rdataclass}
+head(unique(ah$rdataclass))
+```
+
+The rdataclass allows you to see which kinds of R objects the hub will return to you.  This kind of information is valuable both as a means to filter results and also as a means to explore and learn about some of the kinds of annotation objects that are widely available for the project.  Right now this is a pretty short list, but over time it should grow as we support more of the different kinds of annotation objects via the hub.
+
+
+Now lets try getting the Chain Files from UCSC using the query and subset methods to selectively pare down the hub based on specific criteria. 
+The query method lets you search rows for
+specific strings, returning an `AnnotationHub` instance with just the
+rows matching the query.
+
+From the show method, one can easily see that one of the dataprovider is
+UCSC and there is a rdataclass for ChainFile
+
+One can get chain files for Drosophila melanogaster from UCSC with:
+
+```{r dm1}
+dm <- query(ah, c("ChainFile", "UCSC", "Drosophila melanogaster"))
+dm
+```
+Query has worked and you can now see that the only species present is 
+Drosophila melanogaster. 
+ 
+The metadata underlying this hub object can be retrieved by you 
+
+```{r show2}
+df <- mcols(dm)
+```
+
+By default the show method will only display the first 5 and last 5  rows.
+There are already thousands of records present in the hub.
+
+```{r length}
+length(ah)
+```
+Lets look at another example, where we pull down only Inparanoid8 data 
+from the hub and use  subset to return a smaller base object (here we
+ are finding cases where the genome column is set to panda).
+
+```{r subset}
+ahs <- query(ah, c('inparanoid8', 'ailuropoda'))
+ahs
+```
+
+We can also look at the `AnnotationHub` object in a browser using the
+`display()` function. We can then filter the `AnnotationHub` object
+for _chainFile__ by either using the Global search field on the top
+right corner of the page or the in-column search field for `rdataclass'.
+
+```{r display, eval=FALSE}
+d <- display(ah)
+```
+
+![](images/annotationHub.png)
+Displaying and filtering the Annotation Hub object in a browser
+
+By default 1000 entries are displayed per page, we can change this using
+the filter on the top of the page or navigate through different pages
+using the page scrolling feature at the bottom of the page. 
+
+We can also select the rows of interest to us and send them back to
+the R session using 'Return rows to R session' button ; this sets a
+filter internally which filters the `AnnotationHub` object. The names
+of the selected AnnotationHub elements displayed at the top of the
+page.
+
+# Using `AnnotationHub` to retrieve data
+
+Looking back at our chain file example, if we are interested in the file 
+dm1ToDm2.over.chain.gz, we can gets its metadata using
+
+```{r dm2}
+dm
+dm["AH15146"]
+```
+We can download the file using
+
+```{r dm3}
+dm[["AH15146"]]
+```
+Each file is retrieved from the AnnotationHub server and the file is
+also cache locally, so that the next time you need to retrieve it,
+it should download much more quickly.
+
+
+# Accessing Genome-Scale Data
+
+## Non-model organism gene annotations
+
+_Bioconductor_ offers pre-built `org.*` annotation packages for model
+organisms, with their use described in the
+[OrgDb](http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb)
+section of the Annotation work flow. Here we discover available `OrgDb`
+objects for less-model organisms
+
+```{r less-model-org}
+library(AnnotationHub)
+ah <- AnnotationHub()
+query(ah, "OrgDb")
+orgdb <- query(ah, "OrgDb")[[1]] 
+```
+
+The object returned by AnnotationHub is directly usable with the
+`select()` interface, e.g., to discover the available keytypes for
+querying the object, the columns that these keytypes can map to, and
+finally selecting the SYMBOL and GENENAME corresponding to the first 6
+ENTREZIDs
+
+```{r less-model-org-select}
+library(AnnotationDbi)
+keytypes(orgdb)
+columns(orgdb)
+egid <- head(keys(orgdb, "ENTREZID"))
+AnnotationDbi::select(orgdb, egid, c("SYMBOL", "GENENAME"), "ENTREZID")
+```
+
+## Roadmap Epigenomics Project 
+
+All Roadmap Epigenomics files are hosted
+[here](http://egg2.wustl.edu/roadmap/data/byFileType/). If one had to
+download these files on their own, one would navigate through the web
+interface to find useful files, then use something like the following
+_R_ code.
+
+```{r, eval=FALSE}
+url <- "http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E001-H3K4me1.broadPeak.gz"
+filename <-  basename(url)
+download.file(url, destfile=filename)
+if (file.exists(filename))
+   data <- import(filename, format="bed")
+```
+This would have to be repeated for all files, and the onus would lie
+on the user to identify, download, import, and manage the local disk
+location of these files.
+
+`r Biocpkg("AnnotationHub")` reduces this task to just a few lines of _R_ code 
+```{r results='hide'}
+library(AnnotationHub)
+ah = AnnotationHub()
+epiFiles <- query(ah, "EpigenomeRoadMap")
+```
+A look at the value returned by `epiFiles` shows us that 
+`r length(epiFiles)` roadmap resources are available via 
+`r Biocpkg("AnnotationHub")`.  Additional information about 
+the files is also available, e.g., where the files came from
+(dataprovider), genome, species, sourceurl, sourcetypes.
+
+```{r}
+epiFiles
+```
+
+A good sanity check to ensure that we have files only from the Roadmap Epigenomics
+project is to check that all the files in the returned smaller hub object
+come from _Homo sapiens_ and the `r unique(epiFiles$genome)` genome 
+```{r}
+unique(epiFiles$species)
+unique(epiFiles$genome)
+```
+Broadly, one can get an idea of the different files from this project 
+looking at the sourcetype
+```{r}
+table(epiFiles$sourcetype)
+```
+To get a more descriptive idea of these different files one can use:
+```{r}
+sort(table(epiFiles$description), decreasing=TRUE)
+```
+
+The 'metadata' provided by the Roadmap Epigenomics Project is also
+available. Note that the information displayed about a hub with a
+single resource is quite different from the information displayed when
+the hub references more than one resource.
+```{r}
+metadata.tab <- query(ah , c("EpigenomeRoadMap", "Metadata"))
+metadata.tab
+```
+
+So far we have been exploring information about resources, without
+downloading the resource to a local cache and importing it into R.
+One can retrieve the resource using `[[` as indicated at the
+end of the show method
+
+```{r echo=FALSE, results='hide'}
+metadata.tab <- ah[["AH41830"]]
+```
+```{r}
+metadata.tab <- ah[["AH41830"]]
+```
+
+The metadata.tab file is returned as a _data.frame_. The first 6 rows
+of the first 5 columns are shown here:
+
+```{r}
+metadata.tab[1:6, 1:5]
+```
+
+One can keep constructing different queries using multiple arguments to 
+trim down these `r length(epiFiles)` to get the files one wants. 
+For example, to get the ChIP-Seq files for consolidated epigenomes, 
+one could use
+```{r}
+bpChipEpi <- query(ah , c("EpigenomeRoadMap", "broadPeak", "chip", "consolidated"))
+```
+To get all the bigWig signal files, one can query the hub using 
+```{r}
+allBigWigFiles <- query(ah, c("EpigenomeRoadMap", "BigWig"))
+```
+To access the 15 state chromatin segmentations, one can use
+```{r}
+seg <- query(ah, c("EpigenomeRoadMap", "segmentations"))
+```
+If one is interested in getting all the files related to one sample
+```{r}
+E126 <- query(ah , c("EpigenomeRoadMap", "E126", "H3K4ME2"))
+E126
+```
+Hub resources can also be selected using `$`, `subset()`, and
+`display()`; see the main
+[_AnnotationHub_ vignette](AnnotationHub.html) for additional detail.
+
+Hub resources are imported as the appropriate _Bioconductor_ object
+for use in further analysis.  For example, peak files are returned as
+_GRanges_ objects.
+
+```{r echo=FALSE, results='hide'}
+peaks <- E126[['AH29817']]
+```
+```{r}
+peaks <- E126[['AH29817']]
+seqinfo(peaks)
+```
+
+BigWig files are returned as _BigWigFile_ objects. A _BigWigFile_ is a
+reference to a file on disk; the data in the file can be read in using
+`rtracklayer::import()`, perhaps querying these large files for
+particular genomic regions of interest as described on the help page
+`?import.bw`.
+
+Each record inside `r Biocpkg("AnnotationHub")` is associated with a
+unique identifier. Most _GRanges_ objects returned by 
+`r Biocpkg("AnnotationHub")` contain the unique AnnotationHub identifier of
+the resource from which the _GRanges_ is derived.  This can come handy
+when working with the _GRanges_ object for a while, and additional
+information about the object (e.g., the name of the file in the cache,
+or the original sourceurl for the data underlying the resource) that
+is being worked with.
+
+```{r}
+metadata(peaks)
+ah[metadata(peaks)$AnnotationHubName]$sourceurl
+```
+
+# Configuring `AnnotationHub` objects
+
+When you create the `AnnotationHub` object, it will set up the object
+for you with some default settings.  See `?AnnotationHub` for ways to
+customize the hub source, the local cache, and other instance-specific
+options, and `?getAnnotationHubOption` to get or set package-global 
+options for use across sessions. 
+
+If you look at the object you will see some helpful information about
+it such as where the data is cached and where online the hub server is
+set to.
+
+```{r show-2}
+ah
+```
+
+By default the `AnnotationHub` object is set to the latest
+`snapshotData` and a snapshot version that matches the version of
+_Bioconductor_ that you are using. You can also learn about these data
+with the appropriate methods.
+
+```{r snapshot}
+snapshotDate(ah)
+```
+
+If you are interested in using an older version of a snapshot, you can
+list previous versions with the `possibleDates()` like this:
+
+```{r possibleDates}
+pd <- possibleDates(ah)
+pd
+```
+
+Set the dates like this:
+
+```{r setdate, eval=FALSE}
+snapshotDate(ah) <- pd[1]
+```
+
+
+# Session info
+
+```{r sessionInfo}
+sessionInfo()
+```

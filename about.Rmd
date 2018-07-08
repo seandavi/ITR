@@ -1,0 +1,20 @@
+---
+title: "About the site"
+output: 
+  html_document:
+    toc: false
+---
+
+The materials here were originally written to support the course _Statistical Methods in Functional
+Genomics_ offered at the Cold Spring Harbor Laboratory. I have borrowed heavily from previous instructors
+and from others generous enough to create and share their teaching materials online.
+
+Thanks to (at least):
+
+- Mark Reimers
+- Martin Morgan
+- Vince Carey
+- Stephen Turner
+- Rafa Irizarry
+- Naomi Altman
+- Hadley Wickham

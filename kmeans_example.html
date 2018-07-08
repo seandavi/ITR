@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Sean Davis" />
 
 
-<title>Matrices</title>
+<title>Clustering</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -350,77 +351,95 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Matrices</h1>
+<h1 class="title toc-ignore">Clustering</h1>
+<h4 class="author"><em>Sean Davis</em></h4>
+<h4 class="date"><em>7/7/2018</em></h4>
 
 </div>
 
 
-<p>A <em>matrix</em> is a rectangular collection of the same data type. It can be viewed as a collection of column vectors all of the same length and the same type (i.e. numeric, character or logical). A <em>data.frame</em> is <em>also</em> a rectangular array. All of the columns must be the same length, but they may be of <em>different</em> types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.</p>
-<p>In this section, we will be working with matrices. The <em>data.frame</em> will be dealt with elsewhere.</p>
-<div id="matrices" class="section level2">
-<h2>Matrices</h2>
-<p>We start by building a matrix from parts:</p>
-<pre class="r"><code>x &lt;- 1:10 
-y &lt;- rnorm(10)
-
-# make a matrix by column binding two numeric vectors
-mat&lt;-cbind(x,y)
-mat</code></pre>
-<pre><code>##        x       y
-##  [1,]  1  0.3013
-##  [2,]  2 -1.3409
-##  [3,]  3 -0.0337
-##  [4,]  4 -1.2046
-##  [5,]  5  1.1821
-##  [6,]  6  1.5936
-##  [7,]  7 -0.3570
-##  [8,]  8  1.4555
-##  [9,]  9 -1.2566
-## [10,] 10 -0.0816</code></pre>
-<p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
-<pre class="r"><code>rownames(mat)</code></pre>
-<pre><code>## NULL</code></pre>
-<pre class="r"><code>colnames(mat)</code></pre>
-<pre><code>## [1] &quot;x&quot; &quot;y&quot;</code></pre>
-<p>Matrices have dimensions.</p>
-<pre class="r"><code>dim(mat)</code></pre>
-<pre><code>## [1] 10  2</code></pre>
-<pre class="r"><code>nrow(mat)</code></pre>
-<pre><code>## [1] 10</code></pre>
-<pre class="r"><code>ncol(mat)</code></pre>
-<pre><code>## [1] 2</code></pre>
-<p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
-<pre class="r"><code># The 2nd element of the 1st row of mat
-mat[1,2]</code></pre>
-<pre><code>##     y 
-## 0.301</code></pre>
-<pre class="r"><code># The first ROW of mat
-mat[1,]</code></pre>
-<pre><code>##     x     y 
-## 1.000 0.301</code></pre>
-<pre class="r"><code># The first COLUMN of mat
-mat[,1]</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code># and all elements of mat that are &gt; 4; note no comma
-mat[mat&gt;4]</code></pre>
-<pre><code>## [1]  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>## [1]  5  6  7  8  9 10</code></pre>
-<p>Note that in the last case, there is no “,”, so R treats the matrix as a long vector (length=20). This is convenient, sometimes, but it can also be a source of error, as some code may “work” but be doing something unexpected.</p>
-<p>In the next example, we create a matrix with 2 columns and 10 rows.</p>
-<pre class="r"><code>m = matrix(rnorm(20),nrow=10)
-# multiply all values in the matrix by 20
-m = m*20
-# and add 100 to the first column of m
-m[,1] = m[,1] + 100
-# summarize m
-summary(m)</code></pre>
-<pre><code>##        V1              V2       
-##  Min.   : 49.6   Min.   :-42.1  
-##  1st Qu.: 93.7   1st Qu.:-16.8  
-##  Median :105.8   Median : 13.9  
-##  Mean   :101.1   Mean   :  2.9  
-##  3rd Qu.:117.9   3rd Qu.: 22.0  
-##  Max.   :136.3   Max.   : 32.9</code></pre>
+<div id="experimental-background" class="section level1">
+<h1>Experimental background</h1>
+<p>The data we are going to use are from <a href="https://www.ncbi.nlm.nih.gov/pubmed/9381177">deRisi et al.</a>. From their abstract:</p>
+<blockquote>
+<p>DNA microarrays containing virtually every gene of Saccharomyces cerevisiae were used to carry out a comprehensive investigation of the temporal program of gene expression accompanying the metabolic shift from fermentation to respiration. The expression profiles observed for genes with known metabolic functions pointed to features of the metabolic reprogramming that occur during the diauxic shift, and the expression patterns of many previously uncharacterized genes provided clues to their possible functions.</p>
+</blockquote>
+<p>These data are available from NCBI GEO as <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE28">GSE28</a>.</p>
+<p>In the case of the baker’s or brewer’s yeast Saccharomyces cerevisiae growing on glucose with plenty of aeration, the diauxic growth pattern is commonly observed in batch culture. During the first growth phase, when there is plenty of glucose and oxygen available, the yeast cells prefer glucose fermentation to aerobic respiration even though aerobic respiration is the more efficient pathway to grow on glucose. This experiment profiles gene expression for 6400 genes over a time course during which the cells are undergoing a <a href="https://en.wikipedia.org/wiki/Diauxie">diauxic shift</a>.</p>
+<p>The data in deRisi et al. have no replicates and are time course data. Sometimes, seeing how groups of genes behave can give biological insight into the experimental system or the function of individual genes. We can use clustering to group genes that have a similar expression pattern over time and then potentially look at the genes that do so.</p>
+<p>Our goal, then, is to use <code>kmeans</code> clustering to divide highly variable (informative) genes into groups and then to visualize those groups.</p>
+</div>
+<div id="getting-data" class="section level1">
+<h1>Getting data</h1>
+<p>These data were deposited at NCBI GEO back in 2002. GEOquery can pull them out easily.</p>
+<pre class="r"><code>library(GEOquery)</code></pre>
+<pre><code>## Setting options(&#39;download.file.method.GEOquery&#39;=&#39;auto&#39;)</code></pre>
+<pre><code>## Setting options(&#39;GEOquery.inmemory.gpl&#39;=FALSE)</code></pre>
+<pre class="r"><code>gse = getGEO(&quot;GSE28&quot;)[[1]]</code></pre>
+<pre><code>## Found 1 file(s)</code></pre>
+<pre><code>## GSE28_series_matrix.txt.gz</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   ID_REF = col_integer(),
+##   GSM887 = col_double(),
+##   GSM888 = col_double(),
+##   GSM889 = col_double(),
+##   GSM890 = col_double(),
+##   GSM891 = col_double(),
+##   GSM892 = col_double(),
+##   GSM893 = col_double()
+## )</code></pre>
+<pre><code>## File stored at:</code></pre>
+<pre><code>## /var/folders/hq/pzgtdx7j55j0g7r4647vqzrr2yvxz9/T//RtmpNdCVmt/GPL57.soft</code></pre>
+<pre class="r"><code>class(gse)</code></pre>
+<pre><code>## [1] &quot;ExpressionSet&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;Biobase&quot;</code></pre>
+<p>GEOquery is a little dated and was written before the SummarizedExperiment existed. However, Bioconductor makes a conversion from the old ExpressionSet that GEOquery uses to the SummarizedExperiment that we see so commonly used now.</p>
+<pre class="r"><code>library(SummarizedExperiment)
+gse = as(gse, &quot;SummarizedExperiment&quot;)
+gse</code></pre>
+<pre><code>## class: SummarizedExperiment 
+## dim: 6400 7 
+## metadata(3): experimentData annotation protocolData
+## assays(1): exprs
+## rownames(6400): 1 2 ... 6399 6400
+## rowData names(20): ID ORF ... FAILED IS_CONTAMINATED
+## colnames(7): GSM887 GSM888 ... GSM892 GSM893
+## colData names(33): title geo_accession ... supplementary_file
+##   data_row_count</code></pre>
+<p>Taking a quick look at the <code>colData()</code>, it might be that we want to reorder the columns a bit.</p>
+<pre class="r"><code>colData(gse)$title</code></pre>
+<pre><code>##                                V2                                V3 
+## diauxic shift timecourse: 15.5 hr    diauxic shift timecourse: 0 hr 
+##                                V4                                V5 
+## diauxic shift timecourse: 18.5 hr  diauxic shift timecourse: 9.5 hr 
+##                                V6                                V7 
+## diauxic shift timecourse: 11.5 hr diauxic shift timecourse: 13.5 hr 
+##                                V8 
+## diauxic shift timecourse: 20.5 hr 
+## 7 Levels: diauxic shift timecourse: 0 hr ...</code></pre>
+<p>So, we can reorder by hand to get the time course correct:</p>
+<pre class="r"><code>gse = gse[, c(2,4,5,6,1,3,7)]</code></pre>
+<pre class="r"><code>sds = apply(assays(gse)[[1]], 1, sd)
+hist(sds)</code></pre>
+<p><img src="kmeans_example_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Examining the plot, we can see that the most highly variable genes have an sd &gt; 0.8 or so (arbitrary). We can, for convenience, create a new <code>SummarizedExperiment</code> that contains only our most highly variable genes.</p>
+<pre class="r"><code>idx = sds&gt;0.8 &amp; !is.na(sds)
+gse_sub = gse[idx,]</code></pre>
+<p>Now, <code>gse_sub</code> contains a subset of our data.</p>
+<p>The <code>kmeans</code> function takes a matrix and the number of clusters as arguments.</p>
+<pre class="r"><code>k = 4
+km = kmeans(assays(gse_sub)[[1]], 4)</code></pre>
+<p>The <code>km</code> kmeans result contains a vector, <code>km$cluster</code>, which gives the cluster associated with each gene. We can plot the genes for each cluster to see how these different genes behave.</p>
+<pre class="r"><code>expression_values = assays(gse_sub)[[1]]
+par(mfrow=c(2,2), mar=c(3,4,1,2)) # this allows multiple plots per page
+for(i in 1:k) {
+    matplot(t(expression_values[km$cluster==i, ]), type=&#39;l&#39;, ylim=c(-3,3),
+            ylab = paste(&quot;cluster&quot;, i))
+}</code></pre>
+<p><img src="kmeans_example_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Try this with different size k. Perhaps go back to choose more genes (using a smaller cutoff for sd).</p>
 </div>
 
     <script>
