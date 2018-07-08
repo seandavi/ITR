@@ -38,4 +38,5 @@ Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https
 - [Kmeans example](kmeans_example.html) [[Rmd](kmeans_example.Rmd)]
 - [Dimensionality Reduction](dimension-reduction.html) [[Rmd](dimension-reduction.Rmd)]
 - [Gene Expression Prediction](expression-prediction.html) [[Rmd](expression-prediction.Rmd)] [[Slides](expression-prediction/Expression_prediction_slides.pptx)]
+- [Gene Expression and DNAse setup](ExpressionData.html) [[Rmd](ExpressionData.Rmd)]
 

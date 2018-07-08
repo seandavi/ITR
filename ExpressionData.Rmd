@@ -104,10 +104,32 @@ k562_dnase = ah[['AH30828']]
 
 [narrowPeak format](https://genome.ucsc.edu/FAQ/FAQformat.html#format12)
 
+Note that the k562_dnase includes a ranked list of peaks. The "top" peaks have the highest -log10(p-values)
+and generally very high signalValue. We can subset to get the 
+
 
 ```{r fixseqlevels}
 common_seqlevels = intersect(seqlevels(k562_dnase), seqlevels(se))
 keepSeqlevels(se, common_seqlevels, pruning.mode = "coarse")
 keepSeqlevels(k562_dnase, common_seqlevels, pruning.mode = "coarse")
 ne = distanceToNearest(se, k562_dnase[1:20000])
+regioncount = length(k562_dnase)
+ne2 = distanceToNearest(se, k562_dnase[(regioncount-20000):regioncount])
 ```
+
+The `ne` and `ne2` contain the distances to the nearest gene, but for two
+distinct sets of peaks. Given that the `ne` variable is for "high confidence"
+peaks and that the `ne2` contains distances to the nearest gene for "low confidence"
+peaks, are there differences between the two sets of distances?
+
+- Define a good set of peaks and a "bad" set. Look at the location of these peaks with
+respect to "promoter" regions of the genes.
+
+- What is the expression value of the genes that have a "good" peak in their promoter
+region versus those without?
+
+- How about for the "bad" peak genes?
+
+
+
+
