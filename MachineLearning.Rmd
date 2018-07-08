@@ -1,0 +1,584 @@
+---
+title: "Machine Learning"
+subtitle: "A hands-on introduction using R"
+author: "Sean Davis"
+output: 
+  revealjs::revealjs_presentation:
+    widescreen: true
+    keep_md: true
+    theme: simple
+    reveal_options:
+      slideNumber: true
+      previewLinks: true
+---
+
+<style type="text/css">
+  .reveal p {
+    text-align: left;
+  }
+  .reveal ul {
+    display: block;
+  }
+  .reveal ol {
+    display: block;
+  }  
+</style>
+
+# Preliminaries
+
+## Install required libraries.
+
+```{r echo=FALSE,results='hide'}
+library(knitr)
+options(width=60)
+opts_chunk$set(tidy=TRUE,warning=FALSE,message=FALSE, cache=TRUE,
+               fig.width=9,fig.height=5.5)
+```
+
+```{r eval=FALSE}
+library(BiocInstaller)
+biocLite(c('mlbench','adabag', 'e1071', 'randomForest', 'party', 'mboost', 'rpart.plot', 'formatR'))
+```
+
+```{r}
+require(c('mlbench','adabag', 'e1071', 'randomForest', 'party', 'mboost', 'rpart.plot', 'formatR'))
+```
+
+### Some links of interest
+
+- [caret](https://https://cran.r-project.org/package=caret), [party](https://cran.r-project.org/package=party), [randomForest](https://cran.r-project.org/package=randomForest), [mlbench](https://cran.r-project.org/package=mlbench), [mlr](https://cran.r-project.org/package=mlr)
+- [Max Kuhn's old machine learning tutorial](https://www.r-project.org/conferences/useR-2013/Tutorials/kuhn/user_caret_2up.pdf)
+
+# Overview
+
+## What is machine learning?
+
+Machine learning is a broad set of fields related to computers learning from "experience" (data). 
+
+- Focusing on *predictive modeling* with a goal of *producing the most accurate estimates of some quantity or the most likely output of an event*. 
+- These models are sometimes based on similar models for inference (testing against a null hypothesis, such as linear regression), but in many cases, predictive models are not well-suited for inference (think k-nearest-neighbor, for example). 
+
+## The formula interface
+
+```{r eval=FALSE}
+outcome ~ var1 + var2 + ...
+```
+
+The variable `outcome` is predicted by `var1, var2, ...`
+
+```{r eval=FALSE}
+some_model_function(price ~ numBedrooms + numBaths + acres,
+                 data = housingData)
+```
+
+Conveniences of the formula interface:
+
+- Transformations such as `log10(acres)` can be specified inline. 
+- Factors are converted into dummy variables automatically.
+
+## The Non-formula interface
+
+- The non-formula interface specifies the predictors as a matrix or data frame. 
+- The outcome data are then passed into the model as a vector.
+
+```{r eval=FALSE}
+some_model_function(x = housePredictors, y = price)
+```
+
+Many R functions offer both a formula and a non-formula interface, but not all.
+
+## General workflow for machine learning in R
+
+1. Fit the model to a set of training data
+    ```{r eval=FALSE}
+    fit <- knn(trainingData, outcome, k = 5)
+    ```
+2. Assess the properties of the model using `print`, `plot`, `summary` or other methods
+3. Predict outcomes for samples using the predict method:
+    ```{r eval=FALSE}
+    predict(fit, newSamples).
+    ```
+
+# Exercise 1
+Playing with regression
+
+## Is `mpg` a function of `wt`? {.smaller}
+
+The formula interface in action:
+
+```{r}
+data(mtcars)
+fit = lm(mpg ~ wt, data = mtcars)
+summary(fit)
+```
+
+And make a plot.
+
+```{r eval=FALSE}
+plot(mpg ~ wt, data=mtcars)
+abline(fit)
+```
+
+## Is `mpg` a function of `wt`?
+
+```{r echo=FALSE}
+plot(mpg ~ wt, data=mtcars)
+abline(fit)
+```
+
+## Use `wt` to predict `mpg`
+
+And predict the original data based on the fitted model.
+
+```{r}
+pred_mpg = predict(fit,mtcars)
+summary(pred_mpg)
+```
+
+And look at the predicted values:
+
+```{R eval=FALSE}
+plot(mpg ~ wt, data=mtcars)
+abline(fit)
+points(y = pred_mpg, x = mtcars$wt, col='red')
+```
+
+## Use `wt` to predict `mpg`
+
+```{R echo=FALSE}
+plot(mpg ~ wt, data=mtcars)
+abline(fit)
+points(y = pred_mpg, x = mtcars$wt, col='red')
+```
+
+## Quantifying "goodness-of-fit"
+
+```{R echo=FALSE}
+plot(mpg ~ wt, data=mtcars)
+abline(fit)
+points(y = pred_mpg, x = mtcars$wt, col='red')
+```
+
+## Quantifying "goodness-of-fit"
+
+- Residual Sum of Squares
+    $$ RSS = \sum_{N} (y_i - f(x_i))^{2} $$
+
+## Quantifying "goodness-of-fit"
+
+```{r}
+rss = sum((mtcars$mpg - predict(fit,mtcars))^2)
+rss
+anova(fit)
+```
+
+## Training versus testing
+
+- What did we do wrong in quantifying our "goodness-of-fit"?
+
+# Splitting data and model performance evaluation
+
+
+## Common steps during training
+
+- estimating model parameters (i.e. training models)
+- determining the values of tuning parameters that cannot be directly calculated from the data
+- calculating the performance of the final model that will generalize to new data
+
+## Spending the data to find an optimal model? 
+
+- Split data into training and test data sets
+- *Training Set*: these data are used to estimate model parameters and
+to pick the values of the complexity parameter(s) for the model.
+- *Test Set (aka validation set)*: these data can be used to get an independent assessment of model accuracy. The test data should never be used in any aspect of model training.
+
+## Tradeoffs in spending data
+
+The more data we spend, the better estimates we’ll get (provided the data is accurate). Given a fixed amount of dat:
+
+- Too much spent in training won’t allow us to get a good assessment of predictive performance. We may find a model that fits the training data very well, but is not generalizable (over–fitting)
+- Too much spent in testing won’t allow us to get a good assessment of
+model parameters
+
+
+## Example using `mtcars`
+
+Using 50% of the data for training and 50% for testing is a place to start.
+
+```{r}
+set.seed(1)
+trainIdx = sample(1:nrow(mtcars),16)
+trainDat = mtcars[trainIdx,]
+testDat  = mtcars[-trainIdx,]
+```
+
+## Train the model using the training data
+
+```{r}
+fit = lm(mpg ~ wt, data=trainDat)
+anova(fit)
+```
+
+## Train the model using the training data
+
+```{r echo=FALSE}
+plot(mpg ~ wt, data = trainDat)
+abline(fit)
+```
+
+## Test our model using the testing data
+
+```{r}
+pred_mpg = predict(fit,testDat)
+rss = sum((testDat$mpg - pred_mpg)^2)
+rss
+anova(fit)
+```
+
+## Test our model using the testing data
+
+```{r echo=FALSE}
+plot(mpg ~ wt, data = testDat)
+points(testDat$wt,pred_mpg,col='red')
+abline(fit)
+```
+
+# Example 2
+A classification example
+
+## Classification Trees
+
+As a simple dataset to try with machine learning, we are going to predict the species of 
+`iris` based on four measurements.
+
+```{r eval=FALSE}
+data(iris)
+View(iris)
+pairs(iris[,1:4],col=iris$Species)
+```
+
+## Iris Data
+
+```{r echo=FALSE}
+data(iris)
+pairs(iris[,1:4],col=iris$Species)
+```
+
+
+## Another slide
+
+We can start with a simple learner, a [classification tree](https://en.wikipedia.org/wiki/Decision_tree_learning). This learner requires:
+
+- A known class for each observation
+- A set of "features" that will serve a potential predictors
+
+1. Start with whole dataset.
+2. Choose features one-at-a-time and look for a value of each variable that ends up with the most homogeneous two groups after splitting on that variable/value.
+3. For each resulting group, repeat step 2 until all remaining groups have only one class in them.
+4. Optionally, "prune" the tree to keep only splits that are "statistically significant".
+
+## Learning the model
+
+The `party` package includes a function, `ctree` to "learn" a tree from data.
+
+```{r eval=FALSE}
+library(party)
+x = ctree(Species ~ .,data=iris)
+plot(x)
+```
+
+## Learning the model
+
+```{r echo=FALSE}
+library(party)
+x = ctree(Species ~ .,data=iris)
+plot(x)
+```
+
+
+
+## Checking the model
+
+```{r}
+library(caret)
+library(e1071)
+prediction = predict(x,iris)
+table(prediction)
+confusionMatrix(iris$Species,prediction)
+```
+
+## Data splitting, take 2
+
+What is the problem with what we just did to determine our prediction accuracy?  
+To deal with this problem, we can split the dataset into a "training" set and then check
+our prediction on the other piece of the data, the "test" set.
+
+```{r}
+set.seed(42)
+trainIdx = sample(c(TRUE,FALSE),size=nrow(iris),prob=c(0.2,0.8),replace=TRUE)
+irisTrain = iris[trainIdx,]
+irisTest  = iris[!trainIdx,]
+nrow(irisTrain)
+nrow(irisTest)
+```
+
+## "train" our tree on the "training" set.
+
+```{r eval=TRUE}
+trainTree = ctree(Species ~ ., data = irisTrain)
+plot(trainTree)
+```
+
+## "train" our tree on the "training" set.
+
+```{r echo=FALSE}
+trainTree = ctree(Species ~ ., data = irisTrain)
+plot(trainTree)
+```
+
+## Test our predictions on the "training" data
+
+And how does our `trainTree` do at predicting the original classes in the "training" data?
+
+```{r eval=FALSE}
+trainPred = predict(trainTree,irisTrain)
+confusionMatrix(irisTrain$Species,trainPred)
+```
+
+##  Test our predictions on the "training" data
+
+```{r echo=FALSE}
+trainPred = predict(trainTree,irisTrain)
+confusionMatrix(irisTrain$Species,trainPred)
+```
+
+## Test our predictions on the "testing" data
+
+How is our prediction performance now on the "test" data?
+
+```{r eval=FALSE}
+testPred = predict(trainTree,irisTest)
+confusionMatrix(irisTest$Species,testPred)
+```
+
+## Test our predictions on the "testing" data
+
+```{r echo=FALSE}
+testPred = predict(trainTree,irisTest)
+confusionMatrix(irisTest$Species,testPred)
+```
+
+# Example 3
+k-nearest neighbor and cross-validation
+
+## k-nearest-neighbor
+
+Now, let's make this harder. We will now look at a dataset that is designed to "foil" classifiers. 
+
+```{r eval=FALSE}
+library(mlbench)
+set.seed(1)
+spiral = mlbench.spirals(1000,sd=0.1)
+spiral = data.frame(x=spiral$x[,1],y=spiral$x[,2],class=factor(spiral$classes))
+library(ggplot2)
+ggplot(spiral,aes(x,y,color=class)) + geom_point()
+```
+
+## k-nearest-neighbor
+
+```{r echo=FALSE}
+library(mlbench)
+set.seed(1)
+spiral = mlbench.spirals(1000,sd=0.1)
+spiral = data.frame(x=spiral$x[,1],y=spiral$x[,2],class=factor(spiral$classes))
+library(ggplot2)
+ggplot(spiral,aes(x,y,color=class)) + geom_point()
+```
+
+## Without splitting data
+
+```{r}
+library(caret)
+fit = knn3(class ~ ., data=spiral)
+confusionMatrix(predict(fit,spiral,type='class'),spiral$class)
+```
+
+## Cross-validation
+
+setup
+
+```{r}
+library(caret)
+indxTrain <- createDataPartition(y = spiral$class,p = 0.75,list = FALSE)
+training <- spiral[indxTrain,]
+testing <- spiral[-indxTrain,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+knnFit <- train(class ~ ., data = training, method = "knn", trControl = ctrl, tuneLength = 10)
+```
+
+## Cross-validation {.smaller}
+
+```{r echo=FALSE}
+knnFit
+```
+
+# Exercise 4
+Ensembles of learners
+
+## What is an ensemble of learners?
+
+In some cases, a machine learning algorithm can have limited predictive power, but using multiple "instances" of such *weak learners* in combination can produce a good result.
+
+It is probably obvious that a classification tree approach might be problematic for a dataset like the `spiral` dataset. In this example, we are going to use "boosting" to combine many trees, each with minimal prediction capabilities, into an "ensemble" learner with reasonable good prediction capabilities.
+
+## Using trees to predict on the `spiral` dataset
+
+```{r}
+library(formatR)
+library(party)
+trainIdx = sample(c(TRUE,FALSE),nrow(spiral),replace=TRUE,prob=c(0.5,0.5))
+spiralTrain = spiral[trainIdx,]
+trainTree   = ctree(class ~ .,spiralTrain)
+```
+
+## Using trees to predict on the `spiral` dataset
+
+
+```{r echo=FALSE}
+plot(trainTree)
+```
+
+## Using trees to predict on the `spiral` dataset {.smaller}
+
+Training Data
+
+```{r}
+prediction = predict(trainTree,spiralTrain)
+confusionMatrix(spiralTrain$class,prediction)
+```
+
+## Using trees to predict on the `spiral` dataset {.smaller}
+
+Testing data
+
+```{r}
+spiralTest = spiral[!trainIdx,]
+prediction = predict(trainTree,spiralTest)
+confusionMatrix(spiralTest$class,prediction)
+```
+
+## Using trees to predict on the `spiral` dataset 
+
+Many trees have similar prediction capability, but each is really bad.  This is a 
+characteristic of a "weak learner".  Here, we see that in action by performing a bootstrap
+sampling (resample with replacement), train, plot, and check prediction accuracy.
+
+## Using trees to predict on the `spiral` dataset
+
+Must be run "locally" to see effect.
+
+```{r}
+plotBootSample = function(spiral) {
+  trainIdx = sample(1:nrow(spiral),replace=TRUE)
+  spiralTrain = spiral[trainIdx,]
+  trainTree   = ctree(class ~ .,spiralTrain)
+  plot(trainTree)
+  spiralTest = spiral[-trainIdx,]
+  prediction = predict(trainTree,spiralTest)
+  print(confusionMatrix(spiralTest$class,prediction)$overall['Accuracy'])
+}
+```
+
+```{r eval=FALSE}
+# press 'ESC' or 'ctrl-c' to stop
+while(TRUE) {
+  par(ask=TRUE)
+  plotBootSample(spiral)
+}
+```
+
+## Boosting
+
+We can "combine" a bunch of "weak learners", giving more "weight" to hard-to-classify observations as we build each new classifier.  In this case, we will be using the same classification tree approach again.
+
+```{r}
+library(adabag)
+trainIdx      = sample(c(TRUE,FALSE),nrow(spiral),replace=TRUE,prob=c(0.5,0.5))
+spiralTrain   = spiral[trainIdx,]
+boostTree     = boosting(class ~ x + y,data = spiralTrain,control = rpart.control(maxdepth=2))
+prediction    = predict(boostTree,spiralTrain)
+```
+
+## Boosting results {.smaller}
+
+```{r echo=FALSE}
+confusionMatrix(spiralTrain$class,prediction$class)
+```
+
+## A few trees from our ensemble
+
+```{r echo=FALSE}
+library(rpart.plot)
+par(mfrow=c(2,3),ask=FALSE)
+for(i in 1:6) {
+  rpart.plot(boostTree$trees[[i]])
+}
+```
+
+## Boosted trees on test data
+
+```{r eval=FALSE}
+spiralTest = spiral[!trainIdx,]
+prediction = predict(boostTree,spiralTest)
+confusionMatrix(spiralTest$class,prediction$class)
+```
+
+## Boosted trees on test data
+
+```{r echo=FALSE}
+spiralTest = spiral[!trainIdx,]
+prediction = predict(boostTree,spiralTest)
+confusionMatrix(spiralTest$class,prediction$class)
+```
+
+
+# Exercise 5
+Random forests--ensembles to the max
+
+## Random Forests
+
+```{r}
+library(randomForest)
+res = randomForest(Species ~ .,data=iris)
+res
+```
+
+# sessionInfo
+
+## sessionInfo
+
+```{r echo=FALSE}
+sessionInfo()
+```
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+    

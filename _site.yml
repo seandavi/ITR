@@ -42,6 +42,10 @@ output:
       after_body: google_analytics.html
     lib_dir: site_libs
     self_contained: no
-exclude: F_epigenomic_ranges.Rmd
+exclude: 
+  - F_epigenomic_ranges.Rmd
+  - "*sqlite"
+  - "*gtf.gz"
+include: "*.Rmd"
 output_dir: _site
 

@@ -6,7 +6,7 @@ author:
   email: seandavi@gmail.com
 package: GenomicDataIntegration
 output: 
-  BiocStyle::html_document
+  html_document
 vignette: >
   %\VignetteIndexEntry{Genomic Ranges and Signals}
   %\VignetteEngine{knitr::rmarkdown}
