@@ -27,8 +27,8 @@ require(glmnet)
 # Load the preprocessed data
 
 ```{r}
-fullFeatureSet <- read.table("https://seandavi.github.io/ITR/expression-prediction/features.txt");
-target <- scan("https://seandavi.github.io/ITR/expression-prediction/target.txt")
+fullFeatureSet <- read.table("http://seandavi.github.io/ITR/expression-prediction/features.txt");
+target <- scan(url("http://seandavi.github.io/ITR/expression-prediction/target.txt"))
 ```
 
 You can see the full list of features in fullFeatureSet using:

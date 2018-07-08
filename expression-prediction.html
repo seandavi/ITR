@@ -372,8 +372,8 @@ require(glmnet)</code></pre>
 </div>
 <div id="load-the-preprocessed-data" class="section level1">
 <h1>Load the preprocessed data</h1>
-<pre class="r"><code>fullFeatureSet &lt;- read.table(&quot;expression-prediction/features.txt&quot;);
-target &lt;- scan(&quot;expression-prediction/target.txt&quot;)</code></pre>
+<pre class="r"><code>fullFeatureSet &lt;- read.table(&quot;http://seandavi.github.io/ITR/expression-prediction/features.txt&quot;);
+target &lt;- scan(url(&quot;http://seandavi.github.io/ITR/expression-prediction/target.txt&quot;))</code></pre>
 <p>You can see the full list of features in fullFeatureSet using:</p>
 <pre class="r"><code>colnames(fullFeatureSet)</code></pre>
 <pre><code>##  [1] &quot;Control&quot;  &quot;Dnase&quot;    &quot;H2az&quot;     &quot;H3k27ac&quot;  &quot;H3k27me3&quot; &quot;H3k36me3&quot;
