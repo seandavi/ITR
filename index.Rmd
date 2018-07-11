@@ -36,6 +36,7 @@ Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https
 - [TxDb](transcriptdb.html) [[Rmd](transcriptdb.Rmd)]
 - [Ranges Exercises](ranges_exercises.html) [[Rmd](ranges_exercises.Rmd)]
 - [Kmeans example](kmeans_example.html) [[Rmd](kmeans_example.Rmd)]
-- [Dimensionality Reduction](dimension-reduction.html) [[Rmd](dimension-reduction.html)]
-
+- [Dimensionality Reduction](dimension-reduction.html) [[Rmd](dimension-reduction.Rmd)]
+- [Gene Expression Prediction](expression-prediction.html) [[Rmd](expression-prediction.Rmd)] [[Slides](expression-prediction/Expression_prediction_slides.pptx)]
+- [Gene Expression and DNAse setup](ExpressionData.html) [[Rmd](ExpressionData.Rmd)]
 

@@ -206,7 +206,7 @@ model parameters
 Using 50% of the data for training and 50% for testing is a place to start.
 
 ```{r}
-set.seed(1)
+set.seed(10)
 trainIdx = sample(1:nrow(mtcars),16)
 trainDat = mtcars[trainIdx,]
 testDat  = mtcars[-trainIdx,]
@@ -501,7 +501,7 @@ while(TRUE) {
 
 We can "combine" a bunch of "weak learners", giving more "weight" to hard-to-classify observations as we build each new classifier.  In this case, we will be using the same classification tree approach again.
 
-```{r}
+```{r adabag}
 library(adabag)
 trainIdx      = sample(c(TRUE,FALSE),nrow(spiral),replace=TRUE,prob=c(0.5,0.5))
 spiralTrain   = spiral[trainIdx,]
@@ -511,13 +511,14 @@ prediction    = predict(boostTree,spiralTrain)
 
 ## Boosting results {.smaller}
 
-```{r echo=FALSE}
-confusionMatrix(spiralTrain$class,prediction$class)
+```{r eval=FALSE,echo=FALSE}
+confusionMatrix(spiralTrain$class,
+                prediction)
 ```
 
 ## A few trees from our ensemble
 
-```{r echo=FALSE}
+```{r treeplot,echo=FALSE}
 library(rpart.plot)
 par(mfrow=c(2,3),ask=FALSE)
 for(i in 1:6) {
@@ -530,7 +531,7 @@ for(i in 1:6) {
 ```{r eval=FALSE}
 spiralTest = spiral[!trainIdx,]
 prediction = predict(boostTree,spiralTest)
-confusionMatrix(spiralTest$class,prediction$class)
+confusionMatrix(spiralTest$class,as.factor(prediction$class))
 ```
 
 ## Boosted trees on test data
@@ -538,7 +539,7 @@ confusionMatrix(spiralTest$class,prediction$class)
 ```{r echo=FALSE}
 spiralTest = spiral[!trainIdx,]
 prediction = predict(boostTree,spiralTest)
-confusionMatrix(spiralTest$class,prediction$class)
+confusionMatrix(spiralTest$class,as.factor(prediction$class))
 ```
 
 

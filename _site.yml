@@ -19,6 +19,8 @@ navbar:
       href: motivation_for_R_slides.html
     - text: Introduction to Bioconductor
       href: http://bit.ly/bioc_cshl_2018
+    - text: Machine Learning hands-on
+      href: MachineLearningSlides.html
   - icon: fa-question fa-lg
     text: Misc.
     menu:
