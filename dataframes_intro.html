@@ -460,6 +460,25 @@ div.tocify {
 
 
 <p>While R has many different data types, the one that is central to much of the power and popularity of R is the <code>data.frame</code>. A data.frame looks a bit like an R matrix in that it has two dimensions, rows and columns. However, data.frames are usually viewed as a set of columns representing variables and the rows representing the values of those variables. Importantly, a data.frame may contain <em>different</em> data types in each of its columns; matrices <strong>must</strong> contain only one data type. This distinction is important to remember, as there are <em>specific</em> approaches to working with R data.frames that may be different than those for working with matrices.</p>
+<div id="learning-goals" class="section level2">
+<h2>Learning goals</h2>
+<ul>
+<li>Understand how data.frames are different from matrices.</li>
+<li>Know a few functions for examing the contents of a data.frame.</li>
+<li>List approaches for subsetting data.frames.</li>
+<li>Be able to load and save tabular data from and to disk.</li>
+<li>Show how to create a data.frames from scratch.</li>
+</ul>
+</div>
+<div id="learning-objectives" class="section level2">
+<h2>Learning objectives</h2>
+<ul>
+<li>Load the yeast growth dataset into R using <code>read.csv</code>.</li>
+<li>Examine the contents of the dataset.</li>
+<li>Use subsetting to find genes that may be involved with nutrient metabolism and transport.</li>
+<li>Summarize data measurements by categories.</li>
+</ul>
+</div>
 <div id="dataset" class="section level2">
 <h2>Dataset</h2>
 <p>The data used here are borrowed directly from the <a href="http://bioconnector.org/index.html">fantastic Bioconnector tutorials</a> and are a cleaned up version of the data from <a href="http://www.ncbi.nlm.nih.gov/pubmed/17959824">Brauer et al. Coordination of Growth Rate, Cell Cycle, Stress Response, and Metabolic Activity in Yeast (2008) Mol Biol Cell 19:352-367</a>. These data are from a gene expression microarray, and in this paper the authors examine the relationship between growth rate and gene expression in yeast cultures limited by one of six different nutrients (glucose, leucine, ammonium, sulfate, phosphate, uracil). If you give yeast a rich media loaded with nutrients except restrict the supply of a single nutrient, you can control the growth rate to any rate you choose. By starving yeast of specific nutrients you can find genes that:</p>
@@ -469,7 +488,7 @@ div.tocify {
 </ol>
 <p>The dataset can be downloaded directly from:</p>
 <ul>
-<li><a href="http://bioconnector.org/data/brauer2007_tidy.csv" class="uri">http://bioconnector.org/data/brauer2007_tidy.csv</a></li>
+<li><a href="https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv">brauer2007_tidy.csv</a></li>
 </ul>
 <p>We are going to read this dataset into R and then use it as a playground for learning about data.frames.</p>
 </div>
@@ -617,8 +636,22 @@ length(ydat$symbol)</code></pre>
 <pre class="r"><code>head(ydat[[&quot;systematic_name&quot;]])</code></pre>
 <pre><code>## [1] YNL049C YNL095C YDL104C YLR115W YMR183C YML017W
 ## 5536 Levels: Q0017 Q0045 Q0050 Q0055 Q0060 Q0065 Q0070 Q0075 Q0080 ... YPR204W</code></pre>
+<div id="some-data-exploration" class="section level3">
+<h3>Some data exploration</h3>
+<p>There are a couple of columns that include numeric values. Which columns are numeric?</p>
+<pre class="r"><code>class(ydat$symbol)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(ydat$rate)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(ydat$expression)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<p>Make histograms of: - the expression values - the rate values</p>
+<p>What does the <code>table()</code> function do? Could you use that to look a the <code>rate</code> column given that that column appears to have repeated values?</p>
+<p>What <code>rate</code> corresponds to the most nutrient-starved condition?</p>
+</div>
 <div id="more-advanced-indexing-and-subsetting" class="section level3">
 <h3>More advanced indexing and subsetting</h3>
+<p>We can use, for example, logical values (TRUE/FALSE) to subset data.frames.</p>
 <pre class="r"><code>head(ydat[ydat$symbol == &#39;LEU1&#39;, ])</code></pre>
 <pre><code>##      symbol systematic_name nutrient rate expression   bp   mf
 ## NA     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
@@ -627,6 +660,14 @@ length(ydat$symbol)</code></pre>
 ## NA.3   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
 ## NA.4   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
 ## NA.5   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;</code></pre>
+<pre class="r"><code>tail(ydat[ydat$symbol == &#39;LEU1&#39;, ])</code></pre>
+<pre><code>##          symbol systematic_name nutrient rate expression   bp   mf
+## NA.47244   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
+## NA.47245   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
+## NA.47246   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
+## NA.47247   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
+## NA.47248   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
+## NA.47249   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;</code></pre>
 <p>What is the problem with this approach? It appears that there are a bunch of <code>NA</code> values. Taking a quick look at the <code>symbol</code> column, we see what the problem.</p>
 <pre class="r"><code>summary(ydat$symbol)</code></pre>
 <pre><code>##      AAC1     AAD10     AAD14     AAD16      AAD4      AAD6      AAH1 
@@ -753,6 +794,7 @@ length(ydat$symbol)</code></pre>
 </div>
 <div id="aggregating-data" class="section level2">
 <h2>Aggregating data</h2>
+<p>Aggregating data, or summarizing by category, is a common way to look for trends or differences in measurements between categories. Use <code>aggregate</code> to find the mean expression by gene symbol.</p>
 <pre class="r"><code>head(aggregate(ydat$expression, by=list( ydat$symbol), mean))</code></pre>
 <pre><code>##   Group.1           x
 ## 1    AAC1  0.52888889
@@ -790,7 +832,7 @@ head(smoker_risk)</code></pre>
 ## 6 smoker 4.571653</code></pre>
 <p>R also has plotting shortcuts that work with data.frames to simplify plotting</p>
 <pre class="r"><code>plot( risk ~ smoker, data=smoker_risk)</code></pre>
-<p><img src="dataframes_intro_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="dataframes_intro_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="saving-a-data.frame" class="section level2">
 <h2>Saving a data.frame</h2>

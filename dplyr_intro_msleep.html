@@ -460,6 +460,24 @@ div.tocify {
 
 
 <p>The dataset we will be using to introduce the <em>dplyr</em> package is an updated and expanded version of the mammals sleep dataset. Updated sleep times and weights were taken from V. M. Savage and G. B. West. A quantitative, theoretical framework for understanding mammalian sleep<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<div id="learning-goals" class="section level2">
+<h2>Learning goals</h2>
+<ul>
+<li>Know that <code>dplyr</code> is just a different approach to manipulating data in data.frames.</li>
+<li>List the commonly used <code>dplyr</code> verbs and how they can be used to manipulate data.frames.</li>
+<li>Show how to aggregate and summarized data using <code>dplyr</code></li>
+<li>Know what the piping operator, <code>%&gt;%</code>, is and how it can be used.</li>
+</ul>
+</div>
+<div id="learning-objectives" class="section level2">
+<h2>Learning objectives</h2>
+<ul>
+<li>Select subsets of the mammal sleep dataset.</li>
+<li>Reorder the dataset.</li>
+<li>Add columns to the dataset based on existing columns.</li>
+<li>Summarize the amount of sleep by categorical variables using <code>group_by</code> and <code>summarize</code>.</li>
+</ul>
+</div>
 <div id="what-is-dplyr" class="section level2">
 <h2>What is dplyr?</h2>
 <p>The <em>dplyr</em> package is a specialized package for working with <code>data.frames</code> (and the related <code>tibble</code>) to transform and summarize tabular data with rows and columns. For another explanation of dplyr see the dplyr package vignette: <a href="http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">Introduction to dplyr</a></p>
@@ -812,6 +830,7 @@ head(sleepData)</code></pre>
 ## 6 Thre… Brad… herbi Pilo… &lt;NA&gt;                14.4       2.2       0.767
 ## # … with 5 more variables: awake &lt;dbl&gt;, brainwt &lt;dbl&gt;, bodywt &lt;dbl&gt;,
 ## #   rem_proportion &lt;dbl&gt;, bodywt_grams &lt;dbl&gt;</code></pre>
+<p>Is there a relationship between <code>rem_proportion</code> and <code>bodywt</code>? How about <code>sleep_total</code>?</p>
 <div id="create-summaries-summarise" class="section level3">
 <h3>Create summaries: <code>summarise()</code></h3>
 <p>The <code>summarise()</code> function will create summary statistics for a given column in the data frame such as finding the mean. For example, to compute the average number of hours of sleep, apply the <code>mean()</code> function to the column sleep_total and call the summary value avg_sleep.</p>

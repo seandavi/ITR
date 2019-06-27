@@ -3,7 +3,23 @@ title: 'Introduction to dplyr: mammal sleep dataset'
 output: html_document
 ---
 
+
 The dataset we will be using to introduce the *dplyr* package is an updated and expanded version of the mammals sleep dataset. Updated sleep times and weights were taken from V. M. Savage and G. B. West. A quantitative, theoretical framework for understanding mammalian sleep[^msleep]. 
+
+
+## Learning goals
+
+* Know that `dplyr` is just a different approach to manipulating data in data.frames.
+* List the commonly used `dplyr` verbs and how they can be used to manipulate data.frames.
+* Show how to aggregate and summarized data using `dplyr`
+* Know what the piping operator, `%>%`, is and how it can be used.
+
+## Learning objectives
+
+* Select subsets of the mammal sleep dataset.
+* Reorder the dataset.
+* Add columns to the dataset based on existing columns.
+* Summarize the amount of sleep by categorical variables using `group_by` and `summarize`.
 
 ## What is dplyr?
 
@@ -230,6 +246,8 @@ msleep %>%
     head()
 ```
 
+Is there a relationship between `rem_proportion` and `bodywt`? How about `sleep_total`?
+
 ### Create summaries: `summarise()`
 
 The `summarise()` function will create summary statistics for a given column in the data frame such as finding the mean. For example, to compute the average number of hours of sleep, apply the `mean()` function to the column sleep\_total and call the summary value avg\_sleep. 
@@ -252,9 +270,15 @@ msleep %>%
     
 ## Grouping data: `group_by()`
 
-The `group_by()` verb is an important function in dplyr. As we mentioned before it's related to concept of "split-apply-combine". We literally want to split the data frame by some variable (e.g. taxonomic order), apply a function to the individual data frames and then combine the output.   
+The `group_by()` verb is an important function in dplyr. As we
+mentioned before it's related to concept of "split-apply-combine". We
+literally want to split the data frame by some variable
+(e.g. taxonomic order), apply a function to the individual data frames
+and then combine the output.
 
-Let's do that: split the msleep data frame by the taxonomic order, then ask for the same summary statistics as above. We expect a set of summary statistics for each taxonomic order. 
+Let's do that: split the msleep data frame by the taxonomic order,
+then ask for the same summary statistics as above. We expect a set of
+summary statistics for each taxonomic order.
 
 ```{r}
 msleep %>% 

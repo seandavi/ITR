@@ -12,31 +12,72 @@ of its columns; matrices **must** contain only one data type. This distinction i
 important to remember, as there are *specific* approaches to working with R data.frames
 that may be different than those for working with matrices.
 
+
+## Learning goals
+
+* Understand how data.frames are different from matrices.
+* Know a few functions for examing the contents of a data.frame.
+* List approaches for subsetting data.frames.
+* Be able to load and save tabular data from and to disk.
+* Show how to create a data.frames from scratch.
+
+## Learning objectives
+
+* Load the yeast growth dataset into R using `read.csv`.
+* Examine the contents of the dataset.
+* Use subsetting to find genes that may be involved with nutrient metabolism and transport.
+* Summarize data measurements by categories.
+
 ## Dataset
 
-The data used here are borrowed directly from the [fantastic Bioconnector tutorials](http://bioconnector.org/index.html) and are a cleaned up
-version of the data from [Brauer et al. Coordination of Growth Rate, Cell Cycle, Stress Response, and Metabolic Activity in Yeast (2008) Mol Biol Cell 19:352-367](http://www.ncbi.nlm.nih.gov/pubmed/17959824). These data are from a gene expression microarray, and in this paper the authors examine the relationship between growth rate and gene expression in yeast cultures limited by one of six different nutrients (glucose, leucine, ammonium, sulfate, phosphate, uracil). If you give yeast a rich media loaded with nutrients except restrict the supply of a single nutrient, you can control the growth rate to any rate you choose. By starving yeast of specific nutrients you can find genes that:
+The data used here are borrowed directly from the [fantastic
+Bioconnector tutorials](http://bioconnector.org/index.html) and are a
+cleaned up version of the data from [Brauer et al. Coordination of
+Growth Rate, Cell Cycle, Stress Response, and Metabolic Activity in
+Yeast (2008) Mol Biol Cell
+19:352-367](http://www.ncbi.nlm.nih.gov/pubmed/17959824). These data
+are from a gene expression microarray, and in this paper the authors
+examine the relationship between growth rate and gene expression in
+yeast cultures limited by one of six different nutrients (glucose,
+leucine, ammonium, sulfate, phosphate, uracil). If you give yeast a
+rich media loaded with nutrients except restrict the supply of a
+single nutrient, you can control the growth rate to any rate you
+choose. By starving yeast of specific nutrients you can find genes
+that:
 
-1. Raise or lower their expression in response to growth rate. Growth-rate dependent expression patterns can tell us a lot about cell cycle control, and how the cell responds to stress. The authors found that expression of >25% of all yeast genes is linearly correlated with growth rate, independent of the limiting nutrient. They also found that the subset of negatively growth-correlated genes is enriched for peroxisomal functions, and positively correlated genes mainly encode ribosomal functions.
-2. Respond differently when different nutrients are being limited. If you see particular genes that respond very differently when a nutrient is sharply restricted, these genes might be involved in the transport or metabolism of that specific nutrient.
+1. Raise or lower their expression in response to growth
+   rate. Growth-rate dependent expression patterns can tell us a lot
+   about cell cycle control, and how the cell responds to stress. The
+   authors found that expression of >25% of all yeast genes is
+   linearly correlated with growth rate, independent of the limiting
+   nutrient. They also found that the subset of negatively
+   growth-correlated genes is enriched for peroxisomal functions, and
+   positively correlated genes mainly encode ribosomal functions.
+2. Respond differently when different nutrients are being limited. If
+   you see particular genes that respond very differently when a
+   nutrient is sharply restricted, these genes might be involved in
+   the transport or metabolism of that specific nutrient.
 
 The dataset can be downloaded directly from:
 
-- [http://bioconnector.org/data/brauer2007_tidy.csv](http://bioconnector.org/data/brauer2007_tidy.csv)
+- [brauer2007_tidy.csv](https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv)
 
 We are going to read this dataset into R and then use it as a playground for learning about data.frames.
 
 ## Reading in data
 
-R has many capabilities for reading in data. Many of the functions have names that help us 
-to understand what data format is to be expected. In this case, the filename that we want to
-read ends in `.csv`, meaning comma-separated-values. The `read.csv()` function reads in `.csv` files.
-As usual, it is worth reading `help('read.csv')` to get a better sense of the possible
-bells-and-whistles. 
+R has many capabilities for reading in data. Many of the functions
+have names that help us to understand what data format is to be
+expected. In this case, the filename that we want to read ends in
+`.csv`, meaning comma-separated-values. The `read.csv()` function
+reads in `.csv` files.  As usual, it is worth reading
+`help('read.csv')` to get a better sense of the possible
+bells-and-whistles.
 
-The `read.csv()` function can read directly from a URL, so we do not need to download the file directly. 
-This dataset is relatively large (about 16MB), so this may take a bit depending on your network connection 
-speed.
+The `read.csv()` function can read directly from a URL, so we do not
+need to download the file directly.  This dataset is relatively large
+(about 16MB), so this may take a bit depending on your network
+connection speed.
 
 ```{r cache=TRUE}
 ydat <- read.csv('https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv')
@@ -127,10 +168,32 @@ Alternatively, we can use the column name:
 head(ydat[["systematic_name"]])
 ```
 
+### Some data exploration
+
+There are a couple of columns that include numeric values. Which columns are numeric?
+
+```{r}
+class(ydat$symbol)
+class(ydat$rate)
+class(ydat$expression)
+```
+
+Make histograms of:
+- the expression values
+- the rate values
+
+What does the `table()` function do? Could you use that to look a the
+`rate` column given that that column appears to have repeated values?
+
+What `rate` corresponds to the most nutrient-starved condition?
+
 ### More advanced indexing and subsetting
+
+We can use, for example, logical values (TRUE/FALSE) to subset data.frames.
 
 ```{r}
 head(ydat[ydat$symbol == 'LEU1', ])
+tail(ydat[ydat$symbol == 'LEU1', ])
 ```
 
 What is the problem with this approach? It appears that there are a bunch of `NA` values. Taking a quick look at the 
@@ -161,6 +224,10 @@ subset(ydat, nutrient == 'Leucine' & rate == 0.05 & expression > 3)
 ```
 
 ## Aggregating data
+
+Aggregating data, or summarizing by category, is a common way to look
+for trends or differences in measurements between categories. Use `aggregate`
+to find the mean expression by gene symbol.
 
 ```{r}
 head(aggregate(ydat$expression, by=list( ydat$symbol), mean))
