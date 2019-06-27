@@ -76,7 +76,7 @@ lassoFit <- train(features, target, method="glmnet",
 lassoModel <- lassoFit$finalModel
 ```
 
-What metric is being used Hint: print `names(lassoFit)` and get the metric used.
+What metric is being used? Hint: print `names(lassoFit)` and get the metric used.
 
 Printing the `lassoFit` variable gives the overall performance.
 
