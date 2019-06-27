@@ -39,7 +39,7 @@ This dataset is relatively large (about 16MB), so this may take a bit depending 
 speed.
 
 ```{r cache=TRUE}
-ydat <- read.csv('http://bioconnector.org/data/brauer2007_tidy.csv')
+ydat <- read.csv('https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv')
 ```
 
 Our variable, `ydat`, now "contains" the downloaded and read data. We can check to see what data type 
