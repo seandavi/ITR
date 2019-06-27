@@ -5,11 +5,7 @@ author:
   affiliation: Center for Cancer Research, National Cancer Institute, NIH
   email: seandavi@gmail.com
 output: 
-  BiocStyle::html_document
-vignette: >
-  %\VignetteIndexEntry{Prepare Gene Expression Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  html_document
 ---
 
 ```{r init, include=FALSE}

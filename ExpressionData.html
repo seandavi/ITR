@@ -10,7 +10,6 @@
 
 
 
-<meta name="date" content="2019-06-27" />
 
 <title>Prepare Gene Expression Data</title>
 
@@ -20,8 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
@@ -29,7 +31,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-
+  pre:not([class]) {
+    background-color: white;
+  }
 </style>
 <script type="text/javascript">
 if (window.hljs) {
@@ -70,17 +74,20 @@ h6 {
 }
 </style>
 
-<link rel="stylesheet" href="/Library/Frameworks/R.framework/Versions/3.6/Resources/library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
 
 
 
 <style type = "text/css">
 .main-container {
-  max-width: 828px;
+  max-width: 940px;
   margin-left: auto;
   margin-right: auto;
 }
-
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
 img {
   max-width:100%;
   height: auto;
@@ -260,6 +267,96 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
 
 </head>
 
@@ -267,6 +364,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -314,7 +421,7 @@ $(document).ready(function () {
       <a href="http://bit.ly/bioc_cshl_2019">Introduction to Bioconductor</a>
     </li>
     <li>
-      <a href="MachineLearningSlides.html">Machine Learning hands-on</a>
+      <a href="MachineLearning.html">Machine Learning hands-on</a>
     </li>
   </ul>
 </li>
@@ -348,27 +455,13 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Prepare Gene Expression Data</h1>
-<p class="author-name">Sean Davis<span class="affil-mark">1*</span></p>
-<p class="author-affiliation"><span class="affil-mark">1</span>Center for Cancer Research, National Cancer Institute, NIH</p>
-<p class="author-email"><span class="affil-mark">*</span><a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></p>
-<h4 class="date">27 June 2019</h4>
+<h4 class="author">Sean Davis</h4>
+<address class="author_afil">
+Center for Cancer Research, National Cancer Institute, NIH<br><a class="author_email" href="mailto:#"><a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></a>
+</address>
 
 </div>
 
-<h1>Contents</h1>
-<div id="TOC">
-<ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a><ul>
-<li><a href="#k-562"><span class="toc-section-number">1.1</span> K-562</a></li>
-</ul></li>
-<li><a href="#gene-expression-data"><span class="toc-section-number">2</span> Gene Expression Data</a><ul>
-<li><a href="#annotation-data"><span class="toc-section-number">2.1</span> Annotation data</a></li>
-<li><a href="#building-a-summarizedexperiment"><span class="toc-section-number">2.2</span> Building a SummarizedExperiment</a></li>
-</ul></li>
-<li><a href="#tximport"><span class="toc-section-number">3</span> tximport</a></li>
-<li><a href="#dnase-data"><span class="toc-section-number">4</span> DNAse data</a></li>
-</ul>
-</div>
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -384,22 +477,20 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
+<h1>Introduction</h1>
 <div id="k-562" class="section level2">
-<h2><span class="header-section-number">1.1</span> K-562</h2>
+<h2>K-562</h2>
 <p>From Wikipedia:</p>
 <blockquote>
 <p>K562 cells were the first human immortalised myelogenous leukemia cell line to be established. K562 cells are of the erythroleukemia type, and the cell line is derived from a 53-year-old female chronic myelogenous leukemia patient in blast crisis. The cells are non-adherent and rounded, are positive for the bcr:abl fusion gene, and bear some proteomic resemblance to both undifferentiated granulocytes and erythrocytes. In culture they exhibit much less clumping than many other suspension lines, presumably due to the downregulation of surface adhesion molecules by bcr:abl. However, another study suggests that bcr:abl over-expression may actually increase cell adherence to cell culture plastic. K562 cells can spontaneously develop characteristics similar to early-stage erythrocytes, granulocytes and monocytes and are easily killed by natural killer cells[8] as they lack the MHC complex required to inhibit NK activity. They also lack any trace of Epstein-Barr virus and other herpesviruses. In addition to the Philadelphia chromosome they also exhibit a second reciprocal translocation between the long arm of chromosome 15 with chromosome 17.</p>
 </blockquote>
-<p><a href="https://web.expasy.org/cellosaurus/CVCL_0004">Cellosaurus</a> is a great resource for
-finding resources related to cell lines, including derivative lines with specific
-induced mutations.</p>
+<p><a href="https://web.expasy.org/cellosaurus/CVCL_0004">Cellosaurus</a> is a great resource for finding resources related to cell lines, including derivative lines with specific induced mutations.</p>
 </div>
 </div>
 <div id="gene-expression-data" class="section level1">
-<h1><span class="header-section-number">2</span> Gene Expression Data</h1>
+<h1>Gene Expression Data</h1>
 <div id="annotation-data" class="section level2">
-<h2><span class="header-section-number">2.1</span> Annotation data</h2>
+<h2>Annotation data</h2>
 <pre class="r"><code>download.file(&quot;https://www.encodeproject.org/files/gencode.v24.primary_assembly.annotation/@@download/gencode.v24.primary_assembly.annotation.gtf.gz&quot;, &quot;gencode.v24.primary_assembly.annotation.gtf.gz&quot;)</code></pre>
 <pre class="r"><code>library(GenomicFeatures)
 txdb = makeTxDbFromGFF(&#39;gencode.v24.primary_assembly.annotation.gtf.gz&#39;)</code></pre>
@@ -407,16 +498,15 @@ txdb = makeTxDbFromGFF(&#39;gencode.v24.primary_assembly.annotation.gtf.gz&#39;)
 ##   type stop_codon. This information was ignored.</code></pre>
 </div>
 <div id="building-a-summarizedexperiment" class="section level2">
-<h2><span class="header-section-number">2.2</span> Building a SummarizedExperiment</h2>
-<p>The ENCODE data portal contains links to both raw and processed data. We are going to be working
-with relatively standard polyA-selected RNA-seq values.</p>
+<h2>Building a SummarizedExperiment</h2>
+<p>The ENCODE data portal contains links to both raw and processed data. We are going to be working with relatively standard polyA-selected RNA-seq values.</p>
 <p><a href="https://www.encodeproject.org/documents/6354169f-86f6-4b59-8322-141005ea44eb/@@download/attachment/Long%20RNA-seq%20pipeline%20overview.pdf">Protocol</a></p>
 <pre class="r"><code>download.file(&quot;https://www.encodeproject.org/files/ENCFF172GIN/@@download/ENCFF172GIN.tsv&quot;, &quot;ENCFF172GIN.tsv&quot;)
 download.file(&quot;https://www.encodeproject.org/files/ENCFF768TKT/@@download/ENCFF768TKT.tsv&quot;, &quot;ENCFF768TKT.tsv&quot;)</code></pre>
 </div>
 </div>
 <div id="tximport" class="section level1">
-<h1><span class="header-section-number">3</span> tximport</h1>
+<h1>tximport</h1>
 <pre class="r"><code>library(tximport)
 fnames = c(&quot;ENCFF172GIN.tsv&quot;, &quot;ENCFF768TKT.tsv&quot;)
 txi = tximport(fnames, txIn = FALSE, txOut = FALSE, type = &#39;rsem&#39;)</code></pre>
@@ -425,8 +515,7 @@ colnames(txi$abundance) = c(&#39;rep1&#39;,&#39;rep2&#39;)
 colnames(txi$counts)    = c(&#39;rep1&#39;,&#39;rep2&#39;)
 coldata = DataFrame(cell=&#39;K562&#39;,rep=c(&quot;rep1&quot;, &quot;rep2&quot;),row.names = c(&#39;rep1&#39;, &#39;rep2&#39;))
 se = SummarizedExperiment(list(counts = txi$counts, abundance = txi$abundance), colData = coldata)</code></pre>
-<p>Now, we limit the gene quantifications to those in our <code>txdb</code> object. There are
-data for tRNAs and for ERCC control spikeins, but we will simply drop those here.</p>
+<p>Now, we limit the gene quantifications to those in our <code>txdb</code> object. There are data for tRNAs and for ERCC control spikeins, but we will simply drop those here.</p>
 <pre class="r"><code>library(GenomicFeatures)
 genes_gr = genes(txdb)
 common_genes = intersect(names(genes_gr), rownames(se))
@@ -434,7 +523,7 @@ se = se[common_genes,]
 rowRanges(se) = genes_gr[rownames(se)]</code></pre>
 </div>
 <div id="dnase-data" class="section level1">
-<h1><span class="header-section-number">4</span> DNAse data</h1>
+<h1>DNAse data</h1>
 <pre class="r"><code>library(AnnotationHub)
 ah = AnnotationHub()
 query(ah, c(&#39;E123&#39;,&#39;dnase&#39;,&#39;narrowpeak&#39;))</code></pre>
@@ -446,11 +535,11 @@ query(ah, c(&#39;E123&#39;,&#39;dnase&#39;,&#39;narrowpeak&#39;))</code></pre>
 ## # $rdataclass: GRanges
 ## # $rdatadateadded: 2015-05-06
 ## # $title: E123-DNase.macs2.narrowPeak.gz
-## # $description: Narrow DNasePeaks for consolidated epigenomes from Epigen...
+## # $description: Narrow DNasePeaks for consolidated epigenomes from Epig...
 ## # $taxonomyid: 9606
 ## # $genome: hg19
 ## # $sourcetype: BED
-## # $sourceurl: http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consoli...
+## # $sourceurl: http://egg2.wustl.edu/roadmap/data/byFileType/peaks/conso...
 ## # $sourcesize: 4976461
 ## # $tags: c(&quot;EpigenomeRoadMap&quot;, &quot;peaks&quot;, &quot;consolidated&quot;,
 ## #   &quot;narrowPeak&quot;, &quot;E123&quot;, &quot;ENCODE2012&quot;, &quot;BLD.K562.CNCR&quot;, &quot;K562
@@ -458,8 +547,7 @@ query(ah, c(&#39;E123&#39;,&#39;dnase&#39;,&#39;narrowpeak&#39;))</code></pre>
 ## # retrieve record with &#39;object[[&quot;AH30828&quot;]]&#39;</code></pre>
 <pre class="r"><code>k562_dnase = ah[[&#39;AH30828&#39;]]</code></pre>
 <p><a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format12">narrowPeak format</a></p>
-<p>Note that the k562_dnase includes a ranked list of peaks. The “top” peaks have the highest -log10(p-values)
-and generally very high signalValue. We can subset to get the</p>
+<p>Note that the k562_dnase includes a ranked list of peaks. The “top” peaks have the highest -log10(p-values) and generally very high signalValue. We can subset to get the</p>
 <pre class="r"><code>common_seqlevels = intersect(seqlevels(k562_dnase), seqlevels(se))
 keepSeqlevels(se, common_seqlevels, pruning.mode = &quot;coarse&quot;)</code></pre>
 <pre><code>## class: RangedSummarizedExperiment 
@@ -514,21 +602,37 @@ ne2 = distanceToNearest(se, k562_dnase[(regioncount-20000):regioncount])</code><
 ##   - in &#39;y&#39;: chr1_gl000191_random, chr1_gl000192_random, chr4_ctg9_hap1, chr4_gl000193_random, chr4_gl000194_random, chr6_apd_hap1, chr6_cox_hap2, chr6_dbb_hap3, chr6_mann_hap4, chr6_mcf_hap5, chr6_qbl_hap6, chr6_ssto_hap7, chr7_gl000195_random, chr8_gl000196_random, chr8_gl000197_random, chr9_gl000198_random, chr9_gl000199_random, chr9_gl000200_random, chr9_gl000201_random, chr11_gl000202_random, chr17_ctg5_hap1, chr17_gl000203_random, chr17_gl000204_random, chr17_gl000205_random, chr17_gl000206_random, chr18_gl000207_random, chr19_gl000208_random, chr19_gl000209_random, chr21_gl000210_random, chrUn_gl000211, chrUn_gl000212, chrUn_gl000213, chrUn_gl000214, chrUn_gl000215, chrUn_gl000216, chrUn_gl000217, chrUn_gl000218, chrUn_gl000219, chrUn_gl000220, chrUn_gl000221, chrUn_gl000222, chrUn_gl000223, chrUn_gl000224, chrUn_gl000225, chrUn_gl000226, chrUn_gl000227, chrUn_gl000228, chrUn_gl000229, chrUn_gl000230, chrUn_gl000231, chrUn_gl000232, chrUn_gl000233, chrUn_gl000234, chrUn_gl000235, chrUn_gl000236, chrUn_gl000237, chrUn_gl000238, chrUn_gl000239, chrUn_gl000240, chrUn_gl000241, chrUn_gl000242, chrUn_gl000243, chrUn_gl000244, chrUn_gl000245, chrUn_gl000246, chrUn_gl000247, chrUn_gl000248, chrUn_gl000249
 ##   Make sure to always combine/compare objects based on the same reference
 ##   genome (use suppressWarnings() to suppress this warning).</code></pre>
-<p>The <code>ne</code> and <code>ne2</code> contain the distances to the nearest gene, but for two
-distinct sets of peaks. Given that the <code>ne</code> variable is for “high confidence”
-peaks and that the <code>ne2</code> contains distances to the nearest gene for “low confidence”
-peaks, are there differences between the two sets of distances?</p>
+<p>The <code>ne</code> and <code>ne2</code> contain the distances to the nearest gene, but for two distinct sets of peaks. Given that the <code>ne</code> variable is for “high confidence” peaks and that the <code>ne2</code> contains distances to the nearest gene for “low confidence” peaks, are there differences between the two sets of distances?</p>
 <ul>
-<li><p>Define a good set of peaks and a “bad” set. Look at the location of these peaks with
-respect to “promoter” regions of the genes.</p></li>
-<li><p>What is the expression value of the genes that have a “good” peak in their promoter
-region versus those without?</p></li>
+<li><p>Define a good set of peaks and a “bad” set. Look at the location of these peaks with respect to “promoter” regions of the genes.</p></li>
+<li><p>What is the expression value of the genes that have a “good” peak in their promoter region versus those without?</p></li>
 <li><p>How about for the “bad” peak genes?</p></li>
 </ul>
 </div>
 
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
 
 
+</div>
+</div>
 
 </div>
 
@@ -545,19 +649,6 @@ $(document).ready(function () {
 
 </script>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    "HTML-CSS": {
-      styles: {
-        ".MathJax_Display": {
-           "text-align": "center",
-           padding: "0px 150px 0px 65px",
-           margin: "0px 0px 0.5em"
-        },
-      }
-    }
-  });
-</script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
