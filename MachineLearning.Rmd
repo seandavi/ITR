@@ -36,8 +36,7 @@ opts_chunk$set(tidy=TRUE,warning=FALSE,message=FALSE, cache=TRUE,
 ```
 
 ```{r eval=FALSE}
-library(BiocInstaller)
-biocLite(c('mlbench','adabag', 'e1071', 'randomForest', 'party', 'mboost', 'rpart.plot', 'formatR'))
+BiocManager::install(c('mlbench','adabag', 'e1071', 'randomForest', 'party', 'mboost', 'rpart.plot', 'formatR'))
 ```
 
 ```{r}

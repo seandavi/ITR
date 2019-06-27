@@ -63,7 +63,7 @@ here, we create a range of parameters to investigate.
 - alpha -  is the elasticnet mixing parameter: $$(1-α)/2||β||_2^2+α||β||_1$$
 - lambda - is the regularization parameter governing the relative importance of minimizing error vs keeping betas small
 
-```{r}
+```{r lassogrid}
 lassoGrid <- expand.grid(alpha=1, lambda=10^seq(-6, 0, 1))
 ```
 

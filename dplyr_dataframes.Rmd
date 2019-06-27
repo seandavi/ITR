@@ -43,7 +43,7 @@ library(readr)
 library(dplyr)
 
 # Read in data
-ydat <- read_csv("http://bioconnector.org/data/brauer2007_tidy.csv")
+ydat <- read.csv('https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv')
 
 # Display the data
 ydat
