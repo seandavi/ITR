@@ -27,8 +27,7 @@ data tracks at UCSC, etc.
 To get started, make sure that you have the `AnnotationHub` package installed:
 
 ```{r eval=FALSE}
-source('https://bioconductor.org/biocLite.R')
-biocLite('AnnotationHub')
+BiocManager::install('AnnotationHub')
 ```
 
 # AnnotationHub objects
