@@ -25,9 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -77,9 +76,7 @@ h6 {
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -104,6 +101,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -118,7 +118,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -138,6 +137,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -159,18 +195,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -248,8 +341,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -264,6 +355,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -361,12 +462,11 @@ div.tocify {
 <div id="install-bioconductor-packages" class="section level1">
 <h1>Install Bioconductor Packages</h1>
 <p>For full details on getting started with Bioconductor, see the <a href="https://bioconductor.org">Bioconductor Website</a>. This material is just a “quick start”.</p>
-<p>Use the <code>biocLite.R</code> script to install Bioconductor packages. To install core packages, type the following in an R command window:</p>
-<pre class="r"><code>## try http:// if https:// URLs are not supported
-source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite()</code></pre>
+<p>Use the <code>BiocManager</code> package to install Bioconductor packages. To install core packages, type the following in an R command window:</p>
+<pre class="r"><code>install.packages(&#39;BiocManager&#39;)
+BiocManager::install()</code></pre>
 <p>Install specific packages, e.g., “GenomicFeatures” and “AnnotationDbi”, with</p>
-<pre class="r"><code>biocLite(c(&quot;GenomicFeatures&quot;, &quot;AnnotationDbi&quot;))</code></pre>
+<pre class="r"><code>BiocManager::install(c(&quot;GenomicFeatures&quot;, &quot;AnnotationDbi&quot;))</code></pre>
 <p>The <code>biocLite()</code> function (in the <code>BiocInstaller</code> package installed by the biocLite.R script) has arguments that change its default behavior; type <code>?biocLite</code> for further help.</p>
 </div>
 <div id="find-bioconductor-packages" class="section level1">
@@ -376,25 +476,13 @@ biocLite()</code></pre>
 <div id="update-installed-bioconductor-packages" class="section level1">
 <h1>Update Installed Bioconductor Packages</h1>
 <p>Bioconductor packages, especially those in the development branch, are updated fairly regularly. To identify packages requiring update within your version of Bioconductor, start a new session of R and enter</p>
-<pre class="r"><code>## try http:// if https:// URLs are not supported
-source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite()                  ## R version 3.0 or later</code></pre>
-<p>Use the argument <code>ask=FALSE</code> to update old packages without being prompted. For older versions of R, use the command biocLite(NULL). Read the help page for <code>?biocLite</code> for additional details.</p>
-</div>
-<div id="upgrading-installed-bioconductor-packages" class="section level1">
-<h1>Upgrading installed Bioconductor packages</h1>
-<p>Some versions of R support more than one version of Bioconductor. To use the latest version of Bioconductor for your version of R, enter</p>
-<pre class="r"><code>## try http:// if https:// URLs are not supported
-source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite(&quot;BiocUpgrade&quot;)     ## R version 2.15 or later</code></pre>
-<p>Read the help page for <code>?BiocUpgrade</code> for additional details. Remember that more recent versions of Bioconductor may be available if your version of R is out-of-date.</p>
-<p>For more detail on Bioconductor approaches to versioning, see the newsletter and version numbering developer reference.</p>
+<pre class="r"><code>BiocManager::install()</code></pre>
+<p>Use the argument <code>ask=FALSE</code> to update old packages without being prompted. Read the help page for <code>?BiocManager::install</code> for additional details.</p>
 </div>
 <div id="troubleshoot-package-installations" class="section level1">
 <h1>Troubleshoot Package Installations</h1>
 <p>Use the commands:</p>
-<pre class="r"><code>library(BiocInstaller)
-biocValid()             ## R version 3.0 or later</code></pre>
+<pre class="r"><code>BiocManager::valid()</code></pre>
 <p>to flag packages that are either out-of-date or too new for your version of Bioconductor. The output suggests ways to solve identified problems, and the help page ?biocValid lists arguments influencing the behavior of the function.</p>
 </div>
 <div id="troubleshoot-biocinstaller" class="section level1">
@@ -404,24 +492,24 @@ biocValid()             ## R version 3.0 or later</code></pre>
 <ul>
 <li>Quit your R session</li>
 <li>Start a new session with <code>R --vanilla</code></li>
-<li>Run the command <code>remove.packages(&quot;BiocInstaller&quot;, lib=.libPaths())</code>
+<li>Run the command <code>remove.packages(&quot;BiocManager&quot;, lib=.libPaths())</code>
 <ul>
 <li>Repeat that command until R says there is no such package.</li>
 </ul></li>
-<li>Run the command <code>source(&quot;https://bioconductor.org/biocLite.R&quot;)</code></li>
-<li>Run <code>biocValid()</code> to ensure your installed packages are valid for the current version of Bioconductor, and follow the instructions it gives you.</li>
+<li>Run the command <code>install.packages('BiocManager')</code></li>
+<li>Run <code>BiocManager::valid()</code> to ensure your installed packages are valid for the current version of Bioconductor, and follow the instructions it gives you, most likely: <code>BiocManager::install()</code></li>
 </ul>
 </div>
 <div id="sessioninfo" class="section level1">
 <h1>sessionInfo</h1>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+<pre><code>## R Under development (unstable) (2019-01-14 r75992)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
-## Running under: macOS Sierra 10.12.6
+## Running under: macOS Mojave 10.14.2
 ## 
 ## Matrix products: default
-## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## BLAS: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -431,50 +519,52 @@ biocValid()             ## R version 3.0 or later</code></pre>
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] nycflights13_0.2.2                ggplot2_2.2.1                    
-##  [3] knitr_1.20                        BSgenome.Hsapiens.UCSC.hg19_1.4.0
-##  [5] BSgenome_1.47.5                   rtracklayer_1.39.13              
-##  [7] BiocStyle_2.7.9                   VariantAnnotation_1.25.13        
-##  [9] SummarizedExperiment_1.9.18       DelayedArray_0.5.35              
-## [11] BiocParallel_1.13.3               matrixStats_0.53.1               
-## [13] Rsamtools_1.31.3                  Biostrings_2.47.12               
-## [15] XVector_0.19.9                    GenomicFeatures_1.31.10          
-## [17] AnnotationDbi_1.41.6              Biobase_2.39.2                   
-## [19] GenomicRanges_1.31.23             GenomeInfoDb_1.15.5              
-## [21] IRanges_2.13.29                   S4Vectors_0.17.43                
-## [23] AnnotationHub_2.12.0              BiocGenerics_0.25.3              
+##  [1] nycflights13_1.0.0                ggplot2_3.2.0                    
+##  [3] knitr_1.23                        BSgenome.Hsapiens.UCSC.hg19_1.4.0
+##  [5] BSgenome_1.53.0                   Biostrings_2.53.0                
+##  [7] XVector_0.25.0                    AnnotationDbi_1.47.0             
+##  [9] Biobase_2.45.0                    rtracklayer_1.45.1               
+## [11] GenomicRanges_1.37.14             GenomeInfoDb_1.21.1              
+## [13] IRanges_2.19.10                   S4Vectors_0.23.17                
+## [15] AnnotationHub_2.17.3              BiocFileCache_1.9.1              
+## [17] dbplyr_1.4.2                      BiocGenerics_0.31.4              
+## [19] BiocStyle_2.13.2                 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] httr_1.3.1                    bit64_0.9-7                  
-##  [3] shiny_1.0.5                   assertthat_0.2.0             
-##  [5] interactiveDisplayBase_1.18.0 blob_1.1.1                   
-##  [7] GenomeInfoDbData_1.1.0        yaml_2.1.19                  
-##  [9] progress_1.1.2                pillar_1.2.2                 
-## [11] RSQLite_2.1.0                 backports_1.1.2              
-## [13] lattice_0.20-35               digest_0.6.15                
-## [15] promises_1.0.1                colorspace_1.3-2             
-## [17] htmltools_0.3.6               httpuv_1.4.3                 
-## [19] Matrix_1.2-14                 plyr_1.8.4                   
-## [21] XML_3.98-1.11                 pkgconfig_2.0.1              
-## [23] biomaRt_2.35.13               bookdown_0.7                 
-## [25] zlibbioc_1.25.0               xtable_1.8-2                 
-## [27] scales_0.5.0                  later_0.7.2                  
-## [29] tibble_1.4.2                  lazyeval_0.2.1               
-## [31] cli_1.0.0                     magrittr_1.5                 
-## [33] crayon_1.3.4                  mime_0.5                     
-## [35] memoise_1.1.0                 evaluate_0.10.1              
-## [37] BiocInstaller_1.30.0          tools_3.5.0                  
-## [39] prettyunits_1.0.2             stringr_1.3.1                
-## [41] munsell_0.4.3                 compiler_3.5.0               
-## [43] rlang_0.2.1                   grid_3.5.0                   
-## [45] RCurl_1.95-4.10               bitops_1.0-6                 
-## [47] labeling_0.3                  rmarkdown_1.10               
-## [49] gtable_0.2.0                  DBI_0.8                      
-## [51] curl_3.2                      R6_2.2.2                     
-## [53] GenomicAlignments_1.15.14     utf8_1.1.3                   
-## [55] bit_1.1-12                    rprojroot_1.3-2              
-## [57] stringi_1.2.2                 Rcpp_0.12.17                 
-## [59] xfun_0.1</code></pre>
+##  [1] httr_1.4.0                    bit64_0.9-7                  
+##  [3] shiny_1.3.2                   assertthat_0.2.1             
+##  [5] interactiveDisplayBase_1.23.0 BiocManager_1.30.4           
+##  [7] blob_1.1.1                    GenomeInfoDbData_1.2.1       
+##  [9] Rsamtools_2.1.2               yaml_2.2.0                   
+## [11] backports_1.1.4               pillar_1.4.1                 
+## [13] RSQLite_2.1.1                 lattice_0.20-38              
+## [15] glue_1.3.1                    digest_0.6.19                
+## [17] promises_1.0.1                colorspace_1.4-1             
+## [19] htmltools_0.3.6               httpuv_1.5.1                 
+## [21] Matrix_1.2-17                 XML_3.98-1.20                
+## [23] pkgconfig_2.0.2               zlibbioc_1.31.0              
+## [25] purrr_0.3.2                   xtable_1.8-4                 
+## [27] scales_1.0.0                  later_0.8.0                  
+## [29] BiocParallel_1.19.0           tibble_2.1.3                 
+## [31] withr_2.1.2                   SummarizedExperiment_1.15.5  
+## [33] lazyeval_0.2.2                cli_1.1.0                    
+## [35] magrittr_1.5                  crayon_1.3.4                 
+## [37] mime_0.7                      memoise_1.1.0                
+## [39] evaluate_0.14                 fansi_0.4.0                  
+## [41] tools_3.6.0                   matrixStats_0.54.0           
+## [43] stringr_1.4.0                 munsell_0.5.0                
+## [45] DelayedArray_0.11.2           compiler_3.6.0               
+## [47] rlang_0.4.0                   grid_3.6.0                   
+## [49] RCurl_1.95-4.12               rappdirs_0.3.1               
+## [51] bitops_1.0-6                  labeling_0.3                 
+## [53] rmarkdown_1.13                gtable_0.3.0                 
+## [55] DBI_1.0.0                     curl_3.3                     
+## [57] R6_2.4.0                      GenomicAlignments_1.21.3     
+## [59] dplyr_0.8.1                   zeallot_0.1.0                
+## [61] utf8_1.1.4                    bit_1.1-14                   
+## [63] stringi_1.4.3                 Rcpp_1.0.1                   
+## [65] vctrs_0.1.0                   tidyselect_0.2.5             
+## [67] xfun_0.8</code></pre>
 </div>
 
     <script>

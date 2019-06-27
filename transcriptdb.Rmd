@@ -4,7 +4,6 @@ author:
 - name: Sean Davis
   affiliation: Center for Cancer Research, National Cancer Institute, NIH
   email: seandavi@gmail.com
-package: GenomicDataIntegration
 output: 
   html_document
 vignette: >

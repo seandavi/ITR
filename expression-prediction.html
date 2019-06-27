@@ -26,9 +26,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -78,9 +77,7 @@ h6 {
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -105,6 +102,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -119,7 +119,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -139,6 +138,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -160,18 +196,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -249,8 +342,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -265,6 +356,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -355,8 +456,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Expression Prediction</h1>
-<h4 class="author"><em>Anshul Kundaje, Oana Ursu, and Sean Davis</em></h4>
-<h4 class="date"><em>7/8/2018</em></h4>
+<h4 class="author">Anshul Kundaje, Oana Ursu, and Sean Davis</h4>
+<h4 class="date">7/8/2018</h4>
 
 </div>
 
@@ -366,9 +467,13 @@ div.tocify {
 <p>Do this at the beginning of the lab</p>
 <pre class="r"><code>install.packages(&quot;caret&quot;, dependencies=T)
 install.packages(c(&quot;randomForest&quot;, &quot;glmnet&quot;), dependencies=T)</code></pre>
-<pre class="r"><code>require(caret)
-require(randomForest)
+<pre class="r"><code>require(caret)</code></pre>
+<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called &#39;caret&#39;</code></pre>
+<pre class="r"><code>require(randomForest)
 require(glmnet)</code></pre>
+<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called &#39;glmnet&#39;</code></pre>
 </div>
 <div id="load-the-preprocessed-data" class="section level1">
 <h1>Load the preprocessed data</h1>
@@ -427,7 +532,7 @@ fitControl &lt;- trainControl(
 ## Selecting tuning parameters
 ## Fitting alpha = 1, lambda = 0.001 on full training set</code></pre>
 <pre class="r"><code>lassoModel &lt;- lassoFit$finalModel</code></pre>
-<p>What metric is being used? Hint: print <code>names(lassoFit)</code> and get the metric used.</p>
+<p>What metric is being used Hint: print <code>names(lassoFit)</code> and get the metric used.</p>
 <p>Printing the <code>lassoFit</code> variable gives the overall performance.</p>
 <pre class="r"><code>names(lassoFit)</code></pre>
 <pre><code>##  [1] &quot;method&quot;       &quot;modelInfo&quot;    &quot;modelType&quot;    &quot;results&quot;     
@@ -443,17 +548,17 @@ fitControl &lt;- trainControl(
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 1 times) 
-## Summary of sample sizes: 7777, 7776, 7777, 7777, 7777, 7777, ... 
+## Summary of sample sizes: 7777, 7777, 7777, 7777, 7777, 7777, ... 
 ## Resampling results across tuning parameters:
 ## 
-##   lambda  RMSE      Rsquared   MAE     
-##   1e-06   2.207764  0.7497460  1.620768
-##   1e-05   2.207764  0.7497460  1.620768
-##   1e-04   2.207764  0.7497460  1.620768
-##   1e-03   2.207764  0.7497460  1.620768
-##   1e-02   2.210438  0.7491364  1.620588
-##   1e-01   2.234581  0.7442759  1.636838
-##   1e+00   2.509688  0.7358633  2.050495
+##   lambda  RMSE  Rsquared  MAE 
+##   1e-06   2.21  0.750     1.62
+##   1e-05   2.21  0.750     1.62
+##   1e-04   2.21  0.750     1.62
+##   1e-03   2.21  0.750     1.62
+##   1e-02   2.21  0.750     1.62
+##   1e-01   2.23  0.744     1.64
+##   1e+00   2.51  0.736     2.05
 ## 
 ## Tuning parameter &#39;alpha&#39; was held constant at a value of 1
 ## RMSE was used to select the optimal model using the smallest value.
@@ -462,61 +567,61 @@ fitControl &lt;- trainControl(
 <li>Accuracy per CV-fold (for best model)</li>
 </ul>
 <pre class="r"><code>print(lassoFit$resample)</code></pre>
-<pre><code>##        RMSE  Rsquared      MAE    Resample
-## 1  2.236137 0.7462122 1.637371 Fold07.Rep1
-## 2  2.208287 0.7497845 1.627083 Fold03.Rep1
-## 3  2.254901 0.7424100 1.639188 Fold05.Rep1
-## 4  2.215940 0.7485349 1.626740 Fold02.Rep1
-## 5  2.224529 0.7464925 1.640330 Fold09.Rep1
-## 6  2.235232 0.7446772 1.658122 Fold06.Rep1
-## 7  2.218472 0.7400758 1.640064 Fold08.Rep1
-## 8  2.163410 0.7514016 1.596137 Fold10.Rep1
-## 9  2.105374 0.7796283 1.546315 Fold04.Rep1
-## 10 2.215361 0.7482431 1.596334 Fold01.Rep1</code></pre>
+<pre><code>##    RMSE Rsquared  MAE    Resample
+## 1  2.18    0.760 1.55 Fold07.Rep1
+## 2  2.20    0.753 1.61 Fold03.Rep1
+## 3  2.25    0.742 1.65 Fold05.Rep1
+## 4  2.19    0.752 1.62 Fold02.Rep1
+## 5  2.17    0.756 1.61 Fold09.Rep1
+## 6  2.30    0.723 1.69 Fold06.Rep1
+## 7  2.26    0.737 1.68 Fold08.Rep1
+## 8  2.19    0.765 1.60 Fold10.Rep1
+## 9  2.13    0.760 1.56 Fold04.Rep1
+## 10 2.19    0.752 1.63 Fold01.Rep1</code></pre>
 <p>We can inspect the coefficients for different values of the L1 penalty lambda - play around and see what happens.</p>
 <pre class="r"><code>print(coef(lassoModel, s=1e-4))</code></pre>
 <pre><code>## 15 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
-##                       1
-## (Intercept) -4.49293486
-## Control     -0.15948718
-## Dnase        0.47400214
-## H2az         0.19903725
-## H3k27ac     -0.19922989
-## H3k27me3    -0.58795771
-## H3k36me3     0.67532996
-## H3k4me1     -0.09324795
-## H3k4me2     -0.14599759
-## H3k4me3      0.33573187
-## H3k79me2     0.60708041
-## H3k9ac       0.45944148
-## H3k9me1     -0.41656215
-## H3k9me3     -0.19046557
-## H4k20me1     0.06145396</code></pre>
+##                   1
+## (Intercept) -4.4929
+## Control     -0.1595
+## Dnase        0.4740
+## H2az         0.1990
+## H3k27ac     -0.1992
+## H3k27me3    -0.5880
+## H3k36me3     0.6753
+## H3k4me1     -0.0932
+## H3k4me2     -0.1460
+## H3k4me3      0.3357
+## H3k79me2     0.6071
+## H3k9ac       0.4594
+## H3k9me1     -0.4166
+## H3k9me3     -0.1905
+## H4k20me1     0.0615</code></pre>
 <pre class="r"><code>print(coef(lassoModel, s=1))</code></pre>
 <pre><code>## 15 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
-##                       1
-## (Intercept) -3.60314383
-## Control      .         
-## Dnase        0.30234222
-## H2az         .         
-## H3k27ac      .         
-## H3k27me3     .         
-## H3k36me3     0.10442699
-## H3k4me1      .         
-## H3k4me2      .         
-## H3k4me3      0.03426838
-## H3k79me2     0.57028538
-## H3k9ac       0.27648814
-## H3k9me1      .         
-## H3k9me3      .         
+##                   1
+## (Intercept) -3.6031
+## Control      .     
+## Dnase        0.3023
+## H2az         .     
+## H3k27ac      .     
+## H3k27me3     .     
+## H3k36me3     0.1044
+## H3k4me1      .     
+## H3k4me2      .     
+## H3k4me3      0.0343
+## H3k79me2     0.5703
+## H3k9ac       0.2765
+## H3k9me1      .     
+## H3k9me3      .     
 ## H4k20me1     .</code></pre>
 <p>We can also plot the entire regularization path The numbers shown are the feature (column) ids - to get the name of the feature, you can do colnames(features)[10], for instance. the numbers at the top are the numbers of nonzero coefficients.</p>
 <pre class="r"><code>plot(lassoModel, &quot;lambda&quot;, label=T)</code></pre>
-<p><img src="expression-prediction_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="expression-prediction_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>The final, trained model is in <code>lassoFit</code>. We can plot the predictions vs original targets.</p>
 <pre class="r"><code>lassoPreds &lt;- predict(lassoFit, newdata=features)
 plot(target, lassoPreds)</code></pre>
-<p><img src="expression-prediction_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="expression-prediction_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="random-forests" class="section level2">
 <h2>Random Forests</h2>
@@ -557,36 +662,36 @@ plot(target, lassoPreds)</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 1 times) 
-## Summary of sample sizes: 7777, 7777, 7777, 7777, 7777, 7777, ... 
+## Summary of sample sizes: 7777, 7776, 7777, 7777, 7777, 7777, ... 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared   MAE     
-##   2.131454  0.7670895  1.505594
+##   RMSE  Rsquared  MAE 
+##   2.13  0.767     1.51
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 4</code></pre>
 <p>We can also look at the accuracy per cross-validation fold.</p>
 <pre class="r"><code>print(randomforestFit$resample)</code></pre>
-<pre><code>##        RMSE  Rsquared      MAE    Resample
-## 1  2.202789 0.7561308 1.559627 Fold01.Rep1
-## 2  2.099717 0.7768035 1.464139 Fold02.Rep1
-## 3  2.206451 0.7460782 1.595301 Fold03.Rep1
-## 4  2.099783 0.7739428 1.472322 Fold04.Rep1
-## 5  2.076324 0.7757450 1.466857 Fold05.Rep1
-## 6  2.279259 0.7406690 1.612033 Fold06.Rep1
-## 7  2.111454 0.7671735 1.514835 Fold07.Rep1
-## 8  2.007855 0.7846863 1.424144 Fold08.Rep1
-## 9  2.145074 0.7721426 1.479047 Fold09.Rep1
-## 10 2.085830 0.7775238 1.467633 Fold10.Rep1</code></pre>
+<pre><code>##    RMSE Rsquared  MAE    Resample
+## 1  2.14    0.758 1.52 Fold01.Rep1
+## 2  2.08    0.775 1.44 Fold02.Rep1
+## 3  2.08    0.780 1.48 Fold03.Rep1
+## 4  2.19    0.747 1.56 Fold04.Rep1
+## 5  2.10    0.776 1.49 Fold05.Rep1
+## 6  2.19    0.756 1.55 Fold06.Rep1
+## 7  2.11    0.772 1.51 Fold07.Rep1
+## 8  2.14    0.764 1.51 Fold08.Rep1
+## 9  2.23    0.753 1.56 Fold09.Rep1
+## 10 2.07    0.788 1.46 Fold10.Rep1</code></pre>
 <p>The variable importance gives a measure of the relative contributions of each of the variables (histone marks) to the expression prediction. Larger values reflect greater feature importance.</p>
 <pre class="r"><code>print(rfModel$importance[order(rfModel$importance, decreasing=T),])</code></pre>
-<pre><code>##    H3k9ac  H3k79me2   H3k4me3   H3k27ac     Dnase  H3k36me3   H3k4me2 
-## 30497.371 30496.218 23446.335 20191.969 17525.896 11999.659  7405.693 
-##      H2az  H3k27me3   H3k4me1   H3k9me1  H4k20me1   H3k9me3   Control 
-##  6145.467  4021.346  3229.439  2796.156  2779.491  2654.738  2514.561</code></pre>
+<pre><code>## H3k79me2   H3k9ac  H3k4me3  H3k27ac    Dnase H3k36me3  H3k4me2     H2az 
+##    32437    27788    23553    20887    14632    12402    12054     4668 
+## H3k27me3  H3k4me1  H3k9me1 H4k20me1  H3k9me3  Control 
+##     3468     3251     2827     2720     2649     2510</code></pre>
 <p>The final trained model is in randomforestFit. Again, we can plot the predictions vs original targets.</p>
 <pre class="r"><code>randomforestPreds &lt;- predict(randomforestFit, newdata=features)
 plot(target, randomforestPreds)</code></pre>
-<p><img src="expression-prediction_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="expression-prediction_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 </div>
 <div id="further-exploration" class="section level1">
@@ -627,11 +732,11 @@ plot(target, randomforestPreds)</code></pre>
 ## - Fold10.Rep1: alpha=1, lambda=1 
 ## Aggregating results
 ## Selecting tuning parameters
-## Fitting alpha = 1, lambda = 0.01 on full training set</code></pre>
+## Fitting alpha = 1, lambda = 0.001 on full training set</code></pre>
 <pre class="r"><code>lassoModel &lt;- lassoFit$finalModel</code></pre>
 <p>We now generate a plot where the y axis is the coefficient of the weights assigned to the various features by lasso, the bottom x-axis is the log of the regularisation parameter lambda, and the top x-axis is the number of non-zero weights for that particular value of the regularisation parameter. The numbers on the lines correspond to the indices of the features in “featureSubset”. The numbers at the top are the numbers of nonzero betas.</p>
 <pre class="r"><code>plot(lassoModel, &quot;lambda&quot;, label=T)</code></pre>
-<p><img src="expression-prediction_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="expression-prediction_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 
     <script>

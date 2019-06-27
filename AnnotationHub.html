@@ -25,9 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -77,9 +76,7 @@ h6 {
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -104,6 +101,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -118,7 +118,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -138,6 +137,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -159,18 +195,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -248,8 +341,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -264,6 +355,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -381,45 +482,44 @@ document.addEventListener("DOMContentLoaded", function() {
 </ol>
 <p>The <code>AnnotationHub</code> server provides easy <em>R / Bioconductor</em> access to large collections of publicly available whole genome resources, e.g,. ENSEMBL genome fasta or gtf files, UCSC chain resources, ENCODE data tracks at UCSC, etc.</p>
 <p>To get started, make sure that you have the <code>AnnotationHub</code> package installed:</p>
-<pre class="r"><code>source(&#39;https://bioconductor.org/biocLite.R&#39;)
-biocLite(&#39;AnnotationHub&#39;)</code></pre>
+<pre class="r"><code>BiocManager::install(&#39;AnnotationHub&#39;)</code></pre>
 </div>
 <div id="annotationhub-objects" class="section level1">
 <h1>AnnotationHub objects</h1>
-<p>The <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> package provides a client interface to resources stored at the AnnotationHub web service.</p>
+<p>The <em><a href="https://bioconductor.org/packages/3.10/AnnotationHub">AnnotationHub</a></em> package provides a client interface to resources stored at the AnnotationHub web service.</p>
 <pre class="r"><code>library(AnnotationHub)</code></pre>
-<p>The <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> package is straightforward to use. Create an <code>AnnotationHub</code> object</p>
+<p>The <em><a href="https://bioconductor.org/packages/3.10/AnnotationHub">AnnotationHub</a></em> package is straightforward to use. Create an <code>AnnotationHub</code> object</p>
 <pre class="r"><code>ah = AnnotationHub()</code></pre>
-<pre><code>## snapshotDate(): 2018-04-30</code></pre>
+<pre><code>## snapshotDate(): 2019-05-20</code></pre>
 <p>Now at this point you have already done everything you need in order to start retrieving annotations. For most operations, using the <code>AnnotationHub</code> object should feel a lot like working with a familiar <code>list</code> or <code>data.frame</code>.</p>
 <p>Lets take a minute to look at the show method for the hub object ah</p>
 <pre class="r"><code>ah</code></pre>
-<pre><code>## AnnotationHub with 44923 records
-## # snapshotDate(): 2018-04-30 
+<pre><code>## AnnotationHub with 46259 records
+## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih....
 ## # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos ta...
-## # $rdataclass: GRanges, BigWigFile, FaFile, TwoBitFile, Rle, OrgDb, Cha...
+## # $rdataclass: GRanges, BigWigFile, TwoBitFile, OrgDb, Rle, ChainFile, ...
 ## # additional mcols(): taxonomyid, genome, description,
 ## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
 ## #   tags, rdatapath, sourceurl, sourcetype 
-## # retrieve records with, e.g., &#39;object[[&quot;AH2&quot;]]&#39; 
+## # retrieve records with, e.g., &#39;object[[&quot;AH5012&quot;]]&#39; 
 ## 
-##             title                                                   
-##   AH2     | Ailuropoda_melanoleuca.ailMel1.69.dna.toplevel.fa       
-##   AH3     | Ailuropoda_melanoleuca.ailMel1.69.dna_rm.toplevel.fa    
-##   AH4     | Ailuropoda_melanoleuca.ailMel1.69.dna_sm.toplevel.fa    
-##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa              
-##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa            
-##   ...       ...                                                     
-##   AH63653 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000248.rds     
-##   AH63654 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000249.rds     
-##   AH63655 | phastCons46wayPrimates.UCSC.hg19.chrX.rds               
-##   AH63656 | phastCons46wayPrimates.UCSC.hg19.chrY.rds               
-##   AH63657 | Alternative Splicing Annotation for Homo sapiens (Human)</code></pre>
+##             title                                                     
+##   AH5012  | Chromosome Band                                           
+##   AH5013  | STS Markers                                               
+##   AH5014  | FISH Clones                                               
+##   AH5015  | Recomb Rate                                               
+##   AH5016  | ENCODE Pilot                                              
+##   ...       ...                                                       
+##   AH73812 | org.Plasmodium_vivax.eg.sqlite                            
+##   AH73813 | org.Burkholderia_mallei_ATCC_23344.eg.sqlite              
+##   AH73814 | org.Bacillus_cereus_(strain_ATCC_14579_|_DSM_31).eg.sqlite
+##   AH73815 | org.Bacillus_cereus_ATCC_14579.eg.sqlite                  
+##   AH73816 | org.Schizosaccharomyces_cryophilus_OY26.eg.sqlite</code></pre>
 <p>You can see that it gives you an idea about the different types of data that are present inside the hub. You can see where the data is coming from (dataprovider), as well as what species have samples present (species), what kinds of R data objects could be returned (rdataclass). We can take a closer look at all the kinds of data providers that are available by simply looking at the contents of dataprovider as if it were the column of a data.frame object like this:</p>
 <pre class="r"><code>unique(ah$dataprovider)</code></pre>
-<pre><code>##  [1] &quot;Ensembl&quot;                              
-##  [2] &quot;UCSC&quot;                                 
+<pre><code>##  [1] &quot;UCSC&quot;                                 
+##  [2] &quot;Ensembl&quot;                              
 ##  [3] &quot;RefNet&quot;                               
 ##  [4] &quot;Inparanoid8&quot;                          
 ##  [5] &quot;NHLBI&quot;                                
@@ -440,17 +540,33 @@ biocLite(&#39;AnnotationHub&#39;)</code></pre>
 ## [20] &quot;GeneOntology&quot;                         
 ## [21] &quot;KEGG&quot;                                 
 ## [22] &quot;URGI&quot;                                 
-## [23] &quot;ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/&quot;</code></pre>
+## [23] &quot;EMBL-EBI&quot;                             
+## [24] &quot;MicrosporidiaDB&quot;                      
+## [25] &quot;FungiDB&quot;                              
+## [26] &quot;TriTrypDB&quot;                            
+## [27] &quot;ToxoDB&quot;                               
+## [28] &quot;AmoebaDB&quot;                             
+## [29] &quot;PlasmoDB&quot;                             
+## [30] &quot;PiroplasmaDB&quot;                         
+## [31] &quot;CryptoDB&quot;                             
+## [32] &quot;TrichDB&quot;                              
+## [33] &quot;GiardiaDB&quot;                            
+## [34] &quot;The Gene Ontology Consortium&quot;         
+## [35] &quot;DrugBank, Broad Institute, STITCH&quot;    
+## [36] &quot;GO&quot;                                   
+## [37] &quot;Broad Institute&quot;                      
+## [38] &quot;ENCODE Project&quot;                       
+## [39] &quot;ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/&quot;
+## [40] &quot;SchistoDB&quot;</code></pre>
 <p>In the same way, you can also see data from different species inside the hub by looking at the contents of species like this:</p>
 <pre class="r"><code>head(unique(ah$species))</code></pre>
-<pre><code>## [1] &quot;Ailuropoda melanoleuca&quot; &quot;Anolis carolinensis&quot;   
-## [3] &quot;Bos taurus&quot;             &quot;Caenorhabditis elegans&quot;
-## [5] &quot;Callithrix jacchus&quot;     &quot;Canis familiaris&quot;</code></pre>
+<pre><code>## [1] &quot;Homo sapiens&quot;         &quot;Vicugna pacos&quot;        &quot;Dasypus novemcinctus&quot;
+## [4] &quot;Otolemur garnettii&quot;   &quot;Papio hamadryas&quot;      &quot;Papio anubis&quot;</code></pre>
 <p>And this will also work for any of the other types of metadata present. You can learn which kinds of metadata are available by simply hitting the tab key after you type ‘ah$’. In this way you can explore for yourself what kinds of data are present in the hub right from the command line. This interface also allows you to access the hub programatically to extract data that matches a particular set of criteria.</p>
 <p>Another valuable types of metadata to pay attention to is the rdataclass.</p>
 <pre class="r"><code>head(unique(ah$rdataclass))</code></pre>
-<pre><code>## [1] &quot;FaFile&quot;        &quot;GRanges&quot;       &quot;data.frame&quot;    &quot;Inparanoid8Db&quot;
-## [5] &quot;TwoBitFile&quot;    &quot;ChainFile&quot;</code></pre>
+<pre><code>## [1] &quot;GRanges&quot;          &quot;data.frame&quot;       &quot;Inparanoid8Db&quot;   
+## [4] &quot;TwoBitFile&quot;       &quot;ChainFile&quot;        &quot;SQLiteConnection&quot;</code></pre>
 <p>The rdataclass allows you to see which kinds of R objects the hub will return to you. This kind of information is valuable both as a means to filter results and also as a means to explore and learn about some of the kinds of annotation objects that are widely available for the project. Right now this is a pretty short list, but over time it should grow as we support more of the different kinds of annotation objects via the hub.</p>
 <p>Now lets try getting the Chain Files from UCSC using the query and subset methods to selectively pare down the hub based on specific criteria. The query method lets you search rows for specific strings, returning an <code>AnnotationHub</code> instance with just the rows matching the query.</p>
 <p>From the show method, one can easily see that one of the dataprovider is UCSC and there is a rdataclass for ChainFile</p>
@@ -458,7 +574,7 @@ biocLite(&#39;AnnotationHub&#39;)</code></pre>
 <pre class="r"><code>dm &lt;- query(ah, c(&quot;ChainFile&quot;, &quot;UCSC&quot;, &quot;Drosophila melanogaster&quot;))
 dm</code></pre>
 <pre><code>## AnnotationHub with 45 records
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: UCSC
 ## # $species: Drosophila melanogaster
 ## # $rdataclass: ChainFile
@@ -484,12 +600,12 @@ dm</code></pre>
 <pre class="r"><code>df &lt;- mcols(dm)</code></pre>
 <p>By default the show method will only display the first 5 and last 5 rows. There are already thousands of records present in the hub.</p>
 <pre class="r"><code>length(ah)</code></pre>
-<pre><code>## [1] 44923</code></pre>
+<pre><code>## [1] 46259</code></pre>
 <p>Lets look at another example, where we pull down only Inparanoid8 data from the hub and use subset to return a smaller base object (here we are finding cases where the genome column is set to panda).</p>
 <pre class="r"><code>ahs &lt;- query(ah, c(&#39;inparanoid8&#39;, &#39;ailuropoda&#39;))
 ahs</code></pre>
 <pre><code>## AnnotationHub with 1 record
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # names(): AH10451
 ## # $dataprovider: Inparanoid8
 ## # $species: Ailuropoda melanoleuca
@@ -515,7 +631,7 @@ ahs</code></pre>
 <p>Looking back at our chain file example, if we are interested in the file dm1ToDm2.over.chain.gz, we can gets its metadata using</p>
 <pre class="r"><code>dm</code></pre>
 <pre><code>## AnnotationHub with 45 records
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: UCSC
 ## # $species: Drosophila melanogaster
 ## # $rdataclass: ChainFile
@@ -538,7 +654,7 @@ ahs</code></pre>
 ##   AH15146 | dm1ToDm2.over.chain.gz</code></pre>
 <pre class="r"><code>dm[&quot;AH15146&quot;]</code></pre>
 <pre><code>## AnnotationHub with 1 record
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # names(): AH15146
 ## # $dataprovider: UCSC
 ## # $species: Drosophila melanogaster
@@ -557,7 +673,8 @@ ahs</code></pre>
 <pre class="r"><code>dm[[&quot;AH15146&quot;]]</code></pre>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;/Users/sdavis2//.AnnotationHub/19241&#39;</code></pre>
+##     &#39;AH15146 : 19241&#39;</code></pre>
+<pre><code>## require(&quot;rtracklayer&quot;)</code></pre>
 <pre><code>## Chain of length 11
 ## names(11): chr2L chr2R chr3L chr3R chr4 chrX chrU chr2h chr3h chrXh chrYh</code></pre>
 <p>Each file is retrieved from the AnnotationHub server and the file is also cache locally, so that the next time you need to retrieve it, it should download much more quickly.</p>
@@ -569,34 +686,46 @@ ahs</code></pre>
 <p><em>Bioconductor</em> offers pre-built <code>org.*</code> annotation packages for model organisms, with their use described in the <a href="http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb">OrgDb</a> section of the Annotation work flow. Here we discover available <code>OrgDb</code> objects for less-model organisms</p>
 <pre class="r"><code>library(AnnotationHub)
 ah &lt;- AnnotationHub()</code></pre>
-<pre><code>## snapshotDate(): 2018-04-30</code></pre>
+<pre><code>## snapshotDate(): 2019-05-20</code></pre>
 <pre class="r"><code>query(ah, &quot;OrgDb&quot;)</code></pre>
-<pre><code>## AnnotationHub with 1691 records
-## # snapshotDate(): 2018-04-30 
-## # $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/
-## # $species: Escherichia coli, &#39;Caballeronia concitans&#39;, &#39;Chlorella vulg...
+<pre><code>## AnnotationHub with 2472 records
+## # snapshotDate(): 2019-05-20 
+## # $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/, FungiDB, TriTry...
+## # $species: Plasmodium falciparum, Trypanosoma cruzi, Cryptosporidium h...
 ## # $rdataclass: OrgDb
 ## # additional mcols(): taxonomyid, genome, description,
 ## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
 ## #   tags, rdatapath, sourceurl, sourcetype 
-## # retrieve records with, e.g., &#39;object[[&quot;AH61768&quot;]]&#39; 
+## # retrieve records with, e.g., &#39;object[[&quot;AH70563&quot;]]&#39; 
 ## 
-##             title                                      
-##   AH61768 | org.Ag.eg.db.sqlite                        
-##   AH61769 | org.At.tair.db.sqlite                      
-##   AH61770 | org.Bt.eg.db.sqlite                        
-##   AH61771 | org.Cf.eg.db.sqlite                        
-##   AH61772 | org.Gg.eg.db.sqlite                        
-##   ...       ...                                        
-##   AH63468 | org.Salmonella_typhimurium_LT2.eg.sqlite   
-##   AH63469 | org.Acinetobacter_baumannii.eg.sqlite      
-##   AH63470 | org.Acinetobacter_genomosp._2.eg.sqlite    
-##   AH63471 | org.Acinetobacter_genomospecies_2.eg.sqlite
-##   AH63472 | org.Bacterium_anitratum.eg.sqlite</code></pre>
+##             title                                                     
+##   AH70563 | org.Ag.eg.db.sqlite                                       
+##   AH70564 | org.At.tair.db.sqlite                                     
+##   AH70565 | org.Bt.eg.db.sqlite                                       
+##   AH70566 | org.Cf.eg.db.sqlite                                       
+##   AH70567 | org.Gg.eg.db.sqlite                                       
+##   ...       ...                                                       
+##   AH73812 | org.Plasmodium_vivax.eg.sqlite                            
+##   AH73813 | org.Burkholderia_mallei_ATCC_23344.eg.sqlite              
+##   AH73814 | org.Bacillus_cereus_(strain_ATCC_14579_|_DSM_31).eg.sqlite
+##   AH73815 | org.Bacillus_cereus_ATCC_14579.eg.sqlite                  
+##   AH73816 | org.Schizosaccharomyces_cryophilus_OY26.eg.sqlite</code></pre>
 <pre class="r"><code>orgdb &lt;- query(ah, &quot;OrgDb&quot;)[[1]] </code></pre>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;/Users/sdavis2//.AnnotationHub/68514&#39;</code></pre>
+##     &#39;AH70563 : 77309&#39;</code></pre>
+<pre><code>## Loading required package: AnnotationDbi</code></pre>
+<pre><code>## Loading required package: Biobase</code></pre>
+<pre><code>## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Biobase&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:AnnotationHub&#39;:
+## 
+##     cache</code></pre>
 <p>The object returned by AnnotationHub is directly usable with the <code>select()</code> interface, e.g., to discover the available keytypes for querying the object, the columns that these keytypes can map to, and finally selecting the SYMBOL and GENENAME corresponding to the first 6 ENTREZIDs</p>
 <pre class="r"><code>library(AnnotationDbi)
 keytypes(orgdb)</code></pre>
@@ -631,15 +760,15 @@ download.file(url, destfile=filename)
 if (file.exists(filename))
    data &lt;- import(filename, format=&quot;bed&quot;)</code></pre>
 <p>This would have to be repeated for all files, and the onus would lie on the user to identify, download, import, and manage the local disk location of these files.</p>
-<p><em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> reduces this task to just a few lines of <em>R</em> code</p>
+<p><em><a href="https://bioconductor.org/packages/3.10/AnnotationHub">AnnotationHub</a></em> reduces this task to just a few lines of <em>R</em> code</p>
 <pre class="r"><code>library(AnnotationHub)
 ah = AnnotationHub()</code></pre>
-<pre><code>## snapshotDate(): 2018-04-30</code></pre>
+<pre><code>## snapshotDate(): 2019-05-20</code></pre>
 <pre class="r"><code>epiFiles &lt;- query(ah, &quot;EpigenomeRoadMap&quot;)</code></pre>
-<p>A look at the value returned by <code>epiFiles</code> shows us that 18248 roadmap resources are available via <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em>. Additional information about the files is also available, e.g., where the files came from (dataprovider), genome, species, sourceurl, sourcetypes.</p>
+<p>A look at the value returned by <code>epiFiles</code> shows us that 18248 roadmap resources are available via <em><a href="https://bioconductor.org/packages/3.10/AnnotationHub">AnnotationHub</a></em>. Additional information about the files is also available, e.g., where the files came from (dataprovider), genome, species, sourceurl, sourcetypes.</p>
 <pre class="r"><code>epiFiles</code></pre>
 <pre><code>## AnnotationHub with 18248 records
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: BroadInstitute
 ## # $species: Homo sapiens
 ## # $rdataclass: BigWigFile, GRanges, data.frame
@@ -725,7 +854,7 @@ ah = AnnotationHub()</code></pre>
 <pre class="r"><code>metadata.tab &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;Metadata&quot;))
 metadata.tab</code></pre>
 <pre><code>## AnnotationHub with 1 record
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # names(): AH41830
 ## # $dataprovider: BroadInstitute
 ## # $species: Homo sapiens
@@ -743,11 +872,11 @@ metadata.tab</code></pre>
 <p>So far we have been exploring information about resources, without downloading the resource to a local cache and importing it into R. One can retrieve the resource using <code>[[</code> as indicated at the end of the show method</p>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;/Users/sdavis2//.AnnotationHub/47270&#39;</code></pre>
+##     &#39;AH41830 : 47270&#39;</code></pre>
 <pre class="r"><code>metadata.tab &lt;- ah[[&quot;AH41830&quot;]]</code></pre>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;/Users/sdavis2//.AnnotationHub/47270&#39;</code></pre>
+##     &#39;AH41830 : 47270&#39;</code></pre>
 <p>The metadata.tab file is returned as a <em>data.frame</em>. The first 6 rows of the first 5 columns are shown here:</p>
 <pre class="r"><code>metadata.tab[1:6, 1:5]</code></pre>
 <pre><code>##    EID    GROUP   COLOR          MNEMONIC
@@ -774,7 +903,7 @@ metadata.tab</code></pre>
 <pre class="r"><code>E126 &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;E126&quot;, &quot;H3K4ME2&quot;))
 E126</code></pre>
 <pre><code>## AnnotationHub with 6 records
-## # snapshotDate(): 2018-04-30 
+## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: BroadInstitute
 ## # $species: Homo sapiens
 ## # $rdataclass: BigWigFile, GRanges
@@ -794,11 +923,16 @@ E126</code></pre>
 <p>Hub resources are imported as the appropriate <em>Bioconductor</em> object for use in further analysis. For example, peak files are returned as <em>GRanges</em> objects.</p>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;/Users/sdavis2//.AnnotationHub/35257&#39;</code></pre>
+##     &#39;AH29817 : 35257&#39;</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Biostrings&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     strsplit</code></pre>
 <pre class="r"><code>peaks &lt;- E126[[&#39;AH29817&#39;]]</code></pre>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;/Users/sdavis2//.AnnotationHub/35257&#39;</code></pre>
+##     &#39;AH29817 : 35257&#39;</code></pre>
 <pre class="r"><code>seqinfo(peaks)</code></pre>
 <pre><code>## Seqinfo object with 93 sequences (1 circular) from hg19 genome:
 ##   seqnames       seqlengths isCircular genome
@@ -814,7 +948,7 @@ E126</code></pre>
 ##   chrUn_gl000248      39786      FALSE   hg19
 ##   chrUn_gl000249      38502      FALSE   hg19</code></pre>
 <p>BigWig files are returned as <em>BigWigFile</em> objects. A <em>BigWigFile</em> is a reference to a file on disk; the data in the file can be read in using <code>rtracklayer::import()</code>, perhaps querying these large files for particular genomic regions of interest as described on the help page <code>?import.bw</code>.</p>
-<p>Each record inside <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> is associated with a unique identifier. Most <em>GRanges</em> objects returned by <em><a href="http://bioconductor.org/packages/AnnotationHub">AnnotationHub</a></em> contain the unique AnnotationHub identifier of the resource from which the <em>GRanges</em> is derived. This can come handy when working with the <em>GRanges</em> object for a while, and additional information about the object (e.g., the name of the file in the cache, or the original sourceurl for the data underlying the resource) that is being worked with.</p>
+<p>Each record inside <em><a href="https://bioconductor.org/packages/3.10/AnnotationHub">AnnotationHub</a></em> is associated with a unique identifier. Most <em>GRanges</em> objects returned by <em><a href="https://bioconductor.org/packages/3.10/AnnotationHub">AnnotationHub</a></em> contain the unique AnnotationHub identifier of the resource from which the <em>GRanges</em> is derived. This can come handy when working with the <em>GRanges</em> object for a while, and additional information about the object (e.g., the name of the file in the cache, or the original sourceurl for the data underlying the resource) that is being worked with.</p>
 <pre class="r"><code>metadata(peaks)</code></pre>
 <pre><code>## $AnnotationHubName
 ## [1] &quot;AH29817&quot;
@@ -842,31 +976,31 @@ E126</code></pre>
 <p>When you create the <code>AnnotationHub</code> object, it will set up the object for you with some default settings. See <code>?AnnotationHub</code> for ways to customize the hub source, the local cache, and other instance-specific options, and <code>?getAnnotationHubOption</code> to get or set package-global options for use across sessions.</p>
 <p>If you look at the object you will see some helpful information about it such as where the data is cached and where online the hub server is set to.</p>
 <pre class="r"><code>ah</code></pre>
-<pre><code>## AnnotationHub with 44923 records
-## # snapshotDate(): 2018-04-30 
+<pre><code>## AnnotationHub with 46259 records
+## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih....
 ## # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos ta...
-## # $rdataclass: GRanges, BigWigFile, FaFile, TwoBitFile, Rle, OrgDb, Cha...
+## # $rdataclass: GRanges, BigWigFile, TwoBitFile, OrgDb, Rle, ChainFile, ...
 ## # additional mcols(): taxonomyid, genome, description,
 ## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
 ## #   tags, rdatapath, sourceurl, sourcetype 
-## # retrieve records with, e.g., &#39;object[[&quot;AH2&quot;]]&#39; 
+## # retrieve records with, e.g., &#39;object[[&quot;AH5012&quot;]]&#39; 
 ## 
-##             title                                                   
-##   AH2     | Ailuropoda_melanoleuca.ailMel1.69.dna.toplevel.fa       
-##   AH3     | Ailuropoda_melanoleuca.ailMel1.69.dna_rm.toplevel.fa    
-##   AH4     | Ailuropoda_melanoleuca.ailMel1.69.dna_sm.toplevel.fa    
-##   AH5     | Ailuropoda_melanoleuca.ailMel1.69.ncrna.fa              
-##   AH6     | Ailuropoda_melanoleuca.ailMel1.69.pep.all.fa            
-##   ...       ...                                                     
-##   AH63653 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000248.rds     
-##   AH63654 | phastCons46wayPrimates.UCSC.hg19.chrUn_gl000249.rds     
-##   AH63655 | phastCons46wayPrimates.UCSC.hg19.chrX.rds               
-##   AH63656 | phastCons46wayPrimates.UCSC.hg19.chrY.rds               
-##   AH63657 | Alternative Splicing Annotation for Homo sapiens (Human)</code></pre>
+##             title                                                     
+##   AH5012  | Chromosome Band                                           
+##   AH5013  | STS Markers                                               
+##   AH5014  | FISH Clones                                               
+##   AH5015  | Recomb Rate                                               
+##   AH5016  | ENCODE Pilot                                              
+##   ...       ...                                                       
+##   AH73812 | org.Plasmodium_vivax.eg.sqlite                            
+##   AH73813 | org.Burkholderia_mallei_ATCC_23344.eg.sqlite              
+##   AH73814 | org.Bacillus_cereus_(strain_ATCC_14579_|_DSM_31).eg.sqlite
+##   AH73815 | org.Bacillus_cereus_ATCC_14579.eg.sqlite                  
+##   AH73816 | org.Schizosaccharomyces_cryophilus_OY26.eg.sqlite</code></pre>
 <p>By default the <code>AnnotationHub</code> object is set to the latest <code>snapshotData</code> and a snapshot version that matches the version of <em>Bioconductor</em> that you are using. You can also learn about these data with the appropriate methods.</p>
 <pre class="r"><code>snapshotDate(ah)</code></pre>
-<pre><code>## [1] &quot;2018-04-30&quot;</code></pre>
+<pre><code>## [1] &quot;2019-05-20&quot;</code></pre>
 <p>If you are interested in using an older version of a snapshot, you can list previous versions with the <code>possibleDates()</code> like this:</p>
 <pre class="r"><code>pd &lt;- possibleDates(ah)
 pd</code></pre>
@@ -889,20 +1023,25 @@ pd</code></pre>
 ##  [81] &quot;2017-08-28&quot; &quot;2017-08-31&quot; &quot;2017-09-07&quot; &quot;2017-10-18&quot; &quot;2017-10-23&quot;
 ##  [86] &quot;2017-10-24&quot; &quot;2017-10-27&quot; &quot;2017-11-24&quot; &quot;2017-10-26&quot; &quot;2017-10-20&quot;
 ##  [91] &quot;2017-12-21&quot; &quot;2018-01-18&quot; &quot;2018-02-20&quot; &quot;2018-04-11&quot; &quot;2018-04-13&quot;
-##  [96] &quot;2018-04-16&quot; &quot;2018-04-19&quot; &quot;2018-04-20&quot; &quot;2018-04-23&quot; &quot;2018-04-30&quot;</code></pre>
+##  [96] &quot;2018-04-16&quot; &quot;2018-04-19&quot; &quot;2018-04-20&quot; &quot;2018-04-23&quot; &quot;2018-04-30&quot;
+## [101] &quot;2018-06-27&quot; &quot;2018-07-31&quot; &quot;2018-08-01&quot; &quot;2018-08-20&quot; &quot;2018-10-04&quot;
+## [106] &quot;2018-10-11&quot; &quot;2018-10-15&quot; &quot;2018-10-16&quot; &quot;2018-10-18&quot; &quot;2018-10-22&quot;
+## [111] &quot;2018-10-24&quot; &quot;2018-12-20&quot; &quot;2019-01-14&quot; &quot;2019-02-14&quot; &quot;2019-02-15&quot;
+## [116] &quot;2019-04-01&quot; &quot;2019-04-15&quot; &quot;2019-04-18&quot; &quot;2019-04-22&quot; &quot;2019-04-23&quot;
+## [121] &quot;2019-04-29&quot; &quot;2019-05-01&quot; &quot;2019-05-02&quot; &quot;2019-05-20&quot;</code></pre>
 <p>Set the dates like this:</p>
 <pre class="r"><code>snapshotDate(ah) &lt;- pd[1]</code></pre>
 </div>
 <div id="session-info" class="section level1">
 <h1>Session info</h1>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+<pre><code>## R Under development (unstable) (2019-01-14 r75992)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
-## Running under: macOS Sierra 10.12.6
+## Running under: macOS Mojave 10.14.2
 ## 
 ## Matrix products: default
-## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## BLAS: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -912,43 +1051,44 @@ pd</code></pre>
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] BSgenome.Hsapiens.UCSC.hg19_1.4.0 BSgenome_1.47.5                  
-##  [3] rtracklayer_1.39.13               BiocStyle_2.7.9                  
-##  [5] VariantAnnotation_1.25.13         SummarizedExperiment_1.9.18      
-##  [7] DelayedArray_0.5.35               BiocParallel_1.13.3              
-##  [9] matrixStats_0.53.1                Rsamtools_1.31.3                 
-## [11] Biostrings_2.47.12                XVector_0.19.9                   
-## [13] GenomicFeatures_1.31.10           AnnotationDbi_1.41.6             
-## [15] Biobase_2.39.2                    GenomicRanges_1.31.23            
-## [17] GenomeInfoDb_1.15.5               IRanges_2.13.29                  
-## [19] S4Vectors_0.17.43                 AnnotationHub_2.12.0             
-## [21] BiocGenerics_0.25.3              
+##  [1] BSgenome.Hsapiens.UCSC.hg19_1.4.0 BSgenome_1.53.0                  
+##  [3] Biostrings_2.53.0                 XVector_0.25.0                   
+##  [5] AnnotationDbi_1.47.0              Biobase_2.45.0                   
+##  [7] rtracklayer_1.45.1                GenomicRanges_1.37.14            
+##  [9] GenomeInfoDb_1.21.1               IRanges_2.19.10                  
+## [11] S4Vectors_0.23.17                 AnnotationHub_2.17.3             
+## [13] BiocFileCache_1.9.1               dbplyr_1.4.2                     
+## [15] BiocGenerics_0.31.4               BiocStyle_2.13.2                 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] progress_1.1.2                xfun_0.1                     
-##  [3] lattice_0.20-35               htmltools_0.3.6              
-##  [5] yaml_2.1.19                   interactiveDisplayBase_1.18.0
-##  [7] blob_1.1.1                    XML_3.98-1.11                
-##  [9] later_0.7.2                   DBI_0.8                      
-## [11] bit64_0.9-7                   GenomeInfoDbData_1.1.0       
-## [13] stringr_1.3.1                 zlibbioc_1.25.0              
-## [15] memoise_1.1.0                 evaluate_0.10.1              
-## [17] knitr_1.20                    biomaRt_2.35.13              
-## [19] httpuv_1.4.3                  BiocInstaller_1.30.0         
-## [21] curl_3.2                      Rcpp_0.12.17                 
-## [23] xtable_1.8-2                  promises_1.0.1               
-## [25] backports_1.1.2               mime_0.5                     
-## [27] bit_1.1-12                    digest_0.6.15                
-## [29] stringi_1.2.2                 bookdown_0.7                 
-## [31] shiny_1.0.5                   rprojroot_1.3-2              
-## [33] grid_3.5.0                    tools_3.5.0                  
-## [35] bitops_1.0-6                  magrittr_1.5                 
-## [37] RCurl_1.95-4.10               RSQLite_2.1.0                
-## [39] pkgconfig_2.0.1               Matrix_1.2-14                
-## [41] prettyunits_1.0.2             assertthat_0.2.0             
-## [43] rmarkdown_1.10                httr_1.3.1                   
-## [45] R6_2.2.2                      GenomicAlignments_1.15.14    
-## [47] compiler_3.5.0</code></pre>
+##  [1] Rcpp_1.0.1                    lattice_0.20-38              
+##  [3] Rsamtools_2.1.2               assertthat_0.2.1             
+##  [5] digest_0.6.19                 mime_0.7                     
+##  [7] R6_2.4.0                      RSQLite_2.1.1                
+##  [9] evaluate_0.14                 httr_1.4.0                   
+## [11] pillar_1.4.1                  zlibbioc_1.31.0              
+## [13] rlang_0.4.0                   curl_3.3                     
+## [15] blob_1.1.1                    Matrix_1.2-17                
+## [17] rmarkdown_1.13                BiocParallel_1.19.0          
+## [19] stringr_1.4.0                 RCurl_1.95-4.12              
+## [21] bit_1.1-14                    shiny_1.3.2                  
+## [23] DelayedArray_0.11.2           compiler_3.6.0               
+## [25] httpuv_1.5.1                  xfun_0.8                     
+## [27] pkgconfig_2.0.2               htmltools_0.3.6              
+## [29] tidyselect_0.2.5              SummarizedExperiment_1.15.5  
+## [31] tibble_2.1.3                  GenomeInfoDbData_1.2.1       
+## [33] interactiveDisplayBase_1.23.0 matrixStats_0.54.0           
+## [35] XML_3.98-1.20                 crayon_1.3.4                 
+## [37] dplyr_0.8.1                   later_0.8.0                  
+## [39] GenomicAlignments_1.21.3      bitops_1.0-6                 
+## [41] rappdirs_0.3.1                grid_3.6.0                   
+## [43] xtable_1.8-4                  DBI_1.0.0                    
+## [45] magrittr_1.5                  stringi_1.4.3                
+## [47] promises_1.0.1                tools_3.6.0                  
+## [49] bit64_0.9-7                   glue_1.3.1                   
+## [51] purrr_0.3.2                   yaml_2.2.0                   
+## [53] BiocManager_1.30.4            memoise_1.1.0                
+## [55] knitr_1.23</code></pre>
 </div>
 
     <script>

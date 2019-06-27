@@ -25,9 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -77,9 +76,7 @@ h6 {
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -104,6 +101,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -118,7 +118,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -138,6 +137,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -159,18 +195,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -248,8 +341,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -264,6 +355,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -354,7 +455,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Working with Genomic Ranges and Signals</h1>
-<h4 class="author"><em>Sean Davis</em></h4>
+<h4 class="author">Sean Davis</h4>
 <address class="author_afil">
 Center for Cancer Research, National Cancer Institute, NIH<br><a class="author_email" href="mailto:#"><a href="mailto:seandavi@gmail.com">seandavi@gmail.com</a></a>
 </address>
@@ -377,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 <div id="getting-started" class="section level1">
 <h1>Getting started</h1>
-<p>Genomic ranges are a way of describing regions on the genome (or any other linear object, such as a transcript, or even a protein). This functionality is typically found in the <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> package.</p>
+<p>Genomic ranges are a way of describing regions on the genome (or any other linear object, such as a transcript, or even a protein). This functionality is typically found in the <em><a href="https://bioconductor.org/packages/3.10/GenomicRanges">GenomicRanges</a></em> package.</p>
 <pre class="r"><code>library(GenomicRanges)</code></pre>
 <div id="example-granges" class="section level2">
 <h2>Example GRanges</h2>
@@ -438,18 +539,18 @@ gr</code></pre>
 ## [1] &quot;S4Vectors&quot;</code></pre>
 <pre class="r"><code>mcols(gr)</code></pre>
 <pre><code>## DataFrame with 10 rows and 2 columns
-##        score                GC
-##    &lt;integer&gt;         &lt;numeric&gt;
-## 1          1                 1
-## 2          2 0.888888888888889
-## 3          3 0.777777777777778
-## 4          4 0.666666666666667
-## 5          5 0.555555555555556
-## 6          6 0.444444444444444
-## 7          7 0.333333333333333
-## 8          8 0.222222222222222
-## 9          9 0.111111111111111
-## 10        10                 0</code></pre>
+##       score                GC
+##   &lt;integer&gt;         &lt;numeric&gt;
+## a         1                 1
+## b         2 0.888888888888889
+## c         3 0.777777777777778
+## d         4 0.666666666666667
+## e         5 0.555555555555556
+## f         6 0.444444444444444
+## g         7 0.333333333333333
+## h         8 0.222222222222222
+## i         9 0.111111111111111
+## j        10                 0</code></pre>
 <p>Since the <code>class</code> of <code>mcols(gr)</code> is DataFrame, we can use our <code>DataFrame</code> approaches to work with the data.</p>
 <pre class="r"><code>mcols(gr)$score</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -659,7 +760,7 @@ start(g) # to get start locations</code></pre>
 ##   c 0.222222222222222
 ##   -------
 ##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
-<p>The <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> help page <code>?&quot;intra-range-methods&quot;</code> summarizes these methods.</p>
+<p>The <em><a href="https://bioconductor.org/packages/3.10/GenomicRanges">GenomicRanges</a></em> help page <code>?&quot;intra-range-methods&quot;</code> summarizes these methods.</p>
 </div>
 <div id="inter-range-methods" class="section level3">
 <h3>Inter-range methods</h3>
@@ -716,7 +817,7 @@ start(g) # to get start locations</code></pre>
 covg_chr2 = covg[[&#39;chr2&#39;]]
 plot(covg_chr2, type=&#39;l&#39;)</code></pre>
 <p><img src="RangesAndSignal_files/figure-html/coveragegr2-1.png" width="672" /></p>
-<p>See the <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> help page <code>?&quot;intra-range-methods&quot;</code> for more details.</p>
+<p>See the <em><a href="https://bioconductor.org/packages/3.10/GenomicRanges">GenomicRanges</a></em> help page <code>?&quot;intra-range-methods&quot;</code> for more details.</p>
 </div>
 </div>
 <div id="set-operations-for-granges-objects" class="section level2">
@@ -724,42 +825,29 @@ plot(covg_chr2, type=&#39;l&#39;)</code></pre>
 <p>Between-range methods calculate relationships between different GRanges objects. Of central importance are findOverlaps and related operations; these are discussed below. Additional operations treat GRanges as mathematical sets of coordinates; union(g, g2) is the union of the coordinates in g and g2. Here are examples for calculating the union, the intersect and the asymmetric difference (using setdiff).</p>
 <pre class="r"><code>g2 &lt;- head(gr, n=2)
 union(g, g2)</code></pre>
-<pre><code>## GRanges object with 3 ranges and 3 metadata columns:
-##     seqnames    ranges strand |     score                GC
-##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
-##   a     chr1   101-111      - |         1                 1
-##   b     chr2   102-112      + |         2 0.888888888888889
-##   c     chr2   103-113      + |         3 0.777777777777778
-##                    AT
-##             &lt;numeric&gt;
-##   a                 0
-##   b 0.111111111111111
-##   c 0.222222222222222
+<pre><code>## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1   101-111      -
+##   [2]     chr2   102-113      +
 ##   -------
 ##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
 <pre class="r"><code>intersect(g, g2)</code></pre>
-<pre><code>## GRanges object with 2 ranges and 3 metadata columns:
-##     seqnames    ranges strand |     score                GC
-##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
-##   a     chr1   101-111      - |         1                 1
-##   b     chr2   102-112      + |         2 0.888888888888889
-##                    AT
-##             &lt;numeric&gt;
-##   a                 0
-##   b 0.111111111111111
+<pre><code>## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1   101-111      -
+##   [2]     chr2   102-112      +
 ##   -------
 ##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
 <pre class="r"><code>setdiff(g, g2)</code></pre>
-<pre><code>## GRanges object with 1 range and 3 metadata columns:
-##     seqnames    ranges strand |     score                GC
-##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
-##   c     chr2   103-113      + |         3 0.777777777777778
-##                    AT
-##             &lt;numeric&gt;
-##   c 0.222222222222222
+<pre><code>## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr2       113      +
 ##   -------
 ##   seqinfo: 3 sequences from an unspecified genome; no seqlengths</code></pre>
-<p>There is extensive additional help available or by looking at the vignettes in at the <em><a href="http://bioconductor.org/packages/GenomicRanges">GenomicRanges</a></em> pages.</p>
+<p>There is extensive additional help available or by looking at the vignettes in at the <em><a href="https://bioconductor.org/packages/3.10/GenomicRanges">GenomicRanges</a></em> pages.</p>
 <pre class="r"><code>?GRanges</code></pre>
 <p>There are also many possible <code>methods</code> that work with <code>GRanges</code> objects. To see a complete list (long), try:</p>
 <pre class="r"><code>methods(class=&quot;GRanges&quot;)</code></pre>
@@ -783,20 +871,22 @@ gr2 &lt;- GRanges(
 <pre class="r"><code>grl &lt;- GRangesList(&quot;txA&quot; = gr1, &quot;txB&quot; = gr2)
 grl</code></pre>
 <pre><code>## GRangesList object of length 2:
-## $txA 
+## $txA
 ## GRanges object with 1 range and 2 metadata columns:
 ##       seqnames    ranges strand |     score        GC
 ##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;numeric&gt;
 ##   [1]     chr2   103-106      + |         5      0.45
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
 ## 
-## $txB 
+## $txB
 ## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames  ranges strand | score  GC
-##   [1]     chr1 107-109      + |     3 0.3
-##   [2]     chr1 113-115      - |     4 0.5
-## 
-## -------
-## seqinfo: 2 sequences from an unspecified genome; no seqlengths</code></pre>
+##       seqnames    ranges strand |     score        GC
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;numeric&gt;
+##   [1]     chr1   107-109      + |         3       0.3
+##   [2]     chr1   113-115      - |         4       0.5
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome; no seqlengths</code></pre>
 <p>The <code>show</code> method for a <code>GRangesList</code> object displays it as a named list of <code>GRanges</code> objects, where the names of this list are considered to be the names of the grouping feature. In the example above, the groups of individual exon ranges are represented as separate <code>GRanges</code> objects which are further organized into a list structure where each element name is a transcript name. Many other combinations of grouped and labeled <code>GRanges</code> objects are possible of course, but this example is a common arrangement.</p>
 <p>In some cases, <code>GRangesList</code>s behave quite similarly to <code>GRanges</code> objects.</p>
 <div id="basic-grangeslist-accessors" class="section level2">
@@ -816,7 +906,7 @@ grl</code></pre>
 ##   Values : chr1
 ## Levels(2): chr2 chr1</code></pre>
 <pre class="r"><code>ranges(grl)</code></pre>
-<pre><code>## IRangesList of length 2
+<pre><code>## IRangesList object of length 2:
 ## $txA
 ## IRanges object with 1 range and 0 metadata columns:
 ##           start       end     width
@@ -1002,74 +1092,103 @@ res</code></pre>
 <div id="session-info" class="section level1">
 <h1>Session Info</h1>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 3.5.0 RC (2018-04-16 r74624)
+<pre><code>## R Under development (unstable) (2019-01-14 r75992)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
-## Running under: macOS Sierra 10.12.6
+## Running under: macOS Mojave 10.14.2
 ## 
 ## Matrix products: default
-## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## BLAS: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
+##  [1] grid      stats4    parallel  stats     graphics  grDevices utils    
+##  [8] datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] RColorBrewer_1.1-2                GEOquery_2.47.18                 
-##  [3] tximport_1.7.14                   bindrcpp_0.2.2                   
-##  [5] dplyr_0.7.4                       airway_0.114.0                   
-##  [7] nycflights13_0.2.2                ggplot2_2.2.1                    
-##  [9] knitr_1.20                        BSgenome.Hsapiens.UCSC.hg19_1.4.0
-## [11] BSgenome_1.47.5                   rtracklayer_1.39.13              
-## [13] BiocStyle_2.7.9                   VariantAnnotation_1.25.13        
-## [15] SummarizedExperiment_1.9.18       DelayedArray_0.5.35              
-## [17] BiocParallel_1.13.3               matrixStats_0.53.1               
-## [19] Rsamtools_1.31.3                  Biostrings_2.47.12               
-## [21] XVector_0.19.9                    GenomicFeatures_1.31.10          
-## [23] AnnotationDbi_1.41.6              Biobase_2.39.2                   
-## [25] GenomicRanges_1.31.23             GenomeInfoDb_1.15.5              
-## [27] IRanges_2.13.29                   S4Vectors_0.17.43                
-## [29] AnnotationHub_2.12.0              BiocGenerics_0.25.3              
+##  [1] RColorBrewer_1.1-2                randomForest_4.6-14              
+##  [3] rpart.plot_3.0.7                  adabag_4.2                       
+##  [5] doParallel_1.0.14                 iterators_1.0.10                 
+##  [7] foreach_1.4.4                     rpart_4.1-15                     
+##  [9] formatR_1.7                       mlbench_2.1-1                    
+## [11] e1071_1.7-2                       caret_6.0-84                     
+## [13] lattice_0.20-38                   party_1.3-3                      
+## [15] strucchange_1.5-1                 sandwich_2.5-1                   
+## [17] zoo_1.8-6                         modeltools_0.2-22                
+## [19] mvtnorm_1.0-11                    GEOquery_2.53.0                  
+## [21] tximport_1.13.6                   GenomicFeatures_1.37.3           
+## [23] GSE5859_1.0                       tissuesGeneExpression_1.0        
+## [25] dplyr_0.8.1                       rafalib_1.0.0                    
+## [27] usethis_1.5.0                     devtools_2.0.2                   
+## [29] airway_1.5.0                      SummarizedExperiment_1.15.5      
+## [31] DelayedArray_0.11.2               BiocParallel_1.19.0              
+## [33] matrixStats_0.54.0                nycflights13_1.0.0               
+## [35] ggplot2_3.2.0                     knitr_1.23                       
+## [37] BSgenome.Hsapiens.UCSC.hg19_1.4.0 BSgenome_1.53.0                  
+## [39] Biostrings_2.53.0                 XVector_0.25.0                   
+## [41] AnnotationDbi_1.47.0              Biobase_2.45.0                   
+## [43] rtracklayer_1.45.1                GenomicRanges_1.37.14            
+## [45] GenomeInfoDb_1.21.1               IRanges_2.19.10                  
+## [47] S4Vectors_0.23.17                 AnnotationHub_2.17.3             
+## [49] BiocFileCache_1.9.1               dbplyr_1.4.2                     
+## [51] BiocGenerics_0.31.4               BiocStyle_2.13.2                 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] bitops_1.0-6                  bit64_0.9-7                  
-##  [3] progress_1.1.2                httr_1.3.1                   
-##  [5] rprojroot_1.3-2               tools_3.5.0                  
-##  [7] backports_1.1.2               utf8_1.1.3                   
-##  [9] R6_2.2.2                      DBI_0.8                      
-## [11] lazyeval_0.2.1                colorspace_1.3-2             
-## [13] prettyunits_1.0.2             bit_1.1-12                   
-## [15] curl_3.2                      compiler_3.5.0               
-## [17] cli_1.0.0                     xml2_1.2.0                   
-## [19] labeling_0.3                  bookdown_0.7                 
-## [21] scales_0.5.0                  readr_1.1.1                  
-## [23] stringr_1.3.1                 digest_0.6.15                
-## [25] rmarkdown_1.10                pkgconfig_2.0.1              
-## [27] htmltools_0.3.6               limma_3.35.15                
-## [29] highr_0.6                     rlang_0.2.1                  
-## [31] RSQLite_2.1.0                 BiocInstaller_1.30.0         
-## [33] shiny_1.0.5                   bindr_0.1.1                  
-## [35] RCurl_1.95-4.10               magrittr_1.5                 
-## [37] GenomeInfoDbData_1.1.0        Matrix_1.2-14                
-## [39] Rcpp_0.12.17                  munsell_0.4.3                
-## [41] stringi_1.2.2                 yaml_2.1.19                  
-## [43] zlibbioc_1.25.0               plyr_1.8.4                   
-## [45] grid_3.5.0                    blob_1.1.1                   
-## [47] promises_1.0.1                crayon_1.3.4                 
-## [49] lattice_0.20-35               hms_0.4.2                    
-## [51] pillar_1.2.2                  revealjs_0.9                 
-## [53] biomaRt_2.35.13               XML_3.98-1.11                
-## [55] glue_1.2.0.9000               evaluate_0.10.1              
-## [57] httpuv_1.4.3                  gtable_0.2.0                 
-## [59] purrr_0.2.5                   tidyr_0.8.0                  
-## [61] assertthat_0.2.0              xfun_0.1                     
-## [63] mime_0.5                      xtable_1.8-2                 
-## [65] later_0.7.2                   tibble_1.4.2                 
-## [67] GenomicAlignments_1.15.14     memoise_1.1.0                
-## [69] interactiveDisplayBase_1.18.0</code></pre>
+##   [1] backports_1.1.4               plyr_1.8.4                   
+##   [3] lazyeval_0.2.2                splines_3.6.0                
+##   [5] TH.data_1.0-10                digest_0.6.19                
+##   [7] htmltools_0.3.6               fansi_0.4.0                  
+##   [9] magrittr_1.5                  memoise_1.1.0                
+##  [11] limma_3.41.5                  remotes_2.1.0                
+##  [13] recipes_0.1.5                 readr_1.3.1                  
+##  [15] gower_0.2.1                   prettyunits_1.0.2            
+##  [17] colorspace_1.4-1              blob_1.1.1                   
+##  [19] rappdirs_0.3.1                xfun_0.8                     
+##  [21] callr_3.2.0                   crayon_1.3.4                 
+##  [23] RCurl_1.95-4.12               libcoin_1.0-4                
+##  [25] zeallot_0.1.0                 survival_2.44-1.1            
+##  [27] glue_1.3.1                    gtable_0.3.0                 
+##  [29] ipred_0.9-9                   zlibbioc_1.31.0              
+##  [31] pkgbuild_1.0.3                scales_1.0.0                 
+##  [33] DBI_1.0.0                     Rcpp_1.0.1                   
+##  [35] xtable_1.8-4                  progress_1.2.2               
+##  [37] bit_1.1-14                    lava_1.6.5                   
+##  [39] prodlim_2018.04.18            httr_1.4.0                   
+##  [41] revealjs_0.9                  pkgconfig_2.0.2              
+##  [43] XML_3.98-1.20                 nnet_7.3-12                  
+##  [45] utf8_1.1.4                    reshape2_1.4.3               
+##  [47] tidyselect_0.2.5              labeling_0.3                 
+##  [49] rlang_0.4.0                   later_0.8.0                  
+##  [51] munsell_0.5.0                 tools_3.6.0                  
+##  [53] cli_1.1.0                     generics_0.0.2               
+##  [55] RSQLite_2.1.1                 evaluate_0.14                
+##  [57] stringr_1.4.0                 yaml_2.2.0                   
+##  [59] ModelMetrics_1.2.2            processx_3.3.1               
+##  [61] bit64_0.9-7                   fs_1.3.1                     
+##  [63] purrr_0.3.2                   coin_1.3-0                   
+##  [65] nlme_3.1-140                  mime_0.7                     
+##  [67] xml2_1.2.0                    biomaRt_2.41.3               
+##  [69] compiler_3.6.0                png_0.1-7                    
+##  [71] curl_3.3                      interactiveDisplayBase_1.23.0
+##  [73] testthat_2.1.1                tibble_2.1.3                 
+##  [75] stringi_1.4.3                 highr_0.8                    
+##  [77] ps_1.3.0                      desc_1.2.0                   
+##  [79] Matrix_1.2-17                 vctrs_0.1.0                  
+##  [81] pillar_1.4.1                  BiocManager_1.30.4           
+##  [83] data.table_1.12.2             bitops_1.0-6                 
+##  [85] httpuv_1.5.1                  R6_2.4.0                     
+##  [87] bookdown_0.11                 promises_1.0.1               
+##  [89] sessioninfo_1.1.1             codetools_0.2-16             
+##  [91] MASS_7.3-51.4                 assertthat_0.2.1             
+##  [93] pkgload_1.0.2                 rprojroot_1.3-2              
+##  [95] withr_2.1.2                   GenomicAlignments_1.21.3     
+##  [97] Rsamtools_2.1.2               multcomp_1.4-10              
+##  [99] GenomeInfoDbData_1.2.1        hms_0.4.2                    
+## [101] timeDate_3043.102             class_7.3-15                 
+## [103] tidyr_0.8.3                   rmarkdown_1.13               
+## [105] lubridate_1.7.4               shiny_1.3.2</code></pre>
 </div>
 
     <script>
