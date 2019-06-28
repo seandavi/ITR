@@ -597,7 +597,30 @@ dm</code></pre>
 ##   AH15146 | dm1ToDm2.over.chain.gz</code></pre>
 <p>Query has worked and you can now see that the only species present is Drosophila melanogaster.</p>
 <p>The metadata underlying this hub object can be retrieved by you</p>
-<pre class="r"><code>df &lt;- mcols(dm)</code></pre>
+<pre class="r"><code>df &lt;- mcols(dm)
+# what is df?
+class(df)</code></pre>
+<pre><code>## [1] &quot;DataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;S4Vectors&quot;</code></pre>
+<pre class="r"><code>head(df[,1:5])</code></pre>
+<pre><code>## DataFrame with 6 rows and 5 columns
+##                              title dataprovider                 species
+##                        &lt;character&gt;  &lt;character&gt;             &lt;character&gt;
+## AH15102 dm3ToAnoGam1.over.chain.gz         UCSC Drosophila melanogaster
+## AH15103 dm3ToApiMel3.over.chain.gz         UCSC Drosophila melanogaster
+## AH15104     dm3ToDm2.over.chain.gz         UCSC Drosophila melanogaster
+## AH15105     dm3ToDm6.over.chain.gz         UCSC Drosophila melanogaster
+## AH15106     dm3ToDp3.over.chain.gz         UCSC Drosophila melanogaster
+## AH15107     dm3ToDp4.over.chain.gz         UCSC Drosophila melanogaster
+##         taxonomyid      genome
+##          &lt;integer&gt; &lt;character&gt;
+## AH15102       7227         dm3
+## AH15103       7227         dm3
+## AH15104       7227         dm3
+## AH15105       7227         dm3
+## AH15106       7227         dm3
+## AH15107       7227         dm3</code></pre>
 <p>By default the show method will only display the first 5 and last 5 rows. There are already thousands of records present in the hub.</p>
 <pre class="r"><code>length(ah)</code></pre>
 <pre><code>## [1] 46259</code></pre>

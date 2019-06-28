@@ -101,6 +101,9 @@ The metadata underlying this hub object can be retrieved by you
 
 ```{r show2}
 df <- mcols(dm)
+# what is df?
+class(df)
+head(df[,1:5])
 ```
 
 By default the show method will only display the first 5 and last 5  rows.
