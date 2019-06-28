@@ -20,7 +20,7 @@ navbar:
     - text: Introduction to Bioconductor
       href: http://bit.ly/bioc_cshl_2019
     - text: Machine Learning hands-on
-      href: MachineLearningSlides.html
+      href: MachineLearning.html
   - icon: fa-question fa-lg
     text: Misc.
     menu:
@@ -48,6 +48,9 @@ exclude:
   - F_epigenomic_ranges.Rmd
   - "*sqlite"
   - "*gtf.gz"
+  - "*~"
+  - ".#*"
+  - Makefile
 include: "*.Rmd"
 output_dir: _site
 
