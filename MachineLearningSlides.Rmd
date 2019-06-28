@@ -5,7 +5,6 @@ author: "Sean Davis"
 output: 
   revealjs::revealjs_presentation:
     widescreen: true
-    keep_md: true
     theme: simple
     reveal_options:
       slideNumber: true

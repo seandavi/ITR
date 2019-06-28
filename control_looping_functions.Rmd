@@ -69,7 +69,7 @@ lm ...) that takes a vector as its argument, then you can:
     apply(mat,1,fun) # over rows--second argument is 1      
     apply(mat,2,fun) # over columns--second argument is 2
 
-In either case, the output is a vector.
+In either case, the output is a *vector*.
 
 ### Apply Function Exercise
 
@@ -86,6 +86,10 @@ In either case, the output is a vector.
     list]{}
 
 -   [`sapply(list or vector, function)` applies the function to every
+    element of list or vector, and returns a vector, when possible
+    (easier to process)]{}
+    
+-   [`vapply(list or vector, function)` applies the function to every
     element of list or vector, and returns a vector, when possible
     (easier to process)]{}
 
@@ -139,8 +143,30 @@ In either case, the output is a vector.
     add1(c(17,18,19,20))
     ## [1] 18 19 20 21
 
-You can use the `edit()` function to make changes to a function. The
-following command will open a window, allow you to make changes, and
-assign the result to a new function, `add2`.
+## Exercises
 
-    add2 = edit(add1)
+- Use system.time to compare the two codes here. Both accomplish the same thing--adding 1 to every value of the vector `rn`.
+
+```{r eval=TRUE, results='hide'}
+rn = rnorm(1e6)
+system.time(
+for (i in seq_along(rn)) {
+  rn[i] = rn[i] + 1
+}
+)
+# vectorized
+system.time(
+    {rn = rn + 1}
+)
+```
+- Create a function that takes a numeric vector and calculates the mean without using the R `mean` function.
+
+- Modify the function above so that it can calculate the "trimmed mean" by adding a second argument that specifies the proportion of data to trim from ends of the numeric vector before calculating mean. The definition of trimmed mean is:
+
+> A trimmed mean (similar to an adjusted mean) is a method of averaging that removes a small designated percentage of the largest and smallest values before calculating the mean. After removing the specified outlier observations, the trimmed mean is found using a standard arithmetic averaging formula. The use of a trimmed mean helps eliminate the influence of outliers or data points on the tails that may unfairly affect the traditional mean.
+
+- Use the `system.time()` function to time your mean function with a vector of length 1000. Do the same with the builtin R version of mean, `mean()`. Is there a difference in timings? Do you believe that these timings could show a difference?
+
+- Use the [microbenchmark package](https://www.r-bloggers.com/using-the-microbenchmark-package-to-compare-the-execution-time-of-r-expressions/) to compare the performance of your mean function to that of `mean()` builtin to R.
+
+- Write a function that takes as input a string (character vector of length 1) and counts the number of occurrences of each letter (after converting to lower case). Take a look at the `tolower()`, `strsplit()`, and `table()` functions to help you with this task. Then, modify the function to return the proportion of each letter rather than the count. Would this be useful for any biological data?

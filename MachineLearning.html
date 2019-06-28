@@ -610,7 +610,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">abline</span>(fit)</a></code></pre></div>
 </section><section id="is-mpg-a-function-of-wt-1" class="slide level2">
 <h2>Is <code>mpg</code> a function of <code>wt</code>?</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-11-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-11-1.png" width="864" /></p>
 </section><section id="use-wt-to-predict-mpg" class="slide level2">
 <h2>Use <code>wt</code> to predict <code>mpg</code></h2>
 <p>And predict the original data based on the fitted model.</p>
@@ -624,10 +624,10 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">points</span>(<span class="dt">y =</span> pred_mpg, <span class="dt">x =</span> mtcars<span class="op">$</span>wt, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 </section><section id="use-wt-to-predict-mpg-1" class="slide level2">
 <h2>Use <code>wt</code> to predict <code>mpg</code></h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-14-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-14-1.png" width="864" /></p>
 </section><section id="quantifying-goodness-of-fit" class="slide level2">
 <h2>Quantifying “goodness-of-fit”</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-15-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-15-1.png" width="864" /></p>
 </section><section id="quantifying-goodness-of-fit-1" class="slide level2">
 <h2>Quantifying “goodness-of-fit”</h2>
 <ul>
@@ -697,7 +697,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </section><section id="train-the-model-using-the-training-data-1" class="slide level2">
 <h2>Train the model using the training data</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-19-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-19-1.png" width="864" /></p>
 </section><section id="test-our-model-using-the-testing-data" class="slide level2">
 <h2>Test our model using the testing data</h2>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">pred_mpg =<span class="st"> </span><span class="kw">predict</span>(fit, testDat)</a>
@@ -716,7 +716,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 ## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </section><section id="test-our-model-using-the-testing-data-1" class="slide level2">
 <h2>Test our model using the testing data</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-21-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-21-1.png" width="864" /></p>
 </section></section>
 <section><section id="example-2" class="title-slide slide level1"><h1>Example 2</h1></section><section id="classification-trees" class="slide level2">
 <h2>Classification Trees</h2>
@@ -726,7 +726,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb25-3" data-line-number="3"><span class="kw">pairs</span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">col =</span> iris<span class="op">$</span>Species)</a></code></pre></div>
 </section><section id="iris-data" class="slide level2">
 <h2>Iris Data</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-23-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-23-1.png" width="864" /></p>
 </section><section id="another-slide" class="slide level2">
 <h2>Another slide</h2>
 <p>We can start with a simple learner, a <a href="https://en.wikipedia.org/wiki/Decision_tree_learning">classification tree</a>. This learner requires:</p>
@@ -748,7 +748,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw">plot</span>(x)</a></code></pre></div>
 </section><section id="learning-the-model-1" class="slide level2">
 <h2>Learning the model</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-25-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-25-1.png" width="864" /></p>
 </section><section id="checking-the-model" class="slide level2">
 <h2>Checking the model</h2>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">library</span>(caret)</a>
@@ -815,10 +815,10 @@ To deal with this problem, we can split the dataset into a “training” set an
 <h2>“train” our tree on the “training” set.</h2>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">trainTree =<span class="st"> </span><span class="kw">ctree</span>(Species <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> irisTrain)</a>
 <a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">plot</span>(trainTree)</a></code></pre></div>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-28-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-28-1.png" width="864" /></p>
 </section><section id="train-our-tree-on-the-training-set.-1" class="slide level2">
 <h2>“train” our tree on the “training” set.</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-29-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-29-1.png" width="864" /></p>
 </section><section id="test-our-predictions-on-the-training-data" class="slide level2">
 <h2>Test our predictions on the “training” data</h2>
 <p>And how does our <code>trainTree</code> do at predicting the original classes in the “training” data?</p>
@@ -923,7 +923,7 @@ To deal with this problem, we can split the dataset into a “training” set an
 <a class="sourceLine" id="cb40-6" data-line-number="6"><span class="kw">ggplot</span>(spiral, <span class="kw">aes</span>(x, y, <span class="dt">color =</span> class)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
 </section><section id="k-nearest-neighbor-1" class="slide level2">
 <h2>k-nearest-neighbor</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-35-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-35-1.png" width="864" /></p>
 </section><section id="without-splitting-data" class="slide level2">
 <h2>Without splitting data</h2>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(caret)</a>
@@ -1010,7 +1010,7 @@ To deal with this problem, we can split the dataset into a “training” set an
 <a class="sourceLine" id="cb45-6" data-line-number="6">trainTree =<span class="st"> </span><span class="kw">ctree</span>(class <span class="op">~</span><span class="st"> </span>., spiralTrain)</a></code></pre></div>
 </section><section id="using-trees-to-predict-on-the-spiral-dataset-1" class="slide level2">
 <h2>Using trees to predict on the <code>spiral</code> dataset</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/unnamed-chunk-40-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/unnamed-chunk-40-1.png" width="864" /></p>
 </section><section id="using-trees-to-predict-on-the-spiral-dataset-2" class="slide level2 smaller">
 <h2>Using trees to predict on the <code>spiral</code> dataset</h2>
 <p>Training Data</p>
@@ -1109,7 +1109,7 @@ To deal with this problem, we can split the dataset into a “training” set an
 <h2>Boosting results</h2>
 </section><section id="a-few-trees-from-our-ensemble" class="slide level2">
 <h2>A few trees from our ensemble</h2>
-<p><img data-src="MachineLearning_files/figure-revealjs/treeplot-1.png" /></p>
+<p><img src="MachineLearning_files/figure-revealjs/treeplot-1.png" width="864" /></p>
 </section><section id="boosted-trees-on-test-data" class="slide level2">
 <h2>Boosted trees on test data</h2>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">spiralTest =<span class="st"> </span>spiral[<span class="op">!</span>trainIdx, ]</a>
@@ -1321,26 +1321,25 @@ To deal with this problem, we can split the dataset into a “training” set an
 ##  [84] bitops_1.0-6                 
 ##  [85] httpuv_1.5.1                 
 ##  [86] R6_2.4.0                     
-##  [87] bookdown_0.11                
-##  [88] promises_1.0.1               
-##  [89] sessioninfo_1.1.1            
-##  [90] codetools_0.2-16             
-##  [91] MASS_7.3-51.4                
-##  [92] assertthat_0.2.1             
-##  [93] pkgload_1.0.2                
-##  [94] rprojroot_1.3-2              
-##  [95] withr_2.1.2                  
-##  [96] GenomicAlignments_1.21.3     
-##  [97] Rsamtools_2.1.2              
-##  [98] multcomp_1.4-10              
-##  [99] GenomeInfoDbData_1.2.1       
-## [100] hms_0.4.2                    
-## [101] timeDate_3043.102            
-## [102] class_7.3-15                 
-## [103] tidyr_0.8.3                  
-## [104] rmarkdown_1.13               
-## [105] lubridate_1.7.4              
-## [106] shiny_1.3.2</code></pre>
+##  [87] promises_1.0.1               
+##  [88] sessioninfo_1.1.1            
+##  [89] codetools_0.2-16             
+##  [90] MASS_7.3-51.4                
+##  [91] assertthat_0.2.1             
+##  [92] pkgload_1.0.2                
+##  [93] rprojroot_1.3-2              
+##  [94] withr_2.1.2                  
+##  [95] GenomicAlignments_1.21.3     
+##  [96] Rsamtools_2.1.2              
+##  [97] multcomp_1.4-10              
+##  [98] GenomeInfoDbData_1.2.1       
+##  [99] hms_0.4.2                    
+## [100] timeDate_3043.102            
+## [101] class_7.3-15                 
+## [102] tidyr_0.8.3                  
+## [103] rmarkdown_1.13               
+## [104] lubridate_1.7.4              
+## [105] shiny_1.3.2</code></pre>
 <pre><code>&lt;script&gt;
     (function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

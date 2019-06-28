@@ -542,7 +542,7 @@ some operations
 <p><span>example</span> If mat is a matrix and fun is a function (such as mean, var, lm …) that takes a vector as its argument, then you can:</p>
 <pre><code>apply(mat,1,fun) # over rows--second argument is 1      
 apply(mat,2,fun) # over columns--second argument is 2</code></pre>
-<p>In either case, the output is a vector.</p>
+<p>In either case, the output is a <em>vector</em>.</p>
 </div>
 <div id="apply-function-exercise" class="section level3">
 <h3>Apply Function Exercise</h3>
@@ -557,6 +557,7 @@ apply(mat,2,fun) # over columns--second argument is 2</code></pre>
 <ul>
 <li><p><span><code>lapply(list, function)</code> applies the function to every element of list</span></p></li>
 <li><p><span><code>sapply(list or vector, function)</code> applies the function to every element of list or vector, and returns a vector, when possible (easier to process)</span></p></li>
+<li><p><span><code>vapply(list or vector, function)</code> applies the function to every element of list or vector, and returns a vector, when possible (easier to process)</span></p></li>
 <li><p><span><code>tapply(x, factor, fun)</code> uses the factor to split vector x into groups, and then applies fun to each group</span></p></li>
 </ul>
 <pre class="r"><code>    # create a list
@@ -620,9 +621,35 @@ add1(17)
 ## [1] 18
 add1(c(17,18,19,20))
 ## [1] 18 19 20 21</code></pre>
-<p>You can use the <code>edit()</code> function to make changes to a function. The following command will open a window, allow you to make changes, and assign the result to a new function, <code>add2</code>.</p>
-<pre><code>add2 = edit(add1)</code></pre>
 </div>
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<ul>
+<li>Use system.time to compare the two codes here. Both accomplish the same thing–adding 1 to every value of the vector <code>rn</code>.</li>
+</ul>
+<pre class="r"><code>rn = rnorm(1e6)
+system.time(
+for (i in seq_along(rn)) {
+  rn[i] = rn[i] + 1
+}
+)
+# vectorized
+system.time(
+    {rn = rn + 1}
+)</code></pre>
+<ul>
+<li><p>Create a function that takes a numeric vector and calculates the mean without using the R <code>mean</code> function.</p></li>
+<li><p>Modify the function above so that it can calculate the “trimmed mean” by adding a second argument that specifies the proportion of data to trim from ends of the numeric vector before calculating mean. The definition of trimmed mean is:</p></li>
+</ul>
+<blockquote>
+<p>A trimmed mean (similar to an adjusted mean) is a method of averaging that removes a small designated percentage of the largest and smallest values before calculating the mean. After removing the specified outlier observations, the trimmed mean is found using a standard arithmetic averaging formula. The use of a trimmed mean helps eliminate the influence of outliers or data points on the tails that may unfairly affect the traditional mean.</p>
+</blockquote>
+<ul>
+<li><p>Use the <code>system.time()</code> function to time your mean function with a vector of length 1000. Do the same with the builtin R version of mean, <code>mean()</code>. Is there a difference in timings? Do you believe that these timings could show a difference?</p></li>
+<li><p>Use the <a href="https://www.r-bloggers.com/using-the-microbenchmark-package-to-compare-the-execution-time-of-r-expressions/">microbenchmark package</a> to compare the performance of your mean function to that of <code>mean()</code> builtin to R.</p></li>
+<li><p>Write a function that takes as input a string (character vector of length 1) and counts the number of occurrences of each letter (after converting to lower case). Take a look at the <code>tolower()</code>, <code>strsplit()</code>, and <code>table()</code> functions to help you with this task. Then, modify the function to return the proportion of each letter rather than the count. Would this be useful for any biological data?</p></li>
+</ul>
 </div>
 
     <script>
