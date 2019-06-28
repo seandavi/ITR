@@ -5,11 +5,7 @@ author:
   affiliation: Center for Cancer Research, National Cancer Institute, NIH
   email: seandavi@gmail.com
 output: 
-  BiocStyle::html_document
-vignette: >
-  %\VignetteIndexEntry{Prepare Gene Expression Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  html_document
 ---
 
 ```{r init, include=FALSE}
@@ -107,7 +103,7 @@ Note that the k562_dnase includes a ranked list of peaks. The "top" peaks have t
 and generally very high signalValue. We can subset to get the 
 
 
-```{r fixseqlevels}
+```{r fixseqlevels, cache=FALSE}
 common_seqlevels = intersect(seqlevels(k562_dnase), seqlevels(se))
 keepSeqlevels(se, common_seqlevels, pruning.mode = "coarse")
 keepSeqlevels(k562_dnase, common_seqlevels, pruning.mode = "coarse")

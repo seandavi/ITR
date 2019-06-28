@@ -238,6 +238,10 @@ grep('bcd',c('abcdef','abcd','bcde','cdef','defg'))
 grep('bcd',c('abcdef','abcd','bcde','cdef','defg'),value=TRUE)
 ```
 
+Read about the `grepl` function (`?grepl`). Use that function to
+return a logical vector (TRUE/FALSE) for each entry above with an `a`
+in it.
+
 ## Missing Values, AKA “NA”
 
 R has a special value, “NA”, that represents a “missing” value, or *Not Available*, in a
@@ -267,5 +271,4 @@ length of `x`. The `!` is the logical _NOT_ operator and converts `TRUE` to `FAL
 ```{r}
 x[!is.na(x)]
 ```
-
 

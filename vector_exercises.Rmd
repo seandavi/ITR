@@ -46,9 +46,12 @@ my_rn2 = my_rn + 5
 mean(my_rn2)
 ```
 
-- You are all going to present your work during the course. We want to do this as fairly as possible, so we want
-to use R to randomly assign an order to you all. If each of you has a number between 1 and 25, how can you produce
-a randomized ordering to see who goes first, second, etc.? See the `sample()` function for some help. Assign the ordering to a variable `speakers`.
+- You are all going to present your work during the course. We want to
+do this as fairly as possible, so we want to use R to randomly assign
+an order to you all. If each of you has a number between 1 and 25, how
+can you produce a randomized ordering to see who goes first, second,
+etc.? See the `sample()` function for some help. Assign the ordering
+to a variable `speakers`.
 
 ```{r}
 speakers = sample(1:25, replace = FALSE)
@@ -76,11 +79,12 @@ rep(c("A", "B"), each=5)
 ```
 
 
-- Referring back to your `my_rn` example, use the `<` operator to create a vector of `TRUE` and `FALSE` 
-so that you isolate values more than 1 standard deviation below the mean. 
-Finally, use the vector of `TRUE`/`FALSE` to get the 
-actual values from `my_rn` that meet these criteria. This is a multi-step problem, so 
-think about the pieces you need and about how to put them together.
+- Referring back to your `my_rn` example, use the `<` operator to
+create a vector of `TRUE` and `FALSE` so that you isolate values more
+than 1 standard deviation below the mean.  Finally, use the vector of
+`TRUE`/`FALSE` to get the actual values from `my_rn` that meet these
+criteria. This is a multi-step problem, so think about the pieces you
+need and about how to put them together.
 
 ```{r}
 # first determine the mean
@@ -99,7 +103,9 @@ below_mean_index = my_rn < below_mean
 my_rn[below_mean_index]
 ```
 
-- Make a histogram of your `my_rn` vector (see `hist`). Add a vertical red line to the plot at 1 sd above and below the mean (see `help('abline')` and a green line at the mean.
+- Make a histogram of your `my_rn` vector (see `hist`). Add a vertical
+  red line to the plot at 1 sd above and below the mean (see
+  `help('abline')` and a green line at the mean.
 
 ```{r}
 hist(my_rn)
