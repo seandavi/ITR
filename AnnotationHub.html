@@ -706,11 +706,14 @@ ahs</code></pre>
 <h1>Accessing Genome-Scale Data</h1>
 <div id="non-model-organism-gene-annotations" class="section level2">
 <h2>Non-model organism gene annotations</h2>
-<p><em>Bioconductor</em> offers pre-built <code>org.*</code> annotation packages for model organisms, with their use described in the <a href="http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb">OrgDb</a> section of the Annotation work flow. Here we discover available <code>OrgDb</code> objects for less-model organisms</p>
+<p><em>Bioconductor</em> offers pre-built <code>org.*</code> annotation packages for model organisms, with their use described in the <a href="http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb">OrgDb</a> section of the Annotation work flow. Here we discover available <code>OrgDb</code> objects for less-model organisms.</p>
+<p>The <code>query()</code> interface allows us to do full-text searching of <em>AnnotationHub</em> objects. How many OrgDb packages are represented in <em>AnnotationHub</em>?</p>
 <pre class="r"><code>library(AnnotationHub)
+## create the annotationhub object
 ah &lt;- AnnotationHub()</code></pre>
 <pre><code>## snapshotDate(): 2019-05-20</code></pre>
-<pre class="r"><code>query(ah, &quot;OrgDb&quot;)</code></pre>
+<pre class="r"><code>## Query the annotationhub metadata
+query(ah, &quot;OrgDb&quot;)</code></pre>
 <pre><code>## AnnotationHub with 2472 records
 ## # snapshotDate(): 2019-05-20 
 ## # $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/, FungiDB, TriTry...
@@ -733,10 +736,27 @@ ah &lt;- AnnotationHub()</code></pre>
 ##   AH73814 | org.Bacillus_cereus_(strain_ATCC_14579_|_DSM_31).eg.sqlite
 ##   AH73815 | org.Bacillus_cereus_ATCC_14579.eg.sqlite                  
 ##   AH73816 | org.Schizosaccharomyces_cryophilus_OY26.eg.sqlite</code></pre>
-<pre class="r"><code>orgdb &lt;- query(ah, &quot;OrgDb&quot;)[[1]] </code></pre>
+<p>Let’s assume that we are working with yeast (<em>Saccharomyces cerevisiae</em>) and get the OrgDb package.</p>
+<pre class="r"><code>sub_ah = query(ah, c(&quot;OrgDb&quot;, &quot;cerevisiae&quot;))
+sub_ah</code></pre>
+<pre><code>## AnnotationHub with 3 records
+## # snapshotDate(): 2019-05-20 
+## # $dataprovider: FungiDB, ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/
+## # $species: Saccharomyces cerevisiae
+## # $rdataclass: OrgDb
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass,
+## #   tags, rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH70579&quot;]]&#39; 
+## 
+##             title                                                    
+##   AH70579 | org.Sc.sgd.db.sqlite                                     
+##   AH71541 | Transcript information for Saccharomyces cerevisiae S288c
+##   AH71939 | Transcript information for Saccharomyces cerevisiae S288c</code></pre>
+<pre class="r"><code>orgdb &lt;- query(sub_ah, &quot;OrgDb&quot;)[[1]]</code></pre>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
-##     &#39;AH70563 : 77309&#39;</code></pre>
+##     &#39;AH70579 : 77325&#39;</code></pre>
 <pre><code>## Loading required package: AnnotationDbi</code></pre>
 <pre><code>## Loading required package: Biobase</code></pre>
 <pre><code>## Welcome to Bioconductor
@@ -749,30 +769,151 @@ ah &lt;- AnnotationHub()</code></pre>
 <pre><code>## The following object is masked from &#39;package:AnnotationHub&#39;:
 ## 
 ##     cache</code></pre>
-<p>The object returned by AnnotationHub is directly usable with the <code>select()</code> interface, e.g., to discover the available keytypes for querying the object, the columns that these keytypes can map to, and finally selecting the SYMBOL and GENENAME corresponding to the first 6 ENTREZIDs</p>
-<pre class="r"><code>library(AnnotationDbi)
-keytypes(orgdb)</code></pre>
-<pre><code>##  [1] &quot;ACCNUM&quot;       &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot;
-##  [5] &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
-##  [9] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;ONTOLOGY&quot;    
-## [13] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PMID&quot;         &quot;REFSEQ&quot;      
-## [17] &quot;SYMBOL&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</code></pre>
+<p>Look at the <code>orgdb</code> object.</p>
+<pre class="r"><code>orgdb</code></pre>
+<pre><code>## OrgDb object:
+## | DBSCHEMAVERSION: 2.1
+## | Db type: OrgDb
+## | Supporting package: AnnotationDbi
+## | DBSCHEMA: YEAST_DB
+## | ORGANISM: Saccharomyces cerevisiae
+## | SPECIES: Yeast
+## | YGSOURCENAME: Yeast Genome
+## | YGSOURCEURL: https://downloads.yeastgenome.org
+## | YGSOURCEDATE: 2017-01-14
+## | CENTRALID: ORF
+## | TAXID: 559292
+## | KEGGSOURCENAME: KEGG GENOME
+## | KEGGSOURCEURL: ftp://ftp.genome.jp/pub/kegg/genomes
+## | KEGGSOURCEDATE: 2011-Mar15
+## | GOSOURCENAME: Gene Ontology
+## | GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/
+## | GOSOURCEDATE: 2019-Apr24
+## | EGSOURCEDATE: 2019-Apr26
+## | EGSOURCENAME: Entrez Gene
+## | EGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+## | ENSOURCEDATE: 2019-Apr08
+## | ENSOURCENAME: Ensembl
+## | ENSOURCEURL: ftp://ftp.ensembl.org/pub/current_fasta
+## | UPSOURCENAME: Uniprot
+## | UPSOURCEURL: http://www.UniProt.org/
+## | UPSOURCEDATE: Fri Apr 26 20:37:44 2019</code></pre>
+<pre><code>## 
+## Please see: help(&#39;select&#39;) for usage information</code></pre>
+<p>The <code>orgdb</code> object works like a little database. We can look at the columns in the database.</p>
 <pre class="r"><code>columns(orgdb)</code></pre>
-<pre><code>##  [1] &quot;ACCNUM&quot;       &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot;
-##  [5] &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
-##  [9] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;ONTOLOGY&quot;    
-## [13] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PMID&quot;         &quot;REFSEQ&quot;      
-## [17] &quot;SYMBOL&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</code></pre>
-<pre class="r"><code>egid &lt;- head(keys(orgdb, &quot;ENTREZID&quot;))
-AnnotationDbi::select(orgdb, egid, c(&quot;SYMBOL&quot;, &quot;GENENAME&quot;), &quot;ENTREZID&quot;)</code></pre>
+<pre><code>##  [1] &quot;ALIAS&quot;        &quot;COMMON&quot;       &quot;DESCRIPTION&quot;  &quot;ENSEMBL&quot;     
+##  [5] &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot; &quot;ENTREZID&quot;     &quot;ENZYME&quot;      
+##  [9] &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot;  &quot;GENENAME&quot;     &quot;GO&quot;          
+## [13] &quot;GOALL&quot;        &quot;INTERPRO&quot;     &quot;ONTOLOGY&quot;     &quot;ONTOLOGYALL&quot; 
+## [17] &quot;ORF&quot;          &quot;PATH&quot;         &quot;PFAM&quot;         &quot;PMID&quot;        
+## [21] &quot;REFSEQ&quot;       &quot;SGD&quot;          &quot;SMART&quot;        &quot;UNIPROT&quot;</code></pre>
+<p>Not all columns can always be used for “lookup”, though. We need to know which columns represent <code>keys</code> that we can use to retrieve data.</p>
+<pre class="r"><code>keytypes(orgdb)</code></pre>
+<pre><code>##  [1] &quot;ALIAS&quot;        &quot;COMMON&quot;       &quot;DESCRIPTION&quot;  &quot;ENSEMBL&quot;     
+##  [5] &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot; &quot;ENTREZID&quot;     &quot;ENZYME&quot;      
+##  [9] &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot;  &quot;GENENAME&quot;     &quot;GO&quot;          
+## [13] &quot;GOALL&quot;        &quot;INTERPRO&quot;     &quot;ONTOLOGY&quot;     &quot;ONTOLOGYALL&quot; 
+## [17] &quot;ORF&quot;          &quot;PATH&quot;         &quot;PFAM&quot;         &quot;PMID&quot;        
+## [21] &quot;REFSEQ&quot;       &quot;SGD&quot;          &quot;SMART&quot;        &quot;UNIPROT&quot;</code></pre>
+<p>You can examine the values available for lookup by using the <code>keys()</code> method.</p>
+<pre class="r"><code>head(keys(orgdb, keytype=&quot;ORF&quot;))</code></pre>
+<pre><code>## [1] &quot;AIP5&quot;    &quot;ARS1001&quot; &quot;ARS1002&quot; &quot;ARS1003&quot; &quot;ARS1004&quot; &quot;ARS1005&quot;</code></pre>
+<pre class="r"><code>head(keys(orgdb, keytype=&quot;GO&quot;))</code></pre>
+<pre><code>## [1] &quot;GO:0003674&quot; &quot;GO:0005575&quot; &quot;GO:0006950&quot; &quot;GO:0030437&quot; &quot;GO:0045944&quot;
+## [6] &quot;GO:0008150&quot;</code></pre>
+<p>Notice that there are two columns that look useful for the <code>derisi</code> data–<code>ORF</code> and <code>GENENAME</code>. Let’s assume that we had not been given the gene name as part of the <code>derisi</code> data, but only the ORF. We can use the <code>OrgDb</code> <code>select()</code> interface to retrieve the gene names for these five ORF ids, just to get a sense of how <code>select()</code> works to get information from an <code>OrgDb</code> object.</p>
+<pre class="r"><code>orfids = c(&quot;YAL001C&quot;, &quot;YAL002W&quot;, &quot;YAL003W&quot;, &quot;YAL004W&quot;, &quot;YAL005C&quot;)
+select(orgdb, keys = orfids, columns = &quot;GENENAME&quot;, keytype=&quot;ORF&quot;)</code></pre>
 <pre><code>## &#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>##   ENTREZID          SYMBOL      GENENAME
-## 1  1267437 AgaP_AGAP012606 AGAP012606-PA
-## 2  1267439 AgaP_AGAP012559 AGAP012559-PA
-## 3  1267440 AgaP_AGAP012558 AGAP012558-PA
-## 4  1267447 AgaP_AGAP012586 AGAP012586-PA
-## 5  1267450 AgaP_AGAP012834 AGAP012834-PA
-## 6  1267459 AgaP_AGAP012589 AGAP012589-PA</code></pre>
+<pre><code>##       ORF        SGD GENENAME
+## 1 YAL001C S000000001     TFC3
+## 2 YAL002W S000000002     VPS8
+## 3 YAL003W S000000003     EFB1
+## 4 YAL004W S000002136     &lt;NA&gt;
+## 5 YAL005C S000000004     SSA1</code></pre>
+<pre class="r"><code>select(orgdb, keys = orfids, columns = &quot;GO&quot;, keytype=&quot;ORF&quot;)</code></pre>
+<pre><code>## &#39;select()&#39; returned 1:many mapping between keys and columns</code></pre>
+<pre><code>##        ORF        SGD         GO EVIDENCE ONTOLOGY
+## 1  YAL001C S000000001 GO:0000127      IDA       CC
+## 2  YAL001C S000000001 GO:0000799      IDA       CC
+## 3  YAL001C S000000001 GO:0000995      IBA       MF
+## 4  YAL001C S000000001 GO:0001002      IDA       MF
+## 5  YAL001C S000000001 GO:0001003      IDA       MF
+## 6  YAL001C S000000001 GO:0003677      IEA       MF
+## 7  YAL001C S000000001 GO:0005634      IEA       CC
+## 8  YAL001C S000000001 GO:0005739      IDA       CC
+## 9  YAL001C S000000001 GO:0005739      IEA       CC
+## 10 YAL001C S000000001 GO:0006351      IEA       BP
+## 11 YAL001C S000000001 GO:0006355      IEA       BP
+## 12 YAL001C S000000001 GO:0006359      IEA       BP
+## 13 YAL001C S000000001 GO:0008301      IDA       MF
+## 14 YAL001C S000000001 GO:0009304      IBA       BP
+## 15 YAL001C S000000001 GO:0042791      IDA       BP
+## 16 YAL001C S000000001 GO:0042791      IMP       BP
+## 17 YAL001C S000000001 GO:0071168      IMP       BP
+## 18 YAL002W S000000002 GO:0005770      IDA       CC
+## 19 YAL002W S000000002 GO:0005794      IEA       CC
+## 20 YAL002W S000000002 GO:0005795      IEA       CC
+## 21 YAL002W S000000002 GO:0006623      IMP       BP
+## 22 YAL002W S000000002 GO:0006810      IEA       BP
+## 23 YAL002W S000000002 GO:0006886      IEA       BP
+## 24 YAL002W S000000002 GO:0015031      IEA       BP
+## 25 YAL002W S000000002 GO:0016020      IDA       CC
+## 26 YAL002W S000000002 GO:0016192      IEA       BP
+## 27 YAL002W S000000002 GO:0030897      IBA       CC
+## 28 YAL002W S000000002 GO:0032511      IMP       BP
+## 29 YAL002W S000000002 GO:0033263      IDA       CC
+## 30 YAL002W S000000002 GO:0035542      IBA       BP
+## 31 YAL002W S000000002 GO:0042144      IBA       BP
+## 32 YAL002W S000000002 GO:0043495      IMP       MF
+## 33 YAL002W S000000002 GO:0046872      IEA       MF
+## 34 YAL002W S000000002 GO:0051020      IDA       MF
+## 35 YAL002W S000000002 GO:0051020      IPI       MF
+## 36 YAL003W S000000003 GO:0003746      IEA       MF
+## 37 YAL003W S000000003 GO:0005085      IDA       MF
+## 38 YAL003W S000000003 GO:0005853      IEA       CC
+## 39 YAL003W S000000003 GO:0005853      IMP       CC
+## 40 YAL003W S000000003 GO:0006412      IEA       BP
+## 41 YAL003W S000000003 GO:0006414      IEA       BP
+## 42 YAL003W S000000003 GO:0006414      IMP       BP
+## 43 YAL003W S000000003 GO:0006449      IGI       BP
+## 44 YAL003W S000000003 GO:0032232      IDA       BP
+## 45 YAL003W S000000003 GO:0043547      IEA       BP
+## 46 YAL003W S000000003 GO:1990145      IMP       BP
+## 47 YAL004W S000002136       &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 48 YAL005C S000000004 GO:0000049      IDA       MF
+## 49 YAL005C S000000004 GO:0000060      IDA       BP
+## 50 YAL005C S000000004 GO:0000060      IGI       BP
+## 51 YAL005C S000000004 GO:0000166      IEA       MF
+## 52 YAL005C S000000004 GO:0000209      IDA       BP
+## 53 YAL005C S000000004 GO:0000329      IDA       CC
+## 54 YAL005C S000000004 GO:0002181      IMP       BP
+## 55 YAL005C S000000004 GO:0005524      IEA       MF
+## 56 YAL005C S000000004 GO:0005576      IEA       CC
+## 57 YAL005C S000000004 GO:0005618      IEA       CC
+## 58 YAL005C S000000004 GO:0005634      IDA       CC
+## 59 YAL005C S000000004 GO:0005737      IDA       CC
+## 60 YAL005C S000000004 GO:0005737      IEA       CC
+## 61 YAL005C S000000004 GO:0005829      IDA       CC
+## 62 YAL005C S000000004 GO:0005832      IPI       CC
+## 63 YAL005C S000000004 GO:0005844      IDA       CC
+## 64 YAL005C S000000004 GO:0005886      IDA       CC
+## 65 YAL005C S000000004 GO:0006457      IDA       BP
+## 66 YAL005C S000000004 GO:0006616      IDA       BP
+## 67 YAL005C S000000004 GO:0006626      IMP       BP
+## 68 YAL005C S000000004 GO:0009277      IDA       CC
+## 69 YAL005C S000000004 GO:0016887      IDA       MF
+## 70 YAL005C S000000004 GO:0035617      IDA       BP
+## 71 YAL005C S000000004 GO:0042026      IDA       BP
+## 72 YAL005C S000000004 GO:0043161      IGI       BP
+## 73 YAL005C S000000004 GO:0043161      IMP       BP
+## 74 YAL005C S000000004 GO:0051082      IDA       MF
+## 75 YAL005C S000000004 GO:0072318      IDA       BP
+## 76 YAL005C S000000004 GO:0090344      IMP       BP</code></pre>
+<p><em>Exercise:</em> Use the <code>derisi</code> ORF column to look up the associated gene names.</p>
+<p><em>Exercise:</em> Use the <code>derisi</code> ORF column to look up the gene ontology <a href="http://geneontology.org/"><code>GO</code></a> annotations for the ORFs. What is the general relationship between <code>GO</code> terms and ORFs?</p>
+<p><em>Bonus Exercise:</em> Read the documentation associated with the GO.db package <a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">here</a>. Use the GO.db package and the select interface to look up the descriptions and terms for the gene ontology terms from the previous exercise.</p>
 </div>
 <div id="roadmap-epigenomics-project" class="section level2">
 <h2>Roadmap Epigenomics Project</h2>
@@ -942,7 +1083,7 @@ E126</code></pre>
 ##   AH32990 | E126-H3K4me2.fc.signal.bigwig          
 ##   AH34022 | E126-H3K4me2.pval.signal.bigwig        
 ##   AH40177 | E126-H3K4me2.imputed.pval.signal.bigwig</code></pre>
-<p>Hub resources can also be selected using <code>$</code>, <code>subset()</code>, and <code>display()</code>; see the main <a href="AnnotationHub.html"><em>AnnotationHub</em> vignette</a> for additional detail.</p>
+<p>Hub resources can also be selected using <code>$</code>, <code>subset()</code>, and <code>display()</code>.</p>
 <p>Hub resources are imported as the appropriate <em>Bioconductor</em> object for use in further analysis. For example, peak files are returned as <em>GRanges</em> objects.</p>
 <pre><code>## downloading 0 resources</code></pre>
 <pre><code>## loading from cache 
@@ -996,6 +1137,7 @@ E126</code></pre>
 </div>
 <div id="configuring-annotationhub-objects" class="section level1">
 <h1>Configuring <code>AnnotationHub</code> objects</h1>
+<p>Most users will not need to do any specific configuration, but this section is included for completeness.</p>
 <p>When you create the <code>AnnotationHub</code> object, it will set up the object for you with some default settings. See <code>?AnnotationHub</code> for ways to customize the hub source, the local cache, and other instance-specific options, and <code>?getAnnotationHubOption</code> to get or set package-global options for use across sessions.</p>
 <p>If you look at the object you will see some helpful information about it such as where the data is cached and where online the hub server is set to.</p>
 <pre class="r"><code>ah</code></pre>
