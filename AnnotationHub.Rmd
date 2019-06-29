@@ -101,6 +101,9 @@ The metadata underlying this hub object can be retrieved by you
 
 ```{r show2}
 df <- mcols(dm)
+# what is df?
+class(df)
+head(df[,1:5])
 ```
 
 By default the show method will only display the first 5 and last 5  rows.
@@ -167,28 +170,81 @@ _Bioconductor_ offers pre-built `org.*` annotation packages for model
 organisms, with their use described in the
 [OrgDb](http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb)
 section of the Annotation work flow. Here we discover available `OrgDb`
-objects for less-model organisms
+objects for less-model organisms.
+
+The `query()` interface allows us to do full-text searching of
+_AnnotationHub_ objects. How many OrgDb packages are represented in
+_AnnotationHub_?
 
 ```{r less-model-org}
 library(AnnotationHub)
+## create the annotationhub object
 ah <- AnnotationHub()
+## Query the annotationhub metadata
 query(ah, "OrgDb")
-orgdb <- query(ah, "OrgDb")[[1]] 
 ```
 
-The object returned by AnnotationHub is directly usable with the
-`select()` interface, e.g., to discover the available keytypes for
-querying the object, the columns that these keytypes can map to, and
-finally selecting the SYMBOL and GENENAME corresponding to the first 6
-ENTREZIDs
+Let's assume that we are working with yeast (_Saccharomyces
+cerevisiae_) and get the OrgDb package. 
 
-```{r less-model-org-select}
-library(AnnotationDbi)
-keytypes(orgdb)
+```{r}
+sub_ah = query(ah, c("OrgDb", "cerevisiae"))
+sub_ah
+orgdb <- query(sub_ah, "OrgDb")[[1]]
+```
+
+Look at the `orgdb` object.
+
+```{r}
+orgdb
+```
+
+The `orgdb` object works like a little database. We can look at the
+columns in the database.
+
+```{r}
 columns(orgdb)
-egid <- head(keys(orgdb, "ENTREZID"))
-AnnotationDbi::select(orgdb, egid, c("SYMBOL", "GENENAME"), "ENTREZID")
 ```
+
+Not all columns can always be used for "lookup", though. We need to know
+which columns represent `keys` that we can use to retrieve data. 
+
+```{r}
+keytypes(orgdb)
+```
+
+You can examine the values available for lookup by using the `keys()` method.
+
+```{r}
+head(keys(orgdb, keytype="ORF"))
+head(keys(orgdb, keytype="GO"))
+```
+
+Notice that there are two columns that look useful for the `derisi`
+data--`ORF` and `GENENAME`. Let's assume that we had not been given
+the gene name as part of the `derisi` data, but only the ORF. We can
+use the `OrgDb` `select()` interface to retrieve the gene names for
+these five ORF ids, just to get a sense of how `select()` works to get
+information from an `OrgDb` object.
+
+```{r}
+orfids = c("YAL001C", "YAL002W", "YAL003W", "YAL004W", "YAL005C")
+select(orgdb, keys = orfids, columns = "GENENAME", keytype="ORF")
+select(orgdb, keys = orfids, columns = "GO", keytype="ORF")
+```
+
+*Exercise:* Use the `derisi` ORF column to look up the associated gene
+names.
+
+*Exercise:* Use the `derisi` ORF column to look up the gene ontology [`GO`](http://geneontology.org/)
+annotations for the ORFs. What is the general relationship between
+`GO` terms and ORFs?
+
+*Bonus Exercise:* Read the documentation associated with the GO.db
+package
+[here](https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf). Use
+the GO.db package and the select interface to look up the descriptions
+and terms for the gene ontology terms from the previous exercise. 
 
 ## Roadmap Epigenomics Project 
 
@@ -291,8 +347,7 @@ E126 <- query(ah , c("EpigenomeRoadMap", "E126", "H3K4ME2"))
 E126
 ```
 Hub resources can also be selected using `$`, `subset()`, and
-`display()`; see the main
-[_AnnotationHub_ vignette](AnnotationHub.html) for additional detail.
+`display()`.
 
 Hub resources are imported as the appropriate _Bioconductor_ object
 for use in further analysis.  For example, peak files are returned as
@@ -301,6 +356,7 @@ _GRanges_ objects.
 ```{r echo=FALSE, results='hide'}
 peaks <- E126[['AH29817']]
 ```
+
 ```{r}
 peaks <- E126[['AH29817']]
 seqinfo(peaks)
@@ -327,6 +383,10 @@ ah[metadata(peaks)$AnnotationHubName]$sourceurl
 ```
 
 # Configuring `AnnotationHub` objects
+
+Most users will not need to do any specific configuration, but this
+section is included for completeness.
+
 
 When you create the `AnnotationHub` object, it will set up the object
 for you with some default settings.  See `?AnnotationHub` for ways to

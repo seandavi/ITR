@@ -79,7 +79,7 @@ se = SummarizedExperiment(list(counts = txi$counts, abundance = txi$abundance), 
 Now, we limit the gene quantifications to those in our `txdb` object. There are
 data for tRNAs and for ERCC control spikeins, but we will simply drop those here.
 
-```{r limitserows}
+```{r limitserows, cache=FALSE}
 library(GenomicFeatures)
 genes_gr = genes(txdb)
 common_genes = intersect(names(genes_gr), rownames(se))
