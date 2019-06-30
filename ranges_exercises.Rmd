@@ -130,8 +130,7 @@ In this exercise, we are going to look at the overlap of DNAse sites relative to
 To get started, install and load the `TxDb.Hsapiens.UCSC.hg19.knownGene` txdb object.
 
 ```
-source("https://bioconductor.org/biocLite.R")
-biocLite("TxDb.Hsapiens.UCSC.hg19.knownGene")
+BiocManager::install("TxDb.Hsapiens.UCSC.hg19.knownGene")
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 kg = TxDb.Hsapiens.UCSC.hg19.knownGene
 ```
@@ -167,7 +166,7 @@ summary(countOverlaps(proms))
 ```
 
 - To find overlap of our DNAse sites with promoters, let's collapse overlapping "promoters" to 
-just keep the contiguous regions. This can be done with `reduce`. 
+just keep the contiguous regions by using `reduce`. 
 
 ```{r}
 prom_regions = reduce(proms)
@@ -192,6 +191,6 @@ prop_proms = sum(width(prom_regions))/sum(seqlengths(prom_regions))
 prop_dnase = sum(width(dnase))/sum(seqlengths(prom_regions))
 # Iff the dnase and promoter regions are 
 # not related, then we would expect this number
-# of overlaps.
+# of DNAse overlaps with promoters.
 prop_proms * prop_dnase * length(dnase) 
 ```

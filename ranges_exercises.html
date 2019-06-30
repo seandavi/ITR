@@ -560,8 +560,7 @@ width(dnase_wide)</code></pre>
 <div id="exercise-3" class="section level2">
 <h2>Exercise 3</h2>
 <p>In this exercise, we are going to look at the overlap of DNAse sites relative to genes/transcripts. To get started, install and load the <code>TxDb.Hsapiens.UCSC.hg19.knownGene</code> txdb object.</p>
-<pre><code>source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)
+<pre><code>BiocManager::install(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)
 library(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)
 kg = TxDb.Hsapiens.UCSC.hg19.knownGene</code></pre>
 <ul>
@@ -585,7 +584,7 @@ length(tx)</code></pre>
 </ul>
 <pre class="r"><code>summary(countOverlaps(proms))</code></pre>
 <ul>
-<li>To find overlap of our DNAse sites with promoters, let’s collapse overlapping “promoters” to just keep the contiguous regions. This can be done with <code>reduce</code>.</li>
+<li>To find overlap of our DNAse sites with promoters, let’s collapse overlapping “promoters” to just keep the contiguous regions by using <code>reduce</code>.</li>
 </ul>
 <pre class="r"><code>prom_regions = reduce(proms)
 summary(countOverlaps(prom_regions))</code></pre>
@@ -605,7 +604,7 @@ sum(dnase2 %over% prom_regions)</code></pre>
 prop_dnase = sum(width(dnase))/sum(seqlengths(prom_regions))
 # Iff the dnase and promoter regions are 
 # not related, then we would expect this number
-# of overlaps.
+# of DNAse overlaps with promoters.
 prop_proms * prop_dnase * length(dnase) </code></pre>
 </div>
 </div>
