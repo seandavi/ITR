@@ -427,6 +427,9 @@ div.tocify {
     <li>
       <a href="MachineLearning.html">Machine Learning hands-on</a>
     </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -465,6 +468,36 @@ div.tocify {
 </div>
 
 
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>In this little set of exercises, you will be using histone marks near a gene to predict its expression.</p>
+<p><span class="math display">\[y = h1 + h2 + h3 + ...\]</span></p>
+<p>We will try a couple of different approaches:</p>
+<ol style="list-style-type: decimal">
+<li>Penalized regression</li>
+<li>RandomForest</li>
+</ol>
+<div id="penalized-regression" class="section level2">
+<h2>Penalized regression</h2>
+<p>Adapted from <a href="http://www.sthda.com/english/articles/37-model-selection-essentials-in-r/153-penalized-regression-essentials-ridge-lasso-elastic-net/" class="uri">http://www.sthda.com/english/articles/37-model-selection-essentials-in-r/153-penalized-regression-essentials-ridge-lasso-elastic-net/</a>.</p>
+<div id="ridge-regression" class="section level3">
+<h3>Ridge regression</h3>
+<p>Ridge regression shrinks the regression coefficients, so that variables, with minor contribution to the outcome, have their coefficients close to zero. The shrinkage of the coefficients is achieved by penalizing the regression model with a penalty term called L2-norm, which is the sum of the squared coefficients. The amount of the penalty can be fine-tuned using a constant called lambda (λ). Selecting a good value for λ is critical. When λ=0, the penalty term has no effect, and ridge regression will produce the classical least square coefficients. However, as λ increases to infinite, the impact of the shrinkage penalty grows, and the ridge regression coefficients will get close zero.</p>
+<p>Note that, in contrast to the ordinary least square regression, ridge regression is highly affected by the scale of the predictors. Therefore, it is better to standardize (i.e., scale) the predictors before applying the ridge regression (James et al. 2014), so that all the predictors are on the same scale. The standardization of a predictor x, can be achieved using the formula x’ = x / sd(x), where sd(x) is the standard deviation of x. The consequence of this is that, all standardized predictors will have a standard deviation of one allowing the final fit to not depend on the scale on which the predictors are measured.</p>
+<p>One important advantage of the ridge regression, is that it still performs well, compared to the ordinary least square method (Chapter <span class="citation">@ref</span>(linear-regression)), in a situation where you have a large multivariate data with the number of predictors (p) larger than the number of observations (n). One disadvantage of the ridge regression is that, it will include all the predictors in the final model, unlike the stepwise regression methods, which will generally select models that involve a reduced set of variables. Ridge regression shrinks the coefficients towards zero, but it will not set any of them exactly to zero. The lasso regression is an alternative that overcomes this drawback.</p>
+</div>
+<div id="lasso-regression" class="section level3">
+<h3>Lasso regression</h3>
+<p>Lasso stands for <em>Least Absolute Shrinkage and Selection Operator</em>. It shrinks the regression coefficients toward zero by penalizing the regression model with a penalty term called L1-norm, which is the sum of the absolute coefficients. In the case of lasso regression, the penalty has the effect of forcing some of the coefficient estimates, with a minor contribution to the model, to be exactly equal to zero. This means that, lasso can be also seen as an alternative to the subset selection methods for performing variable selection in order to reduce the complexity of the model. As in ridge regression, selecting a good value of λ for the lasso is critical.</p>
+<p>One obvious advantage of lasso regression over ridge regression, is that it produces simpler and more interpretable models that incorporate only a reduced set of the predictors. However, neither ridge regression nor the lasso will universally dominate the other. Generally, lasso might perform better in a situation where some of the predictors have large coefficients, and the remaining predictors have very small coefficients. Ridge regression will perform better when the outcome is a function of many predictors, all with coefficients of roughly equal size (James et al. 2014).</p>
+<p>Cross-validation methods can be used for identifying which of these two techniques is better on a particular data set.</p>
+</div>
+<div id="elastic-net" class="section level3">
+<h3>Elastic Net</h3>
+<p>Elastic Net produces a regression model that is penalized with both the L1-norm and L2-norm. The consequence of this is to effectively shrink coefficients (like in ridge regression) and to set some coefficients to zero (as in LASSO).</p>
+</div>
+</div>
+</div>
 <div id="install-packages" class="section level1">
 <h1>Install packages</h1>
 <p>Do this at the beginning of the lab</p>
@@ -481,12 +514,16 @@ require(glmnet)</code></pre>
 <div id="load-the-preprocessed-data" class="section level1">
 <h1>Load the preprocessed data</h1>
 <pre class="r"><code>fullFeatureSet &lt;- read.table(&quot;http://seandavi.github.io/ITR/expression-prediction/features.txt&quot;);
-target &lt;- scan(url(&quot;http://seandavi.github.io/ITR/expression-prediction/target.txt&quot;))</code></pre>
+target &lt;- scan(url(&quot;http://seandavi.github.io/ITR/expression-prediction/target.txt&quot;), skip=1)</code></pre>
 <p>You can see the full list of features in fullFeatureSet using:</p>
 <pre class="r"><code>colnames(fullFeatureSet)</code></pre>
 <pre><code>##  [1] &quot;Control&quot;  &quot;Dnase&quot;    &quot;H2az&quot;     &quot;H3k27ac&quot;  &quot;H3k27me3&quot; &quot;H3k36me3&quot;
 ##  [7] &quot;H3k4me1&quot;  &quot;H3k4me2&quot;  &quot;H3k4me3&quot;  &quot;H3k79me2&quot; &quot;H3k9ac&quot;   &quot;H3k9me1&quot; 
 ## [13] &quot;H3k9me3&quot;  &quot;H4k20me1&quot;</code></pre>
+<p>Take a few minutes to try to understand the relationships between the predictor variables, their scale, etc.</p>
+<ul>
+<li><a href="https://web.stanford.edu/~hastie/TALKS/enet_talk.pdf" class="uri">https://web.stanford.edu/~hastie/TALKS/enet_talk.pdf</a></li>
+</ul>
 </div>
 <div id="machine-learning" class="section level1">
 <h1>Machine Learning</h1>
@@ -504,10 +541,11 @@ fitControl &lt;- trainControl(
     verboseIter=T)</code></pre>
 <p>We are going to try a number of different models, so here, we create a range of parameters to investigate.</p>
 <ul>
-<li>alpha - is the elasticnet mixing parameter: <span class="math display">\[(1-α)/2||β||_2^2+α||β||_1\]</span></li>
+<li>alpha - is the elasticnet mixing parameter: <span class="math display">\[\frac{(1-α)}{2}||β||_2^2+α||β||_1\]</span></li>
 <li>lambda - is the regularization parameter governing the relative importance of minimizing error vs keeping betas small</li>
 </ul>
-<pre class="r"><code>lassoGrid &lt;- expand.grid(alpha=1, lambda=10^seq(-6, 0, 1))</code></pre>
+<pre class="r"><code># setting alpha=1 specifies LASSO regression penalty
+lassoGrid &lt;- expand.grid(alpha=1, lambda=10^seq(-6, 0, 1))</code></pre>
 <p>Now, we train the model using cross-validation to find the “best” parameters.</p>
 <pre class="r"><code>lassoFit &lt;- train(features, target, method=&quot;glmnet&quot;,
                   trControl=fitControl, tuneGrid=lassoGrid)</code></pre>

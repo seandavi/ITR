@@ -427,6 +427,9 @@ div.tocify {
     <li>
       <a href="MachineLearning.html">Machine Learning hands-on</a>
     </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -479,10 +482,8 @@ div.tocify {
 <div id="getting-data" class="section level1">
 <h1>Getting data</h1>
 <p>These data were deposited at NCBI GEO back in 2002. GEOquery can pull them out easily.</p>
-<pre class="r"><code>library(GEOquery)</code></pre>
-<pre><code>## Setting options(&#39;download.file.method.GEOquery&#39;=&#39;auto&#39;)</code></pre>
-<pre><code>## Setting options(&#39;GEOquery.inmemory.gpl&#39;=FALSE)</code></pre>
-<pre class="r"><code>gse = getGEO(&quot;GSE28&quot;)[[1]]</code></pre>
+<pre class="r"><code>library(GEOquery)
+gse = getGEO(&quot;GSE28&quot;)[[1]]</code></pre>
 <pre><code>## Found 1 file(s)</code></pre>
 <pre><code>## GSE28_series_matrix.txt.gz</code></pre>
 <pre><code>## Parsed with column specification:
@@ -497,7 +498,7 @@ div.tocify {
 ##   GSM893 = col_double()
 ## )</code></pre>
 <pre><code>## File stored at:</code></pre>
-<pre><code>## /var/folders/hq/pzgtdx7j55j0g7r4647vqzrr2yvxz9/T//RtmpJ2hyLg/GPL57.soft</code></pre>
+<pre><code>## /var/folders/hq/pzgtdx7j55j0g7r4647vqzrr2yvxz9/T//Rtmp492thn/GPL57.soft</code></pre>
 <pre class="r"><code>class(gse)</code></pre>
 <pre><code>## [1] &quot;ExpressionSet&quot;
 ## attr(,&quot;package&quot;)

@@ -5,9 +5,44 @@ date: "7/8/2018"
 output: html_document
 ---
 
+# Background
+
+In this little set of exercises, you will be using histone marks near a gene to predict its expression.
+
+$$y = h1 + h2 + h3 + ...$$
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE, message=FALSE)
 ```
+
+We will try a couple of different approaches:
+
+1. Penalized regression
+2. RandomForest
+
+## Penalized regression
+
+Adapted from http://www.sthda.com/english/articles/37-model-selection-essentials-in-r/153-penalized-regression-essentials-ridge-lasso-elastic-net/.
+
+### Ridge regression
+
+Ridge regression shrinks the regression coefficients, so that variables, with minor contribution to the outcome, have their coefficients close to zero. The shrinkage of the coefficients is achieved by penalizing the regression model with a penalty term called L2-norm, which is the sum of the squared coefficients. The amount of the penalty can be fine-tuned using a constant called lambda (λ). Selecting a good value for λ is critical. When λ=0, the penalty term has no effect, and ridge regression will produce the classical least square coefficients. However, as λ increases to infinite, the impact of the shrinkage penalty grows, and the ridge regression coefficients will get close zero.
+
+Note that, in contrast to the ordinary least square regression, ridge regression is highly affected by the scale of the predictors. Therefore, it is better to standardize (i.e., scale) the predictors before applying the ridge regression (James et al. 2014), so that all the predictors are on the same scale. The standardization of a predictor x, can be achieved using the formula x' = x / sd(x), where sd(x) is the standard deviation of x. The consequence of this is that, all standardized predictors will have a standard deviation of one allowing the final fit to not depend on the scale on which the predictors are measured.
+
+One important advantage of the ridge regression, is that it still performs well, compared to the ordinary least square method (Chapter @ref(linear-regression)), in a situation where you have a large multivariate data with the number of predictors (p) larger than the number of observations (n). One disadvantage of the ridge regression is that, it will include all the predictors in the final model, unlike the stepwise regression methods, which will generally select models that involve a reduced set of variables. Ridge regression shrinks the coefficients towards zero, but it will not set any of them exactly to zero. The lasso regression is an alternative that overcomes this drawback.
+
+### Lasso regression
+
+Lasso stands for _Least Absolute Shrinkage and Selection Operator_. It shrinks the regression coefficients toward zero by penalizing the regression model with a penalty term called L1-norm, which is the sum of the absolute coefficients. In the case of lasso regression, the penalty has the effect of forcing some of the coefficient estimates, with a minor contribution to the model, to be exactly equal to zero. This means that, lasso can be also seen as an alternative to the subset selection methods for performing variable selection in order to reduce the complexity of the model. As in ridge regression, selecting a good value of λ for the lasso is critical.
+
+One obvious advantage of lasso regression over ridge regression, is that it produces simpler and more interpretable models that incorporate only a reduced set of the predictors. However, neither ridge regression nor the lasso will universally dominate the other. Generally, lasso might perform better in a situation where some of the predictors have large coefficients, and the remaining predictors have very small coefficients. Ridge regression will perform better when the outcome is a function of many predictors, all with coefficients of roughly equal size (James et al. 2014).
+
+Cross-validation methods can be used for identifying which of these two techniques is better on a particular data set.
+
+### Elastic Net
+
+Elastic Net produces a regression model that is penalized with both the L1-norm and L2-norm. The consequence of this is to effectively shrink coefficients (like in ridge regression) and to set some coefficients to zero (as in LASSO).
 
 # Install packages
 
@@ -28,13 +63,17 @@ require(glmnet)
 
 ```{r}
 fullFeatureSet <- read.table("http://seandavi.github.io/ITR/expression-prediction/features.txt");
-target <- scan(url("http://seandavi.github.io/ITR/expression-prediction/target.txt"))
+target <- scan(url("http://seandavi.github.io/ITR/expression-prediction/target.txt"), skip=1)
 ```
 
 You can see the full list of features in fullFeatureSet using:
 ```{r}
 colnames(fullFeatureSet)
 ```
+
+Take a few minutes to try to understand the relationships between the predictor variables, their scale, etc.
+
+- https://web.stanford.edu/~hastie/TALKS/enet_talk.pdf
 
 # Machine Learning
 
@@ -60,10 +99,11 @@ fitControl <- trainControl(
 We are going to try a number of different models, so
 here, we create a range of parameters to investigate.
 
-- alpha -  is the elasticnet mixing parameter: $$(1-α)/2||β||_2^2+α||β||_1$$
+- alpha -  is the elasticnet mixing parameter: $$\frac{(1-α)}{2}||β||_2^2+α||β||_1$$
 - lambda - is the regularization parameter governing the relative importance of minimizing error vs keeping betas small
 
 ```{r lassogrid}
+# setting alpha=1 specifies LASSO regression penalty
 lassoGrid <- expand.grid(alpha=1, lambda=10^seq(-6, 0, 1))
 ```
 
