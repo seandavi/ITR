@@ -1,15 +1,7 @@
 ---
-title: "Working with Genomic Ranges and Signals"
-author: 
-- name: Sean Davis
-  affiliation: Center for Cancer Research, National Cancer Institute, NIH
-  email: seandavi@gmail.com
+title: "Working with Genomic Ranges"
 output: 
   html_document
-vignette: >
-  %\VignetteIndexEntry{Genomic Ranges and Signals}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r init, include=FALSE}
