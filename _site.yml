@@ -19,8 +19,12 @@ navbar:
       href: motivation_for_R_slides.html
     - text: Introduction to Bioconductor
       href: http://bit.ly/bioc_cshl_2019
+    - text: Advanced Bioconductor Overview
+      href: https://drive.google.com/file/d/1txUz-a84VVxiB1ouv24ujL2DSTfxgblL/view?usp=sharing
     - text: Machine Learning hands-on
       href: MachineLearning.html
+    - text: Machine Learning Intro
+      href: https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing
   - icon: fa-question fa-lg
     text: Misc.
     menu:
