@@ -443,6 +443,17 @@ dim(sunspot_mat)
 summary(sunspot_mat)
 head(sunspot_mat)
 tail(sunspot_mat)</code></pre>
+<ul>
+<li>Practice subsetting the matrix a bit by selecting:
+<ul>
+<li>The first 10 years (rows)</li>
+<li>The month of July (7th column)</li>
+<li>The value for July, 1979 using the rowname to do the selection.</li>
+</ul></li>
+</ul>
+<pre class="r"><code>sunspot_mat[1:10,]
+sunspot_mat[,7]
+sunspot_mat[&#39;1979&#39;,7]</code></pre>
 <p>These next few exercises take advantage of the fact that calling a
 univariate statistical function (one that expects a vector) works for
 matrices by just making a vector of all the values in the matrix.</p>
@@ -472,7 +483,8 @@ resolution slightly. Adjust your <code>hist()</code> and breaks to your
 liking.</li>
 </ul>
 <pre class="r"><code>hist(sunspot_mat, breaks=40)</code></pre>
-<p>Now, let’s move on to summarizing the data a bit.</p>
+<p>Now, let’s move on to summarizing the data a bit to learn about the
+pattern of sunspots varies by month or by year.</p>
 <ul>
 <li>Examine the dataset again. What do the columns represent? And the
 rows?</li>
