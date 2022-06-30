@@ -19,7 +19,6 @@ myplot.png
 *cache
 render*.rds
 docs
-_site
 *_files
 *_cache
 libs
