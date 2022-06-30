@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sean Davis" />
+
+<meta name="date" content="2022-06-30" />
+
+<title>The T-statistic</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2019">Introduction to Bioconductor</a>
+    </li>
+    <li>
+      <a href="https://drive.google.com/file/d/1txUz-a84VVxiB1ouv24ujL2DSTfxgblL/view?usp=sharing">Advanced Bioconductor Overview</a>
+    </li>
+    <li>
+      <a href="MachineLearning.html">Machine Learning hands-on</a>
+    </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">The T-statistic</h1>
+<h4 class="author">Sean Davis</h4>
+<h4 class="date">2022-06-30</h4>
+
+</div>
+
+
+<div id="learning-objectives" class="section level1">
+<h1>Learning objectives</h1>
+<ul>
+<li>Know how the t-statistic differs from the z-score, and how the
+Student’s t-distribution differs from the normal distribution.</li>
+<li>Practice using numerical simulations of the null distribution to
+check that the p-values are computed correctly.</li>
+<li>Understand why the Student’s t-distribution depends on the number of
+degrees of freedom.</li>
+<li>Understand how computing p-values using an incorrect distribution
+can give false positives.</li>
+</ul>
+</div>
+<div id="background" class="section level1">
+<h1>Background</h1>
+<div id="significance-of-a-single-measurement" class="section level2">
+<h2>Significance of a single measurement:</h2>
+<ul>
+<li>You have performed a single measurement x1 and want to test if the
+result is consistent with the null hypothesis.</li>
+<li>Under the null hypothesis, these measurements are drawn from the
+normal distribution N(μ,  2).</li>
+<li>Because the system you are studying is well characterized, you know
+the values of μ and  .</li>
+<li>To test if the obsevation x1 is consistent with the null hypothesis,
+we compute the z-score z   x−μ   .</li>
+<li>The z-score follows the standard normal distribution N(0, 1).</li>
+<li>We then use pnorm to compute the p-value.</li>
+</ul>
+</div>
+<div id="significance-of-multiple-measurements" class="section level2">
+<h2>Significance of multiple measurements:</h2>
+<ul>
+<li>To gain statistical power, you next repeat the measurement n times,
+giving the values x1…xn and the mean value ¯x.</li>
+<li>In this case, the mean follows the distribution N(μ,  2/n).</li>
+<li>To test if the observed mean ¯x is consistent with the null
+hypothesis, we compute the z-score z = ¯x−μ  / p</li>
+</ul>
+<ol start="14" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<ul>
+<li>As before, the z-score follows the standard normal distribution N(0,
+1) and we use pnorm to compute the p-value.</li>
+</ul>
+</div>
+<div id="experiments-with-unknown" class="section level2">
+<h2>Experiments with unknown  :</h2>
+<ul>
+<li>Next assume that the expected value of xi is zero under the null
+hypothesis (i.e. μ = 0). This would be the case if xi corresponds to the
+difference in signal between a treament and a control experiment (that
+is, we don’t expect a difference if the treament is ineffective, which
+is the null hypothesis).</li>
+<li>Further assume that you don’t know the variance parameter  2. This
+means that you don’t know all the variables needed to compute the
+z-score.</li>
+<li>We learned earlier that s   q 1 n−1 Pn i=1(xi − ¯x)2 is an unbiased
+estimate of  . This is comuted using the sd command. Feeling lucky, you
+guess that you can compute the z-score (and thus the p-value) using the
+formula above and substituting s in place of  . The resulting value will
+differ sligthtly from the true z-score since s differs from   by
+statistical fluctuations. You therefore define it to be the t-statistic
+t = ¯x s/ p</li>
+</ul>
+<ol start="14" style="list-style-type: lower-alpha">
+<li>Hoping that the differences between z and t are small on average,
+you go ahead and compute the p-values for your experiment using t and
+the normal distribution.</li>
+</ol>
+<ul>
+<li>However, the night before you submit your paper you decide to run
+some numerical expereriments in R to verify that your statistic t indeed
+behaves like z and follows the normal distribution under the null
+hypothesis.</li>
+</ul>
+</div>
+</div>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
+<p>In this experiment, we assume that the measurment xi is drawn from
+the standard normal distribution N(0, 1) under the null hypothesis. We
+will draw numbers from the null distribution, compute z and t, and
+analyze if they follow the same distribution. As a warmup exercise, we
+start by experimenting with the z-score:</p>
+<ol style="list-style-type: decimal">
+<li>Generate a vector x5 containing five random numbers drawn from the
+standard normal distribution using rnorm. Compute the z-score of the
+mean of this vector.</li>
+</ol>
+<pre class="r"><code>x5=rnorm(5)
+sqrt(length(x5)) * mean(x5)</code></pre>
+<pre><code>## [1] 0.9090849</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Generalize the above calculation by writing a function named
+<code>zf</code> that takes a vector <code>x</code> as input and computes
+the z score (Hint: zf = function(x) {…} and use the code from question
+1). Check so zf(x5) gives the same answer as in the first question. It
+is a good coding strategy to start with a concrete example and then
+write a general function building on this experience.</li>
+</ol>
+<pre class="r"><code>zf = function(x) { sqrt(length(x)) * mean(x)}
+zf(x5)</code></pre>
+<pre><code>## [1] 0.9090849</code></pre>
+<p>The function should show the same value as above in question 1.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Repeat the calculation in Question 2 10,000 times and store the
+resulting z-scores in z10k (Hint: use replicate).</li>
+</ol>
+<pre class="r"><code>z10k = replicate(10000,zf(rnorm(5)))</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>What distribution do you expect that numbers in ‘z10k’ to follow?
+Use pnorm to and hist to plot distribution of p values.
+<ul>
+<li>What fraction of the values in pnorm(z10k) are smaller than
+0.05?</li>
+<li>Is this what you expected given that the numbers were drawn from the
+null distribution? z10k should follow the standard normal distribution
+N(0, 1); given that the sample mean ¯x follows the normal distribution
+(in fact, it follows N(0, 1/ p n)), the z-score for ¯x is constructed to
+be a rescaling of ¯x such that it follows the standard normal
+distribution.</li>
+</ul></li>
+</ol>
+<pre class="r"><code>hist(pnorm(z10k))</code></pre>
+<p><img src="t-statistic-simulation-exercises_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>2 Histogram of pnorm(z10k) pnorm(z10k) Frequency 0.0 0.2 0.4 0.6 0.8
+1.0 0 100 200 300 400 500 mean(pnorm(z10k)&lt;0.05) ## [1] 0.0488 If you
+draw numbers from a continous distribution (for example using rnorm) and
+compute the lower cumulative p-value according to the same distribution
+(for example using pnorm), then the p-values will be uniformly
+distributed. pnorm(z10k)&lt;0.05 is TRUE for the entries in z10k with
+values belonging to the bottom 5% tail of N(0, 1). Since the values in
+z10k follow N(0, 1) this should happen 5% of the time. The fact that we
+observe this, and the uniform histogram, means that we are computing the
+p-values for ¯x correctly.</p>
+<p>We will now repeat question 1-4 but for the t statistic:</p>
+<ol start="5" style="list-style-type: decimal">
+<li>First compute the value of the t-statistic for the five random
+numbers x5 that you generated in Question</li>
+<li></li>
+</ol>
+<pre class="r"><code>sqrt(length(x5)) * mean(x5) / sd(x5)</code></pre>
+<pre><code>## [1] 0.6725887</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Next write a function <code>tf</code> that computes the value of t
+for an a arbritrary vector x. Test that tf(x5) reproducese the answer in
+question 5.</li>
+</ol>
+<pre class="r"><code>tf = function(x) { sqrt(length(x)) * mean(x) / sd(x) }
+tf(x5)</code></pre>
+<pre><code>## [1] 0.6725887</code></pre>
+<p>The function should have computed the same value.</p>
+<ol start="7" style="list-style-type: decimal">
+<li>Repeat the calculation in Question 6 10,000 times and store the
+resulting t values in t10k.</li>
+</ol>
+<pre class="r"><code>t10k = replicate(10000,tf(rnorm(5)))</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Use qqplot to compare the z-scores in z10k and the values of the
+t-statistic in t10k. Do they follow the same distribution? (Hint: Adding
+a diagonal line using abline(0,1) makes it easier to see deviations from
+the diagonal)</li>
+</ol>
+<pre class="r"><code>qqplot(z10k, t10k)
+abline(0,1)</code></pre>
+<p><img src="t-statistic-simulation-exercises_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The values in z10k and t10k do not follow the same distribution. The
+more extreme quantiles in t10k have larger absolute values than the
+corresponding quantiles in z10k. This means that the values in t10k
+follow a distribution with fatter tails.</p>
+<ol start="9" style="list-style-type: decimal">
+<li>Plot the distribution of pnorm(t10k) using hist. Does pnorm(t10k)
+have more values close to 0 and 1 than you expected?
+<ul>
+<li>What fraction of the values in pnorm(t10k) are smaller than
+0.05?</li>
+</ul></li>
+</ol>
+<pre class="r"><code>hist(pnorm(t10k))</code></pre>
+<p><img src="t-statistic-simulation-exercises_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>mean(pnorm(t10k)&lt;0.05)</code></pre>
+<pre><code>## [1] 0.0892</code></pre>
+<p>In the in the introduction we hoped that t would follow the same
+distribution as z, that is N(0, 1) (we only cheated a little bit when we
+replaced   with s after all). If this was the case, we would expect 5%
+of the p-values to be below 0.05 (as in question 4). However, we observe
+more values below 0.05 since the t does not follow the normal
+distribution.</p>
+<ol start="10" style="list-style-type: decimal">
+<li>If you improperly assume that t follows the same distribution as z
+(that is, N(0, 1)), would your hypothesis test be be conservative (that
+is, have few false positives but tend to miss true deviation from the
+null hypothesis) or liberal (that is, tend to falsely reject the null
+hypothesis when no signal is present)?</li>
+</ol>
+<p>If we did not realize that it was a mistake to think that t follows
+N(0, 1), we would have interpreted the excess of values around 0 as
+statistically significant event. Given that all the numbers were
+generated according to the null hypothesis, our (incorrect) calcualtion
+would therefore have generated more than 5% false positives meaning that
+the test was liberal. Given that the true variance   often it unkown, it
+would be nice if we could use the t-statisic for hypothesis testing
+(since then s can be computed form the data but z cannot). Statisticians
+have defined the Student’s t-distribution so that the t-statistic
+follows it.</p>
+<p>The t distribution depends on the number of data points used to
+compute ¯x and s. To understand this, recall that the reason t does not
+follow N(0, 1) is that random errors perturb s. These errors are large
+when few data points are used (above we used only five), so the
+t-distribution and the normal distribution will differ significantly in
+this case. Conversely, s will be close to   if many datapoints are used,
+meaning that t will be very close to z and, thus, that the
+t-distribution and the normal distribution will be similar.</p>
+<p>In R, the functions for manipulating the t-distribution have the same
+naming convention as the normal distribution: 5 Task Normal Distribution
+t(distribution) Computes probability density dnorm(z) dt(t,df) Computes
+cumulative probability pnorm(z) pt(t,df) Computes quantiles given p
+qnorm(p) qt(p,df) Generates n random values rnorm(n) rt(n,df) Note that
+the t-distribution functions need one additional parameter df that
+specifies to the “number of degrees of freedom”. This corresponds to how
+many data points were used to estimate s, which, for technical reasons,
+is less than the number of data points.</p>
+<ol start="11" style="list-style-type: decimal">
+<li>Draw 10,000 numbers from the t-distribution with df = 5 − 1 = 4
+degrees of freedom and store in t10k_true (Hint: use rt). Compare the
+distribution of t10k and t10k_true (Hint: use qqplot). Are t10k and
+t10k_true drawn from the same distribution?</li>
+</ol>
+<pre class="r"><code>t10k_true=rt(10000,4)
+qqplot(t10k, t10k_true)
+abline(0,1)</code></pre>
+<p><img src="t-statistic-simulation-exercises_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The points follow the diagonal (except for the scattering at the
+ends), meaning that t10k_true and t10k follow the same distribution</p>
+<ol start="12" style="list-style-type: decimal">
+<li>Compute the p-values of t10k using the t-distribution with df = 4
+and plot the distribution using hist (Hint: use pt). Does the
+distribution of p-values look good given that t10k is based on values
+drawn according to the hypothesis? What fraction of values computed
+using p have p &lt; 0.05? Is it appropriate to test for deviations from
+the null hypothesis using the t-statistic and the Student’s t
+distribution?</li>
+</ol>
+<pre class="r"><code>hist(pt(t10k,4))</code></pre>
+<p><img src="t-statistic-simulation-exercises_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>The p-values are uniformly distributed. Given that the values that
+t10k were computed from were generated according to the null hypothesis,
+this means that we are coomputing the p-values correctly.</p>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
