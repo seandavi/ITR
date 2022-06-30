@@ -4,21 +4,51 @@ output: html_document
 ---
 
 A _matrix_ is a rectangular collection of the same data type. It can be viewed as a collection
-of column vectors all of the same length and the same type (i.e. numeric, character or logical). A _data.frame_ is *also* a rectangular array. All of the columns must be the same length, but they may be of *different* types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.
+of column vectors all of the same length and the same type (i.e. numeric, character or logical) OR a collection of row vectors, again all of the same type and length. A _data.frame_ is *also* a rectangular array. All of the columns must be the same length, but they may be of *different* types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.
 
 In this section, we will be working with matrices. The _data.frame_ will be dealt with elsewhere.
 
-## Matrices
+# Matrices
+
+## Creating a matrix
+
+There are many ways to create a matrix in R. One of the simplest is to use the `matrix()` function. In the code below, we'll create a matrix from a vector from 1:16.
+
+```{r}
+mat1 <- matrix(1:16,nrow=4)
+mat1
+```
+
+The same is possible, but specifying that the matrix be "filled" by row.
+
+```{r}
+mat1 <- matrix(1:16,nrow=4,byrow = TRUE)
+mat1
+```
+
+Notice the subtle difference in the order that the numbers go into the matrix.
 
 
-We start by building a matrix from parts:
+
+We can also build a matrix from parts by "binding" vectors together:
 
 ```{r}
 x <- 1:10 
 y <- rnorm(10)
+```
 
-# make a matrix by column binding two numeric vectors
-mat<-cbind(x,y)
+Each of the vectors above is of length 10 and both are "numeric", so we can make
+them into a matrix. Using `rbind` binds rows (**r**) into a matrix.
+
+```{r}
+mat <- rbind(x,y)
+mat
+```
+
+The alternative to `rbind` is `cbind` that binds columns. 
+
+```{r}
+mat <- cbind(x,y)
 mat
 ```
 
@@ -29,6 +59,17 @@ rownames(mat)
 colnames(mat)
 ```
 
+We can also change the names of the matrix by assigning _valid_ names to the 
+columns or rows.
+
+```{r}
+colnames(mat) = c('apples','oranges')
+colnames(mat)
+mat
+```
+
+
+
 Matrices have dimensions.
 
 ```{r}
@@ -37,8 +78,13 @@ nrow(mat)
 ncol(mat)
 ```
 
+## Accessing elements of a matrix
+
 Indexing for matrices works as for vectors except that we now need to
-include both the row and column (in that order).
+include both the row and column (in that order). We can access elements 
+of a matrix using the square bracket [ indexing method. Elements can be 
+accessed as `var[r, c]`. Here, `r` and `c` are vectors describing the elements
+of the matrix to select.
 
 ```{r}
 # The 2nd element of the 1st row of mat
@@ -52,17 +98,106 @@ mat[mat>4]
 ## [1]  5  6  7  8  9 10
 ```
 
-Note that in the last case, there is no ",", so R treats the matrix as a long vector (length=20). This is convenient, sometimes, but it can also be a source of error, as some code may "work" but be doing something unexpected.
+Note that in the last case, there is no ",", so R treats the matrix as a long 
+vector (length=20). This is convenient, sometimes, but it can also be a source 
+of error, as some code may "work" but be doing something unexpected.
 
-In the next example, we create a matrix with 2 columns and 10 rows.
+We can also use indexing to exclude a row or column by prefixing the selection
+with a `-` sign.
+
+```{r}
+mat[,-1]       # remove first column
+mat[-c(1:5),]  # remove first five rows
+```
+
+## Changing values in a matrix
+
+We can create a matrix filled with random values drawn from a normal
+distribution for our work below. 
 
 ```{r}
 m = matrix(rnorm(20),nrow=10)
-# multiply all values in the matrix by 20
-m = m*20
-# and add 100 to the first column of m
-m[,1] = m[,1] + 100
-# summarize m
 summary(m)
 ```
+
+Multiplication and division works similarly to vectors. When multiplying by a 
+vector, for example, the values of the vector are reused. In the simplest case, 
+let's multiply the matrix by a constant (vector of length 1).
+
+```{r}
+# multiply all values in the matrix by 20
+m2 = m*20
+summary(m2)
+```
+
+By combining subsetting with assignment, we can make changes to just part of a 
+matrix. 
+
+```{r}
+# and add 100 to the first column of m
+m2[,1] = m2[,1] + 100
+# summarize m
+summary(m2)
+```
+
+A somewhat common transformation for a matrix is to transpose which changes
+rows to columns. One might need to do this if an assay output from a lab 
+machine puts samples in rows and genes in columns, for example, while in 
+Bioconductor/R, we often want the samples in columns and the genes in rows.
+
+```{r}
+t(m2)
+```
+
+## Calculations on matrix rows and columns
+
+Again, we just need a matrix to play with. We'll use `rnorm` again, but with a
+slight twist. 
+
+```{r}
+m3 = matrix(rnorm(100,5,2),ncol=10) # what does the 5 mean here? And the 2?
+```
+
+Since these data are from a normal distribution, we can look at a row (or column)
+to see what the mean and standard deviation are.
+
+```{r}
+mean(m3[,1])
+sd(m3[,1])
+# or a row
+mean(m3[1,])
+sd(m3[1,])
+```
+
+There are some useful convenience functions for computing means and sums 
+of data in **all** of the columns and rows of matrices. 
+
+```{r}
+colMeans(m3)
+rowMeans(m3)
+rowSums(m3)
+colSums(m3)
+```
+
+We can look at the distribution of column means:
+
+```{r}
+# save as a variable
+cmeans = colMeans(m3)
+summary(cmeans)
+```
+Note that this is centered pretty closely around the selected mean of `5` above.
+
+How about the standard deviation? There is not a `colSd` function, but it turns
+out that we can easily apply functions that take vectors as input, like `sd` and
+"apply" them across either the rows (the first dimension) or columns (the second)
+dimension.
+
+```{r}
+csds = apply(m3, 2, sd)
+summary(csds)
+```
+
+Again, take a look at the distribution which is centered quite close to the 
+selected standard deviation when we created our matrix.
 

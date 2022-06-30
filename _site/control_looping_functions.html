@@ -11,7 +11,7 @@
 
 
 
-<title>Vector Exercises</title>
+<title>Control structures and functions</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -33,7 +33,6 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -227,9 +226,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -403,97 +399,249 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+
+
+<h1 class="title toc-ignore">Control structures and functions</h1>
+
+</div>
+
+
+<div id="control-structures-in-r" class="section level2">
+<h2>Control Structures in R</h2>
+<ul>
+<li><p><span>R has multiple types of control structures that allows for
+sequential evaluation of statements.</span></p></li>
+<li><p><span>For loops</span></p>
+<pre><code>for (x in set) {operations}</code></pre></li>
+<li><p><span>while loops</span></p>
+<pre><code>while (x in condition){operations}</code></pre></li>
+<li><p><span>If statements (conditional)</span></p>
+<pre><code>if (condition) {
+some operations 
+ } else { other operations }</code></pre></li>
 </ul>
+<div id="control-structure-and-looping-examples" class="section level3">
+<h3>Control Structure and Looping Examples</h3>
+<pre class="r"><code>    x&lt;-1:9
+    length(x)</code></pre>
+<pre><code>## [1] 9</code></pre>
+<pre class="r"><code>    # a simple conditional then two expressions
+    if (length(x)&lt;=10) {
+       x&lt;-c(x,10:20);print(x)}</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code>    # more complex 
+    if (length(x)&lt;5) {
+        print(x)
+    } else {
+        print(x[5:20])
+    }           </code></pre>
+<pre><code>##  [1]  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code>    # print the values of x, one at a time
+    for (i in x) print(i) </code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10
+## [1] 11
+## [1] 12
+## [1] 13
+## [1] 14
+## [1] 15
+## [1] 16
+## [1] 17
+## [1] 18
+## [1] 19
+## [1] 20</code></pre>
+<pre class="r"><code>    for(i in x) i   # note R will not echo in a loop
+
+    # loop over a character vector
+    y&lt;-c(&#39;a&#39;,&#39;b&#39;,&#39;hi there&#39;)            
+    for (i in y) print(i)</code></pre>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;hi there&quot;</code></pre>
+<pre class="r"><code>    # and a while loop
+    j&lt;-1                
+    while(j&lt;10) { # do this while j&lt;10      
+      print(j)
+      j&lt;-j+2} # at each iteration, increase j by 2</code></pre>
+<pre><code>## [1] 1
+## [1] 3
+## [1] 5
+## [1] 7
+## [1] 9</code></pre>
 </div>
-
-
-
-<h1 class="title toc-ignore">Vector Exercises</h1>
-
 </div>
-
-
+<div id="applying" class="section level2">
+<h2>Applying</h2>
+<div id="why-does-r-have-apply-functions" class="section level3">
+<h3>Why Does R Have Apply Functions</h3>
+<ul>
+<li><p><span>Often we want to apply the same function to all the rows or
+columns of a matrix, or all the elements of a list.</span></p></li>
+<li><p><span>We could do this in a loop, but loops take a lot of time in
+an interpreted language like R.</span></p></li>
+<li><p><span>R has more efficient built-in operators, the apply
+functions.</span></p></li>
+</ul>
+<p><span>example</span> If mat is a matrix and fun is a function (such
+as mean, var, lm …) that takes a vector as its argument, then you
+can:</p>
+<pre><code>apply(mat,1,fun) # over rows--second argument is 1      
+apply(mat,2,fun) # over columns--second argument is 2</code></pre>
+<p>In either case, the output is a <em>vector</em>.</p>
+</div>
+<div id="apply-function-exercise" class="section level3">
+<h3>Apply Function Exercise</h3>
+<ol style="list-style-type: decimal">
+<li><p><span>Using the matrix and rnorm functions, create a matrix with
+20 rows and 10 columns (200 values total) of random normal
+deviates.</span></p></li>
+<li><p><span>Compute the mean for each row of the
+matrix.</span></p></li>
+<li><p><span>Compute the median for each column.</span></p></li>
+</ol>
+</div>
+<div id="related-apply-functions" class="section level3">
+<h3>Related Apply Functions</h3>
+<ul>
+<li><p><span><code>lapply(list, function)</code> applies the function to
+every element of list</span></p></li>
+<li><p><span><code>sapply(list or vector, function)</code> applies the
+function to every element of list or vector, and returns a vector, when
+possible (easier to process)</span></p></li>
+<li><p><span><code>vapply(list or vector, function)</code> applies the
+function to every element of list or vector, and returns a vector, when
+possible (easier to process)</span></p></li>
+<li><p><span><code>tapply(x, factor, fun)</code> uses the factor to
+split vector x into groups, and then applies fun to each
+group</span></p></li>
+</ul>
+<pre class="r"><code>    # create a list
+    my.list &lt;- list(a=1:3,b=5:10,c=11:20)
+    my.list</code></pre>
+<pre><code>## $a
+## [1] 1 2 3
+## 
+## $b
+## [1]  5  6  7  8  9 10
+## 
+## $c
+##  [1] 11 12 13 14 15 16 17 18 19 20</code></pre>
+<pre class="r"><code>    # Get the mean for each member of the list
+    # return a vector
+    sapply( my.list, mean)</code></pre>
+<pre><code>##    a    b    c 
+##  2.0  7.5 15.5</code></pre>
+<pre class="r"><code>    # Get the full summary for each member of
+    # the list, returned as a list
+    lapply( my.list, summary)</code></pre>
+<pre><code>## $a
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     1.0     1.5     2.0     2.0     2.5     3.0 
+## 
+## $b
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    5.00    6.25    7.50    7.50    8.75   10.00 
+## 
+## $c
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   11.00   13.25   15.50   15.50   17.75   20.00</code></pre>
+<pre class="r"><code>    # Find the mean for each group defined by a factor
+    my.vector &lt;- 1:10
+    my.factor &lt;- factor(
+      c(1,1,1,2,2,2,3,3,3,3))
+    tapply(my.vector, my.factor, mean)</code></pre>
+<pre><code>##   1   2   3 
+## 2.0 5.0 8.5</code></pre>
+</div>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<ul>
+<li><p><span>Functions are objects and are assigned to names, just like
+data.</span></p>
+<pre><code>myFunction = function(argument1,argument2) {
+  expression1
+  expression2
+}</code></pre></li>
+<li><p><span>We write functions for anything we need to do again and
+again.</span></p></li>
+<li><p><span>You may test your commands interactively at first, and then
+use the <code>history()</code> feature and an editor to create the
+function.</span></p></li>
+<li><p><span>It is wise to include a comment at the start of each
+function to say what it does and to document functions of more than a
+few lines.</span></p></li>
+</ul>
+<div id="example-functions" class="section level3">
+<h3>Example Functions</h3>
+<pre><code>add1 = function(x) {
+    # this function adds one to the first argument and returns it
+    x + 1
+}
+add1(17)
+## [1] 18
+add1(c(17,18,19,20))
+## [1] 18 19 20 21</code></pre>
+</div>
+</div>
 <div id="exercises" class="section level2">
 <h2>Exercises</h2>
 <ul>
-<li>Create a numeric vector that starts at 1 and goes to 10 and assign it to the variable v10.</li>
+<li>Use system.time to compare the two codes here. Both accomplish the
+same thing–adding 1 to every value of the vector <code>rn</code>.</li>
 </ul>
-<pre class="r"><code>v10 = 1:10
-length(v10)</code></pre>
+<pre class="r"><code>rn = rnorm(1e6)
+system.time(
+for (i in seq_along(rn)) {
+  rn[i] = rn[i] + 1
+}
+)
+# vectorized
+system.time(
+    {rn = rn + 1}
+)</code></pre>
 <ul>
-<li>Read the help for the <code>rnorm</code> function. What does this function do? Use the <code>rnorm</code> function to sample 100 values from the normal distribution and assign it to the variable my_rn.</li>
+<li><p>Create a function that takes a numeric vector and calculates the
+mean without using the R <code>mean</code> function.</p></li>
+<li><p>Modify the function above so that it can calculate the “trimmed
+mean” by adding a second argument that specifies the proportion of data
+to trim from ends of the numeric vector before calculating mean. The
+definition of trimmed mean is:</p></li>
 </ul>
-<pre class="r"><code>my_rn = rnorm(100)
-length(rnorm)</code></pre>
+<blockquote>
+<p>A trimmed mean (similar to an adjusted mean) is a method of averaging
+that removes a small designated percentage of the largest and smallest
+values before calculating the mean. After removing the specified outlier
+observations, the trimmed mean is found using a standard arithmetic
+averaging formula. The use of a trimmed mean helps eliminate the
+influence of outliers or data points on the tails that may unfairly
+affect the traditional mean.</p>
+</blockquote>
 <ul>
-<li>What are the mean and standard deviation of <code>my_rn</code>? Consider using the <code>mean</code> and <code>sd</code> functions. Read the help for these functions as well.</li>
+<li><p>Use the <code>system.time()</code> function to time your mean
+function with a vector of length 1000. Do the same with the builtin R
+version of mean, <code>mean()</code>. Is there a difference in timings?
+Do you believe that these timings could show a difference?</p></li>
+<li><p>Use the <a
+href="https://www.r-bloggers.com/using-the-microbenchmark-package-to-compare-the-execution-time-of-r-expressions/">microbenchmark
+package</a> to compare the performance of your mean function to that of
+<code>mean()</code> builtin to R.</p></li>
+<li><p>Write a function that takes as input a string (character vector
+of length 1) and counts the number of occurrences of each letter (after
+converting to lower case). Take a look at the <code>tolower()</code>,
+<code>strsplit()</code>, and <code>table()</code> functions to help you
+with this task. Then, modify the function to return the proportion of
+each letter rather than the count. Would this be useful for any
+biological data?</p></li>
 </ul>
-<pre class="r"><code>mean(my_rn)
-sd(my_rn)
-# another useful summary
-summary(my_rn)</code></pre>
-<ul>
-<li>How could you change the mean of <code>my_rn</code> from its current value to its current value + five?</li>
-</ul>
-<pre class="r"><code># a couple of options
-# Add 5 to every value of my_rn
-my_rn2 = my_rn + 5
-mean(my_rn2)</code></pre>
-<ul>
-<li>You are all going to present your work during the course. We want to do this as fairly as possible, so we want to use R to randomly assign an order to you all. If each of you has a number between 1 and 25, how can you produce a randomized ordering to see who goes first, second, etc.? See the <code>sample()</code> function for some help. Assign the ordering to a variable <code>speakers</code>.</li>
-</ul>
-<pre class="r"><code>speakers = sample(1:25, replace = FALSE)
-# what happens if you use replace=TRUE, the default?</code></pre>
-<ul>
-<li>Create two new vectors, <code>day1</code> and <code>day2</code> containing the first 13 speakers and the last 12 speakers:</li>
-</ul>
-<pre class="r"><code>day1 = speakers[1:13]
-day2 = speakers[14:25]</code></pre>
-<ul>
-<li>Use the <code>rep()</code> function to create a vector of length 10 with just “A” repeating. Do the same, but with “A” and “B” repeating.</li>
-</ul>
-<pre class="r"><code># This will work
-rep(&quot;A&quot;, 10)
-# What is wrong with this one?
-rep(c(&quot;A&quot;, &quot;B&quot;), 10)
-# And how is this different?
-# How would you know that you need to include
-#   &quot;each&quot;? Read the help, of course. (or trial and error)
-rep(c(&quot;A&quot;, &quot;B&quot;), each=5)</code></pre>
-<ul>
-<li>Referring back to your <code>my_rn</code> example, use the <code>&lt;</code> operator to create a vector of <code>TRUE</code> and <code>FALSE</code> so that you isolate values more than 1 standard deviation below the mean. Finally, use the vector of <code>TRUE</code>/<code>FALSE</code> to get the actual values from <code>my_rn</code> that meet these criteria. This is a multi-step problem, so think about the pieces you need and about how to put them together.</li>
-</ul>
-<pre class="r"><code># first determine the mean
-mean(my_rn)
-# then, find the sd
-sd(my_rn)
-# What is one sd below the mean?
-mean(my_rn) - sd(my_rn)
-# Assign to a variable
-below_mean = mean(my_rn) - sd(my_rn)
-# Do the comparison
-my_rn &lt; below_mean
-# We can even capture to a variable
-below_mean_index = my_rn &lt; below_mean
-# Finally, we can check our answer
-my_rn[below_mean_index]</code></pre>
-<ul>
-<li>Make a histogram of your <code>my_rn</code> vector (see <code>hist</code>). Add a vertical red line to the plot at 1 sd above and below the mean (see <code>help('abline')</code> and a green line at the mean.</li>
-</ul>
-<pre class="r"><code>hist(my_rn)
-abline(v = mean(my_rn) - sd(my_rn), col = &#39;red&#39;)
-abline(v = mean(my_rn) + sd(my_rn), col = &#39;red&#39;)
-abline(v = mean(my_rn), col = &#39;green&#39;)</code></pre>
-<p><img src="vector_exercises_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-</div>
-<div id="further-examples" class="section level2">
-<h2>Further examples</h2>
-<p>If you would like further examples and interactive exercises, try the free <a href="https://campus.datacamp.com/courses/free-introduction-to-r/chapter-2-vectors-2">DataCamp vector exercises</a>.</p>
 </div>
 
     <script>
@@ -550,11 +698,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 <script>
 $(document).ready(function ()  {

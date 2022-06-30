@@ -113,24 +113,91 @@ mat[-c(1:5),]  # remove first five rows
 ## Changing values in a matrix
 
 We can create a matrix filled with random values drawn from a normal
-distribution.
+distribution for our work below. 
 
 ```{r}
 m = matrix(rnorm(20),nrow=10)
 summary(m)
 ```
 
+Multiplication and division works similarly to vectors. When multiplying by a 
+vector, for example, the values of the vector are reused. In the simplest case, 
+let's multiply the matrix by a constant (vector of length 1).
 
+```{r}
 # multiply all values in the matrix by 20
-m = m*20
-# and add 100 to the first column of m
-m[,1] = m[,1] + 100
-# summarize m
-summary(m)
+m2 = m*20
+summary(m2)
 ```
 
-- Transpose
-- apply
-- colSums
-- rowSums
-- 
+By combining subsetting with assignment, we can make changes to just part of a 
+matrix. 
+
+```{r}
+# and add 100 to the first column of m
+m2[,1] = m2[,1] + 100
+# summarize m
+summary(m2)
+```
+
+A somewhat common transformation for a matrix is to transpose which changes
+rows to columns. One might need to do this if an assay output from a lab 
+machine puts samples in rows and genes in columns, for example, while in 
+Bioconductor/R, we often want the samples in columns and the genes in rows.
+
+```{r}
+t(m2)
+```
+
+## Calculations on matrix rows and columns
+
+Again, we just need a matrix to play with. We'll use `rnorm` again, but with a
+slight twist. 
+
+```{r}
+m3 = matrix(rnorm(100,5,2),ncol=10) # what does the 5 mean here? And the 2?
+```
+
+Since these data are from a normal distribution, we can look at a row (or column)
+to see what the mean and standard deviation are.
+
+```{r}
+mean(m3[,1])
+sd(m3[,1])
+# or a row
+mean(m3[1,])
+sd(m3[1,])
+```
+
+There are some useful convenience functions for computing means and sums 
+of data in **all** of the columns and rows of matrices. 
+
+```{r}
+colMeans(m3)
+rowMeans(m3)
+rowSums(m3)
+colSums(m3)
+```
+
+We can look at the distribution of column means:
+
+```{r}
+# save as a variable
+cmeans = colMeans(m3)
+summary(cmeans)
+```
+Note that this is centered pretty closely around the selected mean of `5` above.
+
+How about the standard deviation? There is not a `colSd` function, but it turns
+out that we can easily apply functions that take vectors as input, like `sd` and
+"apply" them across either the rows (the first dimension) or columns (the second)
+dimension.
+
+```{r}
+csds = apply(m3, 2, sd)
+summary(csds)
+```
+
+Again, take a look at the distribution which is centered quite close to the 
+selected standard deviation when we created our matrix.
+

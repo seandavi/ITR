@@ -406,33 +406,95 @@ div.tocify {
 </div>
 
 
-<p>A <em>matrix</em> is a rectangular collection of the same data type. It can be viewed as a collection of column vectors all of the same length and the same type (i.e. numeric, character or logical). A <em>data.frame</em> is <em>also</em> a rectangular array. All of the columns must be the same length, but they may be of <em>different</em> types. The rows and columns of a matrix or data frame can be given names. However these are implemented differently in R; many operations will work for one but not both, often a source of confusion.</p>
-<p>In this section, we will be working with matrices. The <em>data.frame</em> will be dealt with elsewhere.</p>
-<div id="matrices" class="section level2">
-<h2>Matrices</h2>
-<p>We start by building a matrix from parts:</p>
+<p>A <em>matrix</em> is a rectangular collection of the same data type.
+It can be viewed as a collection of column vectors all of the same
+length and the same type (i.e. numeric, character or logical) OR a
+collection of row vectors, again all of the same type and length. A
+<em>data.frame</em> is <em>also</em> a rectangular array. All of the
+columns must be the same length, but they may be of <em>different</em>
+types. The rows and columns of a matrix or data frame can be given
+names. However these are implemented differently in R; many operations
+will work for one but not both, often a source of confusion.</p>
+<p>In this section, we will be working with matrices. The
+<em>data.frame</em> will be dealt with elsewhere.</p>
+<div id="matrices" class="section level1">
+<h1>Matrices</h1>
+<div id="creating-a-matrix" class="section level2">
+<h2>Creating a matrix</h2>
+<p>There are many ways to create a matrix in R. One of the simplest is
+to use the <code>matrix()</code> function. In the code below, we’ll
+create a matrix from a vector from 1:16.</p>
+<pre class="r"><code>mat1 &lt;- matrix(1:16,nrow=4)
+mat1</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    5    9   13
+## [2,]    2    6   10   14
+## [3,]    3    7   11   15
+## [4,]    4    8   12   16</code></pre>
+<p>The same is possible, but specifying that the matrix be “filled” by
+row.</p>
+<pre class="r"><code>mat1 &lt;- matrix(1:16,nrow=4,byrow = TRUE)
+mat1</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12
+## [4,]   13   14   15   16</code></pre>
+<p>Notice the subtle difference in the order that the numbers go into
+the matrix.</p>
+<p>We can also build a matrix from parts by “binding” vectors
+together:</p>
 <pre class="r"><code>x &lt;- 1:10 
-y &lt;- rnorm(10)
-
-# make a matrix by column binding two numeric vectors
-mat&lt;-cbind(x,y)
+y &lt;- rnorm(10)</code></pre>
+<p>Each of the vectors above is of length 10 and both are “numeric”, so
+we can make them into a matrix. Using <code>rbind</code> binds rows
+(<strong>r</strong>) into a matrix.</p>
+<pre class="r"><code>mat &lt;- rbind(x,y)
 mat</code></pre>
-<pre><code>##        x          y
-##  [1,]  1  0.7973450
-##  [2,]  2  0.1225265
-##  [3,]  3  0.8741280
-##  [4,]  4  1.1314321
-##  [5,]  5 -0.5479972
-##  [6,]  6 -1.0532986
-##  [7,]  7 -1.0967449
-##  [8,]  8 -1.6841991
-##  [9,]  9  1.3956329
-## [10,] 10  0.9723092</code></pre>
-<p>Inspecting the names associated with rows and columns is often useful, particularly if the names have human meaning.</p>
+<pre><code>##         [,1]       [,2]       [,3]      [,4]       [,5]     [,6]      [,7]
+## x  1.0000000 2.00000000  3.0000000 4.0000000  5.0000000 6.000000 7.0000000
+## y -0.8430163 0.03101184 -0.1286222 0.2374506 -0.8538436 1.121041 0.9539837
+##       [,8]      [,9]      [,10]
+## x 8.000000  9.000000 10.0000000
+## y 1.503723 -1.518493 -0.8256927</code></pre>
+<p>The alternative to <code>rbind</code> is <code>cbind</code> that
+binds columns.</p>
+<pre class="r"><code>mat &lt;- cbind(x,y)
+mat</code></pre>
+<pre><code>##        x           y
+##  [1,]  1 -0.84301634
+##  [2,]  2  0.03101184
+##  [3,]  3 -0.12862220
+##  [4,]  4  0.23745063
+##  [5,]  5 -0.85384364
+##  [6,]  6  1.12104093
+##  [7,]  7  0.95398374
+##  [8,]  8  1.50372298
+##  [9,]  9 -1.51849281
+## [10,] 10 -0.82569271</code></pre>
+<p>Inspecting the names associated with rows and columns is often
+useful, particularly if the names have human meaning.</p>
 <pre class="r"><code>rownames(mat)</code></pre>
 <pre><code>## NULL</code></pre>
 <pre class="r"><code>colnames(mat)</code></pre>
 <pre><code>## [1] &quot;x&quot; &quot;y&quot;</code></pre>
+<p>We can also change the names of the matrix by assigning
+<em>valid</em> names to the columns or rows.</p>
+<pre class="r"><code>colnames(mat) = c(&#39;apples&#39;,&#39;oranges&#39;)
+colnames(mat)</code></pre>
+<pre><code>## [1] &quot;apples&quot;  &quot;oranges&quot;</code></pre>
+<pre class="r"><code>mat</code></pre>
+<pre><code>##       apples     oranges
+##  [1,]      1 -0.84301634
+##  [2,]      2  0.03101184
+##  [3,]      3 -0.12862220
+##  [4,]      4  0.23745063
+##  [5,]      5 -0.85384364
+##  [6,]      6  1.12104093
+##  [7,]      7  0.95398374
+##  [8,]      8  1.50372298
+##  [9,]      9 -1.51849281
+## [10,]     10 -0.82569271</code></pre>
 <p>Matrices have dimensions.</p>
 <pre class="r"><code>dim(mat)</code></pre>
 <pre><code>## [1] 10  2</code></pre>
@@ -440,15 +502,23 @@ mat</code></pre>
 <pre><code>## [1] 10</code></pre>
 <pre class="r"><code>ncol(mat)</code></pre>
 <pre><code>## [1] 2</code></pre>
-<p>Indexing for matrices works as for vectors except that we now need to include both the row and column (in that order).</p>
+</div>
+<div id="accessing-elements-of-a-matrix" class="section level2">
+<h2>Accessing elements of a matrix</h2>
+<p>Indexing for matrices works as for vectors except that we now need to
+include both the row and column (in that order). We can access elements
+of a matrix using the square bracket [ indexing method. Elements can be
+accessed as <code>var[r, c]</code>. Here, <code>r</code> and
+<code>c</code> are vectors describing the elements of the matrix to
+select.</p>
 <pre class="r"><code># The 2nd element of the 1st row of mat
 mat[1,2]</code></pre>
-<pre><code>##        y 
-## 0.797345</code></pre>
+<pre><code>##    oranges 
+## -0.8430163</code></pre>
 <pre class="r"><code># The first ROW of mat
 mat[1,]</code></pre>
-<pre><code>##        x        y 
-## 1.000000 0.797345</code></pre>
+<pre><code>##     apples    oranges 
+##  1.0000000 -0.8430163</code></pre>
 <pre class="r"><code># The first COLUMN of mat
 mat[,1]</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -456,22 +526,127 @@ mat[,1]</code></pre>
 mat[mat&gt;4]</code></pre>
 <pre><code>## [1]  5  6  7  8  9 10</code></pre>
 <pre class="r"><code>## [1]  5  6  7  8  9 10</code></pre>
-<p>Note that in the last case, there is no “,”, so R treats the matrix as a long vector (length=20). This is convenient, sometimes, but it can also be a source of error, as some code may “work” but be doing something unexpected.</p>
-<p>In the next example, we create a matrix with 2 columns and 10 rows.</p>
+<p>Note that in the last case, there is no “,”, so R treats the matrix
+as a long vector (length=20). This is convenient, sometimes, but it can
+also be a source of error, as some code may “work” but be doing
+something unexpected.</p>
+<p>We can also use indexing to exclude a row or column by prefixing the
+selection with a <code>-</code> sign.</p>
+<pre class="r"><code>mat[,-1]       # remove first column</code></pre>
+<pre><code>##  [1] -0.84301634  0.03101184 -0.12862220  0.23745063 -0.85384364  1.12104093
+##  [7]  0.95398374  1.50372298 -1.51849281 -0.82569271</code></pre>
+<pre class="r"><code>mat[-c(1:5),]  # remove first five rows</code></pre>
+<pre><code>##      apples    oranges
+## [1,]      6  1.1210409
+## [2,]      7  0.9539837
+## [3,]      8  1.5037230
+## [4,]      9 -1.5184928
+## [5,]     10 -0.8256927</code></pre>
+</div>
+<div id="changing-values-in-a-matrix" class="section level2">
+<h2>Changing values in a matrix</h2>
+<p>We can create a matrix filled with random values drawn from a normal
+distribution for our work below.</p>
 <pre class="r"><code>m = matrix(rnorm(20),nrow=10)
-# multiply all values in the matrix by 20
-m = m*20
-# and add 100 to the first column of m
-m[,1] = m[,1] + 100
-# summarize m
 summary(m)</code></pre>
+<pre><code>##        V1                V2         
+##  Min.   :-1.5849   Min.   :-2.9330  
+##  1st Qu.:-0.8206   1st Qu.:-0.5576  
+##  Median :-0.6572   Median :-0.1636  
+##  Mean   :-0.4372   Mean   :-0.2955  
+##  3rd Qu.:-0.4814   3rd Qu.: 0.7165  
+##  Max.   : 2.1681   Max.   : 1.2195</code></pre>
+<p>Multiplication and division works similarly to vectors. When
+multiplying by a vector, for example, the values of the vector are
+reused. In the simplest case, let’s multiply the matrix by a constant
+(vector of length 1).</p>
+<pre class="r"><code># multiply all values in the matrix by 20
+m2 = m*20
+summary(m2)</code></pre>
+<pre><code>##        V1                V2         
+##  Min.   :-31.698   Min.   :-58.659  
+##  1st Qu.:-16.411   1st Qu.:-11.151  
+##  Median :-13.143   Median : -3.272  
+##  Mean   : -8.743   Mean   : -5.910  
+##  3rd Qu.: -9.629   3rd Qu.: 14.331  
+##  Max.   : 43.361   Max.   : 24.389</code></pre>
+<p>By combining subsetting with assignment, we can make changes to just
+part of a matrix.</p>
+<pre class="r"><code># and add 100 to the first column of m
+m2[,1] = m2[,1] + 100
+# summarize m
+summary(m2)</code></pre>
 <pre><code>##        V1               V2         
-##  Min.   : 56.51   Min.   :-21.709  
-##  1st Qu.: 74.59   1st Qu.: -3.249  
-##  Median : 81.78   Median : 12.957  
-##  Mean   : 85.55   Mean   : 11.397  
-##  3rd Qu.: 93.22   3rd Qu.: 27.574  
-##  Max.   :127.76   Max.   : 45.176</code></pre>
+##  Min.   : 68.30   Min.   :-58.659  
+##  1st Qu.: 83.59   1st Qu.:-11.151  
+##  Median : 86.86   Median : -3.272  
+##  Mean   : 91.26   Mean   : -5.910  
+##  3rd Qu.: 90.37   3rd Qu.: 14.331  
+##  Max.   :143.36   Max.   : 24.389</code></pre>
+<p>A somewhat common transformation for a matrix is to transpose which
+changes rows to columns. One might need to do this if an assay output
+from a lab machine puts samples in rows and genes in columns, for
+example, while in Bioconductor/R, we often want the samples in columns
+and the genes in rows.</p>
+<pre class="r"><code>t(m2)</code></pre>
+<pre><code>##            [,1]      [,2]     [,3]      [,4]     [,5]       [,6]     [,7]
+## [1,] 68.3024107 84.853621 74.30254  83.16710 87.48558 143.361431 87.08400
+## [2,] -0.7274469 -1.932346 19.34996 -10.19411 24.38908  -4.610796 21.81934
+##           [,8]      [,9]     [,10]
+## [1,]  86.62978  91.33294 106.05043
+## [2,] -11.47012 -58.65922 -37.06505</code></pre>
+</div>
+<div id="calculations-on-matrix-rows-and-columns"
+class="section level2">
+<h2>Calculations on matrix rows and columns</h2>
+<p>Again, we just need a matrix to play with. We’ll use
+<code>rnorm</code> again, but with a slight twist.</p>
+<pre class="r"><code>m3 = matrix(rnorm(100,5,2),ncol=10) # what does the 5 mean here? And the 2?</code></pre>
+<p>Since these data are from a normal distribution, we can look at a row
+(or column) to see what the mean and standard deviation are.</p>
+<pre class="r"><code>mean(m3[,1])</code></pre>
+<pre><code>## [1] 4.345614</code></pre>
+<pre class="r"><code>sd(m3[,1])</code></pre>
+<pre><code>## [1] 2.104432</code></pre>
+<pre class="r"><code># or a row
+mean(m3[1,])</code></pre>
+<pre><code>## [1] 4.263493</code></pre>
+<pre class="r"><code>sd(m3[1,])</code></pre>
+<pre><code>## [1] 1.490555</code></pre>
+<p>There are some useful convenience functions for computing means and
+sums of data in <strong>all</strong> of the columns and rows of
+matrices.</p>
+<pre class="r"><code>colMeans(m3)</code></pre>
+<pre><code>##  [1] 4.345614 4.628478 5.097733 5.711541 5.171218 4.974755 4.847533 4.931225
+##  [9] 5.162024 6.280296</code></pre>
+<pre class="r"><code>rowMeans(m3)</code></pre>
+<pre><code>##  [1] 4.263493 5.320054 5.441344 5.287590 5.633510 4.941104 5.039043 5.013403
+##  [9] 5.063764 5.147110</code></pre>
+<pre class="r"><code>rowSums(m3)</code></pre>
+<pre><code>##  [1] 42.63493 53.20054 54.41344 52.87590 56.33510 49.41104 50.39043 50.13403
+##  [9] 50.63764 51.47110</code></pre>
+<pre class="r"><code>colSums(m3)</code></pre>
+<pre><code>##  [1] 43.45614 46.28478 50.97733 57.11541 51.71218 49.74755 48.47533 49.31225
+##  [9] 51.62024 62.80296</code></pre>
+<p>We can look at the distribution of column means:</p>
+<pre class="r"><code># save as a variable
+cmeans = colMeans(m3)
+summary(cmeans)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   4.346   4.868   5.036   5.115   5.169   6.280</code></pre>
+<p>Note that this is centered pretty closely around the selected mean of
+<code>5</code> above.</p>
+<p>How about the standard deviation? There is not a <code>colSd</code>
+function, but it turns out that we can easily apply functions that take
+vectors as input, like <code>sd</code> and “apply” them across either
+the rows (the first dimension) or columns (the second) dimension.</p>
+<pre class="r"><code>csds = apply(m3, 2, sd)
+summary(csds)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.186   2.038   2.144   2.116   2.316   2.903</code></pre>
+<p>Again, take a look at the distribution which is centered quite close
+to the selected standard deviation when we created our matrix.</p>
+</div>
 </div>
 
     <script>

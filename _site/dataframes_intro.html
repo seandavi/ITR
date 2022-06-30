@@ -406,7 +406,17 @@ div.tocify {
 </div>
 
 
-<p>While R has many different data types, the one that is central to much of the power and popularity of R is the <code>data.frame</code>. A data.frame looks a bit like an R matrix in that it has two dimensions, rows and columns. However, data.frames are usually viewed as a set of columns representing variables and the rows representing the values of those variables. Importantly, a data.frame may contain <em>different</em> data types in each of its columns; matrices <strong>must</strong> contain only one data type. This distinction is important to remember, as there are <em>specific</em> approaches to working with R data.frames that may be different than those for working with matrices.</p>
+<p>While R has many different data types, the one that is central to
+much of the power and popularity of R is the <code>data.frame</code>. A
+data.frame looks a bit like an R matrix in that it has two dimensions,
+rows and columns. However, data.frames are usually viewed as a set of
+columns representing variables and the rows representing the values of
+those variables. Importantly, a data.frame may contain
+<em>different</em> data types in each of its columns; matrices
+<strong>must</strong> contain only one data type. This distinction is
+important to remember, as there are <em>specific</em> approaches to
+working with R data.frames that may be different than those for working
+with matrices.</p>
 <div id="learning-goals" class="section level2">
 <h2>Learning goals</h2>
 <ul>
@@ -420,37 +430,76 @@ div.tocify {
 <div id="learning-objectives" class="section level2">
 <h2>Learning objectives</h2>
 <ul>
-<li>Load the yeast growth dataset into R using <code>read.csv</code>.</li>
+<li>Load the yeast growth dataset into R using
+<code>read.csv</code>.</li>
 <li>Examine the contents of the dataset.</li>
-<li>Use subsetting to find genes that may be involved with nutrient metabolism and transport.</li>
+<li>Use subsetting to find genes that may be involved with nutrient
+metabolism and transport.</li>
 <li>Summarize data measurements by categories.</li>
 </ul>
 </div>
 <div id="dataset" class="section level2">
 <h2>Dataset</h2>
-<p>The data used here are borrowed directly from the <a href="http://bioconnector.org/index.html">fantastic Bioconnector tutorials</a> and are a cleaned up version of the data from <a href="http://www.ncbi.nlm.nih.gov/pubmed/17959824">Brauer et al. Coordination of Growth Rate, Cell Cycle, Stress Response, and Metabolic Activity in Yeast (2008) Mol Biol Cell 19:352-367</a>. These data are from a gene expression microarray, and in this paper the authors examine the relationship between growth rate and gene expression in yeast cultures limited by one of six different nutrients (glucose, leucine, ammonium, sulfate, phosphate, uracil). If you give yeast a rich media loaded with nutrients except restrict the supply of a single nutrient, you can control the growth rate to any rate you choose. By starving yeast of specific nutrients you can find genes that:</p>
+<p>The data used here are borrowed directly from the <a
+href="http://bioconnector.org/index.html">fantastic Bioconnector
+tutorials</a> and are a cleaned up version of the data from <a
+href="http://www.ncbi.nlm.nih.gov/pubmed/17959824">Brauer et
+al. Coordination of Growth Rate, Cell Cycle, Stress Response, and
+Metabolic Activity in Yeast (2008) Mol Biol Cell 19:352-367</a>. These
+data are from a gene expression microarray, and in this paper the
+authors examine the relationship between growth rate and gene expression
+in yeast cultures limited by one of six different nutrients (glucose,
+leucine, ammonium, sulfate, phosphate, uracil). If you give yeast a rich
+media loaded with nutrients except restrict the supply of a single
+nutrient, you can control the growth rate to any rate you choose. By
+starving yeast of specific nutrients you can find genes that:</p>
 <ol style="list-style-type: decimal">
-<li>Raise or lower their expression in response to growth rate. Growth-rate dependent expression patterns can tell us a lot about cell cycle control, and how the cell responds to stress. The authors found that expression of &gt;25% of all yeast genes is linearly correlated with growth rate, independent of the limiting nutrient. They also found that the subset of negatively growth-correlated genes is enriched for peroxisomal functions, and positively correlated genes mainly encode ribosomal functions.</li>
-<li>Respond differently when different nutrients are being limited. If you see particular genes that respond very differently when a nutrient is sharply restricted, these genes might be involved in the transport or metabolism of that specific nutrient.</li>
+<li>Raise or lower their expression in response to growth rate.
+Growth-rate dependent expression patterns can tell us a lot about cell
+cycle control, and how the cell responds to stress. The authors found
+that expression of &gt;25% of all yeast genes is linearly correlated
+with growth rate, independent of the limiting nutrient. They also found
+that the subset of negatively growth-correlated genes is enriched for
+peroxisomal functions, and positively correlated genes mainly encode
+ribosomal functions.</li>
+<li>Respond differently when different nutrients are being limited. If
+you see particular genes that respond very differently when a nutrient
+is sharply restricted, these genes might be involved in the transport or
+metabolism of that specific nutrient.</li>
 </ol>
 <p>The dataset can be downloaded directly from:</p>
 <ul>
-<li><a href="https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv">brauer2007_tidy.csv</a></li>
+<li><a
+href="https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv">brauer2007_tidy.csv</a></li>
 </ul>
-<p>We are going to read this dataset into R and then use it as a playground for learning about data.frames.</p>
+<p>We are going to read this dataset into R and then use it as a
+playground for learning about data.frames.</p>
 </div>
 <div id="reading-in-data" class="section level2">
 <h2>Reading in data</h2>
-<p>R has many capabilities for reading in data. Many of the functions have names that help us to understand what data format is to be expected. In this case, the filename that we want to read ends in <code>.csv</code>, meaning comma-separated-values. The <code>read.csv()</code> function reads in <code>.csv</code> files. As usual, it is worth reading <code>help('read.csv')</code> to get a better sense of the possible bells-and-whistles.</p>
-<p>The <code>read.csv()</code> function can read directly from a URL, so we do not need to download the file directly. This dataset is relatively large (about 16MB), so this may take a bit depending on your network connection speed.</p>
+<p>R has many capabilities for reading in data. Many of the functions
+have names that help us to understand what data format is to be
+expected. In this case, the filename that we want to read ends in
+<code>.csv</code>, meaning comma-separated-values. The
+<code>read.csv()</code> function reads in <code>.csv</code> files. As
+usual, it is worth reading <code>help('read.csv')</code> to get a better
+sense of the possible bells-and-whistles.</p>
+<p>The <code>read.csv()</code> function can read directly from a URL, so
+we do not need to download the file directly. This dataset is relatively
+large (about 16MB), so this may take a bit depending on your network
+connection speed.</p>
 <pre class="r"><code>ydat &lt;- read.csv(&#39;https://raw.githubusercontent.com/bioconnector/workshops/master/data/brauer2007_tidy.csv&#39;)</code></pre>
-<p>Our variable, <code>ydat</code>, now “contains” the downloaded and read data. We can check to see what data type read.csv gave us:</p>
+<p>Our variable, <code>ydat</code>, now “contains” the downloaded and
+read data. We can check to see what data type read.csv gave us:</p>
 <pre class="r"><code>class(ydat)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 </div>
 <div id="inspecting-data.frames" class="section level2">
 <h2>Inspecting data.frames</h2>
-<p>Our <code>ydat</code> variable is a data.frame. As I mentioned, the dataset is fairly large, so we will not be able to look at it all at once on the screen. However, R gives us many tools to inspect a data.frame.</p>
+<p>Our <code>ydat</code> variable is a data.frame. As I mentioned, the
+dataset is fairly large, so we will not be able to look at it all at
+once on the screen. However, R gives us many tools to inspect a
+data.frame.</p>
 <ul>
 <li>Overviews of content
 <ul>
@@ -462,13 +511,16 @@ div.tocify {
 <li><code>dim()</code> for dimensions (rows, columns)</li>
 <li><code>nrow()</code></li>
 <li><code>ncol()</code></li>
-<li><code>object.size()</code> for power users interested in the memory used to store an object</li>
+<li><code>object.size()</code> for power users interested in the memory
+used to store an object</li>
 </ul></li>
 <li>Data and attribute summaries
 <ul>
 <li><code>colnames()</code> to get the names of the columns</li>
-<li><code>rownames()</code> to get the “names” of the rows–may not be present</li>
-<li><code>summary()</code> to get per-column summaries of the data in the data.frame.</li>
+<li><code>rownames()</code> to get the “names” of the rows–may not be
+present</li>
+<li><code>summary()</code> to get per-column summaries of the data in
+the data.frame.</li>
 </ul></li>
 </ul>
 <pre class="r"><code>head(ydat)</code></pre>
@@ -532,12 +584,20 @@ div.tocify {
 ##  Mean   : 0.003367                                        
 ##  3rd Qu.: 0.290000                                        
 ##  Max.   : 6.640000</code></pre>
-<p>In RStudio, there is an additional function, <code>View()</code> (note the capital “V”) that opens the first 1000 rows (default) in the RStudio window, akin to a spreadsheet view.</p>
+<p>In RStudio, there is an additional function, <code>View()</code>
+(note the capital “V”) that opens the first 1000 rows (default) in the
+RStudio window, akin to a spreadsheet view.</p>
 <pre class="r"><code>View(ydat)</code></pre>
 </div>
-<div id="accessing-variables-columns-and-subsetting" class="section level2">
+<div id="accessing-variables-columns-and-subsetting"
+class="section level2">
 <h2>Accessing variables (columns) and subsetting</h2>
-<p>In R, data.frames can be subset similarly to other two-dimensional data structures. The <code>[</code> in R is used to denote subsetting of any kind. When working with two-dimensional data, we need two values inside the <code>[ ]</code> to specify the details. The specification is <code>[rows, columns]</code>. For example, to get the first three rows of <code>ydat</code>, use:</p>
+<p>In R, data.frames can be subset similarly to other two-dimensional
+data structures. The <code>[</code> in R is used to denote subsetting of
+any kind. When working with two-dimensional data, we need two values
+inside the <code>[ ]</code> to specify the details. The specification is
+<code>[rows, columns]</code>. For example, to get the first three rows
+of <code>ydat</code>, use:</p>
 <pre class="r"><code>ydat[1:3, ]</code></pre>
 <pre><code>##   symbol systematic_name nutrient rate expression                           bp
 ## 1   SFB2         YNL049C  Glucose 0.05      -0.24        ER to Golgi transport
@@ -547,13 +607,18 @@ div.tocify {
 ## 1    molecular function unknown
 ## 2    molecular function unknown
 ## 3 metalloendopeptidase activity</code></pre>
-<p>Note how the second number, the columns, is blank. R takes that to mean “all the columns”. Similarly, we can combine rows and columns specification arbitrarily.</p>
+<p>Note how the second number, the columns, is blank. R takes that to
+mean “all the columns”. Similarly, we can combine rows and columns
+specification arbitrarily.</p>
 <pre class="r"><code>ydat[1:3, 1:3]</code></pre>
 <pre><code>##   symbol systematic_name nutrient
 ## 1   SFB2         YNL049C  Glucose
 ## 2   &lt;NA&gt;         YNL095C  Glucose
 ## 3   QRI7         YDL104C  Glucose</code></pre>
-<p>Because selecting a single variable, or column, is such a common operation, there are two shortcuts for doing so <em>with data.frames</em>. The first, the <code>$</code> operator works like so:</p>
+<p>Because selecting a single variable, or column, is such a common
+operation, there are two shortcuts for doing so <em>with
+data.frames</em>. The first, the <code>$</code> operator works like
+so:</p>
 <pre class="r"><code># Look at the column names, just to refresh memory
 colnames(ydat)</code></pre>
 <pre><code>## [1] &quot;symbol&quot;          &quot;systematic_name&quot; &quot;nutrient&quot;        &quot;rate&quot;           
@@ -564,7 +629,9 @@ head(ydat$symbol)</code></pre>
 <pre class="r"><code># What is the actual length of &quot;symbol&quot;?
 length(ydat$symbol)</code></pre>
 <pre><code>## [1] 198430</code></pre>
-<p>The second is related to the fact that, in R, data.frames are also lists. We subset a list by using <code>[[]]</code> notation. To get the second column of <code>ydat</code>, we can use:</p>
+<p>The second is related to the fact that, in R, data.frames are also
+lists. We subset a list by using <code>[[]]</code> notation. To get the
+second column of <code>ydat</code>, we can use:</p>
 <pre class="r"><code>head(ydat[[2]])</code></pre>
 <pre><code>## [1] &quot;YNL049C&quot; &quot;YNL095C&quot; &quot;YDL104C&quot; &quot;YLR115W&quot; &quot;YMR183C&quot; &quot;YML017W&quot;</code></pre>
 <p>Alternatively, we can use the column name:</p>
@@ -572,7 +639,8 @@ length(ydat$symbol)</code></pre>
 <pre><code>## [1] &quot;YNL049C&quot; &quot;YNL095C&quot; &quot;YDL104C&quot; &quot;YLR115W&quot; &quot;YMR183C&quot; &quot;YML017W&quot;</code></pre>
 <div id="some-data-exploration" class="section level3">
 <h3>Some data exploration</h3>
-<p>There are a couple of columns that include numeric values. Which columns are numeric?</p>
+<p>There are a couple of columns that include numeric values. Which
+columns are numeric?</p>
 <pre class="r"><code>class(ydat$symbol)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>class(ydat$rate)</code></pre>
@@ -580,12 +648,16 @@ length(ydat$symbol)</code></pre>
 <pre class="r"><code>class(ydat$expression)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>Make histograms of: - the expression values - the rate values</p>
-<p>What does the <code>table()</code> function do? Could you use that to look a the <code>rate</code> column given that that column appears to have repeated values?</p>
-<p>What <code>rate</code> corresponds to the most nutrient-starved condition?</p>
+<p>What does the <code>table()</code> function do? Could you use that to
+look a the <code>rate</code> column given that that column appears to
+have repeated values?</p>
+<p>What <code>rate</code> corresponds to the most nutrient-starved
+condition?</p>
 </div>
 <div id="more-advanced-indexing-and-subsetting" class="section level3">
 <h3>More advanced indexing and subsetting</h3>
-<p>We can use, for example, logical values (TRUE/FALSE) to subset data.frames.</p>
+<p>We can use, for example, logical values (TRUE/FALSE) to subset
+data.frames.</p>
 <pre class="r"><code>head(ydat[ydat$symbol == &#39;LEU1&#39;, ])</code></pre>
 <pre><code>##      symbol systematic_name nutrient rate expression   bp   mf
 ## NA     &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
@@ -602,11 +674,14 @@ length(ydat$symbol)</code></pre>
 ## NA.47247   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
 ## NA.47248   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;
 ## NA.47249   &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   NA         NA &lt;NA&gt; &lt;NA&gt;</code></pre>
-<p>What is the problem with this approach? It appears that there are a bunch of <code>NA</code> values. Taking a quick look at the <code>symbol</code> column, we see what the problem.</p>
+<p>What is the problem with this approach? It appears that there are a
+bunch of <code>NA</code> values. Taking a quick look at the
+<code>symbol</code> column, we see what the problem.</p>
 <pre class="r"><code>summary(ydat$symbol)</code></pre>
 <pre><code>##    Length     Class      Mode 
 ##    198430 character character</code></pre>
-<p>Using the <code>is.na()</code> function, we can make filter further to get down to values of interest.</p>
+<p>Using the <code>is.na()</code> function, we can make filter further
+to get down to values of interest.</p>
 <pre class="r"><code>head(ydat[ydat$symbol == &#39;LEU1&#39; &amp; !is.na(ydat$symbol), ])</code></pre>
 <pre><code>##       symbol systematic_name nutrient rate expression                   bp
 ## 1526    LEU1         YGL009C  Glucose 0.05      -1.12 leucine biosynthesis
@@ -622,10 +697,14 @@ length(ydat$symbol)</code></pre>
 ## 18071 3-isopropylmalate dehydratase activity
 ## 23603 3-isopropylmalate dehydratase activity
 ## 29136 3-isopropylmalate dehydratase activity</code></pre>
-<p>Sometimes, looking at the data themselves is not that important. Using <code>dim()</code> is one possibility to look at the number of rows and columns after subsetting.</p>
+<p>Sometimes, looking at the data themselves is not that important.
+Using <code>dim()</code> is one possibility to look at the number of
+rows and columns after subsetting.</p>
 <pre class="r"><code>dim(ydat[ydat$expression &gt; 3, ])</code></pre>
 <pre><code>## [1] 714   7</code></pre>
-<p>Find the high expressed genes when leucine-starved. For this task we can also use <code>subset</code> which allows us to treat column names as R variables (no <code>$</code> needed).</p>
+<p>Find the high expressed genes when leucine-starved. For this task we
+can also use <code>subset</code> which allows us to treat column names
+as R variables (no <code>$</code> needed).</p>
 <pre class="r"><code>subset(ydat, nutrient == &#39;Leucine&#39; &amp; rate == 0.05 &amp; expression &gt; 3)</code></pre>
 <pre><code>##        symbol systematic_name nutrient rate expression
 ## 133768   QDR2         YIL121W  Leucine 0.05       4.61
@@ -700,7 +779,9 @@ length(ydat$symbol)</code></pre>
 </div>
 <div id="aggregating-data" class="section level2">
 <h2>Aggregating data</h2>
-<p>Aggregating data, or summarizing by category, is a common way to look for trends or differences in measurements between categories. Use <code>aggregate</code> to find the mean expression by gene symbol.</p>
+<p>Aggregating data, or summarizing by category, is a common way to look
+for trends or differences in measurements between categories. Use
+<code>aggregate</code> to find the mean expression by gene symbol.</p>
 <pre class="r"><code>head(aggregate(ydat$expression, by=list( ydat$symbol), mean))</code></pre>
 <pre><code>##   Group.1           x
 ## 1    AAC1  0.52888889
@@ -721,28 +802,34 @@ head(aggregate(expression ~ symbol, mean, data=ydat))</code></pre>
 </div>
 <div id="creating-a-data.frame-from-scratch" class="section level2">
 <h2>Creating a data.frame from scratch</h2>
-<p>Sometimes it is useful to combine related data into one object. For example, let’s simulate some data.</p>
+<p>Sometimes it is useful to combine related data into one object. For
+example, let’s simulate some data.</p>
 <pre class="r"><code>smoker = factor(rep(c(&quot;smoker&quot;, &quot;non-smoker&quot;), each=50))
 smoker_numeric = as.numeric(smoker)
 x = rnorm(100)
 risk = x + 2*smoker_numeric</code></pre>
-<p>We have two varibles, <code>risk</code> and <code>smoker</code> that are related. We can make a data.frame out of them:</p>
+<p>We have two varibles, <code>risk</code> and <code>smoker</code> that
+are related. We can make a data.frame out of them:</p>
 <pre class="r"><code>smoker_risk = data.frame(smoker = smoker, risk = risk)
 head(smoker_risk)</code></pre>
 <pre><code>##   smoker     risk
-## 1 smoker 4.266302
-## 2 smoker 3.090195
-## 3 smoker 4.106153
-## 4 smoker 4.157052
-## 5 smoker 4.734041
-## 6 smoker 2.997563</code></pre>
-<p>R also has plotting shortcuts that work with data.frames to simplify plotting</p>
+## 1 smoker 3.314167
+## 2 smoker 4.211780
+## 3 smoker 3.296419
+## 4 smoker 5.228781
+## 5 smoker 4.422127
+## 6 smoker 3.930748</code></pre>
+<p>R also has plotting shortcuts that work with data.frames to simplify
+plotting</p>
 <pre class="r"><code>plot( risk ~ smoker, data=smoker_risk)</code></pre>
 <p><img src="dataframes_intro_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="saving-a-data.frame" class="section level2">
 <h2>Saving a data.frame</h2>
-<p>Once we have a data.frame of interest, we may want to save it. The most portable way to save a data.frame is to use one of the <code>write</code> functions. In this case, let’s save the data as a <code>.csv</code> file.</p>
+<p>Once we have a data.frame of interest, we may want to save it. The
+most portable way to save a data.frame is to use one of the
+<code>write</code> functions. In this case, let’s save the data as a
+<code>.csv</code> file.</p>
 <pre class="r"><code>write.csv(smoker_risk, &quot;smoker_risk.csv&quot;)</code></pre>
 </div>
 

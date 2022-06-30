@@ -406,7 +406,11 @@ div.tocify {
 </div>
 
 
-<p>As in many programming languages, understanding how data are stored and manipulated is important to getting the most out of the experience. In these next few sections, we will introduce some basic R data types and structures as well as some general approaches for working with them.</p>
+<p>As in many programming languages, understanding how data are stored
+and manipulated is important to getting the most out of the experience.
+In these next few sections, we will introduce some basic R data types
+and structures as well as some general approaches for working with
+them.</p>
 <div id="vectors" class="section level1">
 <h1>Vectors</h1>
 <p>In R, even a single value is a vector with length=1.</p>
@@ -415,8 +419,18 @@ z</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>length(z)</code></pre>
 <pre><code>## [1] 1</code></pre>
-<p>In the code above, we “assigned” the value 1 to the variable named <code>z</code>. Typing <code>z</code> by itself is an “expression” that returns a result which is, in this case, the value that we just assigned. The <code>length</code> method takes an R object and returns the R length. There are numerous ways of asking R about what an object represents, and <code>length</code> is one of them.</p>
-<p>Vectors can contain numbers, strings (character data), or logical values (<code>TRUE</code> and <code>FALSE</code>) or other “atomic” data types (table @ref(tab:simpletypes)). <em>Vectors cannot contain a mix of types!</em> We will introduce another data structure, the R <code>list</code> for situations when we need to store a mix of base R data types.</p>
+<p>In the code above, we “assigned” the value 1 to the variable named
+<code>z</code>. Typing <code>z</code> by itself is an “expression” that
+returns a result which is, in this case, the value that we just
+assigned. The <code>length</code> method takes an R object and returns
+the R length. There are numerous ways of asking R about what an object
+represents, and <code>length</code> is one of them.</p>
+<p>Vectors can contain numbers, strings (character data), or logical
+values (<code>TRUE</code> and <code>FALSE</code>) or other “atomic” data
+types (table @ref(tab:simpletypes)). <em>Vectors cannot contain a mix of
+types!</em> We will introduce another data structure, the R
+<code>list</code> for situations when we need to store a mix of base R
+data types.</p>
 <table>
 <caption>(#tab:simpletypes) Atomic (simplest) data types in R.</caption>
 <thead>
@@ -466,7 +480,10 @@ z</code></pre>
 </table>
 <div id="creating-vectors" class="section level2">
 <h2>Creating vectors</h2>
-<p>Character vectors (also sometimes called “string” vectors) are entered with each value surrounded by single or double quotes; either is acceptable, but they must match. They are always displayed by R with double quotes. Here are some examples of creating vectors:</p>
+<p>Character vectors (also sometimes called “string” vectors) are
+entered with each value surrounded by single or double quotes; either is
+acceptable, but they must match. They are always displayed by R with
+double quotes. Here are some examples of creating vectors:</p>
 <pre class="r"><code># examples of vectors
 c(&#39;hello&#39;,&#39;world&#39;)</code></pre>
 <pre><code>## [1] &quot;hello&quot; &quot;world&quot;</code></pre>
@@ -480,15 +497,18 @@ c(&#39;hello&#39;,&#39;world&#39;)</code></pre>
 # with quotes around it.
 c(TRUE,&#39;hello&#39;)</code></pre>
 <pre><code>## [1] &quot;TRUE&quot;  &quot;hello&quot;</code></pre>
-<p>We can also create vectors as “regular sequences” of numbers. For example:</p>
+<p>We can also create vectors as “regular sequences” of numbers. For
+example:</p>
 <pre class="r"><code># create a vector of integers from 1 to 10
 x = 1:10
 # and backwards
 x = 10:1</code></pre>
-<p>The <code>seq</code> function can create more flexible regular sequences.</p>
+<p>The <code>seq</code> function can create more flexible regular
+sequences.</p>
 <pre class="r"><code># create a vector of numbers from 1 to 4 skipping by 0.3
 y = seq(1,4,0.3)</code></pre>
-<p>And creating a new vector by concatenating existing vectors is possible, as well.</p>
+<p>And creating a new vector by concatenating existing vectors is
+possible, as well.</p>
 <pre class="r"><code># create a sequence by concatenating two other sequences
 z = c(y,x)
 z</code></pre>
@@ -497,30 +517,42 @@ z</code></pre>
 </div>
 <div id="vector-operations" class="section level2">
 <h2>Vector Operations</h2>
-<p>Operations on a single vector are typically done element-by-element. For example, we can add <code>2</code> to a vector, <code>2</code> is added to each element of the vector and a new vector of the same length is returned.</p>
+<p>Operations on a single vector are typically done element-by-element.
+For example, we can add <code>2</code> to a vector, <code>2</code> is
+added to each element of the vector and a new vector of the same length
+is returned.</p>
 <pre class="r"><code>x = 1:10
 x + 2</code></pre>
 <pre><code>##  [1]  3  4  5  6  7  8  9 10 11 12</code></pre>
-<p>If the operation involves two vectors, the following rules apply. If the vectors are the same length: R simply applies the operation to each pair of elements.</p>
+<p>If the operation involves two vectors, the following rules apply. If
+the vectors are the same length: R simply applies the operation to each
+pair of elements.</p>
 <pre class="r"><code>x + x</code></pre>
 <pre><code>##  [1]  2  4  6  8 10 12 14 16 18 20</code></pre>
-<p>If the vectors are different lengths, but one length a multiple of the other, R reuses the shorter vector as needed.</p>
+<p>If the vectors are different lengths, but one length a multiple of
+the other, R reuses the shorter vector as needed.</p>
 <pre class="r"><code>x = 1:10
 y = c(1,2)
 x * y</code></pre>
 <pre><code>##  [1]  1  4  3  8  5 12  7 16  9 20</code></pre>
-<p>If the vectors are different lengths, but one length <em>not</em> a multiple of the other, R reuses the shorter vector as needed <em>and</em> delivers a warning.</p>
+<p>If the vectors are different lengths, but one length <em>not</em> a
+multiple of the other, R reuses the shorter vector as needed
+<em>and</em> delivers a warning.</p>
 <pre class="r"><code>x = 1:10
 y = c(2,3,4)
 x * y</code></pre>
 <pre><code>## Warning in x * y: longer object length is not a multiple of shorter object
 ## length</code></pre>
 <pre><code>##  [1]  2  6 12  8 15 24 14 24 36 20</code></pre>
-<p>Typical operations include multiplication (“*”), addition, subtraction, division, exponentiation (“^”), but many operations in R operate on vectors and are then called “vectorized”.</p>
+<p>Typical operations include multiplication (“*”), addition,
+subtraction, division, exponentiation (“^”), but many operations in R
+operate on vectors and are then called “vectorized”.</p>
 </div>
 <div id="logical-vectors" class="section level2">
 <h2>Logical Vectors</h2>
-<p>Logical vectors are vectors composed on only the values <code>TRUE</code> and <code>FALSE</code>. Note the all-upper-case and no quotation marks.</p>
+<p>Logical vectors are vectors composed on only the values
+<code>TRUE</code> and <code>FALSE</code>. Note the all-upper-case and no
+quotation marks.</p>
 <pre class="r"><code>a = c(TRUE,FALSE,TRUE)
 
 # we can also create a logical vector from a numeric vector
@@ -537,7 +569,8 @@ as.numeric(a)</code></pre>
 <pre><code>## [1] 1 0 1</code></pre>
 <div id="logical-operators" class="section level3">
 <h3>Logical Operators</h3>
-<p>Some operators like <code>&lt;, &gt;, ==, &gt;=, &lt;=, !=</code> can be used to create logical vectors.</p>
+<p>Some operators like <code>&lt;, &gt;, ==, &gt;=, &lt;=, !=</code> can
+be used to create logical vectors.</p>
 <pre class="r"><code># create a numeric vector
 x = 1:10
 # testing whether x &gt; 5 creates a logical vector
@@ -557,7 +590,10 @@ y</code></pre>
 </div>
 <div id="indexing-vectors" class="section level2">
 <h2>Indexing Vectors</h2>
-<p>In R, an index is used to refer to a specific element or set of elements in an vector (or other data structure). [R uses <code>[</code> and <code>]</code> to perform indexing, although other approaches to getting subsets of larger data structures are common in R.</p>
+<p>In R, an index is used to refer to a specific element or set of
+elements in an vector (or other data structure). [R uses <code>[</code>
+and <code>]</code> to perform indexing, although other approaches to
+getting subsets of larger data structures are common in R.</p>
 <pre class="r"><code>x = seq(0,1,0.1)
 # create a new vector from the 4th element of x
 x[4]</code></pre>
@@ -568,7 +604,8 @@ x[4]</code></pre>
 <pre class="r"><code>y = 3:6
 x[y]</code></pre>
 <pre><code>## [1] 0.2 0.3 0.4 0.5</code></pre>
-<p>Combining the concept of indexing with the concept of logical vectors results in a very power combination.</p>
+<p>Combining the concept of indexing with the concept of logical vectors
+results in a very power combination.</p>
 <pre class="r"><code># use help(&#39;rnorm&#39;) to figure out what is happening next
 myvec = rnorm(10)
 
@@ -578,13 +615,13 @@ sum(gt1)</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code># and use our logical vector to create a vector of myvec values that are &gt;0.25
 myvec[gt1]</code></pre>
-<pre><code>## [1] 1.0384923 0.8118472 0.7803020 0.3304395</code></pre>
+<pre><code>## [1] 1.1755841 1.2729104 1.5350803 0.3543848</code></pre>
 <pre class="r"><code># or &lt;=0.25 using the logical &quot;not&quot; operator, &quot;!&quot;
 myvec[!gt1]</code></pre>
-<pre><code>## [1] -0.04160617 -0.90294672 -0.50997839 -0.32520837 -0.20327632 -0.05797665</code></pre>
+<pre><code>## [1] -0.7845606 -0.2888724 -0.4275322 -1.6831393 -0.3075548 -0.9069670</code></pre>
 <pre class="r"><code># shorter, one line approach
 myvec[myvec &gt; 0.25]</code></pre>
-<pre><code>## [1] 1.0384923 0.8118472 0.7803020 0.3304395</code></pre>
+<pre><code>## [1] 1.1755841 1.2729104 1.5350803 0.3543848</code></pre>
 </div>
 <div id="character-vectors-a.k.a.-strings" class="section level2">
 <h2>Character Vectors, A.K.A. Strings</h2>
@@ -608,19 +645,25 @@ paste(c(&quot;X&quot;,&quot;Y&quot;),1:10)</code></pre>
 <p>Pulling out parts of strings is also sometimes useful.</p>
 <pre class="r"><code>substr(&#39;This is a good sentence.&#39;,start=10,stop=15)</code></pre>
 <pre><code>## [1] &quot; good &quot;</code></pre>
-<p>Another common operation is to replace something in a string with something (a find-and-replace).</p>
+<p>Another common operation is to replace something in a string with
+something (a find-and-replace).</p>
 <pre class="r"><code>sub(&#39;This&#39;,&#39;That&#39;,&#39;This is a good sentence.&#39;)</code></pre>
 <pre><code>## [1] &quot;That is a good sentence.&quot;</code></pre>
-<p>When we want to find all strings that match some other string, we can use <code>grep</code>, or “grab regular expression”.</p>
+<p>When we want to find all strings that match some other string, we can
+use <code>grep</code>, or “grab regular expression”.</p>
 <pre class="r"><code>grep(&#39;bcd&#39;,c(&#39;abcdef&#39;,&#39;abcd&#39;,&#39;bcde&#39;,&#39;cdef&#39;,&#39;defg&#39;))</code></pre>
 <pre><code>## [1] 1 2 3</code></pre>
 <pre class="r"><code>grep(&#39;bcd&#39;,c(&#39;abcdef&#39;,&#39;abcd&#39;,&#39;bcde&#39;,&#39;cdef&#39;,&#39;defg&#39;),value=TRUE)</code></pre>
 <pre><code>## [1] &quot;abcdef&quot; &quot;abcd&quot;   &quot;bcde&quot;</code></pre>
-<p>Read about the <code>grepl</code> function (<code>?grepl</code>). Use that function to return a logical vector (TRUE/FALSE) for each entry above with an <code>a</code> in it.</p>
+<p>Read about the <code>grepl</code> function (<code>?grepl</code>). Use
+that function to return a logical vector (TRUE/FALSE) for each entry
+above with an <code>a</code> in it.</p>
 </div>
 <div id="missing-values-aka-na" class="section level2">
 <h2>Missing Values, AKA “NA”</h2>
-<p>R has a special value, “NA”, that represents a “missing” value, or <em>Not Available</em>, in a vector or other data structure. Here, we just create a vector to experiment.</p>
+<p>R has a special value, “NA”, that represents a “missing” value, or
+<em>Not Available</em>, in a vector or other data structure. Here, we
+just create a vector to experiment.</p>
 <pre class="r"><code>x = 1:5
 x</code></pre>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
@@ -631,12 +674,16 @@ x</code></pre>
 <pre class="r"><code>x[2] = NA
 x</code></pre>
 <pre><code>## [1]  1 NA  3  4  5</code></pre>
-<p>The length of <code>x</code> is unchanged, but there is one value that is marked as “missing” by virtue of being <code>NA</code>.</p>
+<p>The length of <code>x</code> is unchanged, but there is one value
+that is marked as “missing” by virtue of being <code>NA</code>.</p>
 <pre class="r"><code>length(x)</code></pre>
 <pre><code>## [1] 5</code></pre>
 <pre class="r"><code>is.na(x)</code></pre>
 <pre><code>## [1] FALSE  TRUE FALSE FALSE FALSE</code></pre>
-<p>We can remove <code>NA</code> values by using indexing. In the following, <code>is.na(x)</code> returns a logical vector the length of <code>x</code>. The <code>!</code> is the logical <em>NOT</em> operator and converts <code>TRUE</code> to <code>FALSE</code> and vice-versa.</p>
+<p>We can remove <code>NA</code> values by using indexing. In the
+following, <code>is.na(x)</code> returns a logical vector the length of
+<code>x</code>. The <code>!</code> is the logical <em>NOT</em> operator
+and converts <code>TRUE</code> to <code>FALSE</code> and vice-versa.</p>
 <pre class="r"><code>x[!is.na(x)]</code></pre>
 <pre><code>## [1] 1 3 4 5</code></pre>
 </div>

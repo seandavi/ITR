@@ -11,7 +11,7 @@
 
 
 
-<title>Motivation for R</title>
+<title>Getting started with Bioconductor</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -401,56 +401,99 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Motivation for R</h1>
+<h1 class="title toc-ignore">Getting started with Bioconductor</h1>
 
 </div>
 
 
-<div id="what-is-r" class="section level2">
-<h2>What is R?</h2>
-<p>R is a number of things, simultaneously. Depending on who is being asked, R is:</p>
+<div id="install-bioconductor-packages" class="section level1">
+<h1>Install Bioconductor Packages</h1>
+<p>For full details on getting started with Bioconductor, see the <a
+href="https://bioconductor.org">Bioconductor Website</a>. This material
+is just a “quick start”.</p>
+<p>Use the <code>BiocManager</code> package to install Bioconductor
+packages. To install core packages, type the following in an R command
+window:</p>
+<pre class="r"><code>install.packages(&#39;BiocManager&#39;)
+BiocManager::install()</code></pre>
+<p>Install specific packages, e.g., “GenomicFeatures” and
+“AnnotationDbi”, with</p>
+<pre class="r"><code>BiocManager::install(c(&quot;GenomicFeatures&quot;, &quot;AnnotationDbi&quot;))</code></pre>
+<p>The <code>biocLite()</code> function (in the
+<code>BiocInstaller</code> package installed by the biocLite.R script)
+has arguments that change its default behavior; type
+<code>?biocLite</code> for further help.</p>
+</div>
+<div id="find-bioconductor-packages" class="section level1">
+<h1>Find Bioconductor Packages</h1>
+<p>Visit the <a
+href="https://www.bioconductor.org/packages/release/BiocViews.html#___Software">software
+package list</a> to discover available packages.</p>
+</div>
+<div id="update-installed-bioconductor-packages" class="section level1">
+<h1>Update Installed Bioconductor Packages</h1>
+<p>Bioconductor packages, especially those in the development branch,
+are updated fairly regularly. To identify packages requiring update
+within your version of Bioconductor, start a new session of R and
+enter</p>
+<pre class="r"><code>BiocManager::install()</code></pre>
+<p>Use the argument <code>ask=FALSE</code> to update old packages
+without being prompted. Read the help page for
+<code>?BiocManager::install</code> for additional details.</p>
+</div>
+<div id="troubleshoot-package-installations" class="section level1">
+<h1>Troubleshoot Package Installations</h1>
+<p>Use the commands:</p>
+<pre class="r"><code>BiocManager::valid()</code></pre>
+<p>to flag packages that are either out-of-date or too new for your
+version of Bioconductor. The output suggests ways to solve identified
+problems, and the help page ?biocValid lists arguments influencing the
+behavior of the function.</p>
+</div>
+<div id="troubleshoot-biocinstaller" class="section level1">
+<h1>Troubleshoot BiocInstaller</h1>
+<p>If you see a message like this:</p>
+<p>BiocInstaller version 3.2 is too old for R version 3.3 …do the
+following:</p>
 <ul>
-<li>A software package</li>
-<li>A programming language</li>
-<li>A toolkit for developing statistical and analytical tools</li>
-<li>An extensive library of statistical and mathematical software and algorithms</li>
-<li>A scripting language</li>
-<li>much, much more</li>
+<li>Quit your R session</li>
+<li>Start a new session with <code>R --vanilla</code></li>
+<li>Run the command
+<code>remove.packages("BiocManager", lib=.libPaths())</code>
+<ul>
+<li>Repeat that command until R says there is no such package.</li>
+</ul></li>
+<li>Run the command <code>install.packages('BiocManager')</code></li>
+<li>Run <code>BiocManager::valid()</code> to ensure your installed
+packages are valid for the current version of Bioconductor, and follow
+the instructions it gives you, most likely:
+<code>BiocManager::install()</code></li>
 </ul>
 </div>
-<div id="why-use-r" class="section level2">
-<h2>Why use R?</h2>
-<ul>
-<li>R is cross-platform and runs on Windows, Mac, and Linux (as well as more obscure systems).</li>
-<li>R provides a vast number of useful statistical tools, many of which have been painstakingly tested.</li>
-<li>R produces publication-quality graphics in a variety of formats.</li>
-<li>R plays well with FORTRAN, C, and scripts in many languages.</li>
-<li>R scales, making it useful for small and large projects. It is NOT Excel.</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-<p>I can develop code for analysis on my Mac laptop. I can then install the <em>same</em> code on our 20k core cluster and run it in parallel on 100 samples, monitor the process, and then update a database (for example) with R when complete.</p>
-</div>
-<div id="why-not-use-r" class="section level2">
-<h2>Why not use R?</h2>
-<ul>
-<li>R cannot do everything.</li>
-<li>R is not always the “best” tool for the job.</li>
-<li>R will <em>not</em> hold your hand. Often, it will <em>slap</em> your hand instead.</li>
-<li>The documentation can be opaque (but there is documentation).</li>
-<li>R can drive you crazy (on a good day) or age you prematurely (on a bad one).</li>
-<li>Finding the right package to do the job you want to do can be challenging; worse, some contributed packages are unreliable.]{}</li>
-<li>R does not have a meaningfully useful graphical user interface (GUI).</li>
-</ul>
-</div>
-<div id="r-license-and-the-open-source-ideal" class="section level2">
-<h2>R License and the Open Source Ideal</h2>
-<p>R is free (yes, totally free!) and distributed under GNU license. In particular, this license allows one to:</p>
-<ul>
-<li>Download the source code</li>
-<li>Modify the source code to your heart’s content</li>
-<li>Distribute the modified source code and even charge money for it, but you must distribute the modified source code under the original GNU license]{}</li>
-</ul>
-<p>This license means that R will always be available, will always be open source, and can grow organically without constraint.</p>
+<div id="sessioninfo" class="section level1">
+<h1>sessionInfo</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.2.0 (2022-04-22)
+## Platform: x86_64-apple-darwin17.0 (64-bit)
+## Running under: macOS Big Sur/Monterey 10.16
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] digest_0.6.29   R6_2.5.1        jsonlite_1.8.0  magrittr_2.0.3 
+##  [5] evaluate_0.15   stringi_1.7.6   rlang_1.0.2     cli_3.3.0      
+##  [9] rstudioapi_0.13 jquerylib_0.1.4 bslib_0.3.1     rmarkdown_2.14 
+## [13] tools_4.2.0     stringr_1.4.0   xfun_0.30       yaml_2.3.5     
+## [17] fastmap_1.1.0   compiler_4.2.0  htmltools_0.5.2 knitr_1.39     
+## [21] sass_0.4.1</code></pre>
 </div>
 
     <script>
