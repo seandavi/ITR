@@ -1,0 +1,83 @@
+---
+title: "Setup"
+output: html_document
+---
+
+### R
+
+**Install R.** You'll need R version **4.2** or higher.[^rversion] Download and install R for [Windows](http://cran.r-project.org/bin/windows/base/) or [Mac](http://cran.r-project.org/bin/macosx/) (download the latest R-4.x.x.pkg file for your appropriate version of Mac OS).
+
+### RStudio
+
+Download and install **[RStudio Desktop](https://www.rstudio.com/products/rstudio/download/)**.
+
+R and RStudio are separate downloads and installations. **R** is the underlying statistical computing environment. **R** is quite usable by itself, but **RStudio** is a graphical integrated development environment that makes using **R** for data analysis a bit more efficient. *You need R installed before you install RStudio*.
+
+### CRAN packages
+
+We will need to install packages throughout the course. To get started, launch **RStudio** (RStudio, *not R itself*). *Internet access is required for installing packages*. Copy and paste the following commands, one-at-a-time, into the **Console** panel (usually the lower-left panel, by default) and hit the Enter/Return key. If you receive an error message when trying to install any particular package, we can work together to determine a fix.
+
+```r
+install.packages("dplyr")
+install.packages("readr")
+install.packages("tidyr")
+install.packages("ggplot2")
+```
+
+_A few notes_:
+
+- Commands are case-sensitive. 
+- You must be connected to the internet.
+- Even if you've installed these packages in the past, do re-install the most recent version. Many of these packages are updated often, and we may use new features in the workshop that aren't available in older versions.
+- If you're using Windows you might see errors about not having permission to modify the existing libraries -- disregard these. You can avoid this by running RStudio as an administrator (right click the RStudio icon, then click "Run as Administrator").
+- These core packages are part of the "tidyverse" ecosystem (see [tidyverse.org](https://www.tidyverse.org/)). There is a [tidyverse](http://tidyverse.org/) package that's kind of a meta-package that automatically installs/loads all of the above packages and several other commonly used packages for data analysis that all play well together.[^tidyverse] You could optionally install the tidyverse package instead of all these packages individually. See [tidyverse.org](https://www.tidyverse.org/) for more.
+
+[^rversion]: If you have not updated your R installation since then, you should upgrade to a more recent version, since several of the required packages depend on a version at least this recent. You can check your R version by typing `version` at the R prompt.
+
+[^tidyverse]: Installing/loading the tidyverse **tidyverse** will install/load the core tidyverse packages that you are likely to use in almost every analysis:
+**ggplot2** (for data visualisation), **dplyr** (for data manipulation), **tidyr** (for data tidying), **readr** (for data import), **purrr** (for functional programming), and **tibble** (for tibbles, a modern re-imagining of data frames). It also installs a selection of other tidyverse packages that you're likely to use frequently, but probably not in every analysis (these are installed, but you'll have to load them separately with `library(packageName)`). This includes: **hms** (for times), **stringr** (for strings), **lubridate** (for date/times), **forcats** (for factors), **DBI** (for databases), **haven** (for SPSS, SAS and Stata files), **httr** (for web apis), **jsonlite** (or JSON), **readxl** (for .xls and .xlsx files), **rvest** (for web scraping), **xml2** (for XML), **modelr** (for modelling within a pipeline), and **broom** (for turning models into tidy data). After installing tidyverse with `install.packages("tidyverse")` and loading it with `library(tidyverse)`, you can use `tidyverse_update()` to update all the tidyverse packages installed on your system at once.
+
+### Bioconductor
+
+Bioconductor uses its own installation procedure. The CRAN package, BiocManager, is the key to installing
+Bioconductor packages. Start by installing `BiocManager`.
+
+```r
+install.packages("BiocManager")
+```
+
+To install basic Bioconductor packages (we will be installing more throughout the course), type the following:
+
+
+```r
+BiocManager::install()
+```
+
+Installing a specific Bioconductor package works similarly to `install.packages` and you can use `BiocManager::install()` as a replacement for `install.packages`.
+
+```r
+BiocManager::install("GEOquery")
+```
+
+
+Consider using the `BiocManager::install()` installation process for all other R packages. BiocManager
+can install from CRAN, Bioconductor, and several other repositories including GitHub.
+
+
+### Check that things worked
+
+Check that you've installed everything correctly by closing and reopening RStudio and entering the following command at the console window (don't worry about any messages that look something like `the following objects are masked from ...`[^masking], or `Warning message: package ... was build under R version ...`[^oldversion]):
+
+```r
+library(dplyr)
+library(readr)
+library(tidyr)
+library(ggplot2)
+```
+
+[^masking]: We'll talk about this in class. It's not a concern.
+
+[^oldversion]: This means the version of R you have installed is older than the version that the package author used when they built the package you're trying to use. 99% of the time it isn't a problem, unless your R version is very old (you should be using 3.5.0 or later for this course).
+
+This may produce some notes or other output, but as long as you don't get an error message, you're good to go. If you get a message that says something like: `Error in library(somePackageName) : there is no package called 'somePackageName'`, then the required packages did not install correctly. Either try reinstalling or contact the instructor.
+

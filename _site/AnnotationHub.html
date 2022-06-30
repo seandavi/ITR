@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>AnnotationHub: Access the AnnotationHub Web Service</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2019">Introduction to Bioconductor</a>
+    </li>
+    <li>
+      <a href="https://drive.google.com/file/d/1txUz-a84VVxiB1ouv24ujL2DSTfxgblL/view?usp=sharing">Advanced Bioconductor Overview</a>
+    </li>
+    <li>
+      <a href="MachineLearning.html">Machine Learning hands-on</a>
+    </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">AnnotationHub: Access the AnnotationHub Web Service</h1>
+
+</div>
+
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector("h1").className = "title";
+});
+</script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var links = document.links;  
+  for (var i = 0, linksLength = links.length; i < linksLength; i++)
+    if (links[i].hostname != window.location.hostname)
+      links[i].target = '_blank';
+});
+</script>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Finding and using public genomics data such as browser or chip-seq tracks; annotation for genes, exons, transcripts; gene ontology and functional gene information; etc. often requires quite a bit of work. Bioconductor has done some of this work already by</p>
+<ol style="list-style-type: decimal">
+<li>Finding and curating popular genomic resources</li>
+<li>Using “recipes” to create R object versions of these resources</li>
+<li>Make those resources available as a web service that is accessible from R</li>
+</ol>
+<p>The <code>AnnotationHub</code> server provides easy <em>R / Bioconductor</em> access to large collections of publicly available whole genome resources, e.g,. ENSEMBL genome fasta or gtf files, UCSC chain resources, ENCODE data tracks at UCSC, etc.</p>
+<p>To get started, make sure that you have the <code>AnnotationHub</code> package installed:</p>
+<pre class="r"><code>BiocManager::install(&#39;AnnotationHub&#39;)</code></pre>
+</div>
+<div id="annotationhub-objects" class="section level1">
+<h1>AnnotationHub objects</h1>
+<p>The <em><a href="https://bioconductor.org/packages/3.15/AnnotationHub">AnnotationHub</a></em> package provides a client interface to resources stored at the AnnotationHub web service.</p>
+<pre class="r"><code>library(AnnotationHub)</code></pre>
+<p>The <em><a href="https://bioconductor.org/packages/3.15/AnnotationHub">AnnotationHub</a></em> package is straightforward to use. Create an <code>AnnotationHub</code> object</p>
+<pre class="r"><code>ah = AnnotationHub()</code></pre>
+<pre><code>## snapshotDate(): 2022-04-21</code></pre>
+<p>Now at this point you have already done everything you need in order to start retrieving annotations. For most operations, using the <code>AnnotationHub</code> object should feel a lot like working with a familiar <code>list</code> or <code>data.frame</code>.</p>
+<p>Lets take a minute to look at the show method for the hub object ah</p>
+<pre class="r"><code>ah</code></pre>
+<pre><code>## AnnotationHub with 64948 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: Ensembl, BroadInstitute, UCSC, ftp://ftp.ncbi.nlm.nih.gov/g...
+## # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos taurus,...
+## # $rdataclass: GRanges, TwoBitFile, BigWigFile, EnsDb, Rle, OrgDb, ChainFile...
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH5012&quot;]]&#39; 
+## 
+##              title                                                         
+##   AH5012   | Chromosome Band                                               
+##   AH5013   | STS Markers                                                   
+##   AH5014   | FISH Clones                                                   
+##   AH5015   | Recomb Rate                                                   
+##   AH5016   | ENCODE Pilot                                                  
+##   ...        ...                                                           
+##   AH104604 | Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.ncrna.2bit
+##   AH104605 | Zosterops_lateralis_melanops.ASM128173v1.cdna.all.2bit        
+##   AH104606 | Zosterops_lateralis_melanops.ASM128173v1.dna_rm.toplevel.2bit 
+##   AH104607 | Zosterops_lateralis_melanops.ASM128173v1.dna_sm.toplevel.2bit 
+##   AH104608 | Zosterops_lateralis_melanops.ASM128173v1.ncrna.2bit</code></pre>
+<p>You can see that it gives you an idea about the different types of data that are present inside the hub. You can see where the data is coming from (dataprovider), as well as what species have samples present (species), what kinds of R data objects could be returned (rdataclass). We can take a closer look at all the kinds of data providers that are available by simply looking at the contents of dataprovider as if it were the column of a data.frame object like this:</p>
+<pre class="r"><code>unique(ah$dataprovider)</code></pre>
+<pre><code>##  [1] &quot;UCSC&quot;                                                                                                      
+##  [2] &quot;Ensembl&quot;                                                                                                   
+##  [3] &quot;RefNet&quot;                                                                                                    
+##  [4] &quot;Inparanoid8&quot;                                                                                               
+##  [5] &quot;NHLBI&quot;                                                                                                     
+##  [6] &quot;ChEA&quot;                                                                                                      
+##  [7] &quot;Pazar&quot;                                                                                                     
+##  [8] &quot;NIH Pathway Interaction Database&quot;                                                                          
+##  [9] &quot;Haemcode&quot;                                                                                                  
+## [10] &quot;BroadInstitute&quot;                                                                                            
+## [11] &quot;PRIDE&quot;                                                                                                     
+## [12] &quot;Gencode&quot;                                                                                                   
+## [13] &quot;CRIBI&quot;                                                                                                     
+## [14] &quot;Genoscope&quot;                                                                                                 
+## [15] &quot;MISO, VAST-TOOLS, UCSC&quot;                                                                                    
+## [16] &quot;UWashington&quot;                                                                                               
+## [17] &quot;Stanford&quot;                                                                                                  
+## [18] &quot;dbSNP&quot;                                                                                                     
+## [19] &quot;BioMart&quot;                                                                                                   
+## [20] &quot;GeneOntology&quot;                                                                                              
+## [21] &quot;KEGG&quot;                                                                                                      
+## [22] &quot;URGI&quot;                                                                                                      
+## [23] &quot;EMBL-EBI&quot;                                                                                                  
+## [24] &quot;MicrosporidiaDB&quot;                                                                                           
+## [25] &quot;FungiDB&quot;                                                                                                   
+## [26] &quot;TriTrypDB&quot;                                                                                                 
+## [27] &quot;ToxoDB&quot;                                                                                                    
+## [28] &quot;AmoebaDB&quot;                                                                                                  
+## [29] &quot;PlasmoDB&quot;                                                                                                  
+## [30] &quot;PiroplasmaDB&quot;                                                                                              
+## [31] &quot;CryptoDB&quot;                                                                                                  
+## [32] &quot;TrichDB&quot;                                                                                                   
+## [33] &quot;GiardiaDB&quot;                                                                                                 
+## [34] &quot;The Gene Ontology Consortium&quot;                                                                              
+## [35] &quot;ENCODE Project&quot;                                                                                            
+## [36] &quot;SchistoDB&quot;                                                                                                 
+## [37] &quot;NCBI/UniProt&quot;                                                                                              
+## [38] &quot;GENCODE&quot;                                                                                                   
+## [39] &quot;http://www.pantherdb.org&quot;                                                                                  
+## [40] &quot;RMBase v2.0&quot;                                                                                               
+## [41] &quot;snoRNAdb&quot;                                                                                                  
+## [42] &quot;tRNAdb&quot;                                                                                                    
+## [43] &quot;NCBI&quot;                                                                                                      
+## [44] &quot;DrugAge, DrugBank, Broad Institute&quot;                                                                        
+## [45] &quot;DrugAge&quot;                                                                                                   
+## [46] &quot;DrugBank&quot;                                                                                                  
+## [47] &quot;Broad Institute&quot;                                                                                           
+## [48] &quot;HMDB, EMBL-EBI, EPA&quot;                                                                                       
+## [49] &quot;STRING&quot;                                                                                                    
+## [50] &quot;OMA&quot;                                                                                                       
+## [51] &quot;OrthoDB&quot;                                                                                                   
+## [52] &quot;PathBank&quot;                                                                                                  
+## [53] &quot;EBI/EMBL&quot;                                                                                                  
+## [54] &quot;NCBI,DBCLS&quot;                                                                                                
+## [55] &quot;FANTOM5,DLRP,IUPHAR,HPRD,STRING,SWISSPROT,TREMBL,ENSEMBL,CELLPHONEDB,BADERLAB,SINGLECELLSIGNALR,HOMOLOGENE&quot;
+## [56] &quot;WikiPathways&quot;                                                                                              
+## [57] &quot;UCSC Jaspar&quot;                                                                                               
+## [58] &quot;VAST-TOOLS&quot;                                                                                                
+## [59] &quot;pyGenomeTracks &quot;                                                                                           
+## [60] &quot;NA&quot;                                                                                                        
+## [61] &quot;UoE&quot;                                                                                                       
+## [62] &quot;mitra.stanford.edu/kundaje/akundaje/release/blacklists/&quot;                                                   
+## [63] &quot;ENCODE&quot;                                                                                                    
+## [64] &quot;TargetScan,miRTarBase,USCS,ENSEMBL&quot;                                                                        
+## [65] &quot;TargetScan&quot;                                                                                                
+## [66] &quot;QuickGO&quot;                                                                                                   
+## [67] &quot;ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/&quot;</code></pre>
+<p>In the same way, you can also see data from different species inside the hub by looking at the contents of species like this:</p>
+<pre class="r"><code>head(unique(ah$species))</code></pre>
+<pre><code>## [1] &quot;Homo sapiens&quot;         &quot;Vicugna pacos&quot;        &quot;Dasypus novemcinctus&quot;
+## [4] &quot;Otolemur garnettii&quot;   &quot;Papio hamadryas&quot;      &quot;Papio anubis&quot;</code></pre>
+<p>And this will also work for any of the other types of metadata present. You can learn which kinds of metadata are available by simply hitting the tab key after you type ‘ah$’. In this way you can explore for yourself what kinds of data are present in the hub right from the command line. This interface also allows you to access the hub programatically to extract data that matches a particular set of criteria.</p>
+<p>Another valuable types of metadata to pay attention to is the rdataclass.</p>
+<pre class="r"><code>head(unique(ah$rdataclass))</code></pre>
+<pre><code>## [1] &quot;GRanges&quot;          &quot;data.frame&quot;       &quot;Inparanoid8Db&quot;    &quot;TwoBitFile&quot;      
+## [5] &quot;ChainFile&quot;        &quot;SQLiteConnection&quot;</code></pre>
+<p>The rdataclass allows you to see which kinds of R objects the hub will return to you. This kind of information is valuable both as a means to filter results and also as a means to explore and learn about some of the kinds of annotation objects that are widely available for the project. Right now this is a pretty short list, but over time it should grow as we support more of the different kinds of annotation objects via the hub.</p>
+<p>Now lets try getting the Chain Files from UCSC using the query and subset methods to selectively pare down the hub based on specific criteria. The query method lets you search rows for specific strings, returning an <code>AnnotationHub</code> instance with just the rows matching the query.</p>
+<p>From the show method, one can easily see that one of the dataprovider is UCSC and there is a rdataclass for ChainFile</p>
+<p>One can get chain files for Drosophila melanogaster from UCSC with:</p>
+<pre class="r"><code>dm &lt;- query(ah, c(&quot;ChainFile&quot;, &quot;UCSC&quot;, &quot;Drosophila melanogaster&quot;))
+dm</code></pre>
+<pre><code>## AnnotationHub with 45 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: UCSC
+## # $species: Drosophila melanogaster
+## # $rdataclass: ChainFile
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH15102&quot;]]&#39; 
+## 
+##             title                     
+##   AH15102 | dm3ToAnoGam1.over.chain.gz
+##   AH15103 | dm3ToApiMel3.over.chain.gz
+##   AH15104 | dm3ToDm2.over.chain.gz    
+##   AH15105 | dm3ToDm6.over.chain.gz    
+##   AH15106 | dm3ToDp3.over.chain.gz    
+##   ...       ...                       
+##   AH15142 | dm2ToDroVir3.over.chain.gz
+##   AH15143 | dm2ToDroWil1.over.chain.gz
+##   AH15144 | dm2ToDroYak1.over.chain.gz
+##   AH15145 | dm2ToDroYak2.over.chain.gz
+##   AH15146 | dm1ToDm2.over.chain.gz</code></pre>
+<p>Query has worked and you can now see that the only species present is Drosophila melanogaster.</p>
+<p>The metadata underlying this hub object can be retrieved by you</p>
+<pre class="r"><code>df &lt;- mcols(dm)
+# what is df?
+class(df)</code></pre>
+<pre><code>## [1] &quot;DFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;S4Vectors&quot;</code></pre>
+<pre class="r"><code>head(df[,1:5])</code></pre>
+<pre><code>## DataFrame with 6 rows and 5 columns
+##                          title dataprovider                species taxonomyid
+##                    &lt;character&gt;  &lt;character&gt;            &lt;character&gt;  &lt;integer&gt;
+## AH15102 dm3ToAnoGam1.over.ch..         UCSC Drosophila melanogas..       7227
+## AH15103 dm3ToApiMel3.over.ch..         UCSC Drosophila melanogas..       7227
+## AH15104 dm3ToDm2.over.chain.gz         UCSC Drosophila melanogas..       7227
+## AH15105 dm3ToDm6.over.chain.gz         UCSC Drosophila melanogas..       7227
+## AH15106 dm3ToDp3.over.chain.gz         UCSC Drosophila melanogas..       7227
+## AH15107 dm3ToDp4.over.chain.gz         UCSC Drosophila melanogas..       7227
+##              genome
+##         &lt;character&gt;
+## AH15102         dm3
+## AH15103         dm3
+## AH15104         dm3
+## AH15105         dm3
+## AH15106         dm3
+## AH15107         dm3</code></pre>
+<p>By default the show method will only display the first 5 and last 5 rows. There are already thousands of records present in the hub.</p>
+<pre class="r"><code>length(ah)</code></pre>
+<pre><code>## [1] 64948</code></pre>
+<p>Lets look at another example, where we pull down only Inparanoid8 data from the hub and use subset to return a smaller base object (here we are finding cases where the genome column is set to panda).</p>
+<pre class="r"><code>ahs &lt;- query(ah, c(&#39;inparanoid8&#39;, &#39;ailuropoda&#39;))
+ahs</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2022-04-21
+## # names(): AH10451
+## # $dataprovider: Inparanoid8
+## # $species: Ailuropoda melanoleuca
+## # $rdataclass: Inparanoid8Db
+## # $rdatadateadded: 2014-03-31
+## # $title: hom.Ailuropoda_melanoleuca.inp8.sqlite
+## # $description: Inparanoid 8 annotations about Ailuropoda melanoleuca
+## # $taxonomyid: 9646
+## # $genome: inparanoid8 genomes
+## # $sourcetype: Inparanoid
+## # $sourceurl: http://inparanoid.sbc.su.se/download/current/Orthologs/A.melan...
+## # $sourcesize: NA
+## # $tags: c(&quot;Inparanoid&quot;, &quot;Gene&quot;, &quot;Homology&quot;, &quot;Annotation&quot;) 
+## # retrieve record with &#39;object[[&quot;AH10451&quot;]]&#39;</code></pre>
+<p>We can also look at the <code>AnnotationHub</code> object in a browser using the <code>display()</code> function. We can then filter the <code>AnnotationHub</code> object for _chainFile__ by either using the Global search field on the top right corner of the page or the in-column search field for `rdataclass’.</p>
+<pre class="r"><code>d &lt;- display(ah)</code></pre>
+<p><img src="images/annotationHub.png" /> Displaying and filtering the Annotation Hub object in a browser</p>
+<p>By default 1000 entries are displayed per page, we can change this using the filter on the top of the page or navigate through different pages using the page scrolling feature at the bottom of the page.</p>
+<p>We can also select the rows of interest to us and send them back to the R session using ‘Return rows to R session’ button ; this sets a filter internally which filters the <code>AnnotationHub</code> object. The names of the selected AnnotationHub elements displayed at the top of the page.</p>
+</div>
+<div id="using-annotationhub-to-retrieve-data" class="section level1">
+<h1>Using <code>AnnotationHub</code> to retrieve data</h1>
+<p>Looking back at our chain file example, if we are interested in the file dm1ToDm2.over.chain.gz, we can gets its metadata using</p>
+<pre class="r"><code>dm</code></pre>
+<pre><code>## AnnotationHub with 45 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: UCSC
+## # $species: Drosophila melanogaster
+## # $rdataclass: ChainFile
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH15102&quot;]]&#39; 
+## 
+##             title                     
+##   AH15102 | dm3ToAnoGam1.over.chain.gz
+##   AH15103 | dm3ToApiMel3.over.chain.gz
+##   AH15104 | dm3ToDm2.over.chain.gz    
+##   AH15105 | dm3ToDm6.over.chain.gz    
+##   AH15106 | dm3ToDp3.over.chain.gz    
+##   ...       ...                       
+##   AH15142 | dm2ToDroVir3.over.chain.gz
+##   AH15143 | dm2ToDroWil1.over.chain.gz
+##   AH15144 | dm2ToDroYak1.over.chain.gz
+##   AH15145 | dm2ToDroYak2.over.chain.gz
+##   AH15146 | dm1ToDm2.over.chain.gz</code></pre>
+<pre class="r"><code>dm[&quot;AH15146&quot;]</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2022-04-21
+## # names(): AH15146
+## # $dataprovider: UCSC
+## # $species: Drosophila melanogaster
+## # $rdataclass: ChainFile
+## # $rdatadateadded: 2014-12-15
+## # $title: dm1ToDm2.over.chain.gz
+## # $description: UCSC liftOver chain file from dm1 to dm2
+## # $taxonomyid: 7227
+## # $genome: dm1
+## # $sourcetype: Chain
+## # $sourceurl: http://hgdownload.cse.ucsc.edu/goldenpath/dm1/liftOver/dm1ToDm...
+## # $sourcesize: NA
+## # $tags: c(&quot;liftOver&quot;, &quot;chain&quot;, &quot;UCSC&quot;, &quot;genome&quot;, &quot;homology&quot;) 
+## # retrieve record with &#39;object[[&quot;AH15146&quot;]]&#39;</code></pre>
+<p>We can download the file using</p>
+<pre class="r"><code>dm[[&quot;AH15146&quot;]]</code></pre>
+<pre><code>## loading from cache</code></pre>
+<pre><code>## require(&quot;rtracklayer&quot;)</code></pre>
+<pre><code>## Chain of length 11
+## names(11): chr2L chr2R chr3L chr3R chr4 chrX chrU chr2h chr3h chrXh chrYh</code></pre>
+<p>Each file is retrieved from the AnnotationHub server and the file is also cache locally, so that the next time you need to retrieve it, it should download much more quickly.</p>
+</div>
+<div id="accessing-genome-scale-data" class="section level1">
+<h1>Accessing Genome-Scale Data</h1>
+<div id="non-model-organism-gene-annotations" class="section level2">
+<h2>Non-model organism gene annotations</h2>
+<p><em>Bioconductor</em> offers pre-built <code>org.*</code> annotation packages for model organisms, with their use described in the <a href="http://bioconductor.org/help/workflows/annotation/Annotation_Resources/#OrgDb">OrgDb</a> section of the Annotation work flow. Here we discover available <code>OrgDb</code> objects for less-model organisms.</p>
+<p>The <code>query()</code> interface allows us to do full-text searching of <em>AnnotationHub</em> objects. How many OrgDb packages are represented in <em>AnnotationHub</em>?</p>
+<pre class="r"><code>library(AnnotationHub)
+## create the annotationhub object
+ah &lt;- AnnotationHub()</code></pre>
+<pre><code>## snapshotDate(): 2022-04-21</code></pre>
+<pre class="r"><code>## Query the annotationhub metadata
+query(ah, &quot;OrgDb&quot;)</code></pre>
+<pre><code>## AnnotationHub with 1830 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/
+## # $species: Escherichia coli, greater Indian_fruit_bat, Zootoca vivipara, Zo...
+## # $rdataclass: OrgDb
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH100399&quot;]]&#39; 
+## 
+##              title                                    
+##   AH100399 | org.Ag.eg.db.sqlite                      
+##   AH100400 | org.At.tair.db.sqlite                    
+##   AH100401 | org.Bt.eg.db.sqlite                      
+##   AH100402 | org.Cf.eg.db.sqlite                      
+##   AH100403 | org.Gg.eg.db.sqlite                      
+##   ...        ...                                      
+##   AH102596 | org.Lobosporangium_transversale.eg.sqlite
+##   AH102597 | org.Sulfolobus_acidocaldarius.eg.sqlite  
+##   AH102598 | org.Penicillium_rugulosum.eg.sqlite      
+##   AH102599 | org.Talaromyces_rugulosus.eg.sqlite      
+##   AH102600 | org.Metallosphaera_sedula.eg.sqlite</code></pre>
+<p>Let’s assume that we are working with yeast (<em>Saccharomyces cerevisiae</em>) and get the OrgDb package.</p>
+<pre class="r"><code>sub_ah = query(ah, c(&quot;OrgDb&quot;, &quot;cerevisiae&quot;))
+sub_ah</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2022-04-21
+## # names(): AH100415
+## # $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/
+## # $species: Saccharomyces cerevisiae
+## # $rdataclass: OrgDb
+## # $rdatadateadded: 2022-04-18
+## # $title: org.Sc.sgd.db.sqlite
+## # $description: NCBI gene ID based annotations about Saccharomyces cerevisiae
+## # $taxonomyid: 559292
+## # $genome: NCBI genomes
+## # $sourcetype: NCBI/ensembl
+## # $sourceurl: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/, ftp://ftp.ensembl.org/p...
+## # $sourcesize: NA
+## # $tags: c(&quot;NCBI&quot;, &quot;Gene&quot;, &quot;Annotation&quot;) 
+## # retrieve record with &#39;object[[&quot;AH100415&quot;]]&#39;</code></pre>
+<pre class="r"><code>orgdb &lt;- query(sub_ah, &quot;OrgDb&quot;)[[1]]</code></pre>
+<pre><code>## loading from cache</code></pre>
+<pre><code>## Loading required package: AnnotationDbi</code></pre>
+<pre><code>## Loading required package: Biobase</code></pre>
+<pre><code>## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Biobase&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:AnnotationHub&#39;:
+## 
+##     cache</code></pre>
+<p>Look at the <code>orgdb</code> object.</p>
+<pre class="r"><code>orgdb</code></pre>
+<pre><code>## OrgDb object:
+## | DBSCHEMAVERSION: 2.1
+## | Db type: OrgDb
+## | Supporting package: AnnotationDbi
+## | DBSCHEMA: YEAST_DB
+## | ORGANISM: Saccharomyces cerevisiae
+## | SPECIES: Yeast
+## | YGSOURCENAME: Yeast Genome
+## | YGSOURCEURL: http://sgd-archive.yeastgenome.org
+## | YGSOURCEDATE: 2019-Oct25
+## | CENTRALID: ORF
+## | TAXID: 559292
+## | KEGGSOURCENAME: KEGG GENOME
+## | KEGGSOURCEURL: ftp://ftp.genome.jp/pub/kegg/genomes
+## | KEGGSOURCEDATE: 2011-Mar15
+## | GOSOURCENAME: Gene Ontology
+## | GOSOURCEURL: http://current.geneontology.org/ontology/go-basic.obo
+## | GOSOURCEDATE: 2022-03-10
+## | EGSOURCEDATE: 2022-Mar17
+## | EGSOURCENAME: Entrez Gene
+## | EGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+## | ENSOURCEDATE: 2021-Dec21
+## | ENSOURCENAME: Ensembl
+## | ENSOURCEURL: ftp://ftp.ensembl.org/pub/current_fasta
+## | UPSOURCENAME: Uniprot
+## | UPSOURCEURL: http://www.UniProt.org/
+## | UPSOURCEDATE: Fri Apr  1 15:07:54 2022</code></pre>
+<pre><code>## 
+## Please see: help(&#39;select&#39;) for usage information</code></pre>
+<p>The <code>orgdb</code> object works like a little database. We can look at the columns in the database.</p>
+<pre class="r"><code>columns(orgdb)</code></pre>
+<pre><code>##  [1] &quot;ALIAS&quot;        &quot;COMMON&quot;       &quot;DESCRIPTION&quot;  &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot; 
+##  [6] &quot;ENSEMBLTRANS&quot; &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
+## [11] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;INTERPRO&quot;     &quot;ONTOLOGY&quot;    
+## [16] &quot;ONTOLOGYALL&quot;  &quot;ORF&quot;          &quot;PATH&quot;         &quot;PFAM&quot;         &quot;PMID&quot;        
+## [21] &quot;REFSEQ&quot;       &quot;SGD&quot;          &quot;SMART&quot;        &quot;UNIPROT&quot;</code></pre>
+<p>Not all columns can always be used for “lookup”, though. We need to know which columns represent <code>keys</code> that we can use to retrieve data.</p>
+<pre class="r"><code>keytypes(orgdb)</code></pre>
+<pre><code>##  [1] &quot;ALIAS&quot;        &quot;COMMON&quot;       &quot;DESCRIPTION&quot;  &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot; 
+##  [6] &quot;ENSEMBLTRANS&quot; &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot; 
+## [11] &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;INTERPRO&quot;     &quot;ONTOLOGY&quot;    
+## [16] &quot;ONTOLOGYALL&quot;  &quot;ORF&quot;          &quot;PATH&quot;         &quot;PFAM&quot;         &quot;PMID&quot;        
+## [21] &quot;REFSEQ&quot;       &quot;SGD&quot;          &quot;SMART&quot;        &quot;UNIPROT&quot;</code></pre>
+<p>You can examine the values available for lookup by using the <code>keys()</code> method.</p>
+<pre class="r"><code>head(keys(orgdb, keytype=&quot;ORF&quot;))</code></pre>
+<pre><code>## [1] &quot;AIP5&quot;    &quot;ARS1001&quot; &quot;ARS1002&quot; &quot;ARS1003&quot; &quot;ARS1004&quot; &quot;ARS1005&quot;</code></pre>
+<pre class="r"><code>head(keys(orgdb, keytype=&quot;GO&quot;))</code></pre>
+<pre><code>## [1] &quot;GO:0003674&quot; &quot;GO:0005199&quot; &quot;GO:0005575&quot; &quot;GO:0009277&quot; &quot;GO:0030437&quot;
+## [6] &quot;GO:0031505&quot;</code></pre>
+<p>Notice that there are two columns that look useful for the <code>derisi</code> data–<code>ORF</code> and <code>GENENAME</code>. Let’s assume that we had not been given the gene name as part of the <code>derisi</code> data, but only the ORF. We can use the <code>OrgDb</code> <code>select()</code> interface to retrieve the gene names for these five ORF ids, just to get a sense of how <code>select()</code> works to get information from an <code>OrgDb</code> object.</p>
+<pre class="r"><code>orfids = c(&quot;YAL001C&quot;, &quot;YAL002W&quot;, &quot;YAL003W&quot;, &quot;YAL004W&quot;, &quot;YAL005C&quot;)
+select(orgdb, keys = orfids, columns = &quot;GENENAME&quot;, keytype=&quot;ORF&quot;)</code></pre>
+<pre><code>## &#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>##       ORF        SGD GENENAME
+## 1 YAL001C S000000001     TFC3
+## 2 YAL002W S000000002     VPS8
+## 3 YAL003W S000000003     EFB1
+## 4 YAL004W S000002136     &lt;NA&gt;
+## 5 YAL005C S000000004     SSA1</code></pre>
+<pre class="r"><code>select(orgdb, keys = orfids, columns = &quot;GO&quot;, keytype=&quot;ORF&quot;)</code></pre>
+<pre><code>## &#39;select()&#39; returned 1:many mapping between keys and columns</code></pre>
+<pre><code>##        ORF        SGD         GO EVIDENCE ONTOLOGY
+## 1  YAL001C S000000001 GO:0000127      IBA       CC
+## 2  YAL001C S000000001 GO:0000127      IDA       CC
+## 3  YAL001C S000000001 GO:0001002      IDA       MF
+## 4  YAL001C S000000001 GO:0001003      IDA       MF
+## 5  YAL001C S000000001 GO:0003677      IEA       MF
+## 6  YAL001C S000000001 GO:0005634      IEA       CC
+## 7  YAL001C S000000001 GO:0005739      HDA       CC
+## 8  YAL001C S000000001 GO:0005739      IEA       CC
+## 9  YAL001C S000000001 GO:0006383      IDA       BP
+## 10 YAL001C S000000001 GO:0006384      IBA       BP
+## 11 YAL001C S000000001 GO:0008301      IDA       MF
+## 12 YAL001C S000000001 GO:0042791      IBA       BP
+## 13 YAL001C S000000001 GO:0042791      IDA       BP
+## 14 YAL001C S000000001 GO:0042791      IMP       BP
+## 15 YAL001C S000000001 GO:0071168      IMP       BP
+## 16 YAL002W S000000002 GO:0005770      IBA       CC
+## 17 YAL002W S000000002 GO:0005770      IDA       CC
+## 18 YAL002W S000000002 GO:0005794      IEA       CC
+## 19 YAL002W S000000002 GO:0005795      IEA       CC
+## 20 YAL002W S000000002 GO:0006623      IBA       BP
+## 21 YAL002W S000000002 GO:0006623      IMP       BP
+## 22 YAL002W S000000002 GO:0006886      IEA       BP
+## 23 YAL002W S000000002 GO:0015031      IEA       BP
+## 24 YAL002W S000000002 GO:0016020      IDA       CC
+## 25 YAL002W S000000002 GO:0016192      IEA       BP
+## 26 YAL002W S000000002 GO:0030897      IBA       CC
+## 27 YAL002W S000000002 GO:0032511      IMP       BP
+## 28 YAL002W S000000002 GO:0033263      IDA       CC
+## 29 YAL002W S000000002 GO:0034058      IBA       BP
+## 30 YAL002W S000000002 GO:0043495      IMP       MF
+## 31 YAL002W S000000002 GO:0046872      IEA       MF
+## 32 YAL002W S000000002 GO:0051020      IDA       MF
+## 33 YAL002W S000000002 GO:0051020      IPI       MF
+## 34 YAL003W S000000003 GO:0003746      IEA       MF
+## 35 YAL003W S000000003 GO:0005085      IBA       MF
+## 36 YAL003W S000000003 GO:0005085      IDA       MF
+## 37 YAL003W S000000003 GO:0005829      IBA       CC
+## 38 YAL003W S000000003 GO:0005853      IEA       CC
+## 39 YAL003W S000000003 GO:0005853      IMP       CC
+## 40 YAL003W S000000003 GO:0006412      IEA       BP
+## 41 YAL003W S000000003 GO:0006414      IBA       BP
+## 42 YAL003W S000000003 GO:0006414      IEA       BP
+## 43 YAL003W S000000003 GO:0006414      IMP       BP
+## 44 YAL003W S000000003 GO:0006449      IGI       BP
+## 45 YAL003W S000000003 GO:0032232      IDA       BP
+## 46 YAL003W S000000003 GO:1990145      IMP       BP
+## 47 YAL004W S000002136       &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 48 YAL005C S000000004 GO:0000049      IDA       MF
+## 49 YAL005C S000000004 GO:0000166      IEA       MF
+## 50 YAL005C S000000004 GO:0000209      IDA       BP
+## 51 YAL005C S000000004 GO:0000329      IDA       CC
+## 52 YAL005C S000000004 GO:0002181      IMP       BP
+## 53 YAL005C S000000004 GO:0005524      IBA       MF
+## 54 YAL005C S000000004 GO:0005524      IEA       MF
+## 55 YAL005C S000000004 GO:0005576      IEA       CC
+## 56 YAL005C S000000004 GO:0005618      IEA       CC
+## 57 YAL005C S000000004 GO:0005634      HDA       CC
+## 58 YAL005C S000000004 GO:0005634      IBA       CC
+## 59 YAL005C S000000004 GO:0005634      IDA       CC
+## 60 YAL005C S000000004 GO:0005737      HDA       CC
+## 61 YAL005C S000000004 GO:0005737      IBA       CC
+## 62 YAL005C S000000004 GO:0005737      IDA       CC
+## 63 YAL005C S000000004 GO:0005737      IEA       CC
+## 64 YAL005C S000000004 GO:0005829      HDA       CC
+## 65 YAL005C S000000004 GO:0005829      IBA       CC
+## 66 YAL005C S000000004 GO:0005844      IDA       CC
+## 67 YAL005C S000000004 GO:0005886      HDA       CC
+## 68 YAL005C S000000004 GO:0005886      IBA       CC
+## 69 YAL005C S000000004 GO:0006457      IDA       BP
+## 70 YAL005C S000000004 GO:0006606      IDA       BP
+## 71 YAL005C S000000004 GO:0006606      IGI       BP
+## 72 YAL005C S000000004 GO:0006616      IBA       BP
+## 73 YAL005C S000000004 GO:0006616      IDA       BP
+## 74 YAL005C S000000004 GO:0006626      IMP       BP
+## 75 YAL005C S000000004 GO:0006986      IBA       BP
+## 76 YAL005C S000000004 GO:0009277      IDA       CC
+## 77 YAL005C S000000004 GO:0016192      IBA       BP
+## 78 YAL005C S000000004 GO:0016887      IBA       MF
+## 79 YAL005C S000000004 GO:0016887      IDA       MF
+## 80 YAL005C S000000004 GO:0031072      IBA       MF
+## 81 YAL005C S000000004 GO:0034620      IBA       BP
+## 82 YAL005C S000000004 GO:0035617      IDA       BP
+## 83 YAL005C S000000004 GO:0042026      IBA       BP
+## 84 YAL005C S000000004 GO:0042026      IDA       BP
+## 85 YAL005C S000000004 GO:0043161      IGI       BP
+## 86 YAL005C S000000004 GO:0043161      IMP       BP
+## 87 YAL005C S000000004 GO:0044183      IBA       MF
+## 88 YAL005C S000000004 GO:0051082      IBA       MF
+## 89 YAL005C S000000004 GO:0051082      IDA       MF
+## 90 YAL005C S000000004 GO:0051085      IBA       BP
+## 91 YAL005C S000000004 GO:0051787      IBA       MF
+## 92 YAL005C S000000004 GO:0071470      IDA       BP
+## 93 YAL005C S000000004 GO:0072318      IDA       BP
+## 94 YAL005C S000000004 GO:0072671      IMP       BP
+## 95 YAL005C S000000004 GO:0090344      IMP       BP</code></pre>
+<p><em>Exercise:</em> Use the <code>derisi</code> ORF column to look up the associated gene names.</p>
+<p><em>Exercise:</em> Use the <code>derisi</code> ORF column to look up the gene ontology <a href="http://geneontology.org/"><code>GO</code></a> annotations for the ORFs. What is the general relationship between <code>GO</code> terms and ORFs?</p>
+<p><em>Bonus Exercise:</em> Read the documentation associated with the GO.db package <a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">here</a>. Use the GO.db package and the select interface to look up the descriptions and terms for the gene ontology terms from the previous exercise.</p>
+</div>
+<div id="roadmap-epigenomics-project" class="section level2">
+<h2>Roadmap Epigenomics Project</h2>
+<p>All Roadmap Epigenomics files are hosted <a href="http://egg2.wustl.edu/roadmap/data/byFileType/">here</a>. If one had to download these files on their own, one would navigate through the web interface to find useful files, then use something like the following <em>R</em> code.</p>
+<pre class="r"><code>url &lt;- &quot;http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E001-H3K4me1.broadPeak.gz&quot;
+filename &lt;-  basename(url)
+download.file(url, destfile=filename)
+if (file.exists(filename))
+   data &lt;- import(filename, format=&quot;bed&quot;)</code></pre>
+<p>This would have to be repeated for all files, and the onus would lie on the user to identify, download, import, and manage the local disk location of these files.</p>
+<p><em><a href="https://bioconductor.org/packages/3.15/AnnotationHub">AnnotationHub</a></em> reduces this task to just a few lines of <em>R</em> code</p>
+<pre class="r"><code>library(AnnotationHub)
+ah = AnnotationHub()</code></pre>
+<pre><code>## snapshotDate(): 2022-04-21</code></pre>
+<pre class="r"><code>epiFiles &lt;- query(ah, &quot;EpigenomeRoadMap&quot;)</code></pre>
+<p>A look at the value returned by <code>epiFiles</code> shows us that 18248 roadmap resources are available via <em><a href="https://bioconductor.org/packages/3.15/AnnotationHub">AnnotationHub</a></em>. Additional information about the files is also available, e.g., where the files came from (dataprovider), genome, species, sourceurl, sourcetypes.</p>
+<pre class="r"><code>epiFiles</code></pre>
+<pre><code>## AnnotationHub with 18248 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: BigWigFile, GRanges, data.frame
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH28856&quot;]]&#39; 
+## 
+##             title                                 
+##   AH28856 | E001-H3K4me1.broadPeak.gz             
+##   AH28857 | E001-H3K4me3.broadPeak.gz             
+##   AH28858 | E001-H3K9ac.broadPeak.gz              
+##   AH28859 | E001-H3K9me3.broadPeak.gz             
+##   AH28860 | E001-H3K27me3.broadPeak.gz            
+##   ...       ...                                   
+##   AH49540 | E058_mCRF_FractionalMethylation.bigwig
+##   AH49541 | E059_mCRF_FractionalMethylation.bigwig
+##   AH49542 | E061_mCRF_FractionalMethylation.bigwig
+##   AH49543 | E081_mCRF_FractionalMethylation.bigwig
+##   AH49544 | E082_mCRF_FractionalMethylation.bigwig</code></pre>
+<p>A good sanity check to ensure that we have files only from the Roadmap Epigenomics project is to check that all the files in the returned smaller hub object come from <em>Homo sapiens</em> and the hg19 genome</p>
+<pre class="r"><code>unique(epiFiles$species)</code></pre>
+<pre><code>## [1] &quot;Homo sapiens&quot;</code></pre>
+<pre class="r"><code>unique(epiFiles$genome)</code></pre>
+<pre><code>## [1] &quot;hg19&quot;</code></pre>
+<p>Broadly, one can get an idea of the different files from this project looking at the sourcetype</p>
+<pre class="r"><code>table(epiFiles$sourcetype)</code></pre>
+<pre><code>## 
+##    BED BigWig    GTF    tab    Zip 
+##   8298   9932      3      1     14</code></pre>
+<p>To get a more descriptive idea of these different files one can use:</p>
+<pre class="r"><code>sort(table(epiFiles$description), decreasing=TRUE)</code></pre>
+<pre><code>## 
+##                       Bigwig File containing -log10(p-value) signal tracks from EpigenomeRoadMap Project 
+##                                                                                                     6881 
+##                       Bigwig File containing fold enrichment signal tracks from EpigenomeRoadMap Project 
+##                                                                                                     2947 
+##                          Narrow ChIP-seq peaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                     2894 
+##                           Broad ChIP-seq peaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                     2534 
+##                          Gapped ChIP-seq peaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                     2534 
+##                              Narrow DNasePeaks for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                      131 
+##                                           15 state chromatin segmentations from EpigenomeRoadMap Project 
+##                                                                                                      127 
+##      Broad domains on enrichment for DNase-seq for consolidated epigenomes from EpigenomeRoadMap Project 
+##                                                                                                       78 
+##                                         RRBS fractional methylation calls from EpigenomeRoadMap Project  
+##                                                                                                       51 
+##                       Whole genome bisulphite fractional methylation calls from EpigenomeRoadMap Project 
+##                                                                                                       37 
+##                               MeDIP/MRE(mCRF) fractional methylation calls from EpigenomeRoadMap Project 
+##                                                                                                       16 
+## GencodeV10 gene/transcript coordinates and annotations corresponding to hg19 version of the human genome 
+##                                                                                                        3 
+##                                       RNA-seq read count matrix for intronic protein-coding RNA elements 
+##                                                                                                        2 
+##                                                      RNA-seq read counts matrix for ribosomal gene exons 
+##                                                                                                        2 
+##                                                          RPKM expression matrix for ribosomal gene exons 
+##                                                                                                        2 
+##                                                                    Metadata for EpigenomeRoadMap Project 
+##                                                                                                        1 
+##                                                           RNA-seq read counts matrix for non-coding RNAs 
+##                                                                                                        1 
+##                                                      RNA-seq read counts matrix for protein coding exons 
+##                                                                                                        1 
+##                                                      RNA-seq read counts matrix for protein coding genes 
+##                                                                                                        1 
+##                                                           RNA-seq read counts matrix for ribosomal genes 
+##                                                                                                        1 
+##                                                               RPKM expression matrix for non-coding RNAs 
+##                                                                                                        1 
+##                                                          RPKM expression matrix for protein coding exons 
+##                                                                                                        1 
+##                                                          RPKM expression matrix for protein coding genes 
+##                                                                                                        1 
+##                                                                RPKM expression matrix for ribosomal RNAs 
+##                                                                                                        1</code></pre>
+<p>The ‘metadata’ provided by the Roadmap Epigenomics Project is also available. Note that the information displayed about a hub with a single resource is quite different from the information displayed when the hub references more than one resource.</p>
+<pre class="r"><code>metadata.tab &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;Metadata&quot;))
+metadata.tab</code></pre>
+<pre><code>## AnnotationHub with 1 record
+## # snapshotDate(): 2022-04-21
+## # names(): AH41830
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: data.frame
+## # $rdatadateadded: 2015-05-11
+## # $title: EID_metadata.tab
+## # $description: Metadata for EpigenomeRoadMap Project
+## # $taxonomyid: 9606
+## # $genome: hg19
+## # $sourcetype: tab
+## # $sourceurl: http://egg2.wustl.edu/roadmap/data/byFileType/metadata/EID_met...
+## # $sourcesize: 18035
+## # $tags: c(&quot;EpigenomeRoadMap&quot;, &quot;Metadata&quot;) 
+## # retrieve record with &#39;object[[&quot;AH41830&quot;]]&#39;</code></pre>
+<p>So far we have been exploring information about resources, without downloading the resource to a local cache and importing it into R. One can retrieve the resource using <code>[[</code> as indicated at the end of the show method</p>
+<pre><code>## loading from cache</code></pre>
+<pre class="r"><code>metadata.tab &lt;- ah[[&quot;AH41830&quot;]]</code></pre>
+<pre><code>## loading from cache</code></pre>
+<p>The metadata.tab file is returned as a <em>data.frame</em>. The first 6 rows of the first 5 columns are shown here:</p>
+<pre class="r"><code>metadata.tab[1:6, 1:5]</code></pre>
+<pre><code>##    EID    GROUP   COLOR          MNEMONIC
+## 1 E001      ESC #924965            ESC.I3
+## 2 E002      ESC #924965           ESC.WA7
+## 3 E003      ESC #924965            ESC.H1
+## 4 E004 ES-deriv #4178AE ESDR.H1.BMP4.MESO
+## 5 E005 ES-deriv #4178AE ESDR.H1.BMP4.TROP
+## 6 E006 ES-deriv #4178AE       ESDR.H1.MSC
+##                                     STD_NAME
+## 1                                ES-I3 Cells
+## 2                               ES-WA7 Cells
+## 3                                   H1 Cells
+## 4 H1 BMP4 Derived Mesendoderm Cultured Cells
+## 5 H1 BMP4 Derived Trophoblast Cultured Cells
+## 6          H1 Derived Mesenchymal Stem Cells</code></pre>
+<p>One can keep constructing different queries using multiple arguments to trim down these 18248 to get the files one wants. For example, to get the ChIP-Seq files for consolidated epigenomes, one could use</p>
+<pre class="r"><code>bpChipEpi &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;broadPeak&quot;, &quot;chip&quot;, &quot;consolidated&quot;))</code></pre>
+<p>To get all the bigWig signal files, one can query the hub using</p>
+<pre class="r"><code>allBigWigFiles &lt;- query(ah, c(&quot;EpigenomeRoadMap&quot;, &quot;BigWig&quot;))</code></pre>
+<p>To access the 15 state chromatin segmentations, one can use</p>
+<pre class="r"><code>seg &lt;- query(ah, c(&quot;EpigenomeRoadMap&quot;, &quot;segmentations&quot;))</code></pre>
+<p>If one is interested in getting all the files related to one sample</p>
+<pre class="r"><code>E126 &lt;- query(ah , c(&quot;EpigenomeRoadMap&quot;, &quot;E126&quot;, &quot;H3K4ME2&quot;))
+E126</code></pre>
+<pre><code>## AnnotationHub with 6 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: BroadInstitute
+## # $species: Homo sapiens
+## # $rdataclass: GRanges, BigWigFile
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH29817&quot;]]&#39; 
+## 
+##             title                                  
+##   AH29817 | E126-H3K4me2.broadPeak.gz              
+##   AH30868 | E126-H3K4me2.narrowPeak.gz             
+##   AH31801 | E126-H3K4me2.gappedPeak.gz             
+##   AH32990 | E126-H3K4me2.fc.signal.bigwig          
+##   AH34022 | E126-H3K4me2.pval.signal.bigwig        
+##   AH40177 | E126-H3K4me2.imputed.pval.signal.bigwig</code></pre>
+<p>Hub resources can also be selected using <code>$</code>, <code>subset()</code>, and <code>display()</code>.</p>
+<p>Hub resources are imported as the appropriate <em>Bioconductor</em> object for use in further analysis. For example, peak files are returned as <em>GRanges</em> objects.</p>
+<pre><code>## loading from cache</code></pre>
+<pre class="r"><code>peaks &lt;- E126[[&#39;AH29817&#39;]]</code></pre>
+<pre><code>## loading from cache</code></pre>
+<pre class="r"><code>seqinfo(peaks)</code></pre>
+<pre><code>## Seqinfo object with 298 sequences (2 circular) from hg19 genome:
+##   seqnames       seqlengths isCircular genome
+##   chr1            249250621      FALSE   hg19
+##   chr2            243199373      FALSE   hg19
+##   chr3            198022430      FALSE   hg19
+##   chr4            191154276      FALSE   hg19
+##   chr5            180915260      FALSE   hg19
+##   ...                   ...        ...    ...
+##   chrUn_gl000245      36651      FALSE   hg19
+##   chrUn_gl000246      38154      FALSE   hg19
+##   chrUn_gl000247      36422      FALSE   hg19
+##   chrUn_gl000248      39786      FALSE   hg19
+##   chrUn_gl000249      38502      FALSE   hg19</code></pre>
+<p>BigWig files are returned as <em>BigWigFile</em> objects. A <em>BigWigFile</em> is a reference to a file on disk; the data in the file can be read in using <code>rtracklayer::import()</code>, perhaps querying these large files for particular genomic regions of interest as described on the help page <code>?import.bw</code>.</p>
+<p>Each record inside <em><a href="https://bioconductor.org/packages/3.15/AnnotationHub">AnnotationHub</a></em> is associated with a unique identifier. Most <em>GRanges</em> objects returned by <em><a href="https://bioconductor.org/packages/3.15/AnnotationHub">AnnotationHub</a></em> contain the unique AnnotationHub identifier of the resource from which the <em>GRanges</em> is derived. This can come handy when working with the <em>GRanges</em> object for a while, and additional information about the object (e.g., the name of the file in the cache, or the original sourceurl for the data underlying the resource) that is being worked with.</p>
+<pre class="r"><code>metadata(peaks)</code></pre>
+<pre><code>## $AnnotationHubName
+## [1] &quot;AH29817&quot;
+## 
+## $`File Name`
+## [1] &quot;E126-H3K4me2.broadPeak.gz&quot;
+## 
+## $`Data Source`
+## [1] &quot;http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E126-H3K4me2.broadPeak.gz&quot;
+## 
+## $Provider
+## [1] &quot;BroadInstitute&quot;
+## 
+## $Organism
+## [1] &quot;Homo sapiens&quot;
+## 
+## $`Taxonomy ID`
+## [1] 9606</code></pre>
+<pre class="r"><code>ah[metadata(peaks)$AnnotationHubName]$sourceurl</code></pre>
+<pre><code>## [1] &quot;http://egg2.wustl.edu/roadmap/data/byFileType/peaks/consolidated/broadPeak/E126-H3K4me2.broadPeak.gz&quot;</code></pre>
+</div>
+</div>
+<div id="configuring-annotationhub-objects" class="section level1">
+<h1>Configuring <code>AnnotationHub</code> objects</h1>
+<p>Most users will not need to do any specific configuration, but this section is included for completeness.</p>
+<p>When you create the <code>AnnotationHub</code> object, it will set up the object for you with some default settings. See <code>?AnnotationHub</code> for ways to customize the hub source, the local cache, and other instance-specific options, and <code>?getAnnotationHubOption</code> to get or set package-global options for use across sessions.</p>
+<p>If you look at the object you will see some helpful information about it such as where the data is cached and where online the hub server is set to.</p>
+<pre class="r"><code>ah</code></pre>
+<pre><code>## AnnotationHub with 64948 records
+## # snapshotDate(): 2022-04-21
+## # $dataprovider: Ensembl, BroadInstitute, UCSC, ftp://ftp.ncbi.nlm.nih.gov/g...
+## # $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos taurus,...
+## # $rdataclass: GRanges, TwoBitFile, BigWigFile, EnsDb, Rle, OrgDb, ChainFile...
+## # additional mcols(): taxonomyid, genome, description,
+## #   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+## #   rdatapath, sourceurl, sourcetype 
+## # retrieve records with, e.g., &#39;object[[&quot;AH5012&quot;]]&#39; 
+## 
+##              title                                                         
+##   AH5012   | Chromosome Band                                               
+##   AH5013   | STS Markers                                                   
+##   AH5014   | FISH Clones                                                   
+##   AH5015   | Recomb Rate                                                   
+##   AH5016   | ENCODE Pilot                                                  
+##   ...        ...                                                           
+##   AH104604 | Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.ncrna.2bit
+##   AH104605 | Zosterops_lateralis_melanops.ASM128173v1.cdna.all.2bit        
+##   AH104606 | Zosterops_lateralis_melanops.ASM128173v1.dna_rm.toplevel.2bit 
+##   AH104607 | Zosterops_lateralis_melanops.ASM128173v1.dna_sm.toplevel.2bit 
+##   AH104608 | Zosterops_lateralis_melanops.ASM128173v1.ncrna.2bit</code></pre>
+<p>By default the <code>AnnotationHub</code> object is set to the latest <code>snapshotData</code> and a snapshot version that matches the version of <em>Bioconductor</em> that you are using. You can also learn about these data with the appropriate methods.</p>
+<pre class="r"><code>snapshotDate(ah)</code></pre>
+<pre><code>## [1] &quot;2022-04-21&quot;</code></pre>
+<p>If you are interested in using an older version of a snapshot, you can list previous versions with the <code>possibleDates()</code> like this:</p>
+<pre class="r"><code>pd &lt;- possibleDates(ah)
+pd</code></pre>
+<pre><code>##   [1] &quot;2013-03-19&quot; &quot;2013-03-21&quot; &quot;2013-03-26&quot; &quot;2013-04-04&quot; &quot;2013-04-29&quot;
+##   [6] &quot;2013-06-24&quot; &quot;2013-06-25&quot; &quot;2013-06-26&quot; &quot;2013-06-27&quot; &quot;2013-10-29&quot;
+##  [11] &quot;2013-11-20&quot; &quot;2013-12-19&quot; &quot;2014-02-12&quot; &quot;2014-02-13&quot; &quot;2014-03-31&quot;
+##  [16] &quot;2014-04-27&quot; &quot;2014-05-11&quot; &quot;2014-05-13&quot; &quot;2014-05-14&quot; &quot;2014-05-22&quot;
+##  [21] &quot;2014-07-02&quot; &quot;2014-07-09&quot; &quot;2014-12-15&quot; &quot;2014-12-24&quot; &quot;2015-01-08&quot;
+##  [26] &quot;2015-01-14&quot; &quot;2015-03-09&quot; &quot;2015-03-11&quot; &quot;2015-03-12&quot; &quot;2015-03-25&quot;
+##  [31] &quot;2015-03-26&quot; &quot;2015-05-06&quot; &quot;2015-05-07&quot; &quot;2015-05-08&quot; &quot;2015-05-11&quot;
+##  [36] &quot;2015-05-14&quot; &quot;2015-05-21&quot; &quot;2015-05-22&quot; &quot;2015-05-26&quot; &quot;2015-07-17&quot;
+##  [41] &quot;2015-07-27&quot; &quot;2015-07-31&quot; &quot;2015-08-10&quot; &quot;2015-08-13&quot; &quot;2015-08-14&quot;
+##  [46] &quot;2015-08-17&quot; &quot;2015-08-26&quot; &quot;2015-12-28&quot; &quot;2015-12-29&quot; &quot;2016-01-25&quot;
+##  [51] &quot;2016-03-07&quot; &quot;2016-05-03&quot; &quot;2016-05-25&quot; &quot;2016-06-06&quot; &quot;2016-07-20&quot;
+##  [56] &quot;2016-08-15&quot; &quot;2016-10-11&quot; &quot;2016-11-03&quot; &quot;2016-11-08&quot; &quot;2016-11-09&quot;
+##  [61] &quot;2016-11-13&quot; &quot;2016-11-14&quot; &quot;2016-12-22&quot; &quot;2016-12-28&quot; &quot;2017-01-05&quot;
+##  [66] &quot;2017-02-07&quot; &quot;2017-04-03&quot; &quot;2017-04-04&quot; &quot;2017-04-05&quot; &quot;2017-04-10&quot;
+##  [71] &quot;2017-04-11&quot; &quot;2017-04-13&quot; &quot;2017-04-24&quot; &quot;2017-04-25&quot; &quot;2017-05-31&quot;
+##  [76] &quot;2017-06-06&quot; &quot;2017-06-07&quot; &quot;2017-06-08&quot; &quot;2017-06-29&quot; &quot;2017-08-28&quot;
+##  [81] &quot;2017-08-31&quot; &quot;2017-09-07&quot; &quot;2017-10-18&quot; &quot;2017-10-23&quot; &quot;2017-10-24&quot;
+##  [86] &quot;2017-10-27&quot; &quot;2017-11-24&quot; &quot;2017-10-26&quot; &quot;2017-10-20&quot; &quot;2017-12-21&quot;
+##  [91] &quot;2018-01-18&quot; &quot;2018-02-20&quot; &quot;2018-04-11&quot; &quot;2018-04-13&quot; &quot;2018-04-16&quot;
+##  [96] &quot;2018-04-19&quot; &quot;2018-04-20&quot; &quot;2018-04-23&quot; &quot;2018-04-30&quot; &quot;2018-06-27&quot;
+## [101] &quot;2018-07-31&quot; &quot;2018-08-01&quot; &quot;2018-08-20&quot; &quot;2018-10-04&quot; &quot;2018-10-11&quot;
+## [106] &quot;2018-10-15&quot; &quot;2018-10-16&quot; &quot;2018-10-18&quot; &quot;2018-10-22&quot; &quot;2018-10-24&quot;
+## [111] &quot;2018-12-20&quot; &quot;2019-01-14&quot; &quot;2019-02-14&quot; &quot;2019-02-15&quot; &quot;2019-04-15&quot;
+## [116] &quot;2019-04-18&quot; &quot;2019-04-22&quot; &quot;2019-04-29&quot; &quot;2019-05-01&quot; &quot;2019-05-02&quot;
+## [121] &quot;2019-09-17&quot; &quot;2019-10-08&quot; &quot;2019-10-17&quot; &quot;2019-10-21&quot; &quot;2019-10-22&quot;
+## [126] &quot;2019-10-28&quot; &quot;2019-10-29&quot; &quot;2020-01-28&quot; &quot;2020-02-28&quot; &quot;2020-10-14&quot;
+## [131] &quot;2020-05-01&quot; &quot;2020-04-27&quot; &quot;2020-05-11&quot; &quot;2020-06-18&quot; &quot;2020-07-20&quot;
+## [136] &quot;2020-09-03&quot; &quot;2020-10-20&quot; &quot;2020-10-26&quot; &quot;2020-10-27&quot; &quot;2020-12-16&quot;
+## [141] &quot;2021-01-14&quot; &quot;2021-02-24&quot; &quot;2021-04-12&quot; &quot;2021-04-19&quot; &quot;2021-04-30&quot;
+## [146] &quot;2021-05-04&quot; &quot;2021-05-14&quot; &quot;2021-05-17&quot; &quot;2021-05-18&quot; &quot;2021-06-15&quot;
+## [151] &quot;2021-08-03&quot; &quot;2021-09-10&quot; &quot;2021-09-23&quot; &quot;2021-10-08&quot; &quot;2021-10-13&quot;
+## [156] &quot;2021-10-15&quot; &quot;2021-10-18&quot; &quot;2021-10-20&quot; &quot;2022-01-20&quot; &quot;2022-01-31&quot;
+## [161] &quot;2022-04-12&quot; &quot;2022-04-18&quot; &quot;2022-04-21&quot;</code></pre>
+<p>Set the dates like this:</p>
+<pre class="r"><code>snapshotDate(ah) &lt;- pd[1]</code></pre>
+</div>
+<div id="session-info" class="section level1">
+<h1>Session info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.2.0 (2022-04-22)
+## Platform: x86_64-apple-darwin17.0 (64-bit)
+## Running under: macOS Big Sur/Monterey 10.16
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+##  [1] AnnotationDbi_1.58.0 Biobase_2.56.0       rtracklayer_1.56.0  
+##  [4] GenomicRanges_1.48.0 GenomeInfoDb_1.32.0  IRanges_2.30.0      
+##  [7] S4Vectors_0.34.0     AnnotationHub_3.4.0  BiocFileCache_2.4.0 
+## [10] dbplyr_2.1.1         BiocGenerics_0.42.0  BiocStyle_2.24.0    
+## 
+## loaded via a namespace (and not attached):
+##  [1] MatrixGenerics_1.8.0          httr_1.4.2                   
+##  [3] sass_0.4.1                    bit64_4.0.5                  
+##  [5] jsonlite_1.8.0                bslib_0.3.1                  
+##  [7] shiny_1.7.1                   assertthat_0.2.1             
+##  [9] interactiveDisplayBase_1.34.0 BiocManager_1.30.17          
+## [11] blob_1.2.3                    BSgenome_1.64.0              
+## [13] GenomeInfoDbData_1.2.8        Rsamtools_2.12.0             
+## [15] yaml_2.3.5                    BiocVersion_3.15.2           
+## [17] lattice_0.20-45               pillar_1.7.0                 
+## [19] RSQLite_2.2.12                glue_1.6.2                   
+## [21] digest_0.6.29                 promises_1.2.0.1             
+## [23] XVector_0.36.0                Matrix_1.4-1                 
+## [25] htmltools_0.5.2               httpuv_1.6.5                 
+## [27] XML_3.99-0.9                  pkgconfig_2.0.3              
+## [29] zlibbioc_1.42.0               purrr_0.3.4                  
+## [31] xtable_1.8-4                  later_1.3.0                  
+## [33] BiocParallel_1.30.0           tibble_3.1.6                 
+## [35] KEGGREST_1.36.0               generics_0.1.2               
+## [37] ellipsis_0.3.2                cachem_1.0.6                 
+## [39] withr_2.5.0                   SummarizedExperiment_1.26.0  
+## [41] cli_3.3.0                     magrittr_2.0.3               
+## [43] crayon_1.5.1                  mime_0.12                    
+## [45] memoise_2.0.1                 evaluate_0.15                
+## [47] fansi_1.0.3                   tools_4.2.0                  
+## [49] matrixStats_0.62.0            BiocIO_1.6.0                 
+## [51] lifecycle_1.0.1               stringr_1.4.0                
+## [53] DelayedArray_0.22.0           Biostrings_2.64.0            
+## [55] compiler_4.2.0                jquerylib_0.1.4              
+## [57] rlang_1.0.2                   grid_4.2.0                   
+## [59] RCurl_1.98-1.6                rjson_0.2.21                 
+## [61] rappdirs_0.3.3                bitops_1.0-7                 
+## [63] rmarkdown_2.14                restfulr_0.0.13              
+## [65] DBI_1.1.2                     curl_4.3.2                   
+## [67] R6_2.5.1                      GenomicAlignments_1.32.0     
+## [69] knitr_1.39                    dplyr_1.0.8                  
+## [71] fastmap_1.1.0                 bit_4.0.4                    
+## [73] utf8_1.2.2                    filelock_1.0.2               
+## [75] stringi_1.7.6                 parallel_4.2.0               
+## [77] Rcpp_1.0.8.3                  vctrs_0.4.1                  
+## [79] png_0.1-7                     tidyselect_1.1.2             
+## [81] xfun_0.30</code></pre>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

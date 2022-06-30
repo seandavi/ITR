@@ -1,0 +1,172 @@
+---
+title: "Control structures and functions"
+---
+
+
+## Control Structures in R
+
+-   [R has multiple types of control structures that allows for
+    sequential evaluation of statements.]{}
+
+-   [For loops]{}
+
+        for (x in set) {operations}
+
+-   [while loops]{}
+
+        while (x in condition){operations}
+
+-   [If statements (conditional)]{}
+
+        if (condition) {
+        some operations 
+         } else { other operations }
+
+### Control Structure and Looping Examples
+
+```{r}
+    x<-1:9
+    length(x)
+    # a simple conditional then two expressions
+    if (length(x)<=10) {
+       x<-c(x,10:20);print(x)}
+    # more complex 
+    if (length(x)<5) {
+        print(x)
+    } else {
+        print(x[5:20])
+    }           
+    # print the values of x, one at a time
+    for (i in x) print(i) 
+    for(i in x) i   # note R will not echo in a loop
+
+    # loop over a character vector
+    y<-c('a','b','hi there')            
+    for (i in y) print(i)
+
+    # and a while loop
+    j<-1                
+    while(j<10) { # do this while j<10      
+      print(j)
+      j<-j+2} # at each iteration, increase j by 2
+```
+
+## Applying
+
+### Why Does R Have Apply Functions
+
+-   [Often we want to apply the same function to all the rows or columns
+    of a matrix, or all the elements of a list.]{}
+
+-   [We could do this in a loop, but loops take a lot of time in an
+    interpreted language like R.]{}
+
+-   [R has more efficient built-in operators, the apply functions.]{}
+
+[example]{} If mat is a matrix and fun is a function (such as mean, var,
+lm ...) that takes a vector as its argument, then you can:
+
+    apply(mat,1,fun) # over rows--second argument is 1      
+    apply(mat,2,fun) # over columns--second argument is 2
+
+In either case, the output is a *vector*.
+
+### Apply Function Exercise
+
+1.  [Using the matrix and rnorm functions, create a matrix with 20 rows
+    and 10 columns (200 values total) of random normal deviates.]{}
+
+2.  [Compute the mean for each row of the matrix.]{}
+
+3.  [Compute the median for each column.]{}
+
+### Related Apply Functions
+
+-   [`lapply(list, function)` applies the function to every element of
+    list]{}
+
+-   [`sapply(list or vector, function)` applies the function to every
+    element of list or vector, and returns a vector, when possible
+    (easier to process)]{}
+    
+-   [`vapply(list or vector, function)` applies the function to every
+    element of list or vector, and returns a vector, when possible
+    (easier to process)]{}
+
+-   [`tapply(x, factor, fun)` uses the factor to split vector x into
+    groups, and then applies fun to each group]{}
+
+
+```{r}
+    # create a list
+    my.list <- list(a=1:3,b=5:10,c=11:20)
+    my.list
+    # Get the mean for each member of the list
+    # return a vector
+    sapply( my.list, mean)
+    # Get the full summary for each member of
+    # the list, returned as a list
+    lapply( my.list, summary)
+    # Find the mean for each group defined by a factor
+    my.vector <- 1:10
+    my.factor <- factor(
+      c(1,1,1,2,2,2,3,3,3,3))
+    tapply(my.vector, my.factor, mean)
+```
+
+## Functions
+
+-   [Functions are objects and are assigned to names, just like data.]{}
+
+        myFunction = function(argument1,argument2) {
+          expression1
+          expression2
+        }
+
+-   [We write functions for anything we need to do again and again.]{}
+
+-   [You may test your commands interactively at first, and then use the
+    `history()` feature and an editor to create the function.]{}
+
+-   [It is wise to include a comment at the start of each function to
+    say what it does and to document functions of more than a few
+    lines.]{}
+
+### Example Functions
+
+    add1 = function(x) {
+        # this function adds one to the first argument and returns it
+        x + 1
+    }
+    add1(17)
+    ## [1] 18
+    add1(c(17,18,19,20))
+    ## [1] 18 19 20 21
+
+## Exercises
+
+- Use system.time to compare the two codes here. Both accomplish the same thing--adding 1 to every value of the vector `rn`.
+
+```{r eval=TRUE, results='hide'}
+rn = rnorm(1e6)
+system.time(
+for (i in seq_along(rn)) {
+  rn[i] = rn[i] + 1
+}
+)
+# vectorized
+system.time(
+    {rn = rn + 1}
+)
+```
+- Create a function that takes a numeric vector and calculates the mean without using the R `mean` function.
+
+- Modify the function above so that it can calculate the "trimmed mean" by adding a second argument that specifies the proportion of data to trim from ends of the numeric vector before calculating mean. The definition of trimmed mean is:
+
+> A trimmed mean (similar to an adjusted mean) is a method of averaging that removes a small designated percentage of the largest and smallest values before calculating the mean. After removing the specified outlier observations, the trimmed mean is found using a standard arithmetic averaging formula. The use of a trimmed mean helps eliminate the influence of outliers or data points on the tails that may unfairly affect the traditional mean.
+
+- Use the `system.time()` function to time your mean function with a vector of length 1000. Do the same with the builtin R version of mean, `mean()`. Is there a difference in timings? Do you believe that these timings could show a difference?
+
+- Use the [microbenchmark package](https://www.r-bloggers.com/using-the-microbenchmark-package-to-compare-the-execution-time-of-r-expressions/) to compare the performance of your mean function to that of `mean()` builtin to R.
+
+- Write a function that takes as input a string (character vector of length 1) and counts the number of occurrences of each letter (after converting to lower case). Take a look at the `tolower()`, `strsplit()`, and `table()` functions to help you with this task. Then, modify the function to return the proportion of each letter rather than the count. Would this be useful for any biological data?

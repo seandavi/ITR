@@ -8,8 +8,7 @@ output: html_document
 load_install <- function(pkgs){
   for(x in pkgs){
     if(!(require(x,character.only = TRUE))){
-      library(BiocInstaller)
-      biocLite(x,suppressUpdates = TRUE)
+      BiocManager::install(x,suppressUpdates = TRUE)
     }
   }
 }

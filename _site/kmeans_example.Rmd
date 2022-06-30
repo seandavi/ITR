@@ -1,0 +1,98 @@
+---
+title: "Clustering"
+author: "Sean Davis"
+date: "7/7/2018"
+output: html_document
+---
+
+# Experimental background
+
+The data we are going to use are from [deRisi et al.](https://www.ncbi.nlm.nih.gov/pubmed/9381177). From 
+their abstract:
+
+> DNA microarrays containing virtually every gene of Saccharomyces cerevisiae were used to carry out a comprehensive investigation of the temporal program of gene expression accompanying the metabolic shift from fermentation to respiration. The expression profiles observed for genes with known metabolic functions pointed to features of the metabolic reprogramming that occur during the diauxic shift, and the expression patterns of many previously uncharacterized genes provided clues to their possible functions. 
+
+
+These data are available from NCBI GEO as [GSE28](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE28).
+
+In the case of the baker's or brewer's yeast Saccharomyces cerevisiae growing on glucose with plenty of aeration, the diauxic growth pattern is commonly observed in batch culture. During the first growth phase, when there is plenty of glucose and oxygen available, the yeast cells prefer glucose fermentation to aerobic respiration even though aerobic respiration is the more efficient pathway to grow on glucose. This experiment 
+profiles gene expression for 6400 genes over a time course during which the cells are undergoing
+a [diauxic shift](https://en.wikipedia.org/wiki/Diauxie).
+
+The data in deRisi et al. have no replicates and are time course data. Sometimes, seeing how groups 
+of genes behave can give biological insight into the experimental system or the function of individual
+genes. We can use clustering to group genes that have a similar expression pattern over time and then
+potentially look at the genes that do so. 
+
+Our goal, then, is to use `kmeans` clustering to divide highly variable (informative) genes into groups
+and then to visualize those groups.
+
+# Getting data
+
+These data were deposited at NCBI GEO back in 2002. GEOquery can pull them out easily.
+
+```{r}
+library(GEOquery)
+gse = getGEO("GSE28")[[1]]
+class(gse)
+```
+
+GEOquery is a little dated and was written before the SummarizedExperiment existed. However, Bioconductor makes
+a conversion from the old ExpressionSet that GEOquery uses to the SummarizedExperiment that we see
+so commonly used now.
+
+```{r}
+library(SummarizedExperiment)
+gse = as(gse, "SummarizedExperiment")
+gse
+```
+
+Taking a quick look at the `colData()`, it might be that we want to reorder the columns a bit.
+
+```{r}
+colData(gse)$title
+```
+
+So, we can reorder by hand to get the time course correct:
+
+```{r}
+gse = gse[, c(2,4,5,6,1,3,7)]
+```
+
+```{r}
+sds = apply(assays(gse)[[1]], 1, sd)
+hist(sds)
+```
+
+Examining the plot, we can see that the most highly variable genes have an sd > 0.8 or so (arbitrary). We can, for convenience, create a new `SummarizedExperiment` that contains only our most highly variable genes.
+
+```{r}
+idx = sds>0.8 & !is.na(sds)
+gse_sub = gse[idx,]
+```
+
+Now, `gse_sub` contains a subset of our data. 
+
+The `kmeans` function takes a matrix and the number
+of clusters as arguments. 
+
+```{r}
+k = 4
+km = kmeans(assays(gse_sub)[[1]], 4)
+```
+
+The `km` kmeans result contains a vector, `km$cluster`, which gives the cluster associated with each gene.
+We can plot the genes for each cluster to see how these different genes behave.
+
+```{r}
+expression_values = assays(gse_sub)[[1]]
+par(mfrow=c(2,2), mar=c(3,4,1,2)) # this allows multiple plots per page
+for(i in 1:k) {
+    matplot(t(expression_values[km$cluster==i, ]), type='l', ylim=c(-3,3),
+            ylab = paste("cluster", i))
+}
+```
+
+
+Try this with different size k. Perhaps go back to choose more genes (using a smaller cutoff for sd).
+

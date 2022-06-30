@@ -5,7 +5,7 @@ output: html_document
 
 ### R
 
-**Install R.** You'll need R version **3.6** or higher.[^rversion] Download and install R for [Windows](http://cran.r-project.org/bin/windows/base/) or [Mac](http://cran.r-project.org/bin/macosx/) (download the latest R-3.x.x.pkg file for your appropriate version of Mac OS).
+**Install R.** You'll need R version **4.2** or higher.[^rversion] Download and install R for [Windows](http://cran.r-project.org/bin/windows/base/) or [Mac](http://cran.r-project.org/bin/macosx/) (download the latest R-4.x.x.pkg file for your appropriate version of Mac OS).
 
 ### RStudio
 
@@ -53,7 +53,7 @@ To install basic Bioconductor packages (we will be installing more throughout th
 BiocManager::install()
 ```
 
-Installing a specific Bioconductor package works similarly to `install.packages`:
+Installing a specific Bioconductor package works similarly to `install.packages` and you can use `BiocManager::install()` as a replacement for `install.packages`.
 
 ```r
 BiocManager::install("GEOquery")

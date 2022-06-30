@@ -1,0 +1,19 @@
+
+Package: ITR
+Title: Introduction (plus) to R and Bioconductor.
+Version: 0.2
+Authors@R: c(
+  person("Sean", "Davis", , "seandavi@gmail.com", c("aut", "cre"))
+  )
+Depends: R (>= 3.4.0)
+URL: https://github.com/seandavi/ITR
+Imports:
+  condvis,
+  knitr,
+  nycflights13,
+  dplyr,
+  ggplot2,
+  RColorBrewer,
+  survival,
+  GEOquery
+  

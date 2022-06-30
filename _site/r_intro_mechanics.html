@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R mechanics</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2019">Introduction to Bioconductor</a>
+    </li>
+    <li>
+      <a href="https://drive.google.com/file/d/1txUz-a84VVxiB1ouv24ujL2DSTfxgblL/view?usp=sharing">Advanced Bioconductor Overview</a>
+    </li>
+    <li>
+      <a href="MachineLearning.html">Machine Learning hands-on</a>
+    </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">R mechanics</h1>
+
+</div>
+
+
+<div id="learning-objectives" class="section level2">
+<h2>Learning objectives</h2>
+<ul>
+<li>Be able to start R and RStudio</li>
+<li>Learn to interact with the R console</li>
+<li>Know the difference between expressions and assignment</li>
+<li>Recognize valid and invalid R names</li>
+<li>Know how to access the R help system</li>
+<li>Know how to assign values to variables, find what is in R memory,
+and remove values from R memory</li>
+</ul>
+</div>
+<div id="starting-r" class="section level2">
+<h2>Starting R</h2>
+<p>How to start R depends a bit on the operating system (Mac, Windows,
+Linux) and interface. In this course, we will largely be using an
+Integrated Development Environment (IDE) called <em>RStudio</em>, but
+there is nothing to prohibit using R at the command line or in some
+other interface (and there are a few).</p>
+</div>
+<div id="rstudio-a-quick-tour" class="section level2">
+<h2><em>RStudio</em>: A Quick Tour</h2>
+<div class="figure">
+<img src="images/RStudio.png" alt="The Rstudio interface" width="960" />
+<p class="caption">
+The Rstudio interface
+</p>
+</div>
+<p>The RStudio interface has multiple panes. All of these panes are
+simply for convenience except the “Console” panel, typically in the
+lower left corner (by default). The console pane contains the running R
+interface. If you choose to run R outside RStudio, the interaction will
+be <em>identical</em> to working in the console pane. This is useful to
+keep in mind as some environments, such as a computer cluster, encourage
+using R without RStudio.</p>
+<ul>
+<li>Panes</li>
+<li>Options</li>
+<li>Help</li>
+<li>Environment, History, and Files</li>
+</ul>
+</div>
+<div id="interacting-with-r" class="section level2">
+<h2>Interacting with R</h2>
+<p>The only meaningful way of interacting with R is by typing into the R
+console. At the most basic level, anything that we type at the command
+line will fall into one of two categories:</p>
+<ol style="list-style-type: decimal">
+<li><p>Assignments</p>
+<pre class="r"><code>x = 1
+y &lt;- 2</code></pre></li>
+<li><p>Expressions</p>
+<pre class="r"><code>1 + pi + sin(42)</code></pre>
+<pre><code>## [1] 3.225071</code></pre></li>
+</ol>
+<p>The assignment type is obvious because either the The
+<code>&lt;-</code> or <code>=</code> are used. Note that when we type
+expressions, R will return a result. In this case, the result of R
+evaluating <code>1 + pi + sin(42)</code> is 3.2250711.</p>
+<p>The standard R prompt is a “&gt;” sign. When present, R is waiting
+for the next expression or assignment. If a line is not a complete R
+command, R will continue the next line with a “+”. For example, typing
+the fillowing with a “Return” after the second “+” will result in R
+giving back a “+” on the next line, a prompt to keep typing.</p>
+<pre class="r"><code>1 + pi +
+sin(3.7)</code></pre>
+<pre><code>## [1] 3.611757</code></pre>
+<p>R can be used as a glorified calculator by using R expressions.
+Mathematical operations include:</p>
+<ul>
+<li>Addition: <code>+</code></li>
+<li>Subtraction: <code>-</code></li>
+<li>Multiplication: <code>*</code></li>
+<li>Division: <code>/</code></li>
+<li>Exponentiation: <code>^</code></li>
+<li>Modulo: <code>%%</code></li>
+</ul>
+<p>The <code>^</code> operator raises the number to its left to the
+power of the number to its right: for example <code>3^2</code> is
+<code>9</code>. The modulo returns the remainder of the division of the
+number to the left by the number on its right, for example 5 modulo 3 or
+<code>5 %% 3</code> is 2.</p>
+<div id="expressions" class="section level3">
+<h3>Expressions</h3>
+<pre class="r"><code>5 + 2
+28 %% 3
+3^2
+5 + 4 * 4 + 4 ^ 4 / 10</code></pre>
+<p>Note that R follows order-of-operations and groupings based on
+parentheses.</p>
+<pre class="r"><code>5 + 4 / 9
+(5 + 4) / 9</code></pre>
+</div>
+<div id="assignment" class="section level3">
+<h3>Assignment</h3>
+<p>While using R as a calculator is interesting, to do useful and
+interesting things, we need to assign <em>values</em> to
+<em>objects</em>. To create objects, we need to give it a name followed
+by the assignment operator <code>&lt;-</code> (or, entirely
+equivalently, <code>=</code>) and the value we want to give it:</p>
+<pre class="r"><code>weight_kg &lt;- 55 </code></pre>
+<p><code>&lt;-</code> is the assignment operator. Assigns values on the
+right to objects on the left, it is like an arrow that points from the
+value to the object. Using an <code>=</code> is equivalent (in nearly
+all cases). Learn to use <code>&lt;-</code> as it is good programming
+practice.</p>
+<p>Objects can be given any name such as <code>x</code>,
+<code>current_temperature</code>, or <code>subject_id</code> (see
+below). You want your object names to be explicit and not too long. They
+cannot start with a number (<code>2x</code> is not valid but
+<code>x2</code> is). R is case sensitive (e.g., <code>weight_kg</code>
+is different from <code>Weight_kg</code>). There are some names that
+cannot be used because they represent the names of fundamental functions
+in R (e.g., <code>if</code>, <code>else</code>, <code>for</code>, see <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html">here</a>
+for a complete list). In general, even if it’s allowed, it’s best to not
+use other function names, which we’ll get into shortly (e.g.,
+<code>c</code>, <code>T</code>, <code>mean</code>, <code>data</code>,
+<code>df</code>, <code>weights</code>). When in doubt, check the help to
+see if the name is already in use. It’s also best to avoid dots
+(<code>.</code>) within a variable name as in <code>my.dataset</code>.
+It is also recommended to use nouns for variable names, and verbs for
+function names.</p>
+<p>When assigning a value to an object, R does not print anything. You
+can force to print the value by typing the name:</p>
+<pre class="r"><code>weight_kg</code></pre>
+<pre><code>## [1] 55</code></pre>
+<p>Now that R has <code>weight_kg</code> in memory, which R refers to as
+the “global environment”, we can do arithmetic with it. For instance, we
+may want to convert this weight in pounds (weight in pounds is 2.2 times
+the weight in kg).</p>
+<pre class="r"><code>2.2 * weight_kg</code></pre>
+<pre><code>## [1] 121</code></pre>
+<p>We can also change a variable’s value by assigning it a new one:</p>
+<pre class="r"><code>weight_kg &lt;- 57.5
+2.2 * weight_kg</code></pre>
+<pre><code>## [1] 126.5</code></pre>
+<p>This means that assigning a value to one variable does not change the
+values of other variables. For example, let’s store the animal’s weight
+in pounds in a variable.</p>
+<pre class="r"><code>weight_lb &lt;- 2.2 * weight_kg</code></pre>
+<p>and then change <code>weight_kg</code> to 100.</p>
+<pre class="r"><code>weight_kg &lt;- 100</code></pre>
+<p>What do you think is the current content of the object
+<code>weight_lb</code>, 126.5 or 220?</p>
+<p>You can see what objects (variables) are stored by viewing the
+Environment tab in Rstudio. You can also use the <code>ls()</code>
+function. You can remove objects (variables) with the <code>rm()</code>
+function. You can do this one at a time or remove several objects at
+once. You can also use the little broom button in your environment pane
+to remove everything from your environment.</p>
+<pre class="r"><code>ls()
+rm(weight_lb, weight_kg)
+ls()</code></pre>
+<p>What happens when you type the following, now?</p>
+<pre class="r"><code>weight_lb # oops! you should get an error because weight_lb no longer exists!</code></pre>
+</div>
+</div>
+<div id="rules-for-names-in-r" class="section level2">
+<h2>Rules for Names in R</h2>
+<p>R allows users to assign names to objects such as variables,
+functions, and even dimensions of data. However, these names must follow
+a few rules.</p>
+<ul>
+<li>Names may contain any combination of letters, numbers, underscore,
+and “.”</li>
+<li>Names may not start with numbers, underscore.</li>
+<li>R names are case-sensitive.</li>
+</ul>
+<p>Examples of valid R names include:</p>
+<pre><code>pi
+x
+camelCaps
+my_stuff
+MY_Stuff
+this.is.the.name.of.the.man
+ABC123
+abc1234asdf
+.hi</code></pre>
+</div>
+<div id="resources-for-getting-help" class="section level2">
+<h2>Resources for Getting Help</h2>
+<p>There is extensive built-in help and documentation within R. A
+separate page contains a collection of <a
+href="further_resources.html">additional resources</a>.</p>
+<p>If the name of the function or object on which help is sought is
+known, the following approaches with the name of the function or object
+will be helpful. For a concrete example, examine the help for the
+<code>print</code> method.</p>
+<pre class="r"><code>help(print)
+help(&#39;print&#39;)
+?print</code></pre>
+<p>If the name of the function or object on which help is sought is
+<em>not</em> known, the following from within R will be helpful.</p>
+<pre class="r"><code>help.search(&#39;microarray&#39;)
+RSiteSearch(&#39;microarray&#39;)
+apropos(&#39;histogram&#39;)</code></pre>
+<p>There are also tons of online resources that Google will include in
+searches if online searching feels more appropriate.</p>
+<p>I strongly recommend using <code>help("newfunction"")</code> for all
+functions that are new or unfamiliar to you.</p>
+</div>
+<div id="further-practice" class="section level2">
+<h2>Further practice</h2>
+<p>If you are entirely new to R, you may want to complete an R tutorial
+to gain further experience with the basics of programming and R
+syntax.</p>
+<p>One R-based system, <a href="http://swirlstats.com/">swirl</a>,
+teaches you R programming and data science interactively, at your own
+pace and in the R console. Once you have R installed, you can install
+<code>swirl</code> and run it the following way:</p>
+<pre class="r"><code>install.packages(&quot;swirl&quot;)
+library(swirl)
+swirl()</code></pre>
+<p>Alternatively you can take the <a
+href="http://tryr.codeschool.com/">try R</a> interactive class from Code
+School.</p>
+<p>There are also many open and free resources and reference guides for
+R. Two examples are:</p>
+<ul>
+<li><a href="http://www.statmethods.net/">Quick-R</a>: a quick online
+reference for data input, basic statistics and plots</li>
+<li>R reference card <a
+href="https://cran.r-project.org/doc/contrib/Short-refcard.pdf">PDF</a>
+by Tom Short</li>
+<li>Rstudio <a
+href="https://www.rstudio.com/resources/cheatsheets/">cheatsheets</a></li>
+</ul>
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<ul>
+<li>Without using R, what are the values of the following?</li>
+</ul>
+<pre class="r"><code>mass &lt;- 50              # mass?
+age  &lt;- 30              # age?
+mass &lt;- mass * 2        # mass?
+age  &lt;- age - 10        # age?
+mass_index &lt;- mass/age  # massIndex?</code></pre>
+<ul>
+<li><p>Use the R <code>help()</code> function to find information about
+the “hist” function. Follow up with running the example using
+<code>example("hist")</code>.</p></li>
+<li><p>Which of these is a valid R name for a variable?</p></li>
+</ul>
+<pre class="r"><code>x2
+2x
+.abc
+abc.123
+.123
+_my_value
+my_value
+my.value</code></pre>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+---
+title: "Expression Prediction"
+author: "Anshul Kundaje, Oana Ursu, and Sean Davis"
+date: "7/8/2018"
+output: html_document
+---
+
+# Background
+
+In this little set of exercises, you will be using histone marks near a gene to predict its expression.
+
+$$y = h1 + h2 + h3 + ...$$
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, message=FALSE)
+```
+
+We will try a couple of different approaches:
+
+1. Penalized regression
+2. RandomForest
+
+## Penalized regression
+
+Adapted from http://www.sthda.com/english/articles/37-model-selection-essentials-in-r/153-penalized-regression-essentials-ridge-lasso-elastic-net/.
+
+### Ridge regression
+
+Ridge regression shrinks the regression coefficients, so that variables, with minor contribution to the outcome, have their coefficients close to zero. The shrinkage of the coefficients is achieved by penalizing the regression model with a penalty term called L2-norm, which is the sum of the squared coefficients. The amount of the penalty can be fine-tuned using a constant called lambda (λ). Selecting a good value for λ is critical. When λ=0, the penalty term has no effect, and ridge regression will produce the classical least square coefficients. However, as λ increases to infinite, the impact of the shrinkage penalty grows, and the ridge regression coefficients will get close zero.
+
+Note that, in contrast to the ordinary least square regression, ridge regression is highly affected by the scale of the predictors. Therefore, it is better to standardize (i.e., scale) the predictors before applying the ridge regression (James et al. 2014), so that all the predictors are on the same scale. The standardization of a predictor x, can be achieved using the formula x' = x / sd(x), where sd(x) is the standard deviation of x. The consequence of this is that, all standardized predictors will have a standard deviation of one allowing the final fit to not depend on the scale on which the predictors are measured.
+
+One important advantage of the ridge regression, is that it still performs well, compared to the ordinary least square method (Chapter @ref(linear-regression)), in a situation where you have a large multivariate data with the number of predictors (p) larger than the number of observations (n). One disadvantage of the ridge regression is that, it will include all the predictors in the final model, unlike the stepwise regression methods, which will generally select models that involve a reduced set of variables. Ridge regression shrinks the coefficients towards zero, but it will not set any of them exactly to zero. The lasso regression is an alternative that overcomes this drawback.
+
+### Lasso regression
+
+Lasso stands for _Least Absolute Shrinkage and Selection Operator_. It shrinks the regression coefficients toward zero by penalizing the regression model with a penalty term called L1-norm, which is the sum of the absolute coefficients. In the case of lasso regression, the penalty has the effect of forcing some of the coefficient estimates, with a minor contribution to the model, to be exactly equal to zero. This means that, lasso can be also seen as an alternative to the subset selection methods for performing variable selection in order to reduce the complexity of the model. As in ridge regression, selecting a good value of λ for the lasso is critical.
+
+One obvious advantage of lasso regression over ridge regression, is that it produces simpler and more interpretable models that incorporate only a reduced set of the predictors. However, neither ridge regression nor the lasso will universally dominate the other. Generally, lasso might perform better in a situation where some of the predictors have large coefficients, and the remaining predictors have very small coefficients. Ridge regression will perform better when the outcome is a function of many predictors, all with coefficients of roughly equal size (James et al. 2014).
+
+Cross-validation methods can be used for identifying which of these two techniques is better on a particular data set.
+
+### Elastic Net
+
+Elastic Net produces a regression model that is penalized with both the L1-norm and L2-norm. The consequence of this is to effectively shrink coefficients (like in ridge regression) and to set some coefficients to zero (as in LASSO).
+
+# Install packages
+
+Do this at the beginning of the lab
+
+```{r eval=FALSE}
+install.packages("caret", dependencies=T)
+install.packages(c("randomForest", "glmnet"), dependencies=T)
+```
+
+```{r}
+require(caret)
+require(randomForest)
+require(glmnet)
+```
+
+# Load the preprocessed data
+
+```{r}
+fullFeatureSet <- read.table("http://seandavi.github.io/ITR/expression-prediction/features.txt");
+target <- scan(url("http://seandavi.github.io/ITR/expression-prediction/target.txt"), skip=1)
+```
+
+You can see the full list of features in fullFeatureSet using:
+```{r}
+colnames(fullFeatureSet)
+```
+
+Take a few minutes to try to understand the relationships between the predictor variables, their scale, etc.
+
+- https://web.stanford.edu/~hastie/TALKS/enet_talk.pdf
+
+# Machine Learning
+
+## Lasso
+
+In this section, we will run the lasso procedure.
+
+```{r}
+features <- fullFeatureSet
+```
+
+```{r}
+library(caret)
+#how to split into train/validation using cross-validation
+fitControl <- trainControl( 
+    method="repeatedcv",
+    number=10,
+    ## repeated once
+    repeats=1,
+    verboseIter=T)
+```
+
+We are going to try a number of different models, so
+here, we create a range of parameters to investigate.
+
+- alpha -  is the elasticnet mixing parameter: $$\frac{(1-α)}{2}||β||_2^2+α||β||_1$$
+- lambda - is the regularization parameter governing the relative importance of minimizing error vs keeping betas small
+
+```{r lassogrid}
+# setting alpha=1 specifies LASSO regression penalty
+lassoGrid <- expand.grid(alpha=1, lambda=10^seq(-6, 0, 1))
+```
+
+Now, we train the model using cross-validation to find the "best"
+parameters.
+
+```{r}
+lassoFit <- train(features, target, method="glmnet",
+                  trControl=fitControl, tuneGrid=lassoGrid)
+lassoModel <- lassoFit$finalModel
+```
+
+What metric is being used? Hint: print `names(lassoFit)` and get the metric used.
+
+Printing the `lassoFit` variable gives the overall performance.
+
+```{r}
+names(lassoFit)
+print(lassoFit)
+```
+
+- Accuracy per CV-fold (for best model)
+
+```{r}
+print(lassoFit$resample)
+```
+
+We can inspect the coefficients for different values of the
+L1 penalty lambda - play around and see what happens.
+
+```{r}
+print(coef(lassoModel, s=1e-4))
+print(coef(lassoModel, s=1))
+```
+
+We can also plot the entire regularization path
+The numbers shown are the feature (column) ids - to get the name of the
+feature, you can do colnames(features)[10], for instance.
+the numbers at the top are the numbers of nonzero coefficients.
+
+```{r}
+plot(lassoModel, "lambda", label=T)
+```
+
+
+The final, trained model is in `lassoFit`.
+We can plot the predictions vs original targets.
+
+```{r}
+lassoPreds <- predict(lassoFit, newdata=features)
+plot(target, lassoPreds)
+```
+
+## Random Forests
+
+```{r}
+library(caret)
+```
+
+```{r}
+rfGrid <- expand.grid(mtry=floor(ncol(features)/3))
+```
+
+```{r}
+randomforestFit <- train(features, target, method="rf", 
+                         trControl=fitControl, tuneGrid=rfGrid,
+                         ntree=100)
+rfModel <- randomforestFit$finalModel
+```
+
+The overall accuracy is:
+
+```{r}
+print(randomforestFit)
+```
+
+We can also look at the accuracy per cross-validation fold.
+
+```{r}
+print(randomforestFit$resample)
+```
+
+The variable importance gives a measure of the relative contributions of each of the variables 
+(histone marks) to the expression prediction. Larger values reflect greater feature importance.
+
+```{r}
+print(rfModel$importance[order(rfModel$importance, decreasing=T),])
+```
+
+The final trained model is in randomforestFit. Again, we can plot the predictions vs original targets.
+
+```{r}
+randomforestPreds <- predict(randomforestFit, newdata=features)
+plot(target, randomforestPreds)
+```
+
+
+# Further exploration
+
+- How does the performance of random forests compare to the lasso?
+  (you can look at the output of print(lassoFit) and print(randomforestFit))
+- How do other models perform? You can try other models by changing the
+  "method" parameter in the "train" call. Some suggestions for models:
+  linear regression, "lm"  and regression trees, "rpart2".
+
+- Construct a proper test set and re-run the analyses 
+
+- How do the individual histone marks contribute to the accuracy of the
+  predictions? You can formulate hypotheses about which marks are important
+  and only include those in the feature matrix when learning your model to
+  see how they do. We provide some code below to help you with this.
+
+We can experiment with the weights that lasso regression produces when given
+a subset of the features. First, create a column vector specifying the names
+of a subset of the features with:
+
+```{r}
+featureSubset <- c("Control", "H3k4me1", "H3k4me2", "H2az", "H3k27me3",
+                   "H3k36me3", "H3k9me1", "H3k9me3", "H4k20me1")
+```
+
+Now create the variable “features” which contains this subset of features:
+
+```{r}
+features <- fullFeatureSet[featureSubset]
+```
+
+Now, rerun the lasso regression with the subset.
+
+
+```{r}
+lassoFit <- train(features, target, method="glmnet",
+                  trControl=fitControl, tuneGrid=lassoGrid)
+lassoModel <- lassoFit$finalModel
+```
+
+We now generate a plot where the y axis is the coefficient of the
+weights assigned to the various features by lasso, the bottom x-axis is the
+log of the regularisation parameter lambda, and the top x-axis is the number
+of non-zero weights for that particular value of the regularisation parameter.
+The numbers on the lines correspond to the indices of the features in
+“featureSubset”. The numbers at the top are the numbers of nonzero betas.
+
+```{r}
+plot(lassoModel, "lambda", label=T)
+```
+
