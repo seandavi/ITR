@@ -24,6 +24,5 @@ _site
 *_cache
 libs
 SE.svg
-*html
 *log
 \.DS_Store

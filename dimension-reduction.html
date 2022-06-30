@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Rafael A Irizarry with Modifications by Sean Davis" />
+
+
+<title>Dimension Reduction Motivation</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2019">Introduction to Bioconductor</a>
+    </li>
+    <li>
+      <a href="https://drive.google.com/file/d/1txUz-a84VVxiB1ouv24ujL2DSTfxgblL/view?usp=sharing">Advanced Bioconductor Overview</a>
+    </li>
+    <li>
+      <a href="MachineLearning.html">Machine Learning hands-on</a>
+    </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Dimension Reduction Motivation</h1>
+<h4 class="author">Rafael A Irizarry with Modifications by Sean Davis</h4>
+
+</div>
+
+
+<div id="dimension-reduction-motivation" class="section level1">
+<h1>Dimension Reduction Motivation</h1>
+<p>Visualizing data is one of the most, if not the most, important part of data science. The right visualization method may reveal problems with the data that can render the results from a standard analysis, although typically appropriate, completely useless. It can also help us make us important discoveries.</p>
+<p>We have shown methods for visualizing univariate and paired data, but plots that reveal relationships between columns or between rows are more complicated due to the high dimensionality of data. Creating one single scatter-plot of the data is impossible due to the high dimensionality.</p>
+<p>We will describe a powerful techniques for exploratory data analysis based on <em>dimension reduction</em>. The general idea is to reduce the dimension of the dataset while preserving important characteristics, such as the distance between features or observations. With fewer dimensions, visualization then becomes more feasible. The technique behind it all, principal component analysis (PCA), is also useful in other contexts. Before applying PCA to a high-dimensional dataset, we will motivate the ideas behind with a simple example.</p>
+<div id="example-reducing-two-dimensions-to-one" class="section level2">
+<h2>Example: Reducing two dimensions to one</h2>
+<p>We consider an example coming from twin heights. We simulate 100 two-dimensional points that represent the number of standard deviations each individual is from the average height. Each point is a pair of twins:</p>
+<div class="figure">
+<img src="figure/dimension-reduction-simulate_twin_heights-1.png" alt="Simulated twin pair heights." width="672" />
+<p class="caption">
+Simulated twin pair heights.
+</p>
+</div>
+<p>To help with the illustration, think of this as data of many features with the twin pairs representing the <span class="math inline">\(N\)</span> observations and the two heights representing two features. For this illustration, we will act as if two is too high dimensional for visualization. We want to reduce the dimensions to 1.</p>
+<p>We are interested in the distance between any two samples. We can compute this using <code>dist</code>. For example, here is the distance between the two orange points in the figure above:</p>
+<pre class="r"><code>d=dist(X)
+as.matrix(d)[1,2]</code></pre>
+<pre><code>## [1] 3.414106</code></pre>
+<p><em>Assessment</em> If I center the data by removing the average from both columns, does the distance between pairs of twins change?</p>
+<p>We will go ahead a center the data:</p>
+<pre class="r"><code>X &lt;- sweep(X, 2, colMeans(X))
+# Can also do this (advanced): X &lt;- t(t(X) - rowMeans(t(X)))</code></pre>
+<p>Let’s check to see if “centering” the data makes a difference.</p>
+<pre class="r"><code>d2 = dist(X)
+as.matrix(d2)[1,2]</code></pre>
+<pre><code>## [1] 3.414106</code></pre>
+<p>And to see why graphically:</p>
+<p><img src="figure/dimension-reduction-unnamed-chunk-4-1.png" width="672" /></p>
+<p>What if making two dimensional plots was too complex and we were only able to make one-dimensional plots. Can we, for example, reduce the data to a one-dimensional matrix that preserves distances between points?</p>
+<p>Let’s start with the naive approach of simply removing one of the two dimensions. Let’s compare the actual distances to the distance computed with just one of the dimensions. The plot below shows the comparison to the first dimension (left) and to the second (right):</p>
+<pre class="r"><code>Z &lt;- X[,1]
+
+mypar(1,2)
+plot(dist(X), dist(Z))
+abline(0,1)
+
+Z &lt;-X[,2]
+plot(dist(X), dist(Z))
+abline(0,1)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-5-1.png" width="672" /></p>
+<p>Note that there is a strong correlation between the distances based only on on dimension and two dimensions, but can we improve it? Furthermore, the actual distance is generally underestimated (below the 45° line). This is actually to be expected since we are adding more terms in the actual distance. If instead we average and use this distance:</p>
+<p><span class="math display">\[\sqrt{ \frac{1}{2} \sum_{j=1}^2 (X_{i,j}-X_{i,j})^2 }\]</span></p>
+<p>Notice, the bias goes away:</p>
+<pre class="r"><code>Z &lt;- X[,1]
+
+mypar(1,1)
+plot(dist(X)/sqrt(2), dist(Z))
+abline(0,1)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-6-1.png" width="672" /></p>
+<p>Can we pick a one dimensional summary that makes this correlation even stronger?</p>
+<pre class="r"><code>cor(dist(X), dist(Z))</code></pre>
+<pre><code>## [1] 0.9468779</code></pre>
+<p>If we look back at the plot, and visualize a line between any pair of points, the length of this line is the distance between the two points. These lines tend to go along the direction of the diagonal. Notice what happens when we instead plot the difference and average.</p>
+<pre class="r"><code>avg &lt;- rowMeans(X) ##or (X[,1] + X[,2])/2
+diff &lt;- X[,2] - X[,1]
+Z  &lt;- cbind( avg, diff)
+
+mypar(1,2)
+lim &lt;- lim - 69
+
+plot(X, xlim=lim, ylim=lim)
+points(X[1:2,], col=&quot;red&quot;, pch=16)
+lines(X[1:2,], col=&quot;red&quot;)
+
+plot(Z, xlim=lim, ylim=lim)
+points(Z[1:2,], col=&quot;red&quot;, pch=16)
+lines(Z[1:2,], col=&quot;red&quot;)</code></pre>
+<div class="figure">
+<img src="figure/dimension-reduction-rotation-1.png" alt="Twin height scatterplot (left) and MA-plot (right)." width="1008" />
+<p class="caption">
+Twin height scatterplot (left) and MA-plot (right).
+</p>
+</div>
+<p>This means that we can ignore the second dimension and not lose too much information. If the line is completely flat, we lose no information. If we use this transformation of the data instead we get much higher correlation:</p>
+<pre class="r"><code>mypar(1,1)
+plot(dist(X)/sqrt(2), dist(Z[,1]))
+abline(0,1)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>cor(dist(Z[,1]), dist(X)/sqrt(2))</code></pre>
+<pre><code>## [1] 0.9929372</code></pre>
+<p>Note that each row of <span class="math inline">\(X\)</span> was transformed using a linear transformation. For any row <span class="math inline">\(i\)</span>, the first entry was:</p>
+<p><span class="math display">\[Z_{i,1} = a_{1,1} X_{i,1} + a_{2,1} X_{i,2}\]</span></p>
+<p>with <span class="math inline">\(a_{1,1} = 0.5\)</span> and <span class="math inline">\(a_{2,1} = 0.5\)</span>.</p>
+<p>The second entry was also a linear transformation:</p>
+<p><span class="math display">\[Z_{i,2} = a_{1,2} X_{i,1} + a_{2,2} X_{i,2}\]</span></p>
+<p>with <span class="math inline">\(a_{1,2} = 1\)</span> and <span class="math inline">\(a_{2,2} = -1\)</span>.</p>
+<p>We can also use linear transformation to get <span class="math inline">\(X\)</span> back from <span class="math inline">\(Z\)</span>:</p>
+<p><span class="math display">\[X_{i,1} = b_{1,1} Z_{i,1} + b_{2,1} Z_{i,2}\]</span></p>
+<p>with <span class="math inline">\(b_{1,2} = 1\)</span> and <span class="math inline">\(b_{2,1} = 0.5\)</span> and</p>
+<p><span class="math display">\[X_{i,2} = b_{2,1} Z_{i,1} + b_{2,2} Z_{i,2}\]</span></p>
+<p>with <span class="math inline">\(b_{2,1} = 1\)</span> and <span class="math inline">\(a_{1,2} = -0.5\)</span>.</p>
+<p>If you are familiar with linear algebra we can write the operation we just performed like this:</p>
+<p><span class="math display">\[
+Z = Y A
+\mbox{ with }
+A = \,
+\begin{pmatrix}
+1/2&amp;1\\
+1/2&amp;-1\\
+\end{pmatrix}
+\]</span></p>
+<p>And can transform back by simply multiplying by <span class="math inline">\(A^{-1}\)</span> as follows:</p>
+<p><span class="math display">\[
+Y = Z A^{-1} 
+\mbox{ with }
+A^{-1} = \,
+\begin{pmatrix}
+1&amp;1\\
+1/21&amp;-1/2\\
+\end{pmatrix}
+\implies
+\]</span></p>
+</div>
+<div id="orthogogal-transformations-advaced" class="section level2">
+<h2>Orthogogal transformations (advaced)</h2>
+<p>Note that we redefined distance above to account for the difference in dimensions. We can actually guarantee that the distance scales remain the same if we re-scale the columns of <span class="math inline">\(A\)</span> to assure that the sum of squares are 1:</p>
+<p><span class="math display">\[a_{1,1}^2 + a_{2,1}^2 = 1\mbox{ and } a_{2,1}^2 + a_{2,2}^2=1\]</span></p>
+<p>and the correlation of the columns is 0:</p>
+<p><span class="math display">\[
+a_{1,1} a_{1,2} + a_{2,1} a_{2,2} = 0.
+\]</span></p>
+<p>In this particular example to achieve this, we multiply the first set of coefficients (first column of <span class="math inline">\(A\)</span>) by <span class="math inline">\(\sqrt{2}\)</span> and the second by <span class="math inline">\(1\sqrt{2}\)</span> then we get the same exact distance if we use both dimensions and a great approximation if we use one.</p>
+<pre class="r"><code>Z[,1] &lt;- (X[,1] + X[,2])/sqrt(2)
+Z[,2] &lt;- (X[,2] - X[,1])/sqrt(2)
+
+mypar(1,2)
+
+plot(dist(X), dist(Z) )
+abline(0,1)
+
+plot(dist(X), dist(Z[,1]))
+abline(0,1)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-9-1.png" width="672" /></p>
+<p><em>In this case <span class="math inline">\(Z\)</span> is called an orthogonal rotation of <span class="math inline">\(X\)</span>: it preserves the distances between points.</em></p>
+</div>
+</div>
+<div id="dimension-reduction" class="section level1">
+<h1>Dimension Reduction</h1>
+<p>Note that by using the transformation above we can summarize the distance between any two pair of twins with just on dimension. We reduced the number of dimensions from two to one with very little loss of information.</p>
+<p>The reason we were able to do this is because columns of <span class="math inline">\(X\)</span> were highly correlated:</p>
+<pre class="r"><code>cor(X[,1], X[,2])</code></pre>
+<pre><code>## [1] 0.9095129</code></pre>
+<p>and the transformation produced uncorrelated columns with “independent” information in each column:</p>
+<pre class="r"><code>cor(Z[,1], Z[,2])</code></pre>
+<pre><code>## [1] -0.0009943199</code></pre>
+<div id="principal-component-analysis" class="section level2">
+<h2>Principal Component Analysis</h2>
+<p>In the computation above, the total variability in our data can be defined as the sum of squares of the columns. We assume the columns are centered so we have:</p>
+<p><span class="math display">\[v_1 = \frac{1}{N}\sum_{i=1}^N X_{i,1}^2 \mbox{ and } v_2 =  \frac{1}{N}\sum_{i=1}^N X_{i,1}^2 
+\]</span></p>
+<p>Which we can compute using:</p>
+<pre class="r"><code>colMeans(X^2) </code></pre>
+<pre><code>## [1] 7.230716 7.224741</code></pre>
+<p>We can show, mathematically, that if we apply an orthogonal transformation as above, <em>then the total variation remains the same</em>:</p>
+<pre class="r"><code>sum(colMeans(X^2))</code></pre>
+<pre><code>## [1] 14.45546</code></pre>
+<pre class="r"><code>sum(colMeans(Z^2))</code></pre>
+<pre><code>## [1] 14.45546</code></pre>
+<p>However, while the variability in the columns of <code>X</code> is about the same, in the transformed version <span class="math inline">\(Z\)</span>, 96% of the variability is included in the first dimensions:</p>
+<pre class="r"><code>v &lt;- colMeans(Z^2)
+v/sum(v)</code></pre>
+<pre><code>##        avg       diff 
+## 0.95475639 0.04524361</code></pre>
+<p>The <em>first principal component (PC)</em> of a matrix <span class="math inline">\(X\)</span> is the linear orthogonal transformation of <span class="math inline">\(X\)</span>, that maximizes the variability. The function <code>prcomp</code> provides this info:</p>
+<pre class="r"><code>prcomp(X)</code></pre>
+<pre><code>## Standard deviations (1, .., p=2):
+## [1] 3.7337447 0.8127869
+## 
+## Rotation (n x k) = (2 x 2):
+##            PC1        PC2
+## [1,] 0.7072674  0.7069461
+## [2,] 0.7069461 -0.7072674</code></pre>
+<p>It turns out that we can find this linear transformation not just for two dimensions, but for matrices of any dimension <span class="math inline">\(p\)</span>.</p>
+<p>For a multi-dimensional matrix <span class="math inline">\(X\)</span> with say, <span class="math inline">\(p\)</span> columns, we can find a transformation that creates <span class="math inline">\(Z\)</span> that preserves distance between rows, but with the variance of the columns in decreasing order. The second column is the second principal component, the third column is the third principal component etc…</p>
+<p>As in our example, if past <span class="math inline">\(k\)</span> these variances are very small, it means these dimensions have little to contribute to the distance and we can approximate distance between any two points with just <span class="math inline">\(k\)</span> dimensions.</p>
+</div>
+<div id="iris-example" class="section level2">
+<h2>Iris Example</h2>
+<p>The Iris data, collected by Anderson in 1935, is a widely used example. It includes four measurments related to three species.</p>
+<p>Let’s compute the distance between each observation. You can clearly see the three species:</p>
+<pre class="r"><code>X &lt;- iris %&gt;% select(-Species) %&gt;% as.matrix()
+# This can be written also as
+# X &lt;- as.matrix(select(iris,-Species))
+d &lt;- dist(X)
+image(as.matrix(d))</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-16-1.png" width="672" /></p>
+<p>Our predictors here have four dimensions but some are very correlated:</p>
+<pre class="r"><code>cor(X)</code></pre>
+<pre><code>##              Sepal.Length Sepal.Width Petal.Length Petal.Width
+## Sepal.Length    1.0000000  -0.1175698    0.8717538   0.8179411
+## Sepal.Width    -0.1175698   1.0000000   -0.4284401  -0.3661259
+## Petal.Length    0.8717538  -0.4284401    1.0000000   0.9628654
+## Petal.Width     0.8179411  -0.3661259    0.9628654   1.0000000</code></pre>
+<p>If we apply PC we should be able to approximate this distance with just two dimensions:</p>
+<pre class="r"><code>pc &lt;- prcomp(X)
+summary(pc)</code></pre>
+<pre><code>## Importance of components:
+##                           PC1     PC2    PC3     PC4
+## Standard deviation     2.0563 0.49262 0.2797 0.15439
+## Proportion of Variance 0.9246 0.05307 0.0171 0.00521
+## Cumulative Proportion  0.9246 0.97769 0.9948 1.00000</code></pre>
+<p>The first two dimensions account for 97%. So we should be able to approximate very well:</p>
+<pre class="r"><code>d_approx &lt;- dist(pc$x[,1:2])
+plot(d, d_approx)
+abline(0,1, col=2)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-19-1.png" width="672" /></p>
+<p>With two dimensions including all the necessary information we are able to visualize the data with a scatterplot:</p>
+<pre class="r"><code>data.frame(pc$x[,1:2], Species=iris$Species) %&gt;% 
+  ggplot(aes(PC1,PC2, fill = Species))+
+  geom_point(cex=3, pch=21) +
+  coord_fixed(ratio = 1)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code># Can plot something similarly without ggplot:
+# plot(pc$x[,1:2],pch=21,bg=iris$Species,cex=2)</code></pre>
+</div>
+<div id="example-from-biomedical-research" class="section level2">
+<h2>Example from Biomedical Research</h2>
+<p>High-throughput technologies measure thousands of features at a time. Examples of feature are genes, single base locations of the genome, genomic regions, or image pixel intensities. Each specific measurement product is defined by a specific set of features. For example, a specific gene expression microarray product is defined by the set of genes that it measures.</p>
+<p>A specific study will typically use one product to make measurements on several experimental units, such as individuals. The most common experimental unit will be the individual, but they can also be defined by other entities, for example different parts of a tumor.</p>
+<p>Here we show an example for which we measure RNA expression for 8,793 genes from blood taken from 209 individuals. In this case, the data was originally collected to compare gene expression across ethnic groups. The study is described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/17206142">this paper</a>, which claimed that roughly 50% of genes where differentially expressed when comparing blood from two ethnic groups.</p>
+<pre class="r"><code>library(Biobase)
+library(GSE5859) 
+data(GSE5859)
+
+
+# This messiness is to remove duplicate samples.
+# Calculate the correlation matrix
+cors &lt;- cor(exprs(e))
+# Find which absolute correlations are greater than 0.9999 and remove
+Pairs=which(abs(cors)&gt;0.9999, arr.ind = TRUE)
+out = Pairs[which(Pairs[,1]&lt;Pairs[,2]), ,drop = FALSE]
+if(length(out[,2])&gt;0) e=e[,-out[2]]
+
+## We also remove control probes from the analysis:
+out &lt;- grep(&quot;AFFX&quot;,featureNames(e))
+e &lt;- e[-out,]
+X &lt;- t(exprs(e) )
+
+# Grab ethnicity and date of processing
+eth &lt;- pData(e)$ethnicity
+dates &lt;- pData(e)$date</code></pre>
+<p>After some clean up of the data (code not shown), we end up with a matrix <code>X</code> with individuals represented in rows and genes in columns. We also have the ethnicity of each individual <code>eth</code> and <code>dates</code> in the same order. Now we are ready to proceed.</p>
+<div id="calculating-the-pcs" class="section level4">
+<h4>Calculating the PCs</h4>
+<p>We have shown how we can compute principal components using <code>prcomp</code>. The coefficients are stored in the <code>rotation</code> component and the transformed data in the <code>x</code> component. Note that the columns are centered by default.</p>
+<pre class="r"><code>pc &lt;- prcomp(X)</code></pre>
+<p>We want to explore the distance between each individual and determine if individuals cluster by ethnicity. Can we approximate the distance between two individuals with just two dimensions instead of 8,746?</p>
+<p>The proportion of variance of the first two PCs is quite high, almost 30%:</p>
+<pre class="r"><code>summary(pc)$importance[,1:5]</code></pre>
+<pre><code>##                             PC1      PC2      PC3      PC4      PC5
+## Standard deviation     14.23377 10.61813 8.969888 6.931216 6.174254
+## Proportion of Variance  0.18809  0.10467 0.074690 0.044600 0.035390
+## Cumulative Proportion   0.18809  0.29275 0.367450 0.412050 0.447440</code></pre>
+<p>We can also plot the standard deviations:</p>
+<pre class="r"><code>plot(pc$sdev)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-24-1.png" width="672" /></p>
+<p>or the more common plot variance explained:</p>
+<pre class="r"><code>plot(pc$sdev^2/sum(pc$sdev^2))</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-25-1.png" width="672" /></p>
+<p>We can see that the first two PCs will in fact be quite informative. Here is a plot of the first two PCs:</p>
+<pre class="r"><code>mypar(1,1)
+plot(pc$x[,1:2], bg=eth, pch=21)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-26-1.png" width="672" /></p>
+<p>Note that it does in fact separate individuals by ethnicity. However, this visualization does illustrate a concerning characteristic: the orange points seem to have sub-clusters. What are these?</p>
+<p>It turns the date in which the samples were processed also explain the clusters:</p>
+<pre class="r"><code>mypar(1,1)
+year = factor(format(dates,&quot;%y&quot;))
+plot( pc$x[,1:2], bg=year, pch=21)</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-27-1.png" width="672" /></p>
+<p>When we look more closely, at months for example:</p>
+<pre class="r"><code>month = factor(format(dates,&quot;%y%m&quot;))
+data.frame( month, PC1 = pc$x[,1], eth = eth) %&gt;% ggplot() +
+  geom_boxplot(aes(month, PC1)) +
+  geom_jitter(aes(month, PC1, fill=eth), width=0.2, cex=2, pch=21) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="figure/dimension-reduction-unnamed-chunk-28-1.png" width="672" /></p>
+<pre class="r"><code># This can be done with base R - without ggplot:
+# df = data.frame( month, PC1 = pc$x[,1], eth = eth)
+# boxplot(PC1~month,data=df,las=2)
+# stripchart(PC1 ~ month, vertical = TRUE, data = df,method = &quot;jitter&quot;, add = TRUE, pch = 21,bg=eth)</code></pre>
+</div>
+</div>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
