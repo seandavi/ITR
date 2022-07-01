@@ -18,7 +18,6 @@ myplot.png
 .httr-oauth
 *cache
 render*.rds
-*_files
 *_cache
 libs
 SE.svg
