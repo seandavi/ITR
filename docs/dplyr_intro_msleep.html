@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Stephen Turner (with modifications by Sean Davis)" />
 
 
 <title>Introduction to dplyr: mammal sleep dataset</title>
@@ -403,6 +404,8 @@ div.tocify {
 
 <h1 class="title toc-ignore">Introduction to dplyr: mammal sleep
 dataset</h1>
+<h4 class="author">Stephen Turner (with modifications by Sean
+Davis)</h4>
 
 </div>
 
@@ -898,10 +901,12 @@ length of vector), <code>first()</code> (returns first value in vector),
 <div id="grouping-data-group_by" class="section level2">
 <h2>Grouping data: <code>group_by()</code></h2>
 <p>The <code>group_by()</code> verb is an important function in dplyr.
-As we mentioned before it’s related to concept of “split-apply-combine”.
-We literally want to split the data frame by some variable
-(e.g. taxonomic order), apply a function to the individual data frames
-and then combine the output.</p>
+The <code>group_by</code> allows us to use the concept of
+“split-apply-combine”. We literally want to split the data frame by some
+variable (e.g. taxonomic order), apply a function to the individual data
+frames and then combine the output. This approach is similar to the
+<code>aggregate</code> function from R, but <code>group_by</code>
+integrates with dplyr.</p>
 <p>Let’s do that: split the msleep data frame by the taxonomic order,
 then ask for the same summary statistics as above. We expect a set of
 summary statistics for each taxonomic order.</p>

@@ -1,5 +1,6 @@
 ---
 title: 'Introduction to dplyr: mammal sleep dataset'
+author: "Stephen Turner (with modifications by Sean Davis)"
 output: html_document
 ---
 
@@ -270,11 +271,12 @@ msleep %>%
     
 ## Grouping data: `group_by()`
 
-The `group_by()` verb is an important function in dplyr. As we
-mentioned before it's related to concept of "split-apply-combine". We
+The `group_by()` verb is an important function in dplyr. The `group_by` allows
+us to use the concept of "split-apply-combine". We
 literally want to split the data frame by some variable
 (e.g. taxonomic order), apply a function to the individual data frames
-and then combine the output.
+and then combine the output. This approach is similar to the `aggregate` function
+from R, but `group_by` integrates with dplyr. 
 
 Let's do that: split the msleep data frame by the taxonomic order,
 then ask for the same summary statistics as above. We expect a set of
