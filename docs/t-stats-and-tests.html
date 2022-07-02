@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Sean Davis" />
 
+<meta name="date" content="2022-07-02" />
 
-<title>Ranges Exercises</title>
+<title>T-statistics and T-testing</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -33,7 +35,6 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -227,9 +228,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -403,181 +401,18 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
-
-<h1 class="title toc-ignore">Ranges Exercises</h1>
+<h1 class="title toc-ignore">T-statistics and T-testing</h1>
+<h4 class="author">Sean Davis</h4>
+<h4 class="date">2022-07-02</h4>
 
 </div>
 
 
-<div id="exercises" class="section level1">
-<h1>Exercises</h1>
-<div id="exercise-1" class="section level2">
-<h2>Exercise 1</h2>
-<p>In this exercise, we will use DNAse hypersensitivity data to explore
-range operations.</p>
-<ul>
-<li>Use the <code>AnnotationHub</code> package to find the
-<code>goldenpath/hg19/encodeDCC/wgEncodeUwDnase/wgEncodeUwDnaseK562PkRep1.narrowPeak.gz</code>
-<code>GRanges</code> object. Load that into R as the variable
-dnase.</li>
-</ul>
-<pre class="r"><code>library(AnnotationHub)
-ah = AnnotationHub()
-query(ah, &quot;goldenpath/hg19/encodeDCC/wgEncodeUwDnase/wgEncodeUwDnaseK562PkRep1.narrowPeak.gz&quot;)
-# the thing above should have only one record, so we can 
-# just grab it
-dnase = query(ah, &quot;goldenpath/hg19/encodeDCC/wgEncodeUwDnase/wgEncodeUwDnaseK562PkRep1.narrowPeak.gz&quot;)[[1]]</code></pre>
-<ul>
-<li>What type of object is dnase?</li>
-</ul>
-<pre class="r"><code>dnase
-class(dnase)</code></pre>
-<ul>
-<li>What metadata is stored in dnase?</li>
-</ul>
-<pre class="r"><code>mcols(dnase)</code></pre>
-<ul>
-<li>How many peaks are on each chromosome?</li>
-</ul>
-<pre class="r"><code>library(GenomicFeatures)
-table(seqnames(dnase))</code></pre>
-<ul>
-<li>What are the mean, min, max, and median widths of the peaks?</li>
-</ul>
-<pre class="r"><code>summary(width(dnase))</code></pre>
-<ul>
-<li>What are the sequences that were used in the analysis? Do the names
-have “chr” or not? Experiment with changing the
-<code>seqlevelsStyle</code> to adjust the sequence names.</li>
-</ul>
-<pre class="r"><code>seqlevels(dnase)
-seqlevelsStyle(dnase)
-seqlevelsStyle(dnase) = &#39;ensembl&#39;
-seqlevelsStyle(dnase)
-seqlevels(dnase)</code></pre>
-<ul>
-<li>What is the total amount of “landscape” covered by the peaks? Assume
-that the peaks do not overlap. What portion of the genome does this
-represent?</li>
-</ul>
-<pre class="r"><code>sum(width(dnase))
-sum(seqlengths(dnase))
-sum(width(dnase))/sum(seqlengths(dnase))</code></pre>
-</div>
-<div id="exercise-2" class="section level2">
-<h2>Exercise 2</h2>
-<p>In this exercise, we are going to load the second DNAse
-hypersensitivity replicate to investigate overlaps with the first
-replicate.</p>
-<ul>
-<li>Use the AnnotationHub to find the second replicate,
-<code>goldenpath/hg19/encodeDCC/wgEncodeUwDnase/wgEncodeUwDnaseK562PkRep1.narrowPeak.gz</code>.
-Load that as <code>dnase2</code>.</li>
-</ul>
-<pre class="r"><code>query(ah, &quot;goldenpath/hg19/encodeDCC/wgEncodeUwDnase/wgEncodeUwDnaseK562PkRep2.narrowPeak.gz&quot;)
-# the thing above should have only one record, so we can 
-# just grab it
-dnase2 = query(ah, &quot;goldenpath/hg19/encodeDCC/wgEncodeUwDnase/wgEncodeUwDnaseK562PkRep2.narrowPeak.gz&quot;)[[1]]</code></pre>
-<ul>
-<li>How many peaks are there in <code>dnase</code> and
-<code>dnase2</code>? Are there are similar number?</li>
-</ul>
-<pre class="r"><code>length(dnase)
-length(dnase2)</code></pre>
-<ul>
-<li>What are the peak sizes for <code>dnase2</code>?</li>
-</ul>
-<pre class="r"><code>summary(width(dnase2))</code></pre>
-<ul>
-<li>What proportion of the genome does <code>dnase2</code> cover?</li>
-</ul>
-<pre class="r"><code>sum(width(dnase))/sum(seqlengths(dnase))</code></pre>
-<ul>
-<li>Count the number of peaks from <code>dnase</code> that overlap with
-<code>dnase2</code>.</li>
-</ul>
-<pre class="r"><code>sum(dnase %over% dnase2)</code></pre>
-<ul>
-<li>Assume that your peak-caller was “too specific” and that you want to
-expand your peaks by 50 bp on each end (so make them 100 bp larger). Use
-a combination of <code>resize</code> (and pay attention to the
-<code>fix</code> argument) and <code>width</code> to do this expansion
-to dnase and call the new <code>GRanges</code> object “dnase_wide”.</li>
-</ul>
-<pre class="r"><code>w = width(dnase)
-dnase_wide = resize(dnase, width=w+100, fix=&#39;center&#39;) #make a copy
-width(dnase_wide)</code></pre>
-</div>
-<div id="exercise-3" class="section level2">
-<h2>Exercise 3</h2>
-<p>In this exercise, we are going to look at the overlap of DNAse sites
-relative to genes/transcripts. To get started, install and load the
-<code>TxDb.Hsapiens.UCSC.hg19.knownGene</code> txdb object.</p>
-<pre><code>BiocManager::install(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)
-library(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)
-kg = TxDb.Hsapiens.UCSC.hg19.knownGene</code></pre>
-<ul>
-<li>Load the transcripts from the knownGene txdb into a variable. What
-is the class of this object?</li>
-</ul>
-<pre class="r"><code>library(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)
-kg = TxDb.Hsapiens.UCSC.hg19.knownGene
-tx = transcripts(kg)
-class(tx)
-length(tx)</code></pre>
-<ul>
-<li>Read about the <code>flank</code> method for GRanges objects. How
-could you use that to get the “promoter” regions of the transcripts?
-Let’s assume that the promoter region is 2kb upstream of the gene.</li>
-</ul>
-<pre class="r"><code>flank(tx,2000)</code></pre>
-<ul>
-<li>Instead of using flank, could you do the same thing with the TxDb
-object? (See <code>?promoters</code>).</li>
-</ul>
-<pre class="r"><code>proms = promoters(kg)</code></pre>
-<ul>
-<li>Do any of the regions in the promoters overlap with each other?</li>
-</ul>
-<pre class="r"><code>summary(countOverlaps(proms))</code></pre>
-<ul>
-<li>To find overlap of our DNAse sites with promoters, let’s collapse
-overlapping “promoters” to just keep the contiguous regions by using
-<code>reduce</code>.</li>
-</ul>
-<pre class="r"><code>prom_regions = reduce(proms)
-summary(countOverlaps(prom_regions))</code></pre>
-<ul>
-<li>Count the number of DNAse sites that overlap with our promoter
-regions.</li>
-</ul>
-<pre class="r"><code>sum(dnase %over% prom_regions)
-# if you notice no overlap, check the seqlevels
-# and seqlevelsStyle
-seqlevelsStyle(dnase) = &quot;UCSC&quot;
-sum(dnase %over% prom_regions)
-sum(dnase2 %over% prom_regions)</code></pre>
-<ul>
-<li>Is this surprising? If we were to assume that the promoter and dnase
-regions are “independent” of each other, what number of overlaps would
-we expect?</li>
-</ul>
-<pre class="r"><code>prop_proms = sum(width(prom_regions))/sum(seqlengths(prom_regions))
-prop_dnase = sum(width(dnase))/sum(seqlengths(prom_regions))
-# Iff the dnase and promoter regions are 
-# not related, then we would expect this number
-# of DNAse overlaps with promoters.
-prop_proms * prop_dnase * length(dnase) </code></pre>
-</div>
+<div id="population-vs-sample" class="section level2">
+<h2>Population vs Sample</h2>
+<p><span class="math display">\[\sum_{n=1}^{10} n^2\]</span></p>
 </div>
 
     <script>
@@ -634,11 +469,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 <script>
 $(document).ready(function ()  {
