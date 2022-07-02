@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Data exploration and univariate statistics</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">seandavi(s12): Courses and Tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="setup.html">
+    <span class="fa fa-cogs"></span>
+     
+    setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="ion ion-easel"></span>
+     
+    Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="motivation_for_R_slides.html">Motivation for using R</a>
+    </li>
+    <li>
+      <a href="http://bit.ly/bioc_cshl_2019">Introduction to Bioconductor</a>
+    </li>
+    <li>
+      <a href="https://drive.google.com/file/d/1txUz-a84VVxiB1ouv24ujL2DSTfxgblL/view?usp=sharing">Advanced Bioconductor Overview</a>
+    </li>
+    <li>
+      <a href="MachineLearning.html">Machine Learning hands-on</a>
+    </li>
+    <li>
+      <a href="https://docs.google.com/presentation/d/1PKP39ze3kATKCXxx-AUuDdI4FUpA85UQJxDMhXIK3Mk/edit?usp=sharing">Machine Learning Intro</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-question fa-lg"></span>
+     
+    Misc.
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="further_resources.html">Further resources</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR">Source code for this site</a>
+    </li>
+    <li>
+      <a href="https://github.com/seandavi/ITR/archive/master.zip">Download materials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data exploration and univariate
+statistics</h1>
+
+</div>
+
+
+<!-- Thanks to Martin Morgan for much of this material! -->
+<div id="behavioral-risk-factor-surveillance-system"
+class="section level2">
+<h2>Behavioral Risk Factor Surveillance System</h2>
+<p>We will explore a subset of data collected by the CDC through its
+extensive Behavioral Risk Factor Surveillance System ([BRFSS][])
+telephone survey. Check out the link for more information. We’ll look at
+a subset of the data.</p>
+<p>First, we need to get the data. Either download the data from <a
+href="BRFSS-subset.csv">THIS LINK</a> or have R do it directly from the
+command-line (preferred):</p>
+<pre class="r"><code>download.file(&#39;https://raw.githubusercontent.com/seandavi/ITR/master/BRFSS-subset.csv&#39;,
+              destfile = &#39;BRFSS-subset.csv&#39;)</code></pre>
+<!--
+
+-->
+<pre class="r"><code>path &lt;- file.choose()    # look for BRFSS-subset.csv</code></pre>
+<pre class="r"><code>stopifnot(file.exists(path))
+brfss &lt;- read.csv(path)</code></pre>
+</div>
+<div id="learn-about-the-data" class="section level2">
+<h2>Learn about the data</h2>
+<p>Using the data exploration techniques you have seen to explore the
+brfss dataset.</p>
+<ul>
+<li>summary()</li>
+<li>dim()</li>
+<li>colnames()</li>
+<li>head()</li>
+<li>tail()</li>
+<li>class()</li>
+<li>View()</li>
+</ul>
+<p>You may want to investigate individual columns visually using
+plotting like <code>hist()</code>. For categorical data, consider using
+something like <code>table()</code>.</p>
+</div>
+<div id="clean-data" class="section level2">
+<h2>Clean data</h2>
+<p><em>R</em> read <code>Year</code> as an integer value, but it’s
+really a <code>factor</code></p>
+<pre class="r"><code>brfss$Year &lt;- factor(brfss$Year)</code></pre>
+</div>
+<div id="weight-in-1990-vs.-2010-females" class="section level2">
+<h2>Weight in 1990 vs. 2010 Females</h2>
+<ul>
+<li>Create a subset of the data</li>
+</ul>
+<pre class="r"><code>brfssFemale &lt;- brfss[brfss$Sex == &quot;Female&quot;,]
+summary(brfssFemale)</code></pre>
+<pre><code>##       Age            Weight           Sex                Height     
+##  Min.   :18.00   Min.   : 36.29   Length:12039       Min.   :105.0  
+##  1st Qu.:37.00   1st Qu.: 57.61   Class :character   1st Qu.:157.5  
+##  Median :52.00   Median : 65.77   Mode  :character   Median :163.0  
+##  Mean   :51.92   Mean   : 69.05                      Mean   :163.3  
+##  3rd Qu.:67.00   3rd Qu.: 77.11                      3rd Qu.:168.0  
+##  Max.   :99.00   Max.   :272.16                      Max.   :200.7  
+##  NA&#39;s   :103     NA&#39;s   :560                         NA&#39;s   :140    
+##    Year     
+##  1990:5718  
+##  2010:6321  
+##             
+##             
+##             
+##             
+## </code></pre>
+<ul>
+<li>Visualize</li>
+</ul>
+<pre class="r"><code>plot(Weight ~ Year, brfssFemale)</code></pre>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>Statistical test</li>
+</ul>
+<pre class="r"><code>t.test(Weight ~ Year, brfssFemale)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Weight by Year
+## t = -27.133, df = 11079, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group 1990 and group 2010 is not equal to 0
+## 95 percent confidence interval:
+##  -8.723607 -7.548102
+## sample estimates:
+## mean in group 1990 mean in group 2010 
+##           64.81838           72.95424</code></pre>
+</div>
+<div id="weight-and-height-in-2010-males" class="section level2">
+<h2>Weight and height in 2010 Males</h2>
+<ul>
+<li>Create a subset of the data</li>
+</ul>
+<pre class="r"><code>brfss2010Male &lt;- subset(brfss,  Year == 2010 &amp; Sex == &quot;Male&quot;)
+summary(brfss2010Male)</code></pre>
+<pre><code>##       Age            Weight           Sex                Height      Year     
+##  Min.   :18.00   Min.   : 36.29   Length:3679        Min.   :135   1990:   0  
+##  1st Qu.:45.00   1st Qu.: 77.11   Class :character   1st Qu.:173   2010:3679  
+##  Median :57.00   Median : 86.18   Mode  :character   Median :178              
+##  Mean   :56.25   Mean   : 88.85                      Mean   :178              
+##  3rd Qu.:68.00   3rd Qu.: 99.79                      3rd Qu.:183              
+##  Max.   :99.00   Max.   :278.96                      Max.   :218              
+##  NA&#39;s   :30      NA&#39;s   :49                          NA&#39;s   :31</code></pre>
+<ul>
+<li>Visualize the relationship</li>
+</ul>
+<pre class="r"><code>hist(brfss2010Male$Weight)</code></pre>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>hist(brfss2010Male$Height)</code></pre>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>plot(Weight ~ Height, brfss2010Male)</code></pre>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<ul>
+<li>Fit a linear model (regression)</li>
+</ul>
+<pre class="r"><code>fit &lt;- lm(Weight ~ Height, brfss2010Male)
+fit</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Height, data = brfss2010Male)
+## 
+## Coefficients:
+## (Intercept)       Height  
+##    -86.8747       0.9873</code></pre>
+<p>Summarize as ANOVA table</p>
+<pre class="r"><code>anova(fit)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Weight
+##             Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Height       1  197664  197664   693.8 &lt; 2.2e-16 ***
+## Residuals 3617 1030484     285                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ul>
+<li>Plot points, superpose fitted regression line; where am I?</li>
+</ul>
+<pre class="r"><code>plot(Weight ~ Height, brfss2010Male)
+abline(fit, col=&quot;blue&quot;, lwd=2)
+# Substitute your own weight and height...
+points(73 * 2.54, 178 / 2.2, col=&quot;red&quot;, cex=4, pch=20)</code></pre>
+<p><img src="eda_and_univariate_brfss_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>Class and available ‘methods’</li>
+</ul>
+<pre class="r"><code>class(fit)                 # &#39;noun&#39;
+methods(class=class(fit))  # &#39;verb&#39;</code></pre>
+<ul>
+<li>Diagnostics</li>
+</ul>
+<pre class="r"><code>plot(fit)
+# Note that the &quot;plot&quot; above does not have a &quot;.lm&quot;
+# However, R will use &quot;plot.lm&quot;. Why?
+?plot.lm</code></pre>
+</div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-93043521-1', 'auto');
+        ga('send', 'pageview');
+
+         
+        var links = document.querySelectorAll('a');
+        Array.prototype.map.call(links, function(item) {
+            if (item.host != document.location.host) {
+                item.addEventListener('click', function() {
+                    var action = item.getAttribute('data-action') || 'follow';
+                    ga('send', 'event', 'outbound', action, item.href);
+                });
+            }
+        });
+    </script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
