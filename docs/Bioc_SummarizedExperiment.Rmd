@@ -30,9 +30,8 @@ of experiments, particularly sequencing based experiments such as RNA-Seq and
 ChIp-Seq.
 
 ```{r eval=FALSE}
-library(BiocInstaller)
-biocLite('airway')
-biocLite('SummarizedExperiment')
+BiocManager::install('airway')
+BiocManager::install('SummarizedExperiment')
 ```
 
 #  Anatomy of a `SummarizedExperiment`

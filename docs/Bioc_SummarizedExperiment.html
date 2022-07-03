@@ -408,27 +408,69 @@ div.tocify {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <!-- This is taken from the summarizedExperiment package vignette -->
-<p>The <code>SummarizedExperiment</code> class is used to store rectangular matrices of experimental results, which are commonly produced by sequencing and microarray experiments. Each object stores observations of one or more samples, along with additional meta-data describing both the observations (features) and samples (phenotypes).</p>
-<p>A key aspect of the <code>SummarizedExperiment</code> class is the coordination of the meta-data and assays when subsetting. For example, if you want to exclude a given sample you can do for both the meta-data and assay in one operation, which ensures the meta-data and observed data will remain in sync. Improperly accounting for meta and observational data has resulted in a number of incorrect results and retractions so this is a very desirable property.</p>
-<p><code>SummarizedExperiment</code> is in many ways similar to the historical <code>ExpressionSet</code>, the main distinction being that <code>SummarizedExperiment</code> is more flexible in it’s row information, allowing both <code>GRanges</code> based as well as those described by arbitrary <code>DataFrame</code>s. This makes it ideally suited to a variety of experiments, particularly sequencing based experiments such as RNA-Seq and ChIp-Seq.</p>
-<pre class="r"><code>library(BiocInstaller)
-biocLite(&#39;airway&#39;)
-biocLite(&#39;SummarizedExperiment&#39;)</code></pre>
+<p>The <code>SummarizedExperiment</code> class is used to store
+rectangular matrices of experimental results, which are commonly
+produced by sequencing and microarray experiments. Each object stores
+observations of one or more samples, along with additional meta-data
+describing both the observations (features) and samples
+(phenotypes).</p>
+<p>A key aspect of the <code>SummarizedExperiment</code> class is the
+coordination of the meta-data and assays when subsetting. For example,
+if you want to exclude a given sample you can do for both the meta-data
+and assay in one operation, which ensures the meta-data and observed
+data will remain in sync. Improperly accounting for meta and
+observational data has resulted in a number of incorrect results and
+retractions so this is a very desirable property.</p>
+<p><code>SummarizedExperiment</code> is in many ways similar to the
+historical <code>ExpressionSet</code>, the main distinction being that
+<code>SummarizedExperiment</code> is more flexible in it’s row
+information, allowing both <code>GRanges</code> based as well as those
+described by arbitrary <code>DataFrame</code>s. This makes it ideally
+suited to a variety of experiments, particularly sequencing based
+experiments such as RNA-Seq and ChIp-Seq.</p>
+<pre class="r"><code>BiocManager::install(&#39;airway&#39;)
+BiocManager::install(&#39;SummarizedExperiment&#39;)</code></pre>
 </div>
 <div id="anatomy-of-a-summarizedexperiment" class="section level1">
 <h1>Anatomy of a <code>SummarizedExperiment</code></h1>
-<p>The <em>SummarizedExperiment</em> package contains two classes: <code>SummarizedExperiment</code> and <code>RangedSummarizedExperiment</code>.</p>
-<p><code>SummarizedExperiment</code> is a matrix-like container where rows represent features of interest (e.g. genes, transcripts, exons, etc.) and columns represent samples. The objects contain one or more assays, each represented by a matrix-like object of numeric or other mode. The rows of a <code>SummarizedExperiment</code> object represent features of interest. Information about these features is stored in a <code>DataFrame</code> object, accessible using the function <code>rowData()</code>. Each row of the <code>DataFrame</code> provides information on the feature in the corresponding row of the <code>SummarizedExperiment</code> object. Columns of the DataFrame represent different attributes of the features of interest, e.g., gene or transcript IDs, etc.</p>
-<p><code>RangedSummarizedExperiment</code> is the “child”” of the <code>SummarizedExperiment</code> class which means that all the methods on <code>SummarizedExperiment</code> also work on a <code>RangedSummarizedExperiment</code>.</p>
-<p>The fundamental difference between the two classes is that the rows of a <code>RangedSummarizedExperiment</code> object represent genomic ranges of interest instead of a <code>DataFrame</code> of features. The <code>RangedSummarizedExperiment</code> ranges are described by a <code>GRanges</code> or a <code>GRangesList</code> object, accessible using the <code>rowRanges()</code> function.</p>
-<p>The following graphic displays the class geometry and highlights the vertical (column) and horizontal (row) relationships.</p>
+<p>The <em>SummarizedExperiment</em> package contains two classes:
+<code>SummarizedExperiment</code> and
+<code>RangedSummarizedExperiment</code>.</p>
+<p><code>SummarizedExperiment</code> is a matrix-like container where
+rows represent features of interest (e.g. genes, transcripts, exons,
+etc.) and columns represent samples. The objects contain one or more
+assays, each represented by a matrix-like object of numeric or other
+mode. The rows of a <code>SummarizedExperiment</code> object represent
+features of interest. Information about these features is stored in a
+<code>DataFrame</code> object, accessible using the function
+<code>rowData()</code>. Each row of the <code>DataFrame</code> provides
+information on the feature in the corresponding row of the
+<code>SummarizedExperiment</code> object. Columns of the DataFrame
+represent different attributes of the features of interest, e.g., gene
+or transcript IDs, etc.</p>
+<p><code>RangedSummarizedExperiment</code> is the “child”” of the
+<code>SummarizedExperiment</code> class which means that all the methods
+on <code>SummarizedExperiment</code> also work on a
+<code>RangedSummarizedExperiment</code>.</p>
+<p>The fundamental difference between the two classes is that the rows
+of a <code>RangedSummarizedExperiment</code> object represent genomic
+ranges of interest instead of a <code>DataFrame</code> of features. The
+<code>RangedSummarizedExperiment</code> ranges are described by a
+<code>GRanges</code> or a <code>GRangesList</code> object, accessible
+using the <code>rowRanges()</code> function.</p>
+<p>The following graphic displays the class geometry and highlights the
+vertical (column) and horizontal (row) relationships.</p>
 <div class="figure">
 <img src="SE.svg" alt="" />
 <p class="caption">Summarized Experiment</p>
 </div>
 <div id="assays" class="section level2">
 <h2>Assays</h2>
-<p>The <code>airway</code> package contains an example dataset from an RNA-Seq experiment of read counts per gene for airway smooth muscles. These data are stored in a <code>RangedSummarizedExperiment</code> object which contains 8 different experimental and assays 64,102 gene transcripts.</p>
+<p>The <code>airway</code> package contains an example dataset from an
+RNA-Seq experiment of read counts per gene for airway smooth muscles.
+These data are stored in a <code>RangedSummarizedExperiment</code>
+object which contains 8 different experimental and assays 64,102 gene
+transcripts.</p>
 <pre><code>## Loading required package: airway</code></pre>
 <pre class="r"><code>library(SummarizedExperiment)
 data(airway, package=&quot;airway&quot;)
@@ -442,7 +484,13 @@ se</code></pre>
 ## rowData names(0):
 ## colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521
 ## colData names(9): SampleName cell ... Sample BioSample</code></pre>
-<p>To retrieve the experiment data from a <code>SummarizedExperiment</code> object one can use the <code>assays()</code> accessor. An object can have multiple assay datasets each of which can be accessed using the <code>$</code> operator. The <code>airway</code> dataset contains only one assay (<code>counts</code>). Here each row represents a gene transcript and each column one of the samples.</p>
+<p>To retrieve the experiment data from a
+<code>SummarizedExperiment</code> object one can use the
+<code>assays()</code> accessor. An object can have multiple assay
+datasets each of which can be accessed using the <code>$</code>
+operator. The <code>airway</code> dataset contains only one assay
+(<code>counts</code>). Here each row represents a gene transcript and
+each column one of the samples.</p>
 <pre class="r"><code>assays(se)$counts</code></pre>
 <table style="width:100%;">
 <colgroup>
@@ -585,7 +633,13 @@ se</code></pre>
 </div>
 <div id="row-regions-of-interest-data" class="section level2">
 <h2>‘Row’ (regions-of-interest) data</h2>
-<p>The <code>rowRanges()</code> accessor is used to view the range information for a <code>RangedSummarizedExperiment</code>. (Note if this were the parent <code>SummarizedExperiment</code> class we’d use <code>rowData()</code>). The data are stored in a <code>GRangesList</code> object, where each list element corresponds to one gene transcript and the ranges in each <code>GRanges</code> correspond to the exons in the transcript.</p>
+<p>The <code>rowRanges()</code> accessor is used to view the range
+information for a <code>RangedSummarizedExperiment</code>. (Note if this
+were the parent <code>SummarizedExperiment</code> class we’d use
+<code>rowData()</code>). The data are stored in a
+<code>GRangesList</code> object, where each list element corresponds to
+one gene transcript and the ranges in each <code>GRanges</code>
+correspond to the exons in the transcript.</p>
 <pre class="r"><code>rowRanges(se)</code></pre>
 <pre><code>## GRangesList object of length 64102:
 ## $ENSG00000000003
@@ -611,7 +665,9 @@ se</code></pre>
 </div>
 <div id="column-sample-data" class="section level2">
 <h2>‘Column’ (sample) data</h2>
-<p>Sample meta-data describing the samples can be accessed using <code>colData()</code>, and is a <code>DataFrame</code> that can store any number of descriptive columns for each sample row.</p>
+<p>Sample meta-data describing the samples can be accessed using
+<code>colData()</code>, and is a <code>DataFrame</code> that can store
+any number of descriptive columns for each sample row.</p>
 <pre class="r"><code>colData(se)</code></pre>
 <pre><code>## DataFrame with 8 rows and 9 columns
 ##            SampleName     cell      dex    albut        Run avgLength
@@ -634,7 +690,9 @@ se</code></pre>
 ## SRR1039517  SRX384354 SRS508576 SAMN02422673
 ## SRR1039520  SRX384357 SRS508579 SAMN02422683
 ## SRR1039521  SRX384358 SRS508580 SAMN02422677</code></pre>
-<p>This sample metadata can be accessed using the <code>$</code> accessor which makes it easy to subset the entire object by a given phenotype.</p>
+<p>This sample metadata can be accessed using the <code>$</code>
+accessor which makes it easy to subset the entire object by a given
+phenotype.</p>
 <pre class="r"><code># subset for only those samples treated with dexamethasone
 se[, se$dex == &quot;trt&quot;]</code></pre>
 <pre><code>## class: RangedSummarizedExperiment 
@@ -648,7 +706,8 @@ se[, se$dex == &quot;trt&quot;]</code></pre>
 </div>
 <div id="experiment-wide-metadata" class="section level2">
 <h2>Experiment-wide metadata</h2>
-<p>Meta-data describing the experimental methods and publication references can be accessed using <code>metadata()</code>.</p>
+<p>Meta-data describing the experimental methods and publication
+references can be accessed using <code>metadata()</code>.</p>
 <pre class="r"><code>metadata(se)</code></pre>
 <pre><code>## [[1]]
 ## Experiment data
@@ -660,7 +719,9 @@ se[, se$dex == &quot;trt&quot;]</code></pre>
 ##   PMIDs: 24926665 
 ## 
 ##   Abstract: A 226 word abstract is available. Use &#39;abstract&#39; method.</code></pre>
-<p>Note that <code>metadata()</code> is just a simple list, so it is appropriate for <em>any</em> experiment wide metadata the user wishes to save, such as storing model formulas.</p>
+<p>Note that <code>metadata()</code> is just a simple list, so it is
+appropriate for <em>any</em> experiment wide metadata the user wishes to
+save, such as storing model formulas.</p>
 <pre class="r"><code>metadata(se)$formula &lt;- counts ~ dex + albut
 
 metadata(se)</code></pre>
@@ -679,12 +740,14 @@ metadata(se)</code></pre>
 ## counts ~ dex + albut</code></pre>
 </div>
 </div>
-<div id="common-operations-on-summarizedexperiment" class="section level1">
+<div id="common-operations-on-summarizedexperiment"
+class="section level1">
 <h1>Common operations on <code>SummarizedExperiment</code></h1>
 <div id="subsetting" class="section level2">
 <h2>Subsetting</h2>
 <ul>
-<li><code>[</code> Performs two dimensional subsetting, just like subsetting a matrix or data frame.</li>
+<li><code>[</code> Performs two dimensional subsetting, just like
+subsetting a matrix or data frame.</li>
 </ul>
 <pre class="r"><code># subset the first five transcripts and first three samples
 se[1:5, 1:3]</code></pre>
@@ -698,7 +761,8 @@ se[1:5, 1:3]</code></pre>
 ## colnames(3): SRR1039508 SRR1039509 SRR1039512
 ## colData names(9): SampleName cell ... Sample BioSample</code></pre>
 <ul>
-<li><code>$</code> operates on <code>colData()</code> columns, for easy sample extraction.</li>
+<li><code>$</code> operates on <code>colData()</code> columns, for easy
+sample extraction.</li>
 </ul>
 <pre class="r"><code>se[, se$cell == &quot;N61311&quot;]</code></pre>
 <pre><code>## class: RangedSummarizedExperiment 
@@ -713,7 +777,8 @@ se[1:5, 1:3]</code></pre>
 <div id="getters-and-setters" class="section level2">
 <h2>Getters and setters</h2>
 <ul>
-<li><code>rowRanges()</code> / (<code>rowData()</code>), <code>colData()</code>, <code>metadata()</code></li>
+<li><code>rowRanges()</code> / (<code>rowData()</code>),
+<code>colData()</code>, <code>metadata()</code></li>
 </ul>
 <pre class="r"><code>counts &lt;- matrix(1:15, 5, 3, dimnames=list(LETTERS[1:5], LETTERS[1:3]))
 
@@ -731,7 +796,13 @@ dates[rowData(dates)$month == &quot;January&quot;, ]</code></pre>
 ## colnames(3): A B C
 ## colData names(0):</code></pre>
 <ul>
-<li><code>assay()</code> versus <code>assays()</code> There are two accessor functions for extracting the assay data from a <code>SummarizedExperiment</code> object. <code>assays()</code> operates on the entire list of assay data as a whole, while <code>assay()</code> operates on only one assay at a time. <code>assay(x, i)</code> is simply a convenience function which is equivalent to <code>assays(x)[[i]]</code>.</li>
+<li><code>assay()</code> versus <code>assays()</code> There are two
+accessor functions for extracting the assay data from a
+<code>SummarizedExperiment</code> object. <code>assays()</code> operates
+on the entire list of assay data as a whole, while <code>assay()</code>
+operates on only one assay at a time. <code>assay(x, i)</code> is simply
+a convenience function which is equivalent to
+<code>assays(x)[[i]]</code>.</li>
 </ul>
 <pre class="r"><code>assays(se)</code></pre>
 <pre><code>## List of length 1
@@ -762,9 +833,15 @@ assay(se)[1:5, 1:5]</code></pre>
 <div id="range-based-operations" class="section level2">
 <h2>Range-based operations</h2>
 <ul>
-<li><code>subsetByOverlaps()</code> <code>SummarizedExperiment</code> objects support all of the <code>findOverlaps()</code> methods and associated functions. This includes <code>subsetByOverlaps()</code>, which makes it easy to subset a <code>SummarizedExperiment</code> object by an interval.</li>
+<li><code>subsetByOverlaps()</code> <code>SummarizedExperiment</code>
+objects support all of the <code>findOverlaps()</code> methods and
+associated functions. This includes <code>subsetByOverlaps()</code>,
+which makes it easy to subset a <code>SummarizedExperiment</code> object
+by an interval.</li>
 </ul>
-<p>In tne next code block, we define a region of interest (or many regions of interest) and then subset our <code>SummarizedExperiment</code> by overlaps with this region.</p>
+<p>In tne next code block, we define a region of interest (or many
+regions of interest) and then subset our
+<code>SummarizedExperiment</code> by overlaps with this region.</p>
 <pre class="r"><code># Subset for only rows which are in the interval 100,000 to 110,000 of
 # chromosome 1
 roi &lt;- GRanges(seqnames=&quot;1&quot;, ranges=100000:1100000)
@@ -785,8 +862,16 @@ sub_se</code></pre>
 </div>
 <div id="constructing-a-summarizedexperiment" class="section level1">
 <h1>Constructing a <code>SummarizedExperiment</code></h1>
-<p>Often, <code>SummarizedExperiment</code> or <code>RangedSummarizedExperiment</code> objects are returned by functions written by other packages. However it is possible to create them by hand with a call to the <code>SummarizedExperiment()</code> constructor. The code below is simply to illustrate the mechanics of creating an object from scratch. In practice, you will probably have the pieces of the object from other sources such as Excel files or csv files.</p>
-<p>Constructing a <code>RangedSummarizedExperiment</code> with a <code>GRanges</code> as the <em>rowRanges</em> argument:</p>
+<p>Often, <code>SummarizedExperiment</code> or
+<code>RangedSummarizedExperiment</code> objects are returned by
+functions written by other packages. However it is possible to create
+them by hand with a call to the <code>SummarizedExperiment()</code>
+constructor. The code below is simply to illustrate the mechanics of
+creating an object from scratch. In practice, you will probably have the
+pieces of the object from other sources such as Excel files or csv
+files.</p>
+<p>Constructing a <code>RangedSummarizedExperiment</code> with a
+<code>GRanges</code> as the <em>rowRanges</em> argument:</p>
 <pre class="r"><code>nrows &lt;- 200
 ncols &lt;- 6
 counts &lt;- matrix(runif(nrows * ncols, 1, 1e4), nrows)
@@ -807,7 +892,9 @@ SummarizedExperiment(assays=list(counts=counts),
 ## rowData names(1): feature_id
 ## colnames(6): A B ... E F
 ## colData names(1): Treatment</code></pre>
-<p>A <code>SummarizedExperiment</code> can be constructed with or without supplying a <code>DataFrame</code> for the <em>rowData</em> argument:</p>
+<p>A <code>SummarizedExperiment</code> can be constructed with or
+without supplying a <code>DataFrame</code> for the <em>rowData</em>
+argument:</p>
 <pre class="r"><code>SummarizedExperiment(assays=list(counts=counts), colData=colData)</code></pre>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 200 6 
@@ -837,23 +924,24 @@ SummarizedExperiment(assays=list(counts=counts),
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] airway_1.16.0               SummarizedExperiment_1.26.0
+##  [1] airway_1.16.0               SummarizedExperiment_1.26.1
 ##  [3] Biobase_2.56.0              GenomicRanges_1.48.0       
 ##  [5] GenomeInfoDb_1.32.0         IRanges_2.30.0             
 ##  [7] S4Vectors_0.34.0            BiocGenerics_0.42.0        
 ##  [9] MatrixGenerics_1.8.0        matrixStats_0.62.0         
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] XVector_0.36.0         knitr_1.39             magrittr_2.0.3        
-##  [4] zlibbioc_1.42.0        lattice_0.20-45        R6_2.5.1              
-##  [7] rlang_1.0.2            fastmap_1.1.0          highr_0.9             
-## [10] stringr_1.4.0          tools_4.2.0            grid_4.2.0            
-## [13] xfun_0.30              cli_3.3.0              jquerylib_0.1.4       
-## [16] htmltools_0.5.2        yaml_2.3.5             digest_0.6.29         
-## [19] Matrix_1.4-1           GenomeInfoDbData_1.2.8 sass_0.4.1            
-## [22] bitops_1.0-7           RCurl_1.98-1.6         evaluate_0.15         
-## [25] rmarkdown_2.14         DelayedArray_0.22.0    stringi_1.7.6         
-## [28] compiler_4.2.0         bslib_0.3.1            jsonlite_1.8.0</code></pre>
+##  [1] highr_0.9              bslib_0.3.1            compiler_4.2.0        
+##  [4] jquerylib_0.1.4        XVector_0.36.0         bitops_1.0-7          
+##  [7] tools_4.2.0            zlibbioc_1.42.0        digest_0.6.29         
+## [10] jsonlite_1.8.0         evaluate_0.15          lattice_0.20-45       
+## [13] rlang_1.0.2            Matrix_1.4-1           DelayedArray_0.22.0   
+## [16] cli_3.3.0              rstudioapi_0.13        yaml_2.3.5            
+## [19] xfun_0.30              fastmap_1.1.0          GenomeInfoDbData_1.2.8
+## [22] stringr_1.4.0          knitr_1.39             sass_0.4.1            
+## [25] grid_4.2.0             R6_2.5.1               rmarkdown_2.14        
+## [28] magrittr_2.0.3         htmltools_0.5.2        stringi_1.7.6         
+## [31] RCurl_1.98-1.6</code></pre>
 </div>
 
     <script>
