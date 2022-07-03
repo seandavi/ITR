@@ -114,11 +114,6 @@ dextrt = colData(airway)$dex
 plot(dat, col=dextrt)
 ```
 
-- *Bonus*: Load the logratios, gene and ORF information, and sample information from the "DeRisi" data into 
-a `SummarizedExperiment` object. You will need to construct:
-    1. A matrix of logratios as assay data.
-    2. A data.frame of matching size and matching rows that contains the symbol and ORF idendifiers.
-    3. A data.frame with 7 rows, corresponding to the 7 columns of the logratios. 
 
 # sessionInfo()
 
