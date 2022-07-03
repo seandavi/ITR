@@ -410,9 +410,343 @@ div.tocify {
 </div>
 
 
-<div id="population-vs-sample" class="section level2">
-<h2>Population vs Sample</h2>
-<p><span class="math display">\[\sum_{n=1}^{10} n^2\]</span></p>
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>The t-test is a <a
+href="https://en.wikipedia.org/wiki/Statistical_hypothesis_testing">statistical
+hypothesis test</a> that is commonly used when the data are normally
+distributed (follow a normal distribution) if the value of the
+population standard deviation were known. When the population standard
+deviation is not known and is replaced by an estimate based no the data,
+the test statistic follows a Student’s t distribution.</p>
+<p>T-tests are handy hypothesis tests in statistics when you want to
+compare means. You can compare a sample mean to a hypothesized or target
+value using a one-sample t-test. You can compare the means of two groups
+with a two-sample t-test. If you have two groups with paired
+observations (e.g., before and after measurements), use the paired
+t-test.</p>
+<p>A t-test looks at the t-statistic, the t-distribution values, and the
+degrees of freedom to determine the statistical significance. To conduct
+a test with three or more means, we would use an analysis of
+variance.</p>
+<p>The distriubution that the t-statistic follows was described in a
+famous paper by “Student”, a pseudonym for <a
+href="https://en.wikipedia.org/wiki/William_Sealy_Gosset">William Sealy
+Gosset</a>, published in 1908 in Biometrica<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+</div>
+<div id="the-z-score-and-probability" class="section level2">
+<h2>The Z-score and probability</h2>
+<p>Before talking about the t-distribution and t-scores, lets review the
+Z-score, its relation to the normal distribution, and probability.</p>
+<p>The Z-score is defined as:</p>
+<p><span class="math display">\[Z = \frac{x - \mu}{\sigma}\]</span>
+where <span class="math inline">\(\mu\)</span> is a the population mean
+from which <span class="math inline">\(x\)</span> is drawn and <span
+class="math inline">\(\sigma\)</span> is the population standard
+deviation (taken as known, not estimated from the data).</p>
+<p>The probability of observing a <span class="math inline">\(Z\)</span>
+score of <span class="math inline">\(z\)</span> or greater can be
+calculated by <span
+class="math inline">\(pnorm(z,\mu,\sigma)\)</span>.</p>
+<p>For example, let’s assume that our “population” is known and it truly
+has a mean 0 and standard deviation 1. If we have observations drawn
+from that population, we can assign a probability of seeing that
+observation by random chance <em>under the assumption that the null
+hypothesis is <strong>TRUE</strong></em>.</p>
+<pre class="r"><code>zscore = seq(-5,5,1)</code></pre>
+<p>For each value of zscore, let’s calculate the p-value and put the
+results in a <code>data.frame</code>.</p>
+<pre class="r"><code>df = data.frame(
+    zscore = zscore,
+    pval   = pnorm(zscore, 0, 1)
+)
+df</code></pre>
+<pre><code>##    zscore         pval
+## 1      -5 2.866516e-07
+## 2      -4 3.167124e-05
+## 3      -3 1.349898e-03
+## 4      -2 2.275013e-02
+## 5      -1 1.586553e-01
+## 6       0 5.000000e-01
+## 7       1 8.413447e-01
+## 8       2 9.772499e-01
+## 9       3 9.986501e-01
+## 10      4 9.999683e-01
+## 11      5 9.999997e-01</code></pre>
+<p>Why is the p-value of something 5 population standard deviations away
+from the mean (zscore=5) nearly 1 in this calculation? What is the
+default for <code>pnorm</code> with respect to being one-sided or
+two-sided?</p>
+<p>Let’s plot the values of probability vs z-score:</p>
+<pre class="r"><code>plot(df$zscore, df$pval, type=&#39;b&#39;)</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>This plot is the <em>empirical</em> cumulative density function (cdf)
+for our data. How can we use it? If we know the z-score, we can look up
+the probability of observing that value. Since we have constructed our
+experiment to follow the standard normal distribution, this cdf also
+represents the cdf of the standard normal distribution.</p>
+<div id="small-diversion-two-sided-pnorm-function"
+class="section level3">
+<h3>Small diversion: two-sided pnorm function</h3>
+<p>The <code>pnorm</code> function returns the “one-sided” probability
+of having a value at least as extreme as the observed <span
+class="math inline">\(x\)</span> and uses the “lower” tail by default.
+Let’s create a function that computes two-sided p-values.</p>
+<ol style="list-style-type: decimal">
+<li>Take the absolute value of x</li>
+<li>Compute <code>pnorm</code> with <code>lower.tail=FALSE</code> so we
+get lower p-values with larger values of <span
+class="math inline">\(x\)</span>.</li>
+<li>Since we want to include both tails, we need to multiply the area
+(probability) returned by pnorm by 2.</li>
+</ol>
+<pre class="r"><code>twosidedpnorm = function(x,mu=0,sd=1) {
+    2*pnorm(x,mu,sd,lower.tail=FALSE)
+}</code></pre>
+<p>And we can test this to see how likely it is to be 2 or 3 standard
+deviations from the mean:</p>
+<pre class="r"><code>twosidedpnorm(2)</code></pre>
+<pre><code>## [1] 0.04550026</code></pre>
+<pre class="r"><code>twosidedpnorm(3)</code></pre>
+<pre><code>## [1] 0.002699796</code></pre>
+</div>
+</div>
+<div id="the-t-distribution" class="section level2">
+<h2>The t-distribution</h2>
+<p>We spent time above working with z-scores and probability. An
+important aspect of working with the normal distribution is that we MUST
+assume that we know the standard deviation. Remember that the Z-score is
+defined as:</p>
+<p><span class="math display">\[Z = \frac{x - \mu}{\sigma}\]</span> The
+formula for the <em>population</em> standard deviation is:</p>
+<p><span class="math display">\[\sigma =
+\sqrt{\frac{1}{N}\sum_{i=1}^{N}({xi - \mu)^2}}\]</span> In general, the
+population standard deviation is taken as “known” as we did above.</p>
+<p>If we do not but only have a <em>sample</em> from the population,
+instead of using the Z-score, we use the t-score defined as:</p>
+<p><span class="math display">\[t = \frac{x - \bar{x}}{s}\]</span> This
+looks quite similar to the formula for Z-score, but here we have to
+<em>estimate</em> the standard deviation, <span
+class="math inline">\(s\)</span> from the data. The formula for <span
+class="math inline">\(s\)</span> is:</p>
+<p><span class="math display">\[s =
+\sqrt{\frac{1}{N-1}\sum_{i=1}^{N}({x_{i} - \bar{x})^2}}\]</span> Since
+we are estimating the standard deviation from the data, this leads to
+extra variability that shows up as “fatter tails” for smaller sample
+sizes than for larger sample sizes. We can see this by comparing the
+<em>t-distribution</em> for various numbers of degrees of freedom
+(sample sizes).</p>
+<p>We can look at the effect of sample size on the distributions
+graphically by looking at the densities for 3, 5, 10, 20 degrees of
+freedom and the normal distribution:</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggplot2)
+t_values = seq(-6,6,0.01)
+df = data.frame(
+    value = t_values,
+    t_3   = dt(t_values,3),
+    t_6   = dt(t_values,6),
+    t_10  = dt(t_values,10),
+    t_20  = dt(t_values,20),
+    Normal= dnorm(t_values)
+) |&gt;
+    tidyr::gather(&quot;Distribution&quot;, &quot;density&quot;, -value)
+ggplot(df, aes(x=value, y=density, color=Distribution)) + 
+    geom_line()</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The <code>dt</code> and <code>dnorm</code> functions give the density
+of the distributions for each point.</p>
+<pre class="r"><code>df2 = df |&gt; 
+    group_by(Distribution) |&gt;
+    arrange(value) |&gt; 
+    mutate(cdf=cumsum(density))
+ggplot(df2, aes(x=value, y=cdf, color=Distribution)) + 
+    geom_line()</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div id="p-values-based-on-z-vs-t" class="section level3">
+<h3>p-values based on Z vs t</h3>
+<p>When we have a “sample” of data and want to compute the statistical
+significance of the difference of the mean from the population mean, we
+calculate the standard deviation of the sample means (standard
+error).</p>
+<p><span class="math display">\[z = \frac{x -
+\mu}{\sigma/\sqrt{n}}\]</span></p>
+<p>Let’s look at the relationship between the p-values of Z (from the
+normal distribution) vs t for a <strong>sample</strong> of data.</p>
+<pre class="r"><code>set.seed(5432)
+samp = rnorm(5)
+z = sqrt(length(samp)) * mean(samp) #simplifying assumption (sigma=1, mu=0)</code></pre>
+<p>And the p-value if we assume we know the standard deviation:</p>
+<pre class="r"><code>pnorm(z)</code></pre>
+<pre><code>## [1] 0.8035432</code></pre>
+<pre class="r"><code>ts = sqrt(length(samp)) * mean(samp) / sd(samp)
+pnorm(ts)</code></pre>
+<pre><code>## [1] 0.8215048</code></pre>
+<pre class="r"><code>pt(ts,5)</code></pre>
+<pre><code>## [1] 0.800373</code></pre>
+</div>
+<div id="experiment" class="section level3">
+<h3>Experiment</h3>
+<ol style="list-style-type: decimal">
+<li>Simulate a bunch of samples of size <code>n</code> from the normal
+distribution</li>
+<li>Calculate the p-value distribution for those samples based on the
+normal.</li>
+<li>Calculate the p-value distribution for those samples based on the
+normal, but with the <em>estimated</em> standard deviation.</li>
+<li>Calculate the p-value distribution for those samples based on the
+t-distribution.</li>
+</ol>
+<p>Create a function that draws a sample of size <code>n</code> from the
+standard normal distribution.</p>
+<pre class="r"><code>zf = function(n) {
+    samp = rnorm(n)
+    z = sqrt(length(samp)) * mean(samp)
+    z
+}</code></pre>
+<p>And give it a try:</p>
+<pre class="r"><code>zf(5)</code></pre>
+<pre><code>## [1] 0.7406094</code></pre>
+<p>Perform 10000 replicates of our sampling and z-scoring.</p>
+<pre class="r"><code>z10k = replicate(10000,zf(5))
+hist(pnorm(z10k))</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>And do the same, but now creating a t-score function.</p>
+<pre class="r"><code>tf = function(n) {
+    samp = rnorm(n)
+    ts = sqrt(length(samp)) * mean(samp) / sd(samp)
+    ts
+}</code></pre>
+<pre class="r"><code>t10k = replicate(10000,tf(5))
+hist(pnorm(t10k))</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>hist(pt(t10k,5))</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>And the qqplot:</p>
+<pre class="r"><code>qqplot(z10k,t10k)
+abline(0,1)</code></pre>
+<p><img src="t-stats-and-tests_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+</div>
+<div id="t.test" class="section level2">
+<h2>t.test</h2>
+<div id="one-sample" class="section level3">
+<h3>One-sample</h3>
+<pre class="r"><code>x = rnorm(20,1)
+# small sample
+t.test(x[1:5])</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  x[1:5]
+## t = 0.97599, df = 4, p-value = 0.3843
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -1.029600  2.145843
+## sample estimates:
+## mean of x 
+## 0.5581214</code></pre>
+<p>Increase sample size:</p>
+<pre class="r"><code>t.test(x[1:20])</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  x[1:20]
+## t = 3.8245, df = 19, p-value = 0.001144
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  0.3541055 1.2101894
+## sample estimates:
+## mean of x 
+## 0.7821474</code></pre>
+</div>
+<div id="two-sample" class="section level3">
+<h3>two-sample</h3>
+<pre class="r"><code>x = rnorm(10,0.5)
+y = rnorm(10,-0.5)
+t.test(x,y)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  x and y
+## t = 3.4296, df = 17.926, p-value = 0.003003
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.5811367 2.4204048
+## sample estimates:
+##  mean of x  mean of y 
+##  0.7039205 -0.7968502</code></pre>
+</div>
+<div id="from-a-data.frame" class="section level3">
+<h3>from a data.frame</h3>
+<pre class="r"><code>df = data.frame(value=c(x,y),group=as.factor(rep(c(&#39;g1&#39;,&#39;g2&#39;),each=10)))
+t.test(value ~ group, data=df)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  value by group
+## t = 3.4296, df = 17.926, p-value = 0.003003
+## alternative hypothesis: true difference in means between group g1 and group g2 is not equal to 0
+## 95 percent confidence interval:
+##  0.5811367 2.4204048
+## sample estimates:
+## mean in group g1 mean in group g2 
+##        0.7039205       -0.7968502</code></pre>
+</div>
+<div id="equivalence-to-linear-model" class="section level3">
+<h3>Equivalence to linear model</h3>
+<pre class="r"><code>t.test(value ~ group, data=df, var.equal=TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  value by group
+## t = 3.4296, df = 18, p-value = 0.002989
+## alternative hypothesis: true difference in means between group g1 and group g2 is not equal to 0
+## 95 percent confidence interval:
+##  0.5814078 2.4201337
+## sample estimates:
+## mean in group g1 mean in group g2 
+##        0.7039205       -0.7968502</code></pre>
+<p>This is <em>equivalent</em> to:</p>
+<pre class="r"><code>res = lm(value ~ group, data=df)
+summary(res)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = value ~ group, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.9723 -0.5600  0.2511  0.5252  1.3889 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   0.7039     0.3094   2.275  0.03538 * 
+## groupg2      -1.5008     0.4376  -3.430  0.00299 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9785 on 18 degrees of freedom
+## Multiple R-squared:  0.3952, Adjusted R-squared:  0.3616 
+## F-statistic: 11.76 on 1 and 18 DF,  p-value: 0.002989</code></pre>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p><a
+href="http://seismo.berkeley.edu/~kirchner/eps_120/Odds_n_ends/Students_original_paper.pdf"
+class="uri">http://seismo.berkeley.edu/~kirchner/eps_120/Odds_n_ends/Students_original_paper.pdf</a><a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
     <script>
