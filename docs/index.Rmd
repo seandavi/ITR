@@ -26,6 +26,7 @@ Materials here are licensed as [CC BY-NC-SA 4.0 Creative Commons License.](https
 - [Data input and manipulation exercises](data_input_and_manipulation_exercises.html)
 - [Swirl](swirl.html)
 - [t-statistic](t-stats-and-tests.html) [[Rmd](t-stats-and-tests.Rmd)]
+- [Machine Learning](machine_learning_mlr3.html)[[Rmd](machine_learning_mlr3.Rmd)]
 
 ## Bioconductor
 
